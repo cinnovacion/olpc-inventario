@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Documento sin t&iacute;tulo</title>
+</head>
+
+<body>
+<% color = 1 %>
+<% all_times = 0 %>
+<% @all_data.each { |data| %>
+
+  <% j = 0%>
+  <% data[:codes].each { |place| %>
+
+    <% color += 1%>
+    <% data[:times][j].times do %>
+      <CENTER><B><U><font size="4" color = <%= color%2 == 0 ? "black" : "grey" %> > <%= place[:title] -%> (<%= data[:times][j]%>) </font></U></B></CENTER>
+    <% end %>
+    <% all_times += data[:times][j] %>
+
+    <% j += 1%>
+  <% } %>
+<% } %>
+
+<% fits = 25 %>
+<% if all_times%fits != 0%>
+<% left = fits - all_times%fits %>
+<% left.times do %>
+  <img src="/images/hack2.png" height=35 width=250><br>
+<% end %>
+<% end %>
+
+<% color = 1 %>
+<% @all_data.each { |data| %>
+
+<% data[:codes].each { |place| %>
+
+<% color += 1 %>
+<table align="center" border="4" bordercolor = <%= color%2 == 0 ? "black" : "grey" %> border-style = <%= color%2 == 0 ? "solid" : "dotted" %> >
+
+<% i = 0 %>
+<% place[:students].each { |student| %>
+   <% if i % @num_of_cols == 0 %>
+   <tr>
+   <% end %>
+   <td>  
+     <table  align="center" style="page-break-inside: avoid;">
+       <tr align="center"><td rowspan=3><img src="/images/hack.png" height=50 width=0></td><td  align="center"> <font size="1"> <%= student[:name] -%> </font> </td> </tr>
+       <tr align="center"><td  align="center"> <font size="0"> <%= student[:place] -%> </font> </td> </tr>
+       <tr align="center"><td  align="center"> <%= barcode(student[:barcode], { :encoding_format => Gbarcode::BARCODE_128, :output_format => "jpg", :width => 200, :height => 50 } ) -%> </td></tr>
+     </table>
+   </td>
+   <% if (i+1) % @num_of_cols == 0 %>
+     </tr>
+   <% end %>
+
+<% 
+  i += 1
+  }
+%>
+
+</table>
+
+<% } %>
+<% } %>
+</body>
+</html>

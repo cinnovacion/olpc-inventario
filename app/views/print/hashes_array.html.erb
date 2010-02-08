@@ -1,0 +1,27 @@
+<CENTER><B><U><font size="4">
+<%= @title -%>
+</font></U></B></CENTER>
+
+<% @hashes_array.each { |hash| %>
+
+  <CENTER><B><U><font size="2">
+  <%= hash[:sub_title] -%>
+  </font></U></B></CENTER>
+
+  <CENTER>
+  <table border="1">
+
+  <% hash[:sub_array].each { |data| %>  
+
+  <tr>    
+    <% data.each { |element| %>
+      <td> <%= element -%> </td>
+    <% } %>
+  </tr>
+
+  <% } %>
+  
+  </table>
+  </CENTER>
+  
+<% } %> 

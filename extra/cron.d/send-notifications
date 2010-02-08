@@ -1,0 +1,1 @@
+*/7 * * * *    root      ruby /var/inventario/script/runner -e production "NotificationsPool.send_notifications"

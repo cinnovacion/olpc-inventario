@@ -1,0 +1,51 @@
+<center><h1><%= @titulo -%></h1></center>
+
+<CENTER>
+<%if @fecha_desde and @fecha_hasta %>
+<b>Fecha: </b> <%= @fecha_desde -%> a <%= @fecha_hasta -%>
+<%end%>
+</CENTER>
+
+<table align="center">
+<tr>
+   <%@columnas.each { |t| %>
+   <td><b><CENTER><u><%=t%></u></CENTER></b></td>
+   <%}%>
+</tr>
+
+<% i = 0 %>
+
+<% @datos.each { |m|  %>
+
+<% bg_attr = i%2 == 0 ? "bgcolor='#dedede'" : "" %> 
+
+<tr <%= bg_attr -%> >
+   <%m.each { |d| %>
+   <td align="center" ><font size= <%= @fontsize ? @fontsize.to_s : "1"-%> ><%= d -%></font></td>
+   <% } %>
+</tr>
+
+<%
+  i += 1
+  } 
+
+%>
+
+<%
+ if @grand_total
+%>
+   <tr>
+      <td colspan=<%= @columnas.length - 1-%>> <b>Total: </b> </td>
+      <td> <%= @grand_total -%> <td>
+   </tr>
+<%
+ end
+%>
+
+</table> 
+
+
+<% if @image_name %>
+<center> <img src="<%= @image_name -%>" width="300" height="300"> </center>
+<% end %>
+<br>

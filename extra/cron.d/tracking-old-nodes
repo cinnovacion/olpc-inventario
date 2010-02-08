@@ -1,0 +1,1 @@
+*/15 * * * *    root      ruby /var/inventario/script/runner -e production "Node.markOldEntries"

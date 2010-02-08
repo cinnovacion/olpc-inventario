@@ -1,0 +1,31 @@
+<center><h1>Entregas</h1></center>
+
+<b>Fecha: </b> <%= @fecha_desde -%> a <%= @fecha_hasta -%> 
+
+<table>
+<tr>
+   <td><b>Nro</b></td>
+   <td><b>Fecha</b></td>
+   <td><b>Art</b></td>
+   <td><b>#</b></td>
+   <td><b>De</b></td>
+   <td><b>Para</b></td>
+   <td><b>Motivo</b></td>
+</tr>
+
+<% @movimientos.each { |m|  %>
+
+<tr>
+   <td><%= m[:mov_num] -%></td>
+   <td><%= m[:mov_date] -%> </td>
+   <td><%= m[:mov_obj] -%> </td>
+   <td><%= m[:mov_srl] -%> </td>
+   <td><%= m[:mov_from] -%> </td>
+   <td><%= m[:mov_to] -%> </td>
+   <td><%= m[:mov_type] -%> </td>
+</tr>
+
+<% } %>
+
+</table>
+

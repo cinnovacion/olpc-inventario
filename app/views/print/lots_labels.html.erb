@@ -1,0 +1,13 @@
+<% i = 0 %>
+<CENTER><B><U><font size="5"> Recibo de entrega de XO's: </font></U></B></CENTER><br>
+<% @times.each { |time| %>
+    <CENTER><font size="1"> <%= @labels[i] -%> <B>(<%= @times[i] %>)</B> </font></CENTER>
+  <% i += 1 %>
+<% } %>
+<CENTER><B><U><font size="2"> Total de cajas entregadas (Estipulado): <%= @total -%> </font></U></B></CENTER>
+<CENTER><B><U><font size="2"> Total de cajas entregadas (Calculado): <%= @math_total -%> </font></U></B></CENTER>
+<br>
+<br>
+<CENTER><B><U><font size="2"> Firma: ___________________ </font></U></B></CENTER>
+<CENTER><font size="2"> <%= @responsable -%> </font></CENTER>
+

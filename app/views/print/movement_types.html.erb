@@ -1,0 +1,48 @@
+<center><h1>Totales de Tipos de Movimientos</h1></center>
+
+<b>Fecha: </b> <%= @fecha_desde -%> a <%= @fecha_hasta -%> 
+
+<table>
+
+<tr>
+   <td><b>Tipo de Movimiento</b></td>
+
+   <% if @partOpts.include? "laptop" %>
+   <td><b>Total Laptops</b></td>
+   <% end %>
+
+   <% if @partOpts.include? "battery" %>
+   <td><b>Total Baterias</b></td>
+   <% end %>
+
+   <% if @partOpts.include? "charger" %>
+   <td><b>Total Cargadores</b></td>
+   <% end %>
+
+   <td><b>Total General</b></td>
+</tr>
+
+
+<% @mtypes.each { |m|  %>
+
+<tr>
+   <td><%= m[:desc] -%></td>
+
+   <% if @partOpts.include? "laptop" %>
+   <td><%= m[:total_laptop] %></td>
+   <% end %>
+
+   <% if @partOpts.include? "battery" %>
+   <td><%= m[:total_battery] %></td>
+   <% end %>
+
+   <% if @partOpts.include? "charger" %>
+   <td><%= m[:total_charger] %></td>
+   <% end %>
+
+   <td><%= m[:total] -%></td>
+</tr>
+
+<% } %>
+
+</table>

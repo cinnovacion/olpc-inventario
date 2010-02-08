@@ -1,0 +1,16 @@
+<CENTER>
+<B><U><%= @title %></B></U><br>
+<br>
+<% @data.each { |h| %>
+  <B>Numero de movimiento:</B> <%= h[:id] %> <br>
+  <B>Partes:</B> <br>
+  <% h[:parts].each { |part| %>
+    <B><%= part[:part] %>:</B> <%= part[:serial] %><br>
+  <% } %>
+  <B>Entregado a:</B>  <%= h[:person] %> <br>
+  <br>
+  <B>Firma:</B> _______________________________ <br>
+  <br>
+  <br>
+<% } %>
+</CENTER>
