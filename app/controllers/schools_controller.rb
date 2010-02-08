@@ -110,7 +110,6 @@ class SchoolsController < ApplicationController
         attribs[:name] = name
         attribs[:lastname] = lastname
         attribs[:id_document] = id_document
-        attribs[:place_id] = place.id
         performs = [[place.id, profile.id]]
         Person.register(attribs, performs, "", current_user.person)
       else

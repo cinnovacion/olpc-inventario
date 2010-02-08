@@ -154,6 +154,18 @@ class SistemaController < ApplicationController
     attribs
   end
 
+  def genDataImport
+    attribs = Hash.new
+    attribs[:option] = "data_importer"
+    attribs
+  end
+
+  def genScriptRunner
+    attribs = Hash.new
+    attribs[:option] = "script_runner"
+    attribs
+  end
+
   def genAbm2(option, popup = true, add = true, modify = true, details = true, destroy = true, customButtons = [])
     attribs = Hash.new
     attribs[:option] = option
@@ -245,23 +257,21 @@ class SistemaController < ApplicationController
 
   def getMenuInventory
     menu_option = genOption("Inventario")
-    menu_option[:elements].push(genElement("Cajas", "abm2", genAbm2("boxes")))
+    #menu_option[:elements].push(genElement("Cajas", "abm2", genAbm2("boxes")))
     menu_option[:elements].push(genElement("Laptops", "abm2", genAbm2("laptops")))
-    menu_option[:elements].push(genElement("Baterias", "abm2", genAbm2("baterias")))
-    menu_option[:elements].push(genElement("Cargadores", "abm2", genAbm2("cargadores")))
+    #menu_option[:elements].push(genElement("Baterias", "abm2", genAbm2("baterias")))
+    #menu_option[:elements].push(genElement("Cargadores", "abm2", genAbm2("cargadores")))
     #menu_option[:elements].push(genElement("Movimiento de Cajas", "abm2", genAbm2("box_movements")))
 
-    # Entregas {{{
     entregas = genOption("Entregas")
     cButton1 = genAbm2CustomButton("Entrega realizada","/movements/single_mass_delivery/0","/movements/save_single_mass_delivery","add","Masiva Particular")
     cButton2 = genAbm2CustomButton("Entrega realizada","/movements/new_mass_delivery/0","/movements/save_mass_delivery","add","Lote Alumnos")
     entregas[:elements].push(genElement("Listar Entregas", "abm2", genAbm2("movimientos", true, true, true, true, true, [cButton1,cButton2])))
     entregas[:elements].push(genElement("Agregar Entrega", "abmform", genAbm2("movimientos")))
     menu_option[:elements].push(entregas)
-    # }}}
 
     menu_option[:elements].push(genElement("Entregas por detalle", "abm2", genAbm2("movement_details")))
-    menu_option[:elements].push(genElement("Activaciones", "abm2", genAbm2("activaciones")))
+    #menu_option[:elements].push(genElement("Activaciones", "abm2", genAbm2("activaciones")))
     menu_option[:elements].push(genElement("Lotes", "abm2", genAbm2("lots")))
     menu_option[:elements].push(getMenuInventoryInform)
     menu_option[:elements].push(getMenuInventoryConfig)
@@ -281,8 +291,8 @@ class SistemaController < ApplicationController
     #menu_option[:elements].push(genElement("Entregas a persona*", "report", genReport("laptops_per_destination_person")))
     #menu_option[:elements].push(genElement("Activaciones", "report", genReport("activations")))
     menu_option[:elements].push(genElement("Prestamos", "report", genReport("lendings")))
-    menu_option[:elements].push(genElement("Distribucion de dispositivos por estado", "report", genReport("statuses_distribution")))
-    menu_option[:elements].push(genElement("Cambios de estado de dispositvos", "report", genReport("status_changes")))
+    menu_option[:elements].push(genElement("Distribucion de laptops por estado", "report", genReport("statuses_distribution")))
+    menu_option[:elements].push(genElement("Registro de cambio de estado", "report", genReport("status_changes")))
     menu_option[:elements].push(genElement("Impresion de Codigos de barra", "report", genReport("barcodes")))
     menu_option[:elements].push(genElement("Impresion del recibo de entrega de un lote", "report", genReport("lots_labels")))
     #menu_option[:elements].push(genElement("Distribucion por localidad*?", "report", genReport("laptops_per_tree")))
@@ -307,24 +317,17 @@ class SistemaController < ApplicationController
     menu_option[:elements].push(genElement("Eventos", "abm2", genAbm2("events")))
     menu_option[:elements].push(genElement("Monitoreo de nodos", "node_tracker"))
 
+    cButton1 = genAbm2CustomButton("Transferencias", "/part_movements/new_transfer/0", "/part_movements/save_transfer","add","Transferencias")
+    menu_option[:elements].push(genElement("Movimientos de partes", "abm2", genAbm2("part_movements", true, true, true, false, true, [cButton1])))
 
-    menu = genOption("Stock de partes")
-    cButton1 = genAbm2CustomButton("Registro Completo", "/parts/new_spare_parts/0", "/parts/save_spare_parts/0","add","Entrada Repuestos")
-    menu[:elements].push(genElement("Listar Stock de partes", "abm2", genAbm2("parts",true,true,true,true,true,[cButton1])))
-    menu[:elements].push(genElement("Agregar Stock de partes" , "abmform", genAbm2("parts")))
-    menu_option[:elements].push(menu)
+    menu_option[:elements].push(genElement("Reporte de problemas", "abm2", genAbm2("problem_reports")))
 
-    menu_option[:elements].push(genElement("Reportes", "abm2", genAbm2("problem_reports")))
-
-    #
     #cButton1 = genAbm2CustomButton("Solucion Registrada", "/problem_solutions/quick_solution/0", "/problem_solutions/save_quick_solution","add","Rapidas")
     cButton2 = genAbm2CustomButton("Solution Registrada", "/problem_solutions/change_solution/0", "/problem_solutions/save_change_solution","add","Cambios")
     cButton3 = genAbm2CustomButton("Solucion Registrada", "/problem_solutions/simple_solution/0", "/problem_solutions/save_simple_solution","add","Simples")
-    menu_option[:elements].push(genElement("Soluciones", "abm2", genAbm2("problem_solutions", true, false, true, false, true, [cButton2, cButton3])))
-
+    menu_option[:elements].push(genElement("Soluciones de problemas", "abm2", genAbm2("problem_solutions", true, false, true, false, true, [cButton2, cButton3])))
 
     menu_option[:elements].push(getMenuListAndCreate("bank_deposits", "Depositos"))
-
 
     menu_option[:elements].push(getMenuCatsInform)
     menu_option[:elements].push(getMenuCatsConfig)
@@ -335,7 +338,6 @@ class SistemaController < ApplicationController
     menu_option = genOption("Informes")
     menu_option[:elements].push(genElement("Distribucion de partes reemplazadas", "report", genReport("parts_replaced")))
     menu_option[:elements].push(genElement("Distribucion en el tiempo de los problemas", "report", genReport("problems_time_distribution")))
-    menu_option[:elements].push(genElement("Disponibilidad de Stock", "report", genReport("available_parts")))
     menu_option[:elements].push(genElement("Distribucion de problemas por tipo", "report", genReport("problems_per_type")))
     menu_option[:elements].push(genElement("Distribucion de problemas por escuela", "report", genReport("problems_per_school")))
     menu_option[:elements].push(genElement("Distribucion de problemas por grado", "report", genReport("problems_per_grade")))
@@ -343,7 +345,7 @@ class SistemaController < ApplicationController
     menu_option[:elements].push(genElement("Tiempo de funcionamiento de nodos de red", "report", genReport("online_time_statistics")))
     menu_option[:elements].push(genElement("Problemas y Depositos", "report", genReport("problems_and_deposits")))
     menu_option[:elements].push(genElement("Depositos", "report", genReport("deposits")))
-    menu_option[:elements].push(genElement("Carga de repuestos", "report", genReport("spare_parts_registry")))
+    menu_option[:elements].push(genElement("Estado del stock", "report", genReport("stock_status_report")))
     menu_option[:elements].push(getMenuAldaInform)
     menu_option
   end
@@ -366,6 +368,7 @@ class SistemaController < ApplicationController
     menu_option[:elements].push(getMenuListAndCreate("node_types", "Tipo de nodos"))
     menu_option[:elements].push(getMenuListAndCreate("nodes", "Nodos"))
     menu_option[:elements].push(getMenuListAndCreate("school_infos", "School Servers"))
+    menu_option[:elements].push(getMenuListAndCreate("part_movement_types", "Tipo de movimientos de partes"))
     menu_option
   end
 
@@ -392,16 +395,11 @@ class SistemaController < ApplicationController
     menu_option
   end
 
-  def getMenuQuizMaker
-    menu_option = genOption("Cuestionarios")
-    menu_option[:elements].push(genElement("Cuestionarios", "abm2", genAbm2("quizzes")))
-    menu_option[:elements].push(genElement("Evaluaciones", "abm2", genAbm2("answers")))
-    menu_option
-  end
-
   def getMenuSystemConfig
     menu_option = genOption("Configuraciones del sistema")
 
+    menu_option[:elements].push(genElement("Importar Datos", "data_importer"))
+    menu_option[:elements].push(genElement("Ejecutar Codigo", "script_runner"))
     menu_option[:elements].push(getMenuListAndCreate("notifications", "Tipo de notificaciones"));
     menu_option[:elements].push(getMenuListAndCreate("notification_subscribers", "Suscripciones a nofiticaciones"));
     menu_option[:elements].push(getMenuListAndCreate("images", "Imagenes"));

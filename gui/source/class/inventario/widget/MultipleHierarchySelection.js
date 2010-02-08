@@ -109,7 +109,7 @@ qx.Class.define("inventario.widget.MultipleHierarchySelection",
       var values = new Array;
 
       for (var i in elements) {
-        values.push(Number(elements[i].getValue()));
+        values.push(Number(elements[i].getModel()));
       }
 
       return values;
@@ -142,7 +142,7 @@ qx.Class.define("inventario.widget.MultipleHierarchySelection",
     _removeItem : function()
     {
       var list = this.getListWidget();
-      var selected_item = list.getSelectedItem();
+      var selected_item = list.getSelection()[0];
 
       list.remove(selected_item);
     }

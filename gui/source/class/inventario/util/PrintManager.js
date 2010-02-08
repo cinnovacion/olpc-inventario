@@ -211,6 +211,7 @@ qx.Class.define("inventario.util.PrintManager",
                                                                           case "laptops_problems_recurrence":
                                                                             case "average_solved_time":
                                                                               case "audit_report":
+                                                                                case "stock_status_report":
                                                                                 url = print_controller + documento;
                                                                                 break;
 

@@ -30,8 +30,6 @@
 class MovementDetail < ActiveRecord::Base
   belongs_to :movement
   belongs_to :laptop
-  belongs_to :battery
-  belongs_to :charger
 
 
   ###
@@ -58,69 +56,33 @@ class MovementDetail < ActiveRecord::Base
     ret
   end
 
-  ##
-  # We save:
-  # - desc.of the equipment type
-  # - serial number
   def before_save
-    associated_objs = [ self.laptop, self.battery, self.charger ]
-    obj = nil
-    associated_objs.each { |o|
-      if o
-        obj = o
-        break
-      end
-    }
-
-    self.description = obj.getDescription()
-    self.serial_number = obj.getSerialNumber()
+    self.description = laptop.getDescription()
+    self.serial_number = laptop.getSerialNumber()
   end
 
   def after_save
     self.checkReturned2 if self.movement.movement_type.is_return?
   end
 
-  ###
-  # Nro. Serial
-  #
   def getSerialNumber()
     self.serial_number
   end
 
-
-  ###
-  # Movement type description
-  #
   def getMovementTypeDesc()
     self.movement_type.description
   end
 
-  ##
-  # 
-  #
   def getMovementNumber()
     self.movement.id
   end
   
-  ###
-  #
-  #
   def getDescription()
     self.description
   end
 
-
-  ###
-  #
-  #
   def getMovementDate()
     self.movement.getMovementDate()
-  end
-
-  def getPart()
-    return "laptop" if self.laptop_id
-    return "battery" if self.battery_id
-    return "charger" if self.charger_id
   end
 
   ##
@@ -133,7 +95,7 @@ class MovementDetail < ActiveRecord::Base
   # Checks the lending as returned
   def checkReturned2
 
-    device = self.device
+    device = self.laptop
     device_class_str = device.class.to_s.downcase
 
     inc =  [{:movement => :movement_type}]
@@ -147,6 +109,10 @@ class MovementDetail < ActiveRecord::Base
     end
 
     true
+  end
+
+  def getPart
+    self.laptop
   end
 
   ##
@@ -170,15 +136,6 @@ class MovementDetail < ActiveRecord::Base
       yield
     end
 
-  end
-
-  ###
-  # Returns the device object included in this detail
-  def device
-    return self.laptop if self.laptop_id
-    return self.battery if self.battery_id
-    return self.charger if self.charger_id
-    nil
   end
 
 end

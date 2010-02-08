@@ -61,7 +61,7 @@ class MovementsController < SearchController
 
   def initialize
     super 
-    @include_str = [:source_person, :destination_person, :movement_type]
+    @include_str = [:source_person, :destination_person, :movement_type, {:movement_details => :laptop}]
   end
 
   def search
@@ -83,9 +83,9 @@ class MovementsController < SearchController
     @output["verify_save_url"] = "/movements/verify_save"
 
     ### TEST
-    places = buildHierarchyHash(Place, "places", "places.place_id", "name", -1, nil, nil, false)
-    h = { "label" => "Localidad","datatype" => "combobox","options" => places, "vista_widget" => 2, "vista" => "any" }
-    @output["fields"].push(h)
+    #places = buildHierarchyHash(Place, "places", "places.place_id", "name", -1, nil, nil, false)
+    #h = { "label" => "Localidad","datatype" => "combobox","options" => places, "vista_widget" => 2, "vista" => "any" }
+    #@output["fields"].push(h)
     ###
 
     id = MovementType.find_by_internal_tag("entrega_alumno").id
@@ -99,14 +99,6 @@ class MovementsController < SearchController
     @output["fields"].push(h)
     
     h = { "label" => "Nro. Serie Laptop","datatype" => "select","options" => [],"option" => "laptops" } 
-    h.merge!( { "text_value" => true } )
-    @output["fields"].push(h)
-
-    h = { "label" => "Nro. Serie Bateria","datatype" => "select","options" => [],"option" => "baterias" } 
-    h.merge!( { "text_value" => true } )
-    @output["fields"].push(h)
-
-    h = { "label" => "Nro. Serie Cargador","datatype" => "select","options" => [],"option" => "cargadores" } 
     h.merge!( { "text_value" => true } )
     @output["fields"].push(h)
 
@@ -141,26 +133,6 @@ class MovementsController < SearchController
       str += "Num. Serie Laptop: #{attribs[:serial_number_laptop]} (En manos de #{owner})\n"
     end
 
-    if strNotEmpty(attribs[:serial_number_battery])
-      batObj = Battery.find_by_serial_number attribs[:serial_number_battery]
-      if !batObj
-        str += "Num. Serie Battery: #{attribs[:serial_number_battery]} (No existe)\n"
-      else
-        owner = batObj.owner ? batObj.owner.getFullName() : "nadie"
-        str += "Num. Serie Battery: #{attribs[:serial_number_battery]} (En manos de #{owner})\n"
-      end
-    end
-
-    if strNotEmpty(attribs[:serial_number_charger])
-      chargerObj = Charger.find_by_serial_number attribs[:serial_number_charger]
-      if !chargerObj
-        str += "Num. Serie Charger: #{attribs[:serial_number_charger]} (No existe)\n"
-      else
-        owner = chargerObj.owner ? chargerObj.owner.getFullName() : "nadie"
-        str += "Num. Serie Charger: #{attribs[:serial_number_charger]} (En manos de #{owner})\n"
-      end
-    end
-
     if strNotEmpty(attribs[:return_date])
       str += "Fch Devolucion: #{attribs[:return_date]}\n"
     end
@@ -193,9 +165,6 @@ class MovementsController < SearchController
 
     @output["articles"] = Array.new
     @output["articles"].push( { :label => "Laptops" , :id => "laptop" } )
-    @output["articles"].push( { :label => "Baterias" , :id => "battery" } )
-    @output["articles"].push( { :label => "Cargadores" , :id => "charger" } )
-  
   end
 
   def new_mass_delivery
@@ -310,12 +279,10 @@ class MovementsController < SearchController
 
     data_fields = datos["fields"].reverse
 
-    movement_place = data_fields.pop #Dummy data
+    #movement_place = data_fields.pop #Dummy data
     attribs[:movement_type_id] = data_fields.pop
     attribs[:id_document] = data_fields.pop
     attribs[:serial_number_laptop] = data_fields.pop
-    attribs[:serial_number_battery] = data_fields.pop
-    attribs[:serial_number_charger] = data_fields.pop
     attribs[:return_date] = data_fields.pop
     attribs[:comment] = data_fields.pop
 

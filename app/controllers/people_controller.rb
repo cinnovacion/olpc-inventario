@@ -188,8 +188,6 @@ class PeopleController < SearchController
       break if !Person.find_by_id_document(fake_id_document)
     end
     attribs[:id_document] = fake_id_document
-    attribs[:place_id] = Place.find_by_name("Asuncion").id
-
 
     visitor_profile = Profile.find_by_internal_tag("visitor")
     profiles = [visitor_profile.id]
@@ -200,7 +198,6 @@ class PeopleController < SearchController
 
     @output["msg"] = "Sus datos han sido guardado! Gracias!"
   end
-
 
   def delete
     people_ids = JSON.parse(params[:payload])

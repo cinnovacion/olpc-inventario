@@ -173,7 +173,7 @@ qx.Class.define("inventario.widget.DynamicDeliveryForm",
     _addFilterCheckBox : function()
     {
       var filterCheckeBox = new qx.ui.form.CheckBox("Solo sin laptops");
-      filterCheckeBox.addListener("changeChecked", this._loadForm, this);
+      filterCheckeBox.addListener("changeValue", this._loadForm, this);
       this._filterCheck = filterCheckeBox;
       return filterCheckeBox;
     },
@@ -194,7 +194,7 @@ qx.Class.define("inventario.widget.DynamicDeliveryForm",
       var placesCombo = new qx.ui.form.SelectBox;
       placesCombo.setWidth(360);
       inventario.widget.Form.loadComboBox(placesCombo, places, true);
-      placesCombo.addListener("changeValue", this._loadForm, this);
+      placesCombo.addListener("changeSelection", this._loadForm, this);
 
       hbox.add(placesLabel);
       hbox.add(placesCombo);
@@ -258,7 +258,7 @@ qx.Class.define("inventario.widget.DynamicDeliveryForm",
      */
     _loadForm : function()
     {
-      var filterChecked = this._filterCheck.getChecked();
+      var filterChecked = this._filterCheck.getValue();
       var placeId = inventario.widget.Form.getInputValue(this._placesCombo);
       var hopts = {};
       hopts["url"] = this.getPeopleDataUrl();
@@ -306,7 +306,7 @@ qx.Class.define("inventario.widget.DynamicDeliveryForm",
       }
 
       this._fields.add(grid);
-      this._amountLabel.set({ content : "Numero de alumnos: " + amount.toString() });
+      this._amountLabel.set({ value : "Numero de alumnos: " + amount.toString() });
       this._amount = amount;
     },
 

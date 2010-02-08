@@ -209,6 +209,14 @@ qx.Class.define("inventario.widget.Url",
           ret = inventario.widget.Url.DEFAULT_VALUES;
           break;
 
+        case "part_movement_types":
+          ret = inventario.widget.Url.PART_MOVEMENT_TYPES;
+          break;
+
+        case "part_movements":
+          ret = inventario.widget.Url.PART_MOVEMENTS;
+          break;
+
         default:
           alert("erro : No existe " + param);
       }
@@ -574,6 +582,26 @@ qx.Class.define("inventario.widget.Url",
       deleteUrl      : "/default_values/delete",
       searchUrl      : "/default_values/search",
       initialDataUrl : "/default_values/search_options"
+    },
+
+    PART_MOVEMENT_TYPES :
+    {
+      listUrl        : "/part_movement_types/search",
+      addUrl         : "/part_movement_types/new",
+      saveUrl        : "/part_movement_types/save",
+      deleteUrl      : "/part_movement_types/delete",
+      searchUrl      : "/part_movement_types/search",
+      initialDataUrl : "/part_movement_types/search_options"
+    },
+
+    PART_MOVEMENTS :
+    {
+      listUrl        : "/part_movements/search",
+      addUrl         : "/part_movements/new",
+      saveUrl        : "/part_movements/save",
+      deleteUrl      : "/part_movements/delete",
+      searchUrl      : "/part_movements/search",
+      initialDataUrl : "/part_movements/search_options"
     }
   }
 });

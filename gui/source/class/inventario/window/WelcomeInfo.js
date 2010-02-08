@@ -184,8 +184,10 @@ qx.Class.define("inventario.window.WelcomeInfo",
       var hbox   = new qx.ui.container.Composite(new qx.ui.layout.HBox(20));
       this.getVerticalBox().add(hbox, {flex: 1});
 
-      var scope = inventario.window.Abm2SetScope.getInstance();
-      scope.show(this.getPage(), "Set scope");
+      // BROKEN;
+      // var scope = inventario.window.Abm2SetScope.getInstance();
+      // scope.show(this.getPage(), "Set scope");
+      
       this._doShow();
     },
 

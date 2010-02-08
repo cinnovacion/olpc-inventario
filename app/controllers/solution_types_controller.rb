@@ -55,10 +55,21 @@ class SolutionTypesController < SearchController
     h = { "label" => "Tag", "datatype" => "textfield" }.merge( solution_type ? {"value" => solution_type.getInternalTag } : {} )
     @output["fields"].push(h)
 
-    part_types = buildSelectHash2(PartType, solution_type ? solution_type.part_type_id ? solution_type.part_type_id : -1  : -1 ,"description",true,[])
-    h = { "label" => "Requiere Parte", "datatype" => "combobox", "options" => part_types }
+    h = { "datatype" => "tab_break", "title" => "Partes Requeridas" }
     @output["fields"].push(h)
 
+    included_part_types = solution_type ? solution_type.part_types : []
+    options = PartType.all.map { |part_type| 
+      { 
+        :label => part_type.getDescription,
+        :cb_name => part_type.id,
+        :checked => included_part_types.include?(part_type) ? true : false
+      }
+    }
+
+    h = { "label" => "", "datatype" => "checkbox_selector", :cb_options => options, "max_column" => 1 }
+    @output["fields"].push(h)
+    
   end
 
   def save
@@ -70,22 +81,20 @@ class SolutionTypesController < SearchController
     attribs[:description] = data_fields.pop
     attribs[:extended_info] = data_fields.pop
     attribs[:internal_tag] = data_fields.pop
-
-    part_type_id = data_fields.pop.to_i
-    attribs[:part_type_id] = part_type_id if part_type_id > 0
+    part_type_ids = data_fields.pop
 
     if datos["id"]
       solution_type = SolutionType.find_by_id(datos["id"])
-      solution_type.update_attributes(attribs)
+      solution_type.register_update(attribs, part_type_ids)
     else
-      SolutionType.create(attribs)
+      SolutionType.register(attribs, part_type_ids)
     end
 
   end
 
   def delete
     ids = JSON.parse(params[:payload])
-    SolutionType.destroy(ids)
+    SolutionType.unregister(ids)
   end
 
 end

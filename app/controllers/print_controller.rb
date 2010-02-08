@@ -53,6 +53,42 @@ class PrintController < ApplicationController
 
   end
 
+  def stock_status_report
+    print_params = JSON.parse(params[:print_params]).reverse
+    cond = [""]
+    inc = [:place, :part_type, :part_movement_type]
+
+    root_place_id = print_params.pop.to_i
+    if root_place_id != -1
+
+      root_place = Place.find_by_id(root_place_id)
+      places_ids = root_place.getDescendantsIds.push(root_place_id)
+      buildComboBoxQuery(cond, places_ids, "part_movements.place_id")     
+    end
+
+    stock_status = {}
+
+    PartType.all.each { |part_type|
+      stock_status[part_type] = { true => 0, false => 0 }
+    }
+
+    PartMovement.find(:all, :conditions => cond, :include => inc).each { |part_movement|
+
+      stock_status[part_movement.part_type][part_movement.part_movement_type.direction] += part_movement.amount
+    }
+
+    @titulo = "Estado del stock en #{root_place.getName}"
+    @columnas = ["Parte", "Entrante", "Saliente", "Diferencia"]
+    @datos = []
+    
+    stock_status.keys.each { |part_type|
+      values = stock_status[part_type]
+      @datos.push([part_type.getDescription, values[true], values[false], values[true]-values[false]])
+    }
+
+    imprimir("stock_status_report", "print/" + "report")
+  end
+
   def audit_report
     print_params = JSON.parse(params[:print_params]).reverse
     cond = [""]
@@ -556,12 +592,13 @@ class PrintController < ApplicationController
     aux_window = since.dup
     while (aux_window <= to)
 
-      window = group_criteria != "week" ? aux_window.send(group_criteria) : aux_window.to_s
+      window = (group_criteria != "week") ? aux_window.send(group_criteria) : aux_window.to_s
       registered_total += results[aux_window][:registered_this_window]
       created_total += results[aux_window][:created_this_window]
       results[aux_window][:registered_until_window] = registered_total
       results[aux_window][:created_until_window] = created_total
       non_registered_total = created_total - registered_total
+      percent = ("%0.2f" % ((created_total) ? (registered_total.to_f / created_total.to_f) : 0.to_f)).to_f * 100
 
       @datos.push([
                     window,
@@ -573,7 +610,7 @@ class PrintController < ApplicationController
                     percent
       ])
       
-      graph_data.push({ :name => window, :value => percent.to_i })
+      graph_data.push({ :name => window, :value => percent })
       aux_window += 1.send(group_criteria)
     end
 
@@ -825,8 +862,8 @@ class PrintController < ApplicationController
   def used_parts_per_person
     print_params = JSON.parse(params[:print_params]).reverse
 
-    inc_v = [{:problem_report => [:place, :owner]}, {:dst_part => :part_type} ]
-    cond_v = ["src_part_id is not NULL and dst_part_id is not NULL"]
+    inc_v = [{:problem_report => [:place, :owner]}, {:solution_type => :part_types}]
+    cond_v = [""]
 
     person_type = print_params.pop
 
@@ -835,7 +872,7 @@ class PrintController < ApplicationController
     place_id = print_params.pop.to_i
     place = Place.find_by_id(place_id)      
     if place
-      cond_v[0] += " and problem_reports.place_id in (?)"
+      cond_v[0] += "problem_reports.place_id in (?)"
       cond_v.push(place.getDescendantsIds.push(place_id))
     else
       raise "Debe seleccionar la localidad"
@@ -844,7 +881,7 @@ class PrintController < ApplicationController
     part_ids = print_params.pop
     if part_ids != []
       cond = ["part_types.id in (?)", part_ids]
-      cond_v[0] += "and parts.part_type_id in (?)"
+      cond_v[0] += "and part_types.id in (?)"
       cond_v.push(part_ids)
     else
       cond = []
@@ -861,20 +898,25 @@ class PrintController < ApplicationController
       end
 
       place = problem_solution.problem_report.place
-      part_type = problem_solution.dst_part.part_type
+      ps_part_types = problem_solution.solution_type.part_types
 
       cond = ["places.id in (?) and places.place_type_id in (?)", place.getAncestorsIds.push(place.id), place_type_id]
       parent_place = Place.find(:first, :conditions => cond)
     
-      if person && parent_place && part_type
+      if person && parent_place && ps_part_types != []
+
         results[person] = Hash.new if !results[person]
         if !results[person][parent_place]
+
           results[person][parent_place] = Hash.new
           part_types.each { |type|
             results[person][parent_place][type] = 0
           }
         end
-        results[person][parent_place][part_type] += 1
+        
+        ps_part_types.each { |part_type|
+          results[person][parent_place][part_type] += 1
+        }
       end
     }
 
@@ -1132,12 +1174,12 @@ class PrintController < ApplicationController
     @data = Array.new
    
     cond_v = ["movements.id in (?)", mov_ids]
-    include_v = [{:movement_details => [:laptop, :battery, :charger]}, :destination_person]
+    include_v = [{:movement_details => :laptop}, :destination_person]
     Movement.find(:all, :conditions => cond_v, :include => include_v).each {|movement|
       h = Hash.new
       h[:id] = movement.id
       h[:parts] = movement.movement_details.map { |detail|
-        { :part => detail.getPart.capitalize, :serial => detail.getSerialNumber }
+        { :part => "Laptop", :serial => detail.getSerialNumber }
       }
       h[:person] = movement.getDestinationPerson
       @data.push(h)
@@ -1368,9 +1410,6 @@ class PrintController < ApplicationController
     dateOpts = print_params.pop
     buildDateQuery(cond_v, dateOpts, "movements.date_moved_at")
 
-    @partOpts = print_params.pop
-    buildPartQuery(cond_v, @partOpts, "movement_details")
-
     serials = print_params.pop
     buildSerialQuery(cond_v,serials)
 
@@ -1386,7 +1425,7 @@ class PrintController < ApplicationController
     place_id = print_params.pop
     if place_id.to_i != -1
       places = Place.find_by_id(place_id).getDescendantsIds().push(place_id.to_i)
-      buildComboBoxQuery(cond_v, places, "people.place_id")
+      buildComboBoxQuery(cond_v, places, "places.id")
     end
 
     @titulo = "Entregas"
@@ -1395,7 +1434,7 @@ class PrintController < ApplicationController
     @columnas = ["#Mov","Fecha","Art","Serial","Entrego","Recibio","Motivo"]
     @datos = []
 
-    inc_v = [{:movement_details => [:laptop, :battery, :charger]},:movement_type,:source_person, {:destination_person => {:performs => :place}}]
+    inc_v = [{:movement_details => :laptop},:movement_type,:source_person, {:destination_person => {:performs => :place}}]
     Movement.find(:all, :include => inc_v, :conditions => cond_v, :order => "movements.id ASC").each  { |m|
       m.movement_details.each { |md|
         @datos.push([
@@ -1426,9 +1465,6 @@ class PrintController < ApplicationController
     to_person_id = print_params.pop
     buildPersonQuery(cond_v, to_person_id, "movements.destination_person_id")
 
-    partOpts = print_params.pop
-    buildPartQuery(cond_v, partOpts, "movement_details")
-
     dateOpts = print_params.pop
     buildDateQuery(cond_v, dateOpts, "movements.date_moved_at")
 
@@ -1440,38 +1476,29 @@ class PrintController < ApplicationController
       raise "Localidad no especificada"
     end
 
-    @titulo = "Totales de tipo de movimiento"
+    @titulo = "Totales por tipo de movimiento"
     @fecha_desde = dateOpts["date_since"]
     @fecha_hasta = dateOpts["date_to"]
     @columnas = ["Tipo"]
-    @columnas.push("Laptops") if partOpts.include? "laptop"
-    @columnas.push("Baterias") if partOpts.include? "battery"
-    @columnas.push("Cargadores") if partOpts.include? "charger"
-    @columnas.push("Totales")
+    @columnas.push("Laptops")
     @datos = []
 
     graph_data = Array.new
-    include_v = [:movements => [ {:destination_person => :performs}, { :movement_details => [:laptop,:battery,:charger]} ] ]
+    include_v = [:movements => [ {:destination_person => :performs}, { :movement_details => :laptop} ] ]
     MovementType.find(:all,:include => include_v,:conditions => cond_v).each { |mt|
-      total=laptops=batteries=chargers=0
+      total=laptops=0
       mt.movements.each { |m|
         m.movement_details.each { |md|
-          laptops += 1 if md.laptop_id and partOpts.include? "laptop"
-          batteries +=1 if md.battery_id and partOpts.include? "battery"
-          chargers +=1 if md.charger_id and partOpts.include? "charger"
+          laptops += 1
         }
       }
-    total += (laptops + batteries + chargers)
 
-    h = { :name => mt.getDescription(), :value => total } 
+    h = { :name => mt.getDescription(), :value => laptops } 
     graph_data.push(h)
 
     v = []
     v.push(mt.getDescription())
-    v.push(laptops) if partOpts.include? "laptop"
-    v.push(batteries) if partOpts.include? "battery"
-    v.push(chargers) if partOpts.include? "charger"
-    v.push(total)
+    v.push(laptops)
     @datos.push(v)
     }
 
@@ -1492,10 +1519,10 @@ class PrintController < ApplicationController
     place_id = print_params.pop.to_i
     if place_id != -1
       places = Place.find_by_id(place_id).getDescendantsIds().push(place_id.to_i)
-      buildComboBoxQuery(cond_v, places, "people.place_id")
+      buildComboBoxQuery(cond_v, places, "places.id")
     end
 
-    include_v = [:destination_person,:source_person,{:movement_details => [:laptop, :battery, :charger]}]
+    include_v = [{:destination_person => {:performs => :place}}, :source_person, {:movement_details => [:laptop]}]
     movements = Movement.find(:all, :conditions => cond_v,:include => include_v)
 
     # Se definen los elementos del view.
@@ -1641,8 +1668,6 @@ class PrintController < ApplicationController
     timeRange = print_params.pop
     buildDateQuery(cond_v,timeRange,"date_moved_at")
 
-    partOpts = print_params.pop
-
     sourcePerson = print_params.pop
     buildPersonQuery(cond_v,sourcePerson,"source_person_id")
 
@@ -1663,7 +1688,6 @@ class PrintController < ApplicationController
     include_v = [:movement_details]
     Movement.find(:all,:conditions => cond_v, :order => "date_moved_at DESC", :include => include_v).each { |m|
       m.movement_details.each { |md|
-      if partOpts.include? md.getPart()
         @datos.push([
                      m.getMovementDate(),
                      m.getSourcePerson(),
@@ -1673,26 +1697,28 @@ class PrintController < ApplicationController
                      md.getSerialNumber(),
                      md.getReturned()
                     ])
-      end
       }
     }
-    imprimir("prestamos", "print/" + "report")
 
+    imprimir("prestamos", "print/" + "report")
   end
 
   def statuses_distribution
     print_params = JSON.parse(params[:print_params]).reverse
 
     cond_v = ["statuses.internal_tag not in (?)",["used", "broken", "available"]]
+    include_v = [:laptops => {:owner => :performs}]
 
-    partOpts = print_params.pop
-    include_v = [:laptops,:batteries,:chargers]
+    root_place_id = print_params.pop.to_i
+    if root_place_id != -1
 
-    @titulo = "Distribucion de estados"
-    @columnas = ["Estado"]
-    @columnas.push("Cant. Laptops") if partOpts.include? "laptop"
-    @columnas.push("Cant. baterias") if partOpts.include?"battery"
-    @columnas.push("Cant. Cargadores") if partOpts.include? "charger"
+      root_place = Place.find_by_id(root_place_id)
+      places_ids = root_place.getDescendantsIds.push(root_place_id)
+      buildComboBoxQuery(cond_v, places_ids, "performs.place_id") 
+    end
+
+    @titulo = "Distribucion de laptops por estado"
+    @columnas = ["Estado", "Cantidad"]
     @datos = []
 
     graph_data = Array.new
@@ -1701,9 +1727,7 @@ class PrintController < ApplicationController
       v = []
 
       v.push(s.getDescription())
-      v.push(s.laptops.length) if partOpts.include? "laptop"
-      v.push(s.batteries.length) if partOpts.include? "battery"
-      v.push(s.chargers.length) if partOpts.include? "charger"
+      v.push(s.laptops.length)
       @datos.push(v)
 
       # save for graphing
@@ -1716,7 +1740,7 @@ class PrintController < ApplicationController
     # TODO: this should be conditional
     @image_name = "/" + PyEducaGraph::createPie(graph_data,@titulo)
  
-    imprimir("distribuciones", "print/" + "report")
+    imprimir("statuses_distribution", "print/" + "report")
     
   end
   
@@ -1727,16 +1751,13 @@ class PrintController < ApplicationController
     timeRange = print_params.pop
     buildDateQuery(cond_v,timeRange,"status_changes.date_created_at")
 
-    partOpts = print_params.pop
-    buildPartQuery(cond_v,partOpts,"status_changes")
-
     @titulo = "Cambios de estado"
     @fecha_desde = timeRange["date_since"]
     @fecha_hasta = timeRange["date_to"]
-    @columnas = ["Fecha","Anterior","Siguiente","Parte","Serial"]
+    @columnas = ["Fecha", "Anterior", "Siguiente", "Serial"]
     @datos = []
 
-    include_v = [:previous_state,:new_state,:laptop,:battery,:charger]
+    include_v = [:previous_state,:new_state,:laptop]
     StatusChange.find(:all,:include => include_v,:conditions => cond_v,:order => "status_changes.date_created_at DESC").each {  |sc|
       @datos.push([sc.getDate(),sc.getPreviousState(),sc.getNewState(),sc.getPart(),sc.getSerial()])
     }
@@ -1745,7 +1766,6 @@ class PrintController < ApplicationController
 
   end
 
-  # TODO: extend for other cases (bat, charger)
   def laptops_per_place
     print_params = JSON.parse(params[:print_params]).reverse
     place_id = print_params.pop
@@ -1762,8 +1782,8 @@ class PrintController < ApplicationController
   def parts_replaced
     print_params = JSON.parse(params[:print_params]).reverse
 
-    cond_v = [" src_part_id is not null and dst_part_id is not null "]
-    include_v = [{:problem_report => :place}, :solution_type, {:src_part => :part_type}]
+    cond_v = [""]
+    include_v = [{:problem_report => :place}, {:solution_type => :part_types}]
 
     timeRange = print_params.pop
     buildDateQuery(cond_v,timeRange,"problem_solutions.created_at")
@@ -1800,9 +1820,14 @@ class PrintController < ApplicationController
 
     ProblemSolution.find(:all, :conditions => cond_v, :include => include_v).each { |ps|
 
-      window = ps.created_at.send(group_method)
-      type = ps.src_part.part_type
-      results[window][type] += 1
+      ps_part_types = ps.solution_type.part_types
+      if ps_part_types != []
+
+        window = ps.created_at.send(group_method)
+        ps_part_types.each { |part_type| 
+          results[window][part_type] += 1
+        }
+      end
     }
 
     @titulo = "Repuestos Utilizados"
@@ -1841,54 +1866,6 @@ class PrintController < ApplicationController
 
     @image_name = "/" + PyEducaGraph::createLine(graph_data,"Linea de Tiempo", graph_labels)
     imprimir("repuestos_utilizados", "print/" + "report")
-  end
-
-  # count all the available parts, for each type.
-  def available_parts
-    print_params = JSON.parse(params[:print_params]).reverse
-    
-    include_v = []
-    cond_v = [""]
-
-    state = print_params.pop
-    buildPersonQuery(cond_v,state,"status_id")
-
-    root_place_id = print_params.pop.to_i
-    place = Place.find_by_id(root_place_id)
-
-    if place
-
-      include_v.push({:parts => {:owner => {:performs => {:place => :ancestor_dependencies }}}})
-      cond_v[0] += " and place_dependencies.ancestor_id in (?)"
-      cond_v.push(place.descendants.collect(&:id))
-    else
-
-      raise "Debe seleccionar la localidad padre"
-    end
-      
-
-    part_types = print_params.pop
-    buildComboBoxQuery(cond_v,part_types,"parts.part_type_id")
-
-    @titulo = "#{Status.find_by_id(state).getDescription().pluralize}"
-    @columnas = ["Parte","Cantidad"]
-    @datos = []
-
-    graph_data = Array.new
-
-    # Broken laptops subparts doesnt count because it is not posible to know their status until they're examined.
-
-    PartType.find(:all, :conditions => cond_v, :include => include_v).each { |pt|
-
-      desc = pt.description
-      amount = pt.parts.length
-
-      @datos.push([desc, amount])
-      graph_data.push({ :name => desc, :value => amount })
-    }
-
-    @image_name = "/" + PyEducaGraph::createPie(graph_data,@titulo)
-    imprimir("#{@titulo}", "print/" + "report")
   end
 
   def problems_per_type
@@ -2032,17 +2009,6 @@ class PrintController < ApplicationController
         cond_v[0] += " and " if cond_v[0] != ""
         cond_v[0] += " #{table_name}.laptop_id is null " 
       end
-
-      if !partOpts.include? "battery"
-        cond_v[0] += " and " if cond_v[0] != ""
-        cond_v[0] += " #{table_name}.battery_id is null " 
-      end
- 
-      if !partOpts.include? "charger"
-        cond_v[0] += " and " if cond_v[0] != ""
-        cond_v[0] += " #{table_name}.charger_id is null " 
-      end
-
     end
   end
 
@@ -2075,7 +2041,7 @@ class PrintController < ApplicationController
       theres_one = false
       cond_aux = " ( "
       for field in cvs_fields do
-        if field["value"] != ""
+        if field["value"] && fields["value"] != ""
           theres_one = true
           cond_aux += " or " if cond_aux != " ( "
           cond_aux += "#{field["col_name"].pluralize}.serial_number = ?"

@@ -67,17 +67,17 @@ class ApplicationController < ActionController::Base
     places_objs = Place.find(:all, :conditions => cond, :include => inc)
     places_ids = places_objs.collect(&:id)
 
-        File.open("/tmp/debug.txt", "w") { |f| f.write('hola'); }
+    #File.open("/tmp/debug.txt", "w") { |f| f.write('hola'); }
     # {{{ Change our scope, selecting a sub-scope
-    if params[:vista] and params[:vista].match(/scope_\d/)
-        scope_id = params[:vista].split("_")[1].to_i
-        places_objs.each { |p_obj|
-            if p_obj.getDescendantsIds().include?(scope_id)
-                places_ids = [scope_id]
-                break
-            end
-        }
-    end
+    #if params[:vista] and params[:vista].match(/scope_\d/)
+        #scope_id = params[:vista].split("_")[1].to_i
+        #places_objs.each { |p_obj|
+            #if p_obj.getDescendantsIds().include?(scope_id)
+                #places_ids = [scope_id]
+                #break
+            #end
+        #}
+    #end
     # }}}
 
     classes = getScopedClasses()
@@ -102,7 +102,7 @@ class ApplicationController < ActionController::Base
   #  to register themselves as scoped classes
   #
   def getScopedClasses()      
-    [ Place, Person, Laptop, Activation, Battery, Box, Charger, Part, ProblemReport, ProblemSolution, BankDeposit, Event, Node, SchoolInfo, Movement, MovementDetail, Lot, StatusChange, User ]
+    [ Place, Person, Laptop, Box, Part, ProblemReport, ProblemSolution, BankDeposit, Event, Node, SchoolInfo, Movement, MovementDetail, Lot, StatusChange, User, PartMovement, NotificationSubscriber ]
   end
 
   ###

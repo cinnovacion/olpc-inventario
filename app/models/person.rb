@@ -32,13 +32,10 @@ class Person < ActiveRecord::Base
   acts_as_audited
 
   belongs_to :image
-  has_many :activations, :foreign_key => :person_activated_id
   has_many :laptops, :class_name => "Laptop", :foreign_key => :owner_id
   has_many :responsible_movements, :class_name => "Movement", :foreign_key => :responsible_person_id
-  has_many :relationships
   has_many :source_movements, :class_name => "Movement", :foreign_key => :source_person_id
   has_many :destination_movements, :class_name => "Movement", :foreign_key => :destination_person_id
-  has_many :teaches
   has_many :performs
   has_many :profiles, :through => :performs, :source => :profile
   has_many :notification_subscribers
@@ -65,17 +62,17 @@ class Person < ActiveRecord::Base
       ret.merge!(self.getDefaultCols())
     end
 
-    case vista
-      when /teacher_\d/
-         ret[:conditions] =  Person.genAsFromCondition(vista)
-      when /student_\d/
-        ret[:conditions] =  Person.genAsFromCondition(vista)
-    when /scope_\d/
-        scope_id = vista.split("_")[1]
-        ret[:conditions] =  ["place_dependencies.ancestor_id in (?)", scope_id]
-     when /any_\d/
-        ret[:conditions] =  Person.genAsFromCondition(vista)
-    end
+    #case vista
+      #when /teacher_\d/
+         #ret[:conditions] =  Person.genAsFromCondition(vista)
+      #when /student_\d/
+        #ret[:conditions] =  Person.genAsFromCondition(vista)
+    #when /scope_\d/
+        #scope_id = vista.split("_")[1]
+        #ret[:conditions] =  ["place_dependencies.ancestor_id in (?)", scope_id]
+     #when /any_\d/
+        #ret[:conditions] =  Person.genAsFromCondition(vista)
+    #end
 
     ret
   end

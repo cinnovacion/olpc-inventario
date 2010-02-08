@@ -65,12 +65,12 @@ class Place < ActiveRecord::Base
     ret[:columnas_visibles] = [true, true, true, true, true]
     
     #Theres obviously a better way to do this, but for now it works.
-    case vista
+    #case vista
       #when "teaches"
       #  ret[:conditions] = ["place_type_id in (?)", PlaceType.getGradeTypes()]
-      when /\d/
-        ret[:conditions] = ["place_type_id in (?) and place_id in  (?)", PlaceType.find_by_internal_tag("section").id, Place.find(vista).getDescendantsIds]
-    end
+      #when /\d/
+        #ret[:conditions] = ["place_type_id in (?) and place_id in  (?)", PlaceType.find_by_internal_tag("section").id, Place.find(vista).getDescendantsIds]
+    #end
 
     ret
   end

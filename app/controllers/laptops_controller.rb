@@ -86,7 +86,6 @@ class LaptopsController < SearchController
         attribs[:box_serial_number] = getAbmFormValue(data_fields.pop)
         attribs[:status_id] = getAbmFormValue(data_fields.pop)
         attribs[:uuid] = getAbmFormValue(data_fields.pop)
-        attribs[:is_ghost] = data_fields.pop == "N" ? false : true
 
         if datos["id"]
           o = Laptop.find datos["id"]
@@ -191,11 +190,6 @@ class LaptopsController < SearchController
 
    h = { "label" => "Cargar .xls","datatype" => "uploadfield", :field_name => :uploadfile }
    @output["fields"].push(h)
-
-    yesSelected = p ? p.is_ghost : false
-    options = buildBooleanSelectHash(yesSelected)
-    h = { "label" => "Fantasma", "datatype" => "combobox", "options" => options}
-    @output["fields"].push(h)
 
   end
 

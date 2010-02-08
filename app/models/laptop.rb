@@ -31,8 +31,6 @@ class Laptop < ActiveRecord::Base
 
   acts_as_audited
 
-  has_many :activations
-  has_many :parts
   has_many :movement_details
   has_many :problem_reports
   belongs_to :shipment, :class_name => "Shipment", :foreign_key => :shipment_arrival_id
@@ -42,7 +40,7 @@ class Laptop < ActiveRecord::Base
 
   validates_presence_of :serial_number, :message => "Debe proveer el nro. de serie"
   validates_uniqueness_of :serial_number, :message => "El nro. de serie de la laptop no puede ser repetido"
-  # validates_presence_of :status_id, :message => "Debe proveer el estado."
+  validates_presence_of :status_id, :message => "Debe proveer el estado."
   validates_presence_of :owner_id, :message => "Debe proveer el propietario."
 
   def self.getColumnas()
@@ -86,7 +84,7 @@ class Laptop < ActiveRecord::Base
   end
 
   def after_create
-    Part.register_part(self,"available")
+    #TODO, register stock entrance
   end
 
   def getDrillDownInfo
@@ -97,7 +95,6 @@ class Laptop < ActiveRecord::Base
       :object_id => self.id
     }
   end
-
 
   def self.getChooseButtonColumns(vista = "")
     ret = Hash.new
@@ -126,53 +123,30 @@ class Laptop < ActiveRecord::Base
     self.owner ? self.owner.getIdDoc() : ""
   end
 
-  ###
-  # Nro. Serial
-  #
   def getSerialNumber()
     self.serial_number
   end
 
-  ###
-  # Who has it
-  #
   def getOwner()
     self.owner.getFullName()
   end
 
-
-  ###
-  # 
-  #
   def getBuildVersion()
     self.build_version ? self.build_version : ""
   end
 
-
-  ###
-  #
-  #
   def getShipmentComment()
     self.shipment.getComment()
   end
 
-  ###
-  #
-  #
   def getStatus()
 	self.status.getDescription()
   end
 
-  ###
-  # 
-  #
   def getModelDescription()
     self.model_id ? self.model.getName : ""
   end
 
-  ###
-  # Description of the laptop
-  #
   def getDescription()
     "Laptop " +  self.getModelDescription()
   end
@@ -183,11 +157,6 @@ class Laptop < ActiveRecord::Base
 
   def getRegistered()
     self.registered ? "Si" : "No"
-  end
-
-  def getSubPartsOn
-    cond = ["parts.on_device_serial = ? and parts.laptop_id is not NULL", self.getSerialNumber]
-    Part.find(:all, :conditions => cond)
   end
 
   def getOwnerBarCode()
@@ -202,7 +171,6 @@ class Laptop < ActiveRecord::Base
   end
 
   def getLastActivation
-
     self.last_activation_date ? self.last_activation_date.to_s : "Nunca"
   end
 

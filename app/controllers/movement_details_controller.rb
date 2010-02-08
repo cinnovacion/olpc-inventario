@@ -26,7 +26,7 @@ class MovementDetailsController < SearchController
 
   def initialize
     super 
-    @include_str = [:laptop,:battery,:charger]
+    @include_str = [:laptop]
   end
 
   def search

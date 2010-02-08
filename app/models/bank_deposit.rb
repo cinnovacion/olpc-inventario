@@ -79,7 +79,7 @@ class BankDeposit < ActiveRecord::Base
   # performing places and sub-places.
   def self.setScope(places_ids)
 
-    find_include = [:problem_solution => {:problem_report => {:owner => {:performs => {:place => :ancestor_dependencies}}}}]
+    find_include = [:problem_solution => {:problem_report => {:place => :ancestor_dependencies}}]
     find_conditions = ["place_dependencies.ancestor_id in (?)", places_ids]
 
     scope = { :find => {:conditions => find_conditions, :include => find_include } }

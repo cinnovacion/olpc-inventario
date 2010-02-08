@@ -788,10 +788,8 @@ qx.Class.define("inventario.window.AbmForm",
           inventario.widget.Form.loadComboBox(input.getComboBox(), options, true);
 
           /* Se reconozca vista, que se manda por el servidor */
-
           if (fieldData.vista != null) {
-              /* {{{ Funciona, pero no se porque (@crodas) }}} */
-//            input.getAbm().setVista(fieldData.vista);
+              input.getAbm().setVista(fieldData.vista);
           }
 
           input.getAbm().setAskConfirmationOnClose(false);

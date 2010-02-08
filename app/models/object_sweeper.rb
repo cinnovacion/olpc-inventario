@@ -30,14 +30,7 @@
 class ObjectSweeper < ActionController::Caching::Sweeper
 
   # Include observed classes...
-  observe Laptop, Battery, Charger
-
-
-  def before_create(record)
-    # msg = "Se esta por crear un objeto de clase #{record.class.to_s}"
-    # logger.debug msg
-  end
-
+  observe Laptop
 
   def before_save(record)
 
@@ -46,15 +39,6 @@ class ObjectSweeper < ActionController::Caching::Sweeper
         when Laptop
           old_record = record.class.find_by_id record.id
           status_control(record,old_record)
-          onwer_control(record,old_record)
-        when Battery
-          old_record = record.class.find_by_id record.id
-          status_control(record,old_record)
-          onwer_control(record,old_record)
-        when Charger
-          old_record = record.class.find_by_id record.id
-          status_control(record,old_record)
-          onwer_control(record,old_record)
       else
         logger.debug record.class.to_s
       end
@@ -64,65 +48,25 @@ class ObjectSweeper < ActionController::Caching::Sweeper
 
   private
 
-  def part_check_owner_change(new_record,old_record)
-    return true if new_record.owner_id != old_record.owner_id
-    false
-  end
-
-  def onwer_control(new_record,old_record)
-    Part.updateOwner(new_record) if part_check_owner_change(new_record,old_record)
-  end
-
   def status_control(record,old_record)
-    if part_check_state_change(record,old_record)
-      part_register_status_change(record,old_record)
-      Part.modify_part_status_as(record,"available") if record.status.internal_tag == "deactivated"
-      Part.modify_part_status_as(record,"broken") if record.status.internal_tag == "dead"
-      Part.modify_part_status_as(record,"used") if record.status.internal_tag == "activated"
-    end
+
+    register_status_change(record,old_record) if check_state_change(record,old_record)
   end
 
-  def part_check_state_change(new_record,old_record)
-    #DEBUG: return false if !old_record.class.method_defined?(:status_id)
+  def check_state_change(new_record,old_record)
+
     return true if !old_record.status_id and new_record.status_id
     return false if !old_record.status_id and !new_record.status_id
     return false if new_record.status.internal_tag == old_record.status.internal_tag
     true
   end
 
-  def part_check_state_machine(new_record,old_record)
-    #DEBUG: raise "#{old_record.status.internal_tag} y #{new_record.status.internal_tag}"
-    case old_record.status.internal_tag
-    when "dead"
-      return true if new_record.status.internal_tag == "dead"
-    when "deactivated"
-      return true if new_record.status.internal_tag == "activated"
-    when "activated"
-      return true if ["deactivated","on_repair","lost","stolen"].include? new_record.status.internal_tag
-    when "on_repair"
-      return true if new_record.status.internal_tag == "repaired"
-    when "repaired"
-      return true if new_record.status.internal_tag == "activated"
-    when "lost"
-      return true if new_record.status.internal_tag == "lost_deactivated"
-    when "stolen"
-      return true if new_record.status.internal_tag == "stolen_deactivated"
-    end
-    false
-  end
+  def register_status_change(new_record, old_record)
 
-  def part_register_status_change(new_record,old_record)
     change = StatusChange.new
     change.previous_state_id = old_record.status_id
     change.new_state_id = new_record.status_id
-    case new_record
-      when Laptop
-        change.laptop_id = new_record.id
-      when Battery
-        change.battery_id = new_record.id
-      when Charger
-        change.charger_id = new_record.id
-    end
+    change.laptop_id = new_record.id
     change.date_created_at = Fecha::getFecha()
     change.time_created_at = Fecha::getHora()
     change.save!

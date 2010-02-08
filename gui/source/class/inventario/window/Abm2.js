@@ -209,8 +209,9 @@ qx.Class.define("inventario.window.Abm2",
     vista :
     {
       check : "String",
-      init  : "",
-      apply : "_reloadVista"
+      init  : ""
+      // BROKEN
+      //apply : "_reloadVista"
     },
 
     searchConditions :
@@ -2051,6 +2052,8 @@ qx.Class.define("inventario.window.Abm2",
       hopts["titulos"] = qx.util.Json.stringify(titulos);
       inventario.util.PrintManager.printExcel("planilla", hopts);
     },
+
+
     _reloadVista:  function () {
         this._pages = 1;  // pagina actual
         this._numPages = 0;  // cantidad de paginas en el listado

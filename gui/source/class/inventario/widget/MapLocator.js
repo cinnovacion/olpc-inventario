@@ -705,10 +705,11 @@ qx.Class.define("inventario.widget.MapLocator",
       if (!updating)
       {
         node.id = -1;
-        node.icon = cb.getChildrenContainer().getSelectedItem().getUserData("icon");
+        //node.icon = cb.getChildrenContainer().getSelectedItem().getUserData("icon");
+        node.icon = cb.getSelection()[0].getUserData("icon");
 
         node.type_value = node.type;
-        node.type = cb.getValue();
+        node.type = cb.getSelection()[0].getLabel();
       }
 
       return node;

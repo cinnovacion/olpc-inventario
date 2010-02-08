@@ -138,7 +138,7 @@ qx.Class.define("inventario.widget.CheckboxSelector",
       {
         var cb = this.getCheckBoxArray()[i];
 
-        if (cb.getChecked()) {
+        if (cb.getValue()) {
           ret.push(cb.getUserData("cb_name"));
         }
       }

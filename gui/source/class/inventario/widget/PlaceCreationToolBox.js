@@ -217,10 +217,16 @@ qx.Class.define("inventario.widget.PlaceCreationToolBox",
           data.parent_place_id = hierarchy.getValue();
           data.place_type = (comboBox == null) ? customType : inventario.widget.Form.getInputValue(comboBox);
 
-          var place_name = (customName == null) ? "" : customName.getValue().toString();
+          var place_name = "";
+          if (customName != null){
+            var aux_name = customName.getValue();
+            if (aux_name != null){
+              place_name = aux_name.toString();
+            }
+          }
 
           if (place_name.length == 0) {
-            place_name = comboBox.getValue();
+            place_name = comboBox.getSelection()[0].getLabel();
           }
 
           data.place_name = place_name;
@@ -588,7 +594,7 @@ qx.Class.define("inventario.widget.PlaceCreationToolBox",
       var hierarchy = this.getHierarchyWidget();
       var tags = hierarchy.getSubElementTags();
 
-      if (checkBox.isChecked()) {
+      if (checkBox.getValue()) {
         tags.push(value);
       }
       else
@@ -640,13 +646,13 @@ qx.Class.define("inventario.widget.PlaceCreationToolBox",
 
       var teacherChecked = new qx.ui.form.CheckBox("Mostrar Maestros: ");
 
-      teacherChecked.addListener("changeChecked", function() {
+      teacherChecked.addListener("changeValue", function() {
         this._changeChecked(teacherChecked, "teacher");
       }, this);
 
       var studentChecked = new qx.ui.form.CheckBox("Mostrar Alumnos : ");
 
-      studentChecked.addListener("changeChecked", function() {
+      studentChecked.addListener("changeValue", function() {
         this._changeChecked(studentChecked, "student");
       }, this);
 

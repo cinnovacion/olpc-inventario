@@ -26,7 +26,7 @@ class ProblemSolutionsController < SearchController
 
   def initialize
     super
-    @include_str = [{:solution_type => :part_type}, :solved_by_person, {:src_part => [:laptop, :battery, :charger]}, {:dst_part => [:laptop, :battery, :charger]}]
+    @include_str = [:solution_type, :solved_by_person]
   end
 
   def search
@@ -46,13 +46,8 @@ class ProblemSolutionsController < SearchController
     h = { "label" => "#Reporte*", "datatype" => "select", "options" => [], "option" => "problem_reports", "text_value" => true }
     @output["fields"].push(h)
 
-    inc = [:part_type]
-    cond = ["solution_types.part_type_id is NULL or part_types.internal_tag not in (?)", ["battery", "charger", "laptop"] ]
-    solution_types = buildSelectHash2(SolutionType, -1, "getName", false, cond, [], inc)
+    solution_types = buildSelectHash2(SolutionType, -1, "getName", false)
     h = { "label" => "Solucion*", "datatype" => "combobox", "options" => solution_types }
-    @output["fields"].push(h)
-
-    h = { "label" => "Serial Laptop Respuesto", "datatype" => "select", "options" => [], :option => "laptops", "text_value" => true }
     @output["fields"].push(h)
 
     fecha = Fecha.usDate(Date.today.to_s)
@@ -79,7 +74,6 @@ class ProblemSolutionsController < SearchController
     impure_attribs[:problem_report_id] = data_fields.pop.to_i
     impure_attribs[:solution_type_id] = data_fields.pop.to_i
     impure_attribs[:solved_by_person_id] = current_user.person.id
-    impure_attribs[:replacement_laptop_serial] = data_fields.pop
     impure_attribs[:created_at] = data_fields.pop
     impure_attribs[:comment] = data_fields.pop
     bank_deposits_data = parse_deposits(data_fields.pop)
@@ -95,73 +89,15 @@ class ProblemSolutionsController < SearchController
     ProblemSolution.destroy(ids)
   end
 
-  def quick_solution
-
-    @output["window_title"] = "Reparacion Rapida"
-    @output["fields"] = []
-
-    problem_types = buildSelectHash2(ProblemType, -1, "getName", false)
-    h = { "label" => "Problema*", "datatype" => "combobox", "options" => problem_types }
-    @output["fields"].push(h)
-
-    h = { "label" => "#Serial Laptop Reportada*", "datatype" => "select", "options" => [], :option => "laptops", "text_value" => true }
-    @output["fields"].push(h)
-
-    inc = [:part_type]
-    cond = ["solution_types.part_type_id is NULL or part_types.internal_tag not in (?)", ["battery", "charger", "laptop"] ]
-    solution_types = buildSelectHash2(SolutionType, -1, "getName", false, cond, [], inc)
-    h = { "label" => "Solucion*", "datatype" => "combobox", "options" => solution_types }
-    @output["fields"].push(h)
-
-    h = { "label" => "#Serial Laptop Repuesto*", "datatype" => "select", "options" => [], :option => "laptops", "text_value" => true }
-    @output["fields"].push(h)
-
-    h = { "label" => "Comentarios", "datatype" => "textarea","width" => 250, "height" => 50 }
-    @output["fields"].push(h)
-
-    h = { "datatype" => "tab_break", "title" => "Depositos" }
-    @output["fields"].push(h)
-
-    # Table for solutions deposits, aka Ca$h.
-    @output["fields"].push(deposits_view)
-
-    true
-  end
-
-  def save_quick_solution
-
-    datos = JSON.parse(params[:payload])
-    data_fields = datos["fields"].reverse
-
-    problem_type_id = data_fields.pop.to_i
-    laptop_srl = data_fields.pop.to_s
-    solution_type_id = data_fields.pop.to_i
-    replacement_laptop_srl = data_fields.pop.to_s
-    comment = data_fields.pop.to_s
-    bank_deposits_data = parse_deposits(data_fields.pop)
-
-    raise "No esta permitido editar desde esta ventana." if datos["id"]
-    ProblemSolution.register_quick_solution(problem_type_id, laptop_srl, solution_type_id, replacement_laptop_srl, current_user.person, comment, bank_deposits_data)
-
-    true
-  end
-
   def change_solution
 
-    @output["window_title"] = "Cambio de (Laptop | Bateria | Cargador)"
+    @output["window_title"] = "Cambio de Laptop"
     @output["verify_before_save"] = true
     @output["verify_save_url"] = "/problem_solutions/verify_change_solution"
 
     @output["fields"] = []
 
-    part_types = buildSelectHash2(PartType,-1,"getDescription",false,["part_types.internal_tag in (?)", ["laptop", "battery", "charger"]])
-    h = { "label" => "Dispositivo","datatype" => "combobox","options" => part_types }
-    @output["fields"].push(h)
-
     h = { "label" => "Reporte", "datatype" => "select", "options" => [], "option" => "problem_reports", "text_value" => true }
-    @output["fields"].push(h)
-
-    h = { "label" => "#Serial del Original", "datatype" => "textfield" }
     @output["fields"].push(h)
 
     h = { "label" => "#Serial del Repuesto", "datatype" => "textfield" }
@@ -182,33 +118,21 @@ class ProblemSolutionsController < SearchController
   def verify_change_solution
 
     datos = JSON.parse(params[:payload])
-    data_fields = datos["fields"].reverse
+    data_fields = datos["fields"]
 
-    part_type_id = data_fields.pop.to_i
-    problem_report_id = data_fields.pop.to_i
-    orig_dev_srl = data_fields.pop
-    rep_dev_srl = data_fields.pop
+    problem_report_id = data_fields[0]
+    replacement_laptop_srl = data_fields[1]
 
-    part_type = PartType.find_by_id(part_type_id)
     problem_report = ProblemReport.find_by_id(problem_report_id)
+    owner_laptop = problem_report.laptop
+    replacement_laptop = Laptop.find_by_serial_number(replacement_laptop_srl)
 
-    dev_tag = part_type.internal_tag
-    classname = dev_tag.camelize.constantize
+    raise "No se puede realizar operacion, los datos ingresados no existen en el sistema." if !problem_report || !owner_laptop || !replacement_laptop
 
-    orig_dev = classname.find_by_serial_number(orig_dev_srl)
-    rep_dev = classname.find_by_serial_number(rep_dev_srl)
+    msg = "Esta seguro que desea cambiar la computadora #{owner_laptop.getSerialNumber} por #{replacement_laptop_srl}, "
+    msg += "como solucion al problema numero #{problem_report_id} (#{problem_report.problem_type.getName})?"
 
-
-    msg = "Esta seguro que desea cambiar el dispositivo #{part_type.getDescription}? "
-    msg += "Como solucion al problema numero #{problem_report_id} (#{problem_report.problem_type.getName}). "
-    if !orig_dev || !rep_dev
-      msg += "Teniendo en cuenta que los siguientes seriales, "
-      msg += "#{orig_dev_srl}, " if !orig_dev
-      msg += "#{rep_dev_srl}, " if !rep_dev 
-      msg += "no se encuentran registrados en el sistema."
-    end
-
-  @output["obj_data"] =  msg
+    @output["obj_data"] =  msg
   end
 
   def save_change_solution
@@ -216,57 +140,25 @@ class ProblemSolutionsController < SearchController
     datos = JSON.parse(params[:payload])
     data_fields = datos["fields"].reverse
 
-    part_type_id = data_fields.pop.to_i
-    problem_report_id = data_fields.pop.to_i
-    orig_dev_srl = data_fields.pop
+    attribs = {}
+    attribs[:problem_report_id] = data_fields.pop.to_i
     rep_dev_srl = data_fields.pop
-    comment = data_fields.pop.to_s
+    attribs[:comment] = data_fields.pop
     bank_deposits_data = parse_deposits(data_fields.pop)
+    attribs[:solved_by_person_id] = current_user.person.id
 
-    raise "No esta permitido editar desde esta ventana." if datos["id"]
-    ProblemSolution.register_change(part_type_id, problem_report_id, orig_dev_srl, rep_dev_srl, current_user.person, comment, bank_deposits_data)
+    raise "No esta permitido editar desde esta ventana" if datos["id"]
+    ProblemSolution.register_change(attribs, rep_dev_srl, bank_deposits_data)
 
     true
   end
 
   def new
-
-    raise "Debe seleccionar una solucion" if !params[:id]
-    problem_solution = ProblemSolution.find_by_id(params[:id].to_i)
-
-    @output["id"] = problem_solution.id
-    @output["window_title"] = "Edicion de comentario y fecha"
-    @output["fields"] = Array.new
-
-    fecha = Fecha.usDate(problem_solution.getDate)
-    h = { "label" => "Fch. Solucion", "datatype" => "date", :value => fecha  }
-    @output["fields"].push(h)
-
-    comment = problem_solution.getComment
-    h = { "label" => "Comentarios", "datatype" => "textarea","width" => 250, "height" => 50, :value => comment }
-    @output["fields"].push(h)
-
-    #h = { "datatype" => "tab_break", "title" => "Depositos" }
-    #@output["fields"].push(h)
-
-    #@output["fields"].push(deposits_view(problem_solution))
+    raise "Not available"
   end
 
   def save
-
-    datos = JSON.parse(params[:payload])
-    data_fields = datos["fields"].reverse
-
-    attribs = Hash.new
-    attribs[:created_at] = data_fields.pop
-    attribs[:comment] = data_fields.pop
-    #bank_deposits_data = parse_deposits(data_fields.pop)
-
-    problem_solution = ProblemSolution.find_by_id(datos["id"].to_i)
-    raise "La solucion a editar no existe." if !problem_solution
-    
-    problem_solution.update_attributes(attribs)
-    #BankDeposit.register(problem_solution.id, bank_deposits_data)
+    raise "Not available"
   end
 
   private

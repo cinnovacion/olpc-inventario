@@ -180,7 +180,7 @@ qx.Class.define("inventario.widget.HierarchyOnDemand",
 
       if (parent_element != null)
       {
-        tree.select(parent_element);
+        tree.setSelection([parent_element]);
         this._requestElements();
       }
     },
@@ -333,7 +333,7 @@ qx.Class.define("inventario.widget.HierarchyOnDemand",
       var new_element = this._newElement(hashData, this._requestElements, false);
       selectedElement.add(new_element);
 
-      this.getTreeWidget().select(new_element);
+      this.getTreeWidget().setSelection(new_element);
       var new_elements = hashData.elements;
 
       for (var i in new_elements) {

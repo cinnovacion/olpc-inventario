@@ -23,7 +23,8 @@
                                                                         
 class SolutionType < ActiveRecord::Base
   has_many :problem_solutions
-  belongs_to :part_type
+  has_many :solution_type_part_types
+  has_many :part_types, :through => :solution_type_part_types, :source => :part_type
 
   validates_uniqueness_of :internal_tag, :message => "El tag debe ser unico"
 
@@ -35,6 +36,48 @@ class SolutionType < ActiveRecord::Base
       {:name => "Tag", :key => "solution_types.name", :related_attribute => "getInternalTag()", :width => 200},
       {:name => "Requiere Parte", :key => "solution_types.part_type_id", :related_attribute => "getPartType()", :width => 200}
     ]
+  end
+
+  def self.register(attributes, part_type_ids)
+
+    SolutionType.transaction do
+
+      solution_type = SolutionType.new(attributes)
+      if solution_type.save!
+        solution_type.register_parts_association(part_type_ids)
+      end
+    end
+  end
+
+  def self.unregister(solution_type_ids)
+
+    SolutionType.transaction do
+      part_associations = SolutionTypePartType.find_all_by_solution_type_id(solution_type_ids)
+      SolutionTypePartType.delete(part_associations.collect(&:id))
+      SolutionType.delete(solution_type_ids)
+    end
+  end
+
+  def register_update(attributes, part_type_ids)
+
+    SolutionType.transaction do
+
+      #update attributes
+      self.update_attributes(attributes)
+
+      #Deleting associations
+      SolutionTypePartType.destroy(self.solution_type_part_types)
+
+      #Adding new associations
+      self.register_parts_association(part_type_ids)
+    end
+  end
+
+  def register_parts_association(part_type_ids)
+
+    part_type_ids.each { |part_type_id| 
+      SolutionTypePartType.create!({ :solution_type_id => self.id, :part_type_id => part_type_id })
+    }
   end
 
   def getName
@@ -53,12 +96,8 @@ class SolutionType < ActiveRecord::Base
     self.internal_tag ? self.internal_tag : ""
   end
 
-  def getPartType
-    self.part_type_id ? self.part_type.getDescription : "No"
-  end
-
   def requirePart
-    self.part_type_id ? true : false
+    self.part_types != [] ? true : false
   end
 
 end

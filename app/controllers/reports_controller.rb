@@ -75,17 +75,11 @@ class ReportsController < SearchController
     # to person
     @output["widgets"].push(listSelector("Recibio: ","personas"))
 
-    # Articulos seleccionados
-    cb_options = Array.new
-    cb_options.push( { :label => "Laptop:", :cb_name => "laptop",:checked => true } )
-    cb_options.push( { :label => "Baterias:", :cb_name => "battery",:checked => true } )
-    cb_options.push( { :label => "Cargador:", :cb_name => "charger",:checked => true } )
-    @output["widgets"].push(checkBoxSelector("Articulos",cb_options))
-
     #Rango de fecha
     @output["widgets"].push(dateRange())
-    cb_data = buildHierarchyHash(Place, "places", "places.place_id", "name", -1, nil, nil, false)
-    @output["widgets"].push(comboBoxSelector("Localidad", cb_data))
+
+    #Place
+    @output["widgets"].push(hierarchy(""))
 
     @output["print_method"] = "movement_types"
 
@@ -97,43 +91,23 @@ class ReportsController < SearchController
     # Rango de fecha 
     @output["widgets"].push(dateRange())
 
-    # Articulos seleccionados
-    cb_options = Array.new
-    cb_options.push( { :label => "Laptop:", :cb_name => "laptop",:checked => true } )
-    cb_options.push( { :label => "Baterias:", :cb_name => "battery",:checked => true } )
-    cb_options.push( { :label => "Cargador:", :cb_name => "charger",:checked => true } )
-    @output["widgets"].push(checkBoxSelector("Articulos",cb_options))
-
     #Seriales.
     csv_fields = Array.new
     csv_fields.push( { :text => "#Laptop", :value => "laptop", :datatype => "textfield" } )
-    csv_fields.push( { :text => "#Bateria", :value => "battery", :datatype => "textfield" } )
-    csv_fields.push( { :text => "#Cargador", :value => "charger", :datatype => "textfield" } )
     @output["widgets"].push(columnValueSelector(csv_fields))
 
     #Motivos posibles
-    cb_options = Array.new
-    cb_options.push( { :label => "Reparacion/Verificaion:", :cb_name => "6",:checked => true } )
-    cb_options.push( { :label => "Reparacion Finalizada - Devolucion Propietario:", :cb_name => "7",:checked => true } )
-    cb_options.push( { :label => "Verificacion Finalizada - Devolucion Propietario:", :cb_name => "8",:checked => true } )
-    cb_options.push( { :label => "Uso Desarrollador:", :cb_name => "9",:checked => true } )
-    cb_options.push( { :label => "Prestamo:", :cb_name => "10",:checked => true } )
-    cb_options.push( { :label => "Devolucion:", :cb_name => "11",:checked => true } )
-    cb_options.push( { :label => "Entrega Docente:", :cb_name => "12",:checked => true } )
-    cb_options.push( { :label => "Entrega Alumno:", :cb_name => "13",:checked => true } )
-    cb_options.push( { :label => "Entrega Formador:", :cb_name => "14",:checked => true } )
-    cb_options.push( { :label => "Devolucion Problema Técnico en Entrega:", :cb_name => "15",:checked => true } )
-    cb_options.push( { :label => "Transferencia", :cb_name => "16",:checked => true } )
+    cb_options = buildCheckHash(MovementType, "getDescription")
     @output["widgets"].push(checkBoxSelector("Motivos",cb_options,3))
 
     # from person
     @output["widgets"].push(listSelector("Entregador por:","personas"))
 
-
     # to person
     @output["widgets"].push(listSelector("Recibido por:","personas"))
-    cb_data = buildHierarchyHash(Place, "places", "places.place_id", "name", -1, nil, nil, true)
-    @output["widgets"].push(comboBoxSelector("Localidad",cb_data))
+
+    # Place
+    @output["widgets"].push(hierarchy(""))
 
     @output["print_method"] = "movements"
   end
@@ -187,12 +161,6 @@ class ReportsController < SearchController
     @output["widgets"] = Array.new
     #Rango de fecha
     @output["widgets"].push(dateRange())
-    # Articulos seleccionados
-    cb_options = Array.new
-    cb_options.push( { :label => "Laptop:", :cb_name => "laptop",:checked => true } )
-    cb_options.push( { :label => "Baterias:", :cb_name => "battery",:checked => true } )
-    cb_options.push( { :label => "Cargador:", :cb_name => "charger",:checked => true } )
-    @output["widgets"].push(checkBoxSelector("Articulos",cb_options))
     #Persona que entrego y recibio.
     @output["widgets"].push(listSelector("Prestada por ","personas"))
     @output["widgets"].push(listSelector("Prestada a   ","personas"))
@@ -208,32 +176,19 @@ class ReportsController < SearchController
   # Distribucion por estados.
   def statuses_distribution
     @output["widgets"] = Array.new
-    # Articulos seleccionados
-    cb_options = Array.new
-    cb_options.push( { :label => "Laptop:", :cb_name => "laptop",:checked => true } )
-    cb_options.push( { :label => "Baterias:", :cb_name => "battery",:checked => true } )
-    cb_options.push( { :label => "Cargador:", :cb_name => "charger",:checked => true } )
-    @output["widgets"].push(checkBoxSelector("Articulos",cb_options))
+    @output["widgets"].push(hierarchy(""))
     @output["print_method"] = "statuses_distribution"
   end
 
   def status_changes
     @output["widgets"] = Array.new
-    #Rango de fecha
     @output["widgets"].push(dateRange())
-    # Articulos seleccionados
-    cb_options = Array.new
-    cb_options.push( { :label => "Laptop:", :cb_name => "laptop",:checked => true } )
-    cb_options.push( { :label => "Baterias:", :cb_name => "battery",:checked => true } )
-    cb_options.push( { :label => "Cargador:", :cb_name => "charger",:checked => true } )
-    @output["widgets"].push(checkBoxSelector("Articulos",cb_options))
     @output["print_method"] = "status_changes"
   end
 
   def laptops_per_place
     @output["widgets"] = Array.new
-    cb_data = buildHierarchyHash(Place, "places", "places.place_id", "name", -1, nil, nil, false)
-    @output["widgets"].push(comboBoxSelector("Localidad",cb_data))
+    @output["widgets"].push(hierarchy(""))
     @output["print_method"] = "laptops_per_place"
   end
 
@@ -245,16 +200,6 @@ class ReportsController < SearchController
     @output["widgets"].push(hierarchy("Localidades"))
     @output["widgets"].push(checkBoxSelector("Partes",buildCheckHash(PartType,"getDescription"),6))
     @output["print_method"] = "parts_replaced"
-  end
-
-  # This report has been extended to any status.
-  def available_parts
-    @output["widgets"] = Array.new
-    condition = ["internal_tag in (?)",["used","available","broken", "ripped"]]
-    @output["widgets"].push(comboBoxSelector("Estado ",buildSelectHash2(Status,-1,"getDescription",false,condition)))
-    @output["widgets"].push(hierarchy("En la Localidad"))
-    @output["widgets"].push(checkBoxSelector("Partes",buildCheckHash(PartType,"getDescription"),1))
-    @output["print_method"] = "available_parts"
   end
 
   def problems_per_type
@@ -294,8 +239,7 @@ class ReportsController < SearchController
 
   def possible_mistakes
     @output["widgets"] = Array.new
-    cb_data = buildHierarchyHash(Place, "places", "places.place_id", "name", -1, nil, nil, false)
-    @output["widgets"].push(comboBoxSelector("Localidad",cb_data,360))
+    @output["widgets"].push(hierarchy(""))
     @output["print_method"] = "possible_mistakes"
   end
 
@@ -467,6 +411,12 @@ class ReportsController < SearchController
     }
     @output["widgets"].push(comboBoxSelector("Model", cb_options))
     @output["print_method"] = "audit_report"
+  end
+
+  def stock_status_report
+    @output["widgets"] = Array.new
+    @output["widgets"].push(hierarchy(""))
+    @output["print_method"] = "stock_status_report"
   end
 
   # Para mejorar la legibilidad del codigo.

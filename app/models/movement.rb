@@ -45,6 +45,7 @@ class Movement < ActiveRecord::Base
      {:name => "Fch. Mov.",:key => "movements.date_moved_at",:related_attribute => "getMovementDate()", :width => 90},
      {:name => "Hora Mov.",:key => "movements.time_moved_at",:related_attribute => "getMovementTime()", :width => 90},
      {:name => "Tipo", :key => "movement_types.description", :related_attribute => "getMovementType()", :width => 150},
+     {:name => "Serial", :key => "laptops.serial_number", :related_attribute => "getLaptopSerial()", :width => 150},
      {:name => "Entrego",:key => "people.name",:related_attribute => "getSourcePerson()", :width => 180},
      {:name => "Recibio",:key => "destination_people_movements.name",:related_attribute => "getDestinationPerson()", :width => 180},
      {:name => "Recibio (CI)",:key => "destination_people_movements.id_document",:related_attribute => "getDestinationPerson()", :width => 180},
@@ -89,7 +90,6 @@ class Movement < ActiveRecord::Base
 
     movement_type = MovementType.find_by_internal_tag(movement_type_tag)
     serial_sym = "serial_number_#{device.class.to_s.downcase}".to_sym
-
     attribs = Hash.new
     attribs[:id_document] = to_person.getIdDoc()
     attribs[:movement_type_id] = movement_type.id
@@ -98,33 +98,29 @@ class Movement < ActiveRecord::Base
     Movement.register(attribs)
   end
 
+
   ###
-  # Register the new laptop (plus charger and possibly battery) being delivered
-  #  - if the battery and/or the charger dont exist, we need to create them with the default values 
-  #  - update the owner_id field of the laptop, battery, charger
+  # Theres only one detail, the reason is that theres no battery and charger model anymore
   def self.register(attribs)
     Movement.transaction do
 
       device_status = nil
-      movement_type = MovementType.find_by_id(attribs[:movement_type_id])
-      if movement_type.is_delivery?
 
+      #Updating Laptop stats
+      movement_type = MovementType.find_by_id(attribs[:movement_type_id])
+      raise "Tipo de movimiento invalido" if !movement_type
+      if movement_type.is_delivery?
         device_status = Status.find_by_internal_tag("activated")
       else
-
         if movement_type.is_return?
-
           device_status = Status.find_by_internal_tag("deactivated")
         end
       end
-      raise "Tipo de movimiento invalido" if !movement_type
 
       m = Movement.new
       m.responsible_person_id = attribs[:responsible_person_id] if attribs[:responsible_person_id]
       
       lapObj = nil
-      batObj = nil
-      chargerObj = nil
       source_person_id = -1
 
       if attribs[:serial_number_laptop] && !attribs[:serial_number_laptop].to_s.match(/^ *$/)
@@ -132,164 +128,65 @@ class Movement < ActiveRecord::Base
         source_person_id = lapObj.owner_id
       end
 
-      if attribs[:serial_number_battery] && !attribs[:serial_number_battery].to_s.match(/^ *$/)
-        batObj = Battery.find_by_serial_number(attribs[:serial_number_battery])
-
-        if !batObj
-
-          if !lapObj
-            raise "No puedo crear la bateria porque no hay laptop de donde deducir los datos"
-          end
-
-          h = Hash.new 
-          h[:serial_number] = attribs[:serial_number_battery]
-          h[:owner_id] = source_person_id
-          h[:shipment_arrival_id] = lapObj.shipment_arrival_id
-          h[:box_serial_number] = lapObj.box_serial_number
-          h[:box_id] = lapObj.box_id
-
-          batObj = Battery.create!(h)
-
-        end
-
-        source_person_id = batObj.owner_id
-      end
-
-      if attribs[:serial_number_charger] && !attribs[:serial_number_charger].to_s.match(/^ *$/)
-        chargerObj = Charger.find_by_serial_number attribs[:serial_number_charger]
-
-        if !chargerObj
-
-          if !lapObj
-            raise "No puedo crear el cargador porque no hay laptop de donde deducir los datos"
-          end
-
-          h = Hash.new 
-          h[:serial_number] = attribs[:serial_number_battery]
-          h[:owner_id] = source_person_id
-          h[:shipment_arrival_id] = lapObj.shipment_arrival_id
-          h[:box_serial_number] = lapObj.box_serial_number
-          h[:box_id] = lapObj.box_id
-
-          chargerObj = Charger.create!(h)
-
-        end
-        source_person_id = chargerObj.owner_id if source_person_id.to_i == -1
-
-        # The serial number is any random number (since it doesnt have - in the case of the XO-1 - 
-        # a barcode) so we cant deduce the source person from it.
-        # source_person_id = chargerObj.owner_id 
-     end
-
       m.source_person_id = source_person_id
       personObj = Person.find_by_id_document(attribs[:id_document])
       if !personObj
         raise "No pude encontrar a la persona con CI #{attribs[:id_document]}"
       end
+
       m.destination_person_id = personObj.id
       m.comment = attribs[:comment]
       m.return_date = attribs[:return_date] if attribs[:return_date] && !attribs[:return_date].to_s.match(/^ *$/)
       m.movement_type_id = attribs[:movement_type_id]
       m.save!
 
-      devices = [chargerObj, batObj, lapObj]
-      devices.delete(nil)
-      devices.each { |device|
-    
-        last_movement_type = device.getLastMovementType
-        if !MovementType.check(last_movement_type, movement_type)
-          error_str = "El movimiento a realizarse sobre #{device.getSerialNumber} no corresponde a su ultimo movimiento,"
-          error_str += "el movimiento anterior fue #{last_movement_type.description}"
-          raise error_str
-        end
-      }
-
-      # details
-      if lapObj
-        d = Hash.new
-        d[:laptop_id] = lapObj.id
-        #:DECPRECATED d[:movement_type_id] = attribs[:movement_type_id]
-        
-        m.movement_details.create!(d)
-
-        lapObj.owner_id = m.destination_person_id
-        lapObj.status_id = device_status.id if device_status
-        lapObj.save!
+      #Checking movements FSM
+      last_movement_type = lapObj.getLastMovementType
+      if !MovementType.check(last_movement_type, movement_type)
+        error_str = "El movimiento a realizarse sobre #{device.getSerialNumber} no corresponde a su ultimo movimiento,"
+        error_str += "el movimiento anterior fue #{last_movement_type.description}"
+        raise error_str
       end
 
-      if batObj
-        d = Hash.new
-        d[:battery_id] = batObj.id
-        #DEPRECATED d[:movement_type_id] = attribs[:movement_type_id]
-        
-        m.movement_details.create!(d)
+      # Saving details
+      d = Hash.new
+      d[:laptop_id] = lapObj.id  
+      m.movement_details.create!(d)
 
-        batObj.owner_id = m.destination_person_id
-        batObj.status_id = device_status.id if device_status
-        batObj.save!
-      end
-
-      if chargerObj
-        d = Hash.new
-        d[:charger_id] = chargerObj.id
-        #DEPRECATED d[:movement_type_id] = attribs[:movement_type_id]
-        
-        m.movement_details.create!(d)
-
-        chargerObj.owner_id = m.destination_person_id
-        chargerObj.status_id = device_status.id if device_status
-        chargerObj.save!
-      end
+      #Updating owner
+      lapObj.owner_id = m.destination_person_id
+      lapObj.status_id = device_status.id if device_status
+      lapObj.save!
 
     end
-
   end
 
   def before_save
-    #DEBUG: raise self.movement_type.internal_tag
     raise "Los prestamos REQUIEREN fecha de retorno." if !self.return_date and self.movement_type.internal_tag == "prestamo"
     raise "Solo los prestamos requieren fecha de retorno." if self.return_date and self.movement_type.internal_tag != "prestamo"
     self.created_at = self.date_moved_at = self.time_moved_at = Time.now
   end
   
-  ##
-  #
-  #
   def getMovementDate()
     self.date_moved_at.to_s
   end
 
-  ##
-  #
-  #
   def getMovementTime()
     Fecha::getHora(self.time_moved_at)
   end
 
-  ##
-  #
-  #
   def getResponsible()
     self.person_responsible ? self.person_responsible.getFullName() : ""
   end
 
-  ##
-  #
-  #
   def getSourcePerson()
     self.source_person ? self.source_person.getFullName() : ""
   end
 
-  ##
-  #
-  #
   def getDestinationPerson()
     self.destination_person ? self.destination_person.getFullName() : ""
   end
 
-  ##
-  #
-  #
   def getComment()
     self.comment
   end
@@ -307,10 +204,12 @@ class Movement < ActiveRecord::Base
     s
   end
 
-  ##
-  #
   def getReturnDate()
     self.return_date.to_s
+  end
+
+  def getLaptopSerial()
+    (self.movement_details && self.movement_details.first) ? self.movement_details.first.laptop.getSerialNumber : ""
   end
 
   ##
