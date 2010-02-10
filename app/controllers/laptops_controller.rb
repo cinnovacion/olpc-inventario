@@ -62,13 +62,15 @@ class LaptopsController < SearchController
     datos = JSON.parse(params[:payload])
 
     if params[:uploadfile] && params[:uploadfile] != ""
-      path = ReadFile.fromParam(params[:uploadfile])
+      #path = ReadFile.fromParam(params[:uploadfile])
+      path = params[:uploadfile].path
       dataHash = Hash.new
       dataHash[:arrived_at] = Time.now
       dataHash[:owner_id] = datos["fields"][4]
-      dataHash[:place_id] = LaptopConfig.find_by_key("place_id").value
+      dataHash[:place_id] = current_user.person.place.id
       dataHash[:build_version] = datos["fields"][1]
       dataHash[:model_id] = datos["fields"][2]
+      dataHash[:status_id] = datos["fields"][5]
       ReadFile.laptopsFromFile(path, 0, dataHash)
     else
       if datos["ids"]
@@ -83,7 +85,7 @@ class LaptopsController < SearchController
         attribs[:model_id] = getAbmFormValue(data_fields.pop)
         attribs[:shipment_arrival_id] = getAbmFormValue(data_fields.pop)
         attribs[:owner_id] = getAbmFormValue(data_fields.pop)
-        attribs[:box_serial_number] = getAbmFormValue(data_fields.pop)
+        #attribs[:box_serial_number] = getAbmFormValue(data_fields.pop)
         attribs[:status_id] = getAbmFormValue(data_fields.pop)
         attribs[:uuid] = getAbmFormValue(data_fields.pop)
 
@@ -177,8 +179,8 @@ class LaptopsController < SearchController
     h = { "label" => "En manos de","datatype" => "select","options" => people, :option => "personas" }
     @output["fields"].push(h)
 
-    h = { "label" => "Id Caja","datatype" => "textfield" }.merge( p ? {"value" => p.box_serial_number } : {} )
-    @output["fields"].push(h)
+    #h = { "label" => "Id Caja","datatype" => "textfield" }.merge( p ? {"value" => p.box_serial_number } : {} )
+    #@output["fields"].push(h)
 
     id = p && p.status ? p.status_id : Status.find_by_internal_tag("deactivated").id
     statuses = buildSelectHash2(Status,id,"getDescription()",false,[])
@@ -223,8 +225,8 @@ class LaptopsController < SearchController
     h = { "label" => "En manos de","datatype" => "combobox","options" => people }
     @output["fields"].push(h)
 
-    h = { "label" => "Id Caja","datatype" => "textfield" }.merge( p ? {"value" => p.box_serial_number } : {} )
-    @output["fields"].push(h)
+    #h = { "label" => "Id Caja","datatype" => "textfield" }.merge( p ? {"value" => p.box_serial_number } : {} )
+    #@output["fields"].push(h)
 
     id = p && p.status ? p.status_id : Status.find_by_internal_tag("deactivated").id
     statuses = buildSelectHash2(Status,id,"getDescription()",false,[])
@@ -258,10 +260,10 @@ class LaptopsController < SearchController
       attribs[:owner_id] = getAbmFormValue(h)
     end
 
-    h = data_fields.pop
-    if h["updated"] ==  true
-      attribs[:box_serial_number] = getAbmFormValue(h)
-    end
+    #h = data_fields.pop
+    #if h["updated"] ==  true
+      #attribs[:box_serial_number] = getAbmFormValue(h)
+    #end
 
     h = data_fields.pop
     if h["updated"] ==  true

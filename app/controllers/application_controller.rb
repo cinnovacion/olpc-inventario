@@ -102,7 +102,7 @@ class ApplicationController < ActionController::Base
   #  to register themselves as scoped classes
   #
   def getScopedClasses()      
-    [ Place, Person, Laptop, Box, Part, ProblemReport, ProblemSolution, BankDeposit, Event, Node, SchoolInfo, Movement, MovementDetail, Lot, StatusChange, User, PartMovement, NotificationSubscriber ]
+    [ Place, Person, Laptop, ProblemReport, ProblemSolution, BankDeposit, Event, Node, SchoolInfo, Movement, MovementDetail, Lot, StatusChange, User, PartMovement, NotificationSubscriber ]
   end
 
   ###

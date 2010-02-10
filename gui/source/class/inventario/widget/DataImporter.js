@@ -121,6 +121,7 @@ qx.Class.define("inventario.widget.DataImporter",
       var resp = {};
       resp.model = inventario.widget.Form.getInputValue(this._modelsCombo);
       resp.format = inventario.widget.Form.getInputValue(this._formatsCombo);
+      resp.place_id = this._placeHierarchy.getValue();
       return resp;
     },
 
@@ -142,6 +143,8 @@ qx.Class.define("inventario.widget.DataImporter",
       this._formatsCombo = new qx.ui.form.SelectBox;
       inventario.widget.Form.loadComboBox(this._formatsCombo, formatsDesc, true);
 
+      this._placeHierarchy = new inventario.widget.HierarchyOnDemand(null, { width : 200, height : 200 });
+
       var uploadForm = new uploadwidget.UploadForm('uploadForm', this.getSaveUrl());  // ?????
       uploadForm.setLayout(new qx.ui.layout.Basic);
 
@@ -160,6 +163,7 @@ qx.Class.define("inventario.widget.DataImporter",
 
       mainVBox.add(this._modelsCombo);
       mainVBox.add(this._formatsCombo);
+      mainVBox.add(this._placeHierarchy);
       mainVBox.add(uploadForm);
       mainVBox.add(button);
       this.setVerticalBox(mainVBox);

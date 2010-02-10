@@ -29,9 +29,9 @@ class DataImportController < ApplicationController
     definition = Hash.new
 
     models = Array.new
-    models.push({:text => "Estudiantes", :value => "students", :selected => true})
-    models.push({:text => "Profesoras", :value => "teachers", :selected => false})
-    models.push({:text => "uuids", :value => "uuids", :selected => false})
+    models.push({:text => "Cargar estudiantes", :value => "students", :selected => true})
+    models.push({:text => "Cargar maestros", :value => "teachers", :selected => false})
+    models.push({:text => "Cargar UUIDs", :value => "uuids", :selected => false})
     definition[:models] = models
 
     #For now we are going to use fixed format for every file type.
@@ -46,15 +46,18 @@ class DataImportController < ApplicationController
   def import
     
     if params[:data]
-      path = ReadFile.fromParam(params[:data])
+      #path = ReadFile.fromParam(params[:data])
+      path = params[:data].path
+      place_id = params[:place_id]
+      register = current_user.person
 
       case params[:model]
         when "students"
-          ReadFile.kidsFromFile(path,0)
+          ReadFile.kidsFromFile(path, 0, place_id, register) if path && place_id && register
         when "teachers"
-          ReadFile.teachersFromFile(path,0)
+          ReadFile.teachersFromFile(path, 0, register) if path && register
         when "uuids"
-          ReadFile.uuidFromFile(path," ")
+          ReadFile.uuidFromFile(path, " ")
       end
 
     else

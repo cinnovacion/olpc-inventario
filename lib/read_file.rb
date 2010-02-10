@@ -37,12 +37,12 @@ module ReadFile
   def self.laptopsFromFile(filename, worksheet, dataHash)
     
    _shipment = 0
-   _box_serial = 2
+   #_box_serial = 2
    _laptop_serial = 3
 
     Laptop.transaction do
       Spreadsheet::ParseExcel.parse(filename).worksheet(worksheet).each { |row|
-        dataArray = row.map() { |cell| cell.to_s('utf-8') }
+        dataArray = row.map { |cell| cell ? cell.to_s('utf-8') : "" }
 
         #First we check if the shipment exists, else we created it.
         shipment = Shipment.find_by_shipment_number(dataArray[_shipment])
@@ -57,16 +57,16 @@ module ReadFile
         end
 
         #The we check for the box existance.
-        box = Box.find_by_serial_number(dataArray[_box_serial])
-        if !box
+        #box = Box.find_by_serial_number(dataArray[_box_serial])
+        #if !box
 
-          attribs = Hash.new
-          attribs[:serial_number] = dataArray[_box_serial]
-          attribs[:shipment_id] = shipment.id
-          attribs[:place_id] = dataHash[:place_id]
-          box = Box.new(attribs)
-          box.save!
-        end
+          #attribs = Hash.new
+          #attribs[:serial_number] = dataArray[_box_serial]
+          #attribs[:shipment_id] = shipment.id
+          #attribs[:place_id] = dataHash[:place_id]
+          #box = Box.new(attribs)
+          #box.save!
+        #end
 
         #Now we start creating the laptop entry.
         attribs = Hash.new
@@ -75,8 +75,9 @@ module ReadFile
         attribs[:model_id] = dataHash[:model_id]
         attribs[:shipment_arrival_id] = shipment.id
         attribs[:owner_id] = dataHash[:owner_id]
-        attribs[:box_serial_number] = dataArray[_box_serial]
-        attribs[:box_id] = box.id
+        attribs[:status_id] = dataHash[:status_id]
+        #attribs[:box_serial_number] = dataArray[_box_serial]
+        #attribs[:box_id] = box.id
         Laptop.create!(attribs)
       }
     end
@@ -113,11 +114,11 @@ module ReadFile
 
   #Reads from Teo's school kids file.
   # The Schools, shifts, grades and sections must be already added.
-  def self.kidsFromFile(filename, worksheet)
+  def self.kidsFromFile(filename, worksheet, place_id, register)
 
     #We get all the constant values.
     student_profile_id = Profile.find_by_internal_tag("student").id
-    city = Place.find_by_name("Caacupe")
+    city = Place.find_by_id(place_id)
 
     gradeHash = Hash.new("Dummy Grade")
     gradeHash["1"] = "first_grade"
@@ -126,6 +127,9 @@ module ReadFile
     gradeHash["4"] = "fourth_grade"
     gradeHash["5"] = "fifth_grade"
     gradeHash["6"] = "sixth_grade"
+    gradeHash["7"] = "seventh_grade"
+    gradeHash["8"] = "eighth_grade"
+    gradeHash["9"] = "ninth_grade"
     gradeHash["p"] = "kinder"
     gradeHash["Educ  Especial"] = "special"
 
@@ -139,6 +143,8 @@ module ReadFile
     sectionHash["b"] = "Seccion B"
     sectionHash["c"] = "Seccion C"
     sectionHash["d"] = "Seccion D"
+
+    #Caacupe specific data
     sectionHash["colon"] = "Seccion Colon"
     sectionHash["futuro"] = "Seccion Futuro"
     sectionHash["yegros"] = "Seccion Yegros"
@@ -155,16 +161,17 @@ module ReadFile
 
 
     _name = 0
-    _ci = 1
-    _school = 4
-    _grade = 5
-    _shift = 6
-    _section = 7
+    _lastname = 1
+    _ci = 2
+    _school = 3
+    _grade = 4
+    _shift = 5
+    _section = 6
 
     Person.transaction do
     #There we go!
     Spreadsheet::ParseExcel.parse(filename).worksheet(worksheet).each { |row|
-      dataArray = row.map() { |c| c.to_s('utf-8') }
+      dataArray = row.map() { |c| c ? c.to_s('utf-8') : "" }
  
       schoolInfo = dataArray[_school].strip
       shiftInfo = shiftHash[dataArray[_shift]].strip
@@ -175,9 +182,10 @@ module ReadFile
 
       kidAttribs = Hash.new
 
-      fullname = dataArray[_name].strip.titleize
-      kidAttribs[:name] = fullname
-      kidAttribs[:lastname] = fullname
+      name = dataArray[_name].strip.titleize
+      lastname = dataArray[_lastname].strip.titleize
+      kidAttribs[:name] = name
+      kidAttribs[:lastname] = lastname
 
       if dataArray[_ci] != ""
         cedula = Person.cedulaCleaner!(dataArray[_ci])
@@ -186,12 +194,10 @@ module ReadFile
       end
       kidAttribs[:id_document] = cedula
 
-      kidAttribs[:place_id] = section.id
       profiles = [student_profile_id]
-      relationships = []
       performs = [[section.id, student_profile_id]]
 
-      Person.register(kidAttribs, profiles, relationships, performs)
+      Person.register(kidAttribs, performs, "", register)
 
     }
     end
@@ -199,10 +205,9 @@ module ReadFile
     true
   end
 
-  def self.teachersFromFile(filename, worksheet)
+  def self.teachersFromFile(filename, worksheet, register)
 
     teacher_profile_id = Profile.find_by_internal_tag("teacher").id
-    city = Place.find_by_name("Caacupe")
 
     gradeHash = Hash.new("Dummy Grade")
     gradeHash["1"] = "first_grade"
@@ -211,61 +216,42 @@ module ReadFile
     gradeHash["4"] = "fourth_grade"
     gradeHash["5"] = "fifth_grade"
     gradeHash["6"] = "sixth_grade"
+    gradeHash["7"] = "seventh_grade"
+    gradeHash["8"] = "eighth_grade"
+    gradeHash["9"] = "ninth_grade"
     gradeHash["p"] = "kinder"
     gradeHash["Educ. Especial"] = "special"
 
-    shiftHash = Hash.new("Dummy Shift")
-    shiftHash["m"] = "Turno Mañana"
-    shiftHash["t"] = "Turno Tarde"
-
-    sectionHash = Hash.new("Summy Section")
-    sectionHash["a"] = "Seccion A"
-    sectionHash["b"] = "Seccion B"
-    sectionHash["c"] = "Seccion C"
-
-    _fullname =  0
-    _id_document = 1
-    _school = 2
-    _grade = 3
-    _shift = 4
+    _name =  0
+    _lastname = 1
+    _id_document = 2
+    _school_name = 3
 
    Person.transaction do
      Spreadsheet::ParseExcel.parse(filename).worksheet(worksheet).each { |row|
-       dataArray = row.map() { |c| c.to_s('utf-8') }
+       dataArray = row.map() { |c| c ? c.to_s('utf-8') : "" }
 
-       schoolInfo = dataArray[_school]
-
-       shiftData = dataArray[_shift].split(" y ").map { |shift| shiftHash[shift] }
-       gradeData = dataArray[_grade].split(" y ").map { |grade| gradeHash[grade] }
-
-       raise dataArray[_grade] if gradeData.include?("Dummy Grade")
-
-       places = []
-       shiftData.each { |shiftInfo|
-         gradeData.each { |gradeInfo|
-           places.push(Place.theSwissArmyKnifeFuntion(city.id, schoolInfo, shiftInfo, gradeInfo, nil))
-         }
-       }
-
-       lastname, name = dataArray[_fullname].split(",")
+       name  = dataArray[_name]
+       lastname  = dataArray[_lastname]
        id_document = dataArray[_id_document].gsub(/,| /,'')
-
-       teacher = Person.find_by_id_document(id_document)
-       raise "No existe teacher #{dataArray[_id_document]}" if !teacher
+       school_name = dataArray[_school_name]
+       raise "There is no #{school_name} school name" if school_name == "Dummy Grade"
+       school = Place.find_by_name(school_name)
+       raise "You can not access #{school_name} school data" if !school
 
        attribs = Hash.new
        attribs[:name] = name
        attribs[:lastname] = lastname
-       attribs[:place_id] = city.id
+       attribs[:id_document] = id_document
+       new_performs = [[school.id, teacher_profile_id]]
 
-       relationships = teacher.relationships.map { |r| [r.to_person_id, r.profile_id] }
-
-       new_performs = places.map { |p| [p.id, teacher_profile_id] }
-       old_performs = teacher.performs.map { |p| [p.place_id, p.profile_id] }
-       performs = old_performs + new_performs
-
-       profiles = teacher.profiles.map { |pf| pf.id }.push(teacher_profile_id)
-       teacher.register_update(attribs, profiles, relationships, performs)
+       teacher = Person.find_by_id_document(id_document)
+       if teacher
+         old_performs = teacher.performs.map { |p| [p.place_id, p.profile_id] }
+         teacher.register_update(attribs, new_performs + old_performs, "", register)
+       else
+         Person.register(attribs, new_performs, "", register)
+       end
      }
    end
   end
