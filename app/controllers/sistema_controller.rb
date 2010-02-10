@@ -120,7 +120,7 @@ class SistemaController < ApplicationController
     case profile_internal_tag
 
       when "developer"
-        @output[:elements] = [getMenuInventory(), getMenuCats(), getMenuDeployment(), getMenuSystemConfig()]
+        @output[:elements] = [getMenuInventory(), getMenuCats(), getMenuDeployment(), getMenuSystemConfig(), getDeveloperMenu()]
 
       when "root"
         @output[:elements] = [getMenuInventory(), getMenuCats(), getMenuDeployment(), getMenuSystemConfig()]
@@ -235,6 +235,23 @@ class SistemaController < ApplicationController
      attribs[:elements] = place.places.map { |sub_place| genSchoolsTree(sub_place, school_type_id) }
    end
    attribs
+  end
+
+  def getDeveloperMenu
+    menu_option = genOption("Configuraciones de desarrollador")
+    menu_option[:elements].push(genElement("Ejecutar Codigo", "script_runner"))
+    menu_option[:elements].push(getMenuListAndCreate("notifications", "Tipo de notificaciones"))
+    menu_option[:elements].push(getMenuListAndCreate("images", "Imagenes"))
+    menu_option[:elements].push(getMenuListAndCreate("profiles", "Perfiles"))
+    menu_option[:elements].push(getMenuListAndCreate("default_values", "Valores por defecto"))
+    menu_option[:elements].push(getDeveloperInform)
+    menu_option
+  end
+
+  def getDeveloperInform
+    menu_option = genOption("Configuraciones del sistema")
+    menu_option[:elements].push(genElement("Auditoria", "report", genReport("audit_report")))
+    menu_option
   end
 
   def getMenuConference
@@ -398,21 +415,8 @@ class SistemaController < ApplicationController
 
   def getMenuSystemConfig
     menu_option = genOption("Configuraciones del sistema")
-    menu_option[:elements].push(genElement("Ejecutar Codigo", "script_runner"))
-    menu_option[:elements].push(getMenuListAndCreate("notifications", "Tipo de notificaciones"));
-    menu_option[:elements].push(getMenuListAndCreate("notification_subscribers", "Suscripciones a nofiticaciones"));
-    menu_option[:elements].push(getMenuListAndCreate("images", "Imagenes"));
-    menu_option[:elements].push(getMenuListAndCreate("profiles", "Perfiles"));
-    menu_option[:elements].push(getMenuListAndCreate("users", "Usuarios"));
-    menu_option[:elements].push(getMenuListAndCreate("default_values", "Valores por defecto"));
-
-    menu_option[:elements].push(getMenuSystemConfigInform())
-    menu_option
-  end
-
-  def getMenuSystemConfigInform
-    menu_option = genOption("Configuraciones del sistema")
-    menu_option[:elements].push(genElement("Auditoria", "report", genReport("audit_report")))
+    menu_option[:elements].push(getMenuListAndCreate("notification_subscribers", "Suscripciones a nofiticaciones"))
+    menu_option[:elements].push(getMenuListAndCreate("users", "Usuarios"))
     menu_option
   end
 
