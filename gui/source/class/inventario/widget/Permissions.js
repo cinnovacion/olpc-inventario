@@ -91,7 +91,7 @@ qx.Class.define("inventario.widget.Permissions",
      */
     _changeSelection : function(state)
     {
-      var selectedItem = this.getTreeWidget().getSelectedItem();
+      var selectedItem = this.getTreeWidget().getSelection()[0];
 
       if (selectedItem instanceof qx.ui.tree.TreeFolder)
       {
@@ -138,7 +138,7 @@ qx.Class.define("inventario.widget.Permissions",
         {
           for (var j=0; j<mLen; j++)
           {
-            if (methods[j].getUserData("checkbox").getChecked()) {
+            if (methods[j].getUserData("checkbox").getValue()) {
               folder["methods"].push(methods[j].getLabel());
             }
           }
@@ -176,7 +176,7 @@ qx.Class.define("inventario.widget.Permissions",
      */
     _loadSubTree_cb : function(e)
     {
-      var cWidget = this.getTreeWidget().getSelectedItem();
+      var cWidget = this.getTreeWidget().getSelection()[0];
 
       // alert(cWidget);
       // if ( !(cWidget instanceof qx.ui.tree.TreeFolder) || cWidget.getOpen() == true ) {return;}

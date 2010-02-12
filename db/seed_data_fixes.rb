@@ -11,35 +11,6 @@
 # WARNING: all methods identifiers must start with "fix_"
 class SeedDataFixes
 
-  def fix_old_broken_parts_to_ripped
-
-    ripped_status = Status.find_by_internal_tag("ripped")
-    raise "Ripped status type is required" if !ripped_status
-
-    inc = [:parts => :status]
-    Part.transaction do
-
-      deviceClasses = [Laptop, Battery, Charger]
-      deviceClasses.each { |deviceClass|
-  
-        deviceClass.find(:all, :include => inc).each { |device|
-
-          mainPart = Part.findPart(device, deviceClass.name.downcase)
-          device.getSubPartsOn.each { |part| 
-
-            if part != mainPart && part.status.internal_tag == "broken"
-
-              mainPart.status_id = ripped_status.id
-              mainPart.save!
-            end
-          }
-        }
-      }
-    end
-
-    true
-  end
-
   def fix_students_with_no_barcode
 
     inc = [:performs => :profile]

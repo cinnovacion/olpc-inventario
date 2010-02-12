@@ -10,7 +10,7 @@ class AddProblemSolutionProblemReportConstraint < ActiveRecord::Migration
   end
 
   #Only for this time.
-  def breaking_rules
+  def self.breaking_rules
 
     ProblemSolution.all.each { |problem_solution|
 

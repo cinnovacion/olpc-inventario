@@ -22,7 +22,7 @@ namespace :seed_data do
       run_file("db/initial_schema.rb")
       puts "db/initial_schema.rb file, loaded!"
 
-      run_file("db/constraints.rb")
+      run_file("db/initial_constraints.rb")
       puts "db/initial_constraints.rb file, loaded!"
     end
 

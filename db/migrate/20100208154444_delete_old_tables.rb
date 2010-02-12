@@ -24,17 +24,21 @@ class DeleteOldTables < ActiveRecord::Migration
 
     @dropable_tables.each { |dropable_table|
 
-      all_tables.each { |table|
+      begin
+        all_tables.each { |table|
 
-        constraints = find_constraints(table)
-        constraints.each { |constraint|
+          constraints = find_constraints(table)
+          constraints.each { |constraint|
 
-          if constraint[:table] == dropable_table
-            removeConstraint(table.to_s, constraint[:foreign_key].to_s)
-          end
+            if constraint[:table] == dropable_table
+              removeConstraint(table.to_s, constraint[:foreign_key].to_s)
+            end
+          }
         }
-      }
-      drop_table dropable_table.to_sym
+        drop_table dropable_table.to_sym
+      rescue
+        puts "Ignoring error related to table #{dropable_table}"  
+      end
 
     }
   end
