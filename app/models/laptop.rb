@@ -40,8 +40,8 @@ class Laptop < ActiveRecord::Base
 
   validates_presence_of :serial_number, :message => "Debe proveer el nro. de serie"
   validates_uniqueness_of :serial_number, :message => "El nro. de serie de la laptop no puede ser repetido"
-  validates_presence_of :status_id, :message => "Debe proveer el estado."
-  validates_presence_of :owner_id, :message => "Debe proveer el propietario."
+  validates_presence_of :status_id, :message => "Debe proveer el estado"
+  validates_presence_of :owner_id, :message => "Debe proveer el propietario"
 
   def self.getColumnas()
     ret = Hash.new

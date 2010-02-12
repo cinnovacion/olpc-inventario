@@ -20,11 +20,12 @@ class PartMovement < ActiveRecord::Base
 
     attribs = {}
     attribs[:part_movement_type_id] = PartMovementType.find_by_internal_tag("part_replacement_out").id
-    attribs[:person_id] = problem_solution.solved_by_person.id
+    attribs[:person_id] = problem_solution.solved_by_person.id    
     attribs[:place_id] = problem_solution.problem_report.place.id
     problem_solution.solution_type.part_types.each { |part_type|
       attribs[:amount] = 1
       attribs[:part_type_id] = part_type.id
+      attribs[:created_at] = problem_solution.created_at if problem_solution.created_at
       PartMovement.create!(attribs)
     }
   end
@@ -44,7 +45,7 @@ class PartMovement < ActiveRecord::Base
   end
 
   def before_save
-    self.created_at = Time.now
+    self.created_at = Time.now if !self.created_at
   end
 
   def getPartMovementTypeName

@@ -6,8 +6,8 @@ class CreateSolutionTypePartTypes < ActiveRecord::Migration
       t.integer :part_type_id, :null => false
     end
 
-    create_constraint(:solution_type_part_types, :part_type_id, :part_types)
-    create_constraint(:solution_type_part_types, :solution_type_id, :solution_types)
+    createConstraint("solution_type_part_types", "part_type_id", "part_types")
+    createConstraint("solution_type_part_types", "solution_type_id", "solution_types")
   end
 
   def self.down

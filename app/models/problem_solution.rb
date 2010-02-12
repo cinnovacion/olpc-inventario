@@ -29,6 +29,7 @@ class ProblemSolution < ActiveRecord::Base
 
   validates_presence_of :solution_type_id, :message => "Debe especificar la solucion."
   validates_presence_of :solved_by_person_id, :message => "Debe especificar quien realizo la reparacion."
+  validates_presence_of :problem_report_id, :message => "Debe especificar el reporte del problema."
 
   def self.getColumnas()
     [ 

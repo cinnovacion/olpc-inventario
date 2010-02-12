@@ -195,7 +195,7 @@ qx.Class.define("inventario.widget.NodeTracker",
 
       var placesCombo = new qx.ui.form.SelectBox;
       inventario.widget.Form.loadComboBox(placesCombo, places, true);
-      placesCombo.addListener("changeValue", this._updatePlaceId, this);
+      placesCombo.addListener("changeSelection", this._updatePlaceId, this);
 
       var default_time = 60 * 2;
       var refreshLabel = new qx.ui.basic.Label("Actualizar en (Segundos): ");

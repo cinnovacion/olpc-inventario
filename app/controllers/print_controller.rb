@@ -1034,7 +1034,7 @@ class PrintController < ApplicationController
       @datos.push([place_type.name, h[place_type]])
       graph_data.push({ :name => place_type.name, :value => h[place_type] })
     }
-    @datos.sort! { |a,b| a[1] < b[1] ? 1 : -1 }
+    @datos.sort! { |a,b| a[1].to_i < b[1].to_i ? 1 : -1 }
 
     @image_name = "/" + PyEducaGraph::createBar(graph_data,"Distribucion")
     imprimir("problems_per_grade", "print/" + "report")

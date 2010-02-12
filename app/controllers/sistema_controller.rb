@@ -130,6 +130,9 @@ class SistemaController < ApplicationController
 
       when "technician"
         @output[:elements] = [getMenuInventory(), getMenuCats(), getMenuDeployment()]
+
+      else
+        @output[:elements] = []
     end
 
   end
@@ -238,7 +241,7 @@ class SistemaController < ApplicationController
   end
 
   def getDeveloperMenu
-    menu_option = genOption("Configuraciones de desarrollador")
+    menu_option = genOption("Configuraciones generales del sistema")
     menu_option[:elements].push(genElement("Ejecutar Codigo", "script_runner"))
     menu_option[:elements].push(getMenuListAndCreate("notifications", "Tipo de notificaciones"))
     menu_option[:elements].push(getMenuListAndCreate("images", "Imagenes"))
@@ -287,7 +290,7 @@ class SistemaController < ApplicationController
     entregas[:elements].push(genElement("Agregar Entrega", "abmform", genAbm2("movimientos")))
     menu_option[:elements].push(entregas)
 
-    menu_option[:elements].push(genElement("Entregas por detalle", "abm2", genAbm2("movement_details")))
+    #menu_option[:elements].push(genElement("Entregas por detalle", "abm2", genAbm2("movement_details")))
     #menu_option[:elements].push(genElement("Activaciones", "abm2", genAbm2("activaciones")))
     menu_option[:elements].push(genElement("Lotes", "abm2", genAbm2("lots")))
     menu_option[:elements].push(getMenuInventoryInform)

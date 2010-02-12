@@ -151,6 +151,13 @@
 		create_if_not_exists(Status, {:internal_tag => "ripped", :abbrev => "RIP", :id => "13", :description => "Desensamblado"})
 	end
 
+  PartMovementType.transaction do
+  
+    create_if_not_exists(PartMovementType, {:name => "Entrada por compra", :internal_tag => "new_part_in", :direction => true})
+    create_if_not_exists(PartMovementType, {:name => "Salida como repuesto", :internal_tag => "part_replacement_out", :direction => false})
+    create_if_not_exists(PartMovementType, {:name => "Salida por transferencia", :internal_tag => "part_transfered_out", :direction => false})
+    create_if_not_exists(PartMovementType, {:name => "Entrada por transferencia", :internal_tag => "part_transfered_in", :direction => true})
+  end
   
   #####
   # Application specific Data, (Non-trivial-data)

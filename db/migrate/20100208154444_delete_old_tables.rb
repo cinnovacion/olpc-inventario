@@ -30,7 +30,7 @@ class DeleteOldTables < ActiveRecord::Migration
         constraints.each { |constraint|
 
           if constraint[:table] == dropable_table
-            removeConstraint(table, constraint[:foreign_key])
+            removeConstraint(table.to_s, constraint[:foreign_key].to_s)
           end
         }
       }
