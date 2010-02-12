@@ -1192,8 +1192,9 @@ class PrintController < ApplicationController
     print_params = JSON.parse(params[:print_params]).reverse
 
     place_id = print_params.pop
-    place = Place.find_by_id(place_id)
-    @titulo = "Posibles errores durante la entrega en #{place.getName}"
+    root_place = Place.find_by_id(place_id)
+
+    @titulo = "Posibles errores durante la entrega en #{root_place.getName}"
     @columnas = ["Nombre","Cedula","Laptop","Tiene Laptop"]
     @datos = []
 
@@ -1202,11 +1203,11 @@ class PrintController < ApplicationController
     student_profile_id = Profile.find_by_internal_tag("student").id
     section_place_type_id = PlaceType.find_by_internal_tag("section").id
 
-    stack = [place]
+    stack = [root_place]
     while(stack != [])
       place = stack.pop
 
-      if place.place_type.internal_tag == "section"
+      if place && place.place_type && place.place_type.internal_tag == "section"
         sub_total = 0
         sub_total_con_laptops = 0
 

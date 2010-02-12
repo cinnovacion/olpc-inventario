@@ -31,7 +31,7 @@ class NodesController < SearchController
     node  = Node.find_by_id(params[:hash][:id].to_i)
     information = params[:hash][:information]
 
-    status = information[:status] == "online" ? "" :  "_down"
+    status = (information[:status] == "online") ? "" :  "_down"
 
     old_type_tag = node.node_type.internal_tag
 
