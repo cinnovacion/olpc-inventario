@@ -241,7 +241,7 @@ class SistemaController < ApplicationController
   end
 
   def getDeveloperMenu
-    menu_option = genOption("Configuraciones generales del sistema")
+    menu_option = genOption("Configuraciones de desarrollador")
     menu_option[:elements].push(genElement("Ejecutar Codigo", "script_runner"))
     menu_option[:elements].push(getMenuListAndCreate("notifications", "Tipo de notificaciones"))
     menu_option[:elements].push(getMenuListAndCreate("images", "Imagenes"))
@@ -417,7 +417,7 @@ class SistemaController < ApplicationController
   end
 
   def getMenuSystemConfig
-    menu_option = genOption("Configuraciones del sistema")
+    menu_option = genOption("Configuraciones del administrador")
     menu_option[:elements].push(getMenuListAndCreate("notification_subscribers", "Suscripciones a nofiticaciones"))
     menu_option[:elements].push(getMenuListAndCreate("users", "Usuarios"))
     menu_option
