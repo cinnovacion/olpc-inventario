@@ -175,6 +175,7 @@ qx.Class.define("inventario.window.WelcomeInfo",
       var spacer = new qx.ui.container.Composite(new qx.ui.layout.HBox(20));
       var img    = new qx.ui.basic.Image(this.getDefaultLogoPath());
 
+      hbox.setBackgroundColor('#FFFFFF');
       hbox.add(img, { flex : 1 });
       hbox.add(spacer, { flex : 2});
       hbox.add(this.spotlight(), { flex : 1 });

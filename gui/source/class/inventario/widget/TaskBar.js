@@ -18,6 +18,7 @@
 // Very simple Taskbar
 // Author: Martin Abente (tincho_02@hotmail.com | mabente@paraguayeduca.org)
 // Paraguay Educa 2009
+
 qx.Class.define("inventario.widget.TaskBar",
 {
   type : "singleton",
@@ -33,27 +34,22 @@ qx.Class.define("inventario.widget.TaskBar",
     {
       qx.ui.container.Composite.call(this, new qx.ui.layout.HBox(20));
 
-      // We create all the layouts.
-      var leftHbox = new qx.ui.container.Composite(new qx.ui.layout.HBox(20));
-      this.add(leftHbox, { flex : 1 });
-      this.setLeftHbox(leftHbox);
-
-      var mainHbox = new qx.ui.container.Composite(new qx.ui.layout.HBox(20));
-      this.add(mainHbox, { flex : 10 });
-
-      var rightHbox = new qx.ui.container.Composite(new qx.ui.layout.HBox(20));
-      this.add(rightHbox, { flex : 1 });
-      this.setRightHbox(rightHbox);
-
       var toolBar = new qx.ui.toolbar.ToolBar();
+
+      var leftPart = new qx.ui.toolbar.Part();
       var part = new qx.ui.toolbar.Part();
+      var rightPart = new qx.ui.toolbar.Part();
 
-      toolBar.add(part);
+      toolBar.add(leftPart, { flex : 0 });
+      toolBar.add(part, { flex : 20 });
+      toolBar.add(rightPart, { flex : 0 });
 
-      mainHbox.add(toolBar, { flex : 1 });
+      this.add(toolBar, { flex : 1 });
 
       this.setToolBar(toolBar);
+      this.setLeftPart(leftPart);
       this.setPart(part);
+      this.setRightPart(rightPart);
     }
     catch(e)
     {
@@ -79,13 +75,13 @@ qx.Class.define("inventario.widget.TaskBar",
       init  : null
     },
 
-    leftHbox :
+    leftPart :
     {
       check : "Object",
       init  : null
     },
 
-    rightHbox :
+    rightPart :
     {
       check : "Object",
       init  : null
@@ -106,10 +102,10 @@ qx.Class.define("inventario.widget.TaskBar",
      */
     addLeft : function(widget)
     {
-      var hbox = this.getLeftHbox();
+      var part = this.getLeftPart();
 
-      if (hbox) {
-        hbox.add(widget);
+      if (part) {
+        part.add(widget);
       }
     },
 
@@ -122,10 +118,10 @@ qx.Class.define("inventario.widget.TaskBar",
      */
     addRight : function(widget)
     {
-      var hbox = this.getRightHbox();
+      var part = this.getRightPart();
 
-      if (hbox) {
-        hbox.add(widget);
+      if (part) {
+        part.add(widget);
       }
     },
 
@@ -137,11 +133,15 @@ qx.Class.define("inventario.widget.TaskBar",
      */
     clearIt : function()
     {
-      var hbox = this.getLeftHbox();
-      if (hbox) hbox.removeAll();
+      var part = this.getLeftPart();
+      if (part) {
+        part.removeAll();
+      }
 
-      hbox = this.getRightHbox();
-      if (hbox) hbox.removeAll();
+      part = this.getRightPart();
+      if (part) {
+        part.removeAll();
+      }
 
       this.getPart().removeAll();
     },

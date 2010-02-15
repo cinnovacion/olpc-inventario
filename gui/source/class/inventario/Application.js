@@ -130,6 +130,7 @@ qx.Class.define("inventario.Application",
     {
       // Main Vbox, containing the taskbar and the old screen.
       var mainVbox = new qx.ui.container.Composite(new qx.ui.layout.VBox(5));
+      mainVbox.setBackgroundColor('#FFFFFF');
 
       // Main toolbar that will act as a taskbar.
       var taskbar = inventario.widget.TaskBar.getInstance();
