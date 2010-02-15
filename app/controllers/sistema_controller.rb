@@ -241,7 +241,7 @@ class SistemaController < ApplicationController
   end
 
   def getDeveloperMenu
-    menu_option = genOption("Configuraciones de desarrollador")
+    menu_option = genOption("Configuraciones del desarrollador")
     menu_option[:elements].push(genElement("Ejecutar Codigo", "script_runner"))
     menu_option[:elements].push(getMenuListAndCreate("notifications", "Tipo de notificaciones"))
     menu_option[:elements].push(getMenuListAndCreate("images", "Imagenes"))

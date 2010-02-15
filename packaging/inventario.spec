@@ -1,7 +1,7 @@
 # spec file for our tracking, monitoring and support web app
 Name: inventario		
 Version: 0.3
-Release: 1
+Release: 2
 Vendor: Paraguay Educa
 Summary: This (Ruby on Rails based) web app lets you track laptops given out, status of networks and support tickets.
 Group:	Applications/Internet
@@ -33,6 +33,7 @@ test -d $RPM_BUILD_ROOT/var/%{name}/public/build && rm -rf $RPM_BUILD_ROOT/var/%
 cd $RPM_BUILD_ROOT/var/%{name}/gui
 # Qooxdoo no maneja links simbolicos :(
 ln -s /usr/share/qooxdoo-sdk $RPM_BUILD_ROOT/var/%{name}/
+ln -s /usr/share/qooxdoo-sdk/framework/source/resource/qx $RPM_BUILD_ROOT/var/%{name}/gui/build/
 ./compile_gui.sh
 
 # kill sym link de qooxdoo-sdk
@@ -117,6 +118,9 @@ fi
 /var/%{name}/vendor
 
 %changelog
+
+* Mon Feb 15 2010 Martin Abente <mabente@paraguayeduca.org>
+- Mass Re-factoring - Last details - icons bug fixed
 
 * Mon Feb 8 2010 Martin Abente <mabente@paraguayeduca.org>
 - Mass Re-factoring - phase one
