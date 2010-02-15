@@ -120,7 +120,7 @@ fi
 %changelog
 
 * Mon Feb 15 2010 Martin Abente <mabente@paraguayeduca.org>
-- Mass Re-factoring - Last details - icons bug fixed
+- Mass Re-factoring - Last details - icons bug fixed, GUI improvements
 
 * Mon Feb 8 2010 Martin Abente <mabente@paraguayeduca.org>
 - Mass Re-factoring - phase one
