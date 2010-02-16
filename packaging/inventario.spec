@@ -1,7 +1,7 @@
 # spec file for our tracking, monitoring and support web app
 Name: inventario		
 Version: 0.3
-Release: 2
+Release: 3
 Vendor: Paraguay Educa
 Summary: This (Ruby on Rails based) web app lets you track laptops given out, status of networks and support tickets.
 Group:	Applications/Internet
@@ -33,7 +33,6 @@ test -d $RPM_BUILD_ROOT/var/%{name}/public/build && rm -rf $RPM_BUILD_ROOT/var/%
 cd $RPM_BUILD_ROOT/var/%{name}/gui
 # Qooxdoo no maneja links simbolicos :(
 ln -s /usr/share/qooxdoo-sdk $RPM_BUILD_ROOT/var/%{name}/
-ln -s /usr/share/qooxdoo-sdk/framework/source/resource/qx $RPM_BUILD_ROOT/var/%{name}/gui/build/
 ./compile_gui.sh
 
 # kill sym link de qooxdoo-sdk
@@ -70,6 +69,9 @@ fi
 
 # update Rails stuff
 cd /var/%{name}/ && rake rails:update
+
+# copy database config template
+cp /var/%{name}/config/database.yml.example /var/%{name}/config/database.yml
 
 # try to create DB, if it doesnt exist
 mysql -u root -e 'create database if not exists inventario;' > /dev/null 2>&1 || true
@@ -118,6 +120,9 @@ fi
 /var/%{name}/vendor
 
 %changelog
+
+* Tue Feb 16 2010 Raul Gutierrez S. <rgs@paraguayeduca.org>
+- copy database config example as default config (to be able to complete install)
 
 * Mon Feb 15 2010 Martin Abente <mabente@paraguayeduca.org>
 - Mass Re-factoring - Last details - icons bug fixed, GUI improvements

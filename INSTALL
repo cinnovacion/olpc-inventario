@@ -1,0 +1,18 @@
+------------
+INSTALL
+------------
+
+0) If the root account for your MySQL server doesn't have a password the initial data structures and data should be loaded automatically. 
+
+1) If the installer isn't able to connect to the DB (because it is password protected) then you should run the following commands:
+
+  a) cd /var/inventario
+  
+  b) rake seed_data:install
+
+  c) rake db:migrate
+
+  d) rake seed_data:setup
+
+  e) rake seed_data:fix
+
