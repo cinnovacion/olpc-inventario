@@ -6,7 +6,7 @@ Vendor: Paraguay Educa
 Summary: This (Ruby on Rails based) web app lets you track laptops given out, status of networks and support tickets.
 Group:	Applications/Internet
 License: GPL	
-URL: http://trac.paraguayeduca.org/browser/inventario
+URL: http://trac.paraguayeduca.org/browser/inventario-branches/version-0.3
 Source0: %{name}-%{version}.tar.gz
 BuildRoot: %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 Requires: ruby(abi) = 1.8, crontabs, rubygems, rubygem-activesupport, rubygem-activeresource, rubygem-rails, mysql-server, htmldoc, httpd, ruby-mysql, ruby-json, rubygem-gruff, rubygem-spreadsheet-excel, rubygem-parseexcel, rubygem-gbarcode, logrotate, rubygem-gettext, rubygem-gettext_activerecord, rubygem-gettext_rails, rubygem-locale_rails
