@@ -278,7 +278,7 @@ class SistemaController < ApplicationController
   def getMenuInventory
     menu_option = genOption("Inventario")
     #menu_option[:elements].push(genElement("Cajas", "abm2", genAbm2("boxes")))
-    menu_option[:elements].push(genElement("Laptops", "abm2", genAbm2("laptops")))
+    menu_option[:elements].push(genElement("Computadoras", "abm2", genAbm2("laptops")))
     #menu_option[:elements].push(genElement("Baterias", "abm2", genAbm2("baterias")))
     #menu_option[:elements].push(genElement("Cargadores", "abm2", genAbm2("cargadores")))
     #menu_option[:elements].push(genElement("Movimiento de Cajas", "abm2", genAbm2("box_movements")))
