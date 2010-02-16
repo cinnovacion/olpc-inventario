@@ -112,7 +112,7 @@ fi
 %attr(-,apache,apache) /var/%{name}/public/images
 %attr(-,apache,apache) /var/%{name}/public/images/barcodes
 /var/%{name}/Rakefile
-/var/%{name}/README
+/var/%{name}/INSTALL
 /var/%{name}/script
 /var/%{name}/test
 %attr(-,apache,apache) /var/%{name}/tmp
