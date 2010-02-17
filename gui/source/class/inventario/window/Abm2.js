@@ -1313,7 +1313,7 @@ qx.Class.define("inventario.window.Abm2",
       var key = inventario.widget.Form.getInputValue(cb);
 
       // this.queryOption = inventario.widget.Form.getInputValue(cb);
-      if (value == "") {
+      if (value == null || value == "") {
           this.setQueryComponents({});
       } else {
         var components = {};
