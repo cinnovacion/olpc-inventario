@@ -32,8 +32,8 @@
   {
     "APPLICATION"  : "inventario",
     "QOOXDOO_PATH" : "../qooxdoo-sdk",
-    //"QXTHEME"      : "inventario.theme.Theme",
-    //"API_EXCLUDE"  : ["qx.legacy.*","qx.test.*"],
+    "QXTHEME"      : "qx.theme.Modern",
+    "QXICONTHEME"  : ["Tango"],
     "LOCALES"      : [ "es", "en" ],
     "ROOT"         : "."
   },

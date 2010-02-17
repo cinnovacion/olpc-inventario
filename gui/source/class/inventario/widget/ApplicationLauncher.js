@@ -18,6 +18,13 @@
 // Widget for simple and customized GUI.
 // Author: Martin Abente (tincho_02@hotmail.com | mabente@paraguayeduca.org)
 // Paraguay Educa 2009
+
+/*
+  #asset(qx/icon/Tango/22/apps/preferences-users.png)
+  #asset(qx/icon/Tango/22/actions/system-search.png)
+  #asset(qx/icon/Tango/22/actions/contact-new.png)
+*/
+
 qx.Class.define("inventario.widget.ApplicationLauncher",
 {
   extend : qx.ui.container.Composite,

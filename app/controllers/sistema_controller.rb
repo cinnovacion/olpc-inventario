@@ -111,7 +111,7 @@ class SistemaController < ApplicationController
   def gui_content
 
     @output[:label] = "Aplicaciones"
-    @output[:image]= "icon/22/apps/preferences-users.png"
+    @output[:image]= "qx/icon/Tango/22/apps/preferences-users.png"
     @output[:elements] = []
 
     profile_internal_tag = current_user.person.profile.internal_tag
@@ -143,7 +143,7 @@ class SistemaController < ApplicationController
     attribs = Hash.new
     attribs[:label] = label
     attribs[:type] = "option"
-    attribs[:image] = "icon/22/actions/system-search.png"
+    attribs[:image] = "qx/icon/Tango/22/actions/system-search.png"
     attribs[:elements] = []
     attribs 
   end
@@ -152,7 +152,7 @@ class SistemaController < ApplicationController
     attribs = Hash.new
     attribs[:label] = label
     attribs[:type] = type
-    attribs[:image] = "icon/22/actions/contact-new.png"
+    attribs[:image] = "qx/icon/Tango/22/actions/contact-new.png"
     attribs[:options] = options if options
     attribs
   end

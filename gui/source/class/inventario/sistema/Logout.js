@@ -24,9 +24,12 @@ qx.Class.define("inventario.sistema.Logout",
   extend : qx.ui.container.Composite,
 
   /*
-       * CONSTRUCTOR
-       */
+  * CONSTRUCTOR
+  */
 
+  /*
+    #asset(qx/icon/Tango/22/actions/application-exit.png)
+  */
   construct : function()
   {
     try
@@ -37,7 +40,7 @@ qx.Class.define("inventario.sistema.Logout",
       var mainHbox = new qx.ui.container.Composite(new qx.ui.layout.HBox(20));
       this.add(mainHbox);
 
-      var logoutButton = new qx.ui.form.Button("Logout", "icon/22/actions/application-exit.png");
+      var logoutButton = new qx.ui.form.Button("Logout", "qx/icon/Tango/22/actions/application-exit.png");
       logoutButton.addListener("execute", this._doLogout, this);
       mainHbox.add(logoutButton);
       this.setLogoutButton(logoutButton);

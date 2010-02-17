@@ -52,6 +52,14 @@
  * @param oMethods {Hash}  hash de configuracion {searchUrl,initialDataUrl,...}
  * @return void
  */
+
+/*
+  #asset(qx/icon/Tango/16/actions/zoom-in.png)
+  #asset(qx/icon/Tango/16/actions/zoom.png)
+  #asset(qx/icon/Tango/16/actions/go-previous.png)
+  #asset(qx/icon/Tango/16/actions/go-next.png)
+*/
+
 qx.Class.define("inventario.window.Abm2",
 {
   extend : inventario.window.AbstractWindow,
@@ -420,7 +428,7 @@ qx.Class.define("inventario.window.Abm2",
     arrayButtonIcon :
     {
       check : "Object",
-      init  : "icon/16/actions/zoom-in.png"
+      init  : "qx/icon/Tango/16/actions/zoom-in.png"
     },
 
     arrayButtonCallBack :
@@ -608,10 +616,10 @@ qx.Class.define("inventario.window.Abm2",
       this.setSearchOptions(cb);
 
       var t = this.getSearchButtonText();
-      var but = new qx.ui.form.Button(t, "icon/16/actions/zoom.png");
+      var but = new qx.ui.form.Button(t, "qx/icon/Tango/16/actions/zoom.png");
       this.setSearchButton(but);
 
-      var but = new qx.ui.form.Button("", "icon/16/actions/zoom-in.png");
+      var but = new qx.ui.form.Button("", "qx/icon/Tango/16/actions/zoom-in.png");
       this.setSearchAdvancedButton(but);
 
       // var s = new qx.ui.form.Spinner(1, this.getDefaultRowPerPage(), this.getMaxRowPerPage());
@@ -633,28 +641,28 @@ qx.Class.define("inventario.window.Abm2",
                    * Botones de Navegacion
                    */
 
-      var bFirst = new qx.ui.form.Button("Primera Pagina", "icon/16/actions/go-previous.png");
+      var bFirst = new qx.ui.form.Button("Primera Pagina", "qx/icon/Tango/16/actions/go-previous.png");
 
       /* Se deshabilita el boton << porque al comienzo estamos en la primera pagina */
 
       bFirst.setEnabled(false);
       this.setFirstButton(bFirst);
 
-      var bPrev = new qx.ui.form.Button("Anterior", "icon/16/actions/go-previous.png");
+      var bPrev = new qx.ui.form.Button("Anterior", "qx/icon/Tango/16/actions/go-previous.png");
 
       /* Se deshabilita el boton < porque al comienzo estamos en la primera pagina */
 
       bPrev.setEnabled(false);
       this.setPrevButton(bPrev);
 
-      var bNext = new qx.ui.form.Button("Siguiente", "icon/16/actions/go-next.png");
+      var bNext = new qx.ui.form.Button("Siguiente", "qx/icon/Tango/16/actions/go-next.png");
 
       /* Se deshabilita el boton >, despues e habilitara si el numero de paginas encontrados > 1 */
 
       bNext.setEnabled(false);
       this.setNextButton(bNext);
 
-      var bLast = new qx.ui.form.Button("Ultima Pagina", "icon/16/actions/go-next.png");
+      var bLast = new qx.ui.form.Button("Ultima Pagina", "qx/icon/Tango/16/actions/go-next.png");
 
       /* Se deshabilita el boton >>, despues e habilitara si el numero de paginas encontrados > 1 */
 

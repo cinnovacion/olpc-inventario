@@ -154,9 +154,12 @@ qx.Class.define("inventario.sistema.Login",
      * @param msg {String} motivo de la autenticacion
      * @return {void} void
      */
+     /*
+        #asset(qx/icon/Tango/16/status/dialog-password.png)
+     */
     loginWindow : function(msg)
     {
-      var win = new qx.ui.window.Window("Ingresar al Sistema", "icon/16/status/dialog-password.png");
+      var win = new qx.ui.window.Window("Ingresar al Sistema", "qx/icon/Tango/16/status/dialog-password.png");
       win.addListener("appear", function(e){ win.center();});
 
       win.setLayout(new qx.ui.layout.VBox(10));

@@ -18,6 +18,12 @@
 // Its basically a tree loaded by the user on demand.
 // Author: Martin Abente (tincho_02@hotmail.com | mabente@paraguayeduca.org)
 // Paraguay Educa 2009
+
+/*
+  #asset(qx/icon/Tango/16/places/user-desktop.png)
+  #asset(qx/icon/Tango/16/status/dialog-information.png)
+*/
+
 qx.Class.define("inventario.widget.HierarchyOnDemand",
 {
   extend : qx.ui.container.Composite,
@@ -249,7 +255,7 @@ qx.Class.define("inventario.widget.HierarchyOnDemand",
       new_element.addIcon();
 
       if (typeof icon == "undefined") {
-        icon = "icon/16/places/user-desktop.png";
+        icon = "qx/icon/Tango/16/places/user-desktop.png";
       }
 
       new_element.setIcon(icon);
@@ -286,7 +292,7 @@ qx.Class.define("inventario.widget.HierarchyOnDemand",
       new_sub_elements = remoteData.sub_elements;
 
       for (var i in new_sub_elements) {
-        selected_element.add(this._newElement(new_sub_elements[i], null, true, "icon/16/status/dialog-information.png"));
+        selected_element.add(this._newElement(new_sub_elements[i], null, true, "qx/icon/Tango/16/status/dialog-information.png"));
       }
 
       selected_element.setOpen(true);
