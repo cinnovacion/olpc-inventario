@@ -41,11 +41,13 @@ class SistemaController < ApplicationController
   def login_info
     @output[:info] = Hash.new
     @output[:info][:app_revision] = PyEducaUtil::getAppRevisionNum()
+    @output[:info][:lang_list] = langCombo
   end
 
   def login
     user = params[:username]
     password = params[:password]
+    lang = params[:lang] ? params[:lang].to_s : nil
 
     user = User.new(:usuario => user, :password => password)
     logged_in_user = user.autenticar
@@ -55,8 +57,12 @@ class SistemaController < ApplicationController
       
       # Pasar permisos
       @output["privs"] = {}
+
+      #Setting language
+      setLanguage(lang)
+      @output["verified_lang"] = session["lang"]
     else
-      @output["msg"] = "Usuario o password equivocado"
+      @output["msg"] = _("Usuario o password equivocado")
     end
   end
   

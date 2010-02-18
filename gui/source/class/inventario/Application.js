@@ -71,8 +71,9 @@ qx.Class.define("inventario.Application",
       // Call super class
       this.base(arguments);
 
-      // Transtation language
+      // Application default language
       qx.locale.Manager.getInstance().setLocale("es");
+
       this.startApp();
     },
 

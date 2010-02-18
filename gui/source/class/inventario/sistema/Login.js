@@ -85,6 +85,11 @@ qx.Class.define("inventario.sistema.Login",
 	check : "Object"
     },
 
+    langCombo :
+    {
+	check : "Object"
+    },
+
     window :
     {
 	check : "Object"
@@ -124,10 +129,15 @@ qx.Class.define("inventario.sistema.Login",
     },
 
    _loginResp : function(remoteData, handleParams) {
-      var revision_num = remoteData.info.app_revision;
+
+      var lang_list = remoteData.info.lang_list;
+      this._set_language_from_list(lang_list);
+
+      //var revision_num = remoteData.info.app_revision;
       //var msg = "Bienvenido al Sistema (revision " + revision_num.toString() +  ")";
       var msg = this.tr("Bienvenido al sistema");
-      this.loginWindow(msg);
+
+      this.loginWindow(msg, lang_list);
     },
 
     /* this.doLogin(); */
@@ -157,7 +167,7 @@ qx.Class.define("inventario.sistema.Login",
      /*
         #asset(qx/icon/Tango/16/status/dialog-password.png)
      */
-    loginWindow : function(msg)
+    loginWindow : function(msg, lang_list)
     {
       var win = new qx.ui.window.Window("Ingresar al Sistema", "qx/icon/Tango/16/status/dialog-password.png");
       win.addListener("appear", function(e){ win.center();});
@@ -186,17 +196,22 @@ qx.Class.define("inventario.sistema.Login",
       /* datos p/ ingresar */
       var userLabel = new qx.ui.basic.Label("Usuario");
       container.add(userLabel, {row: 0, column: 0});
-
       var userName = new qx.ui.form.TextField;
       this.setNameField(userName);
       container.add(userName, {row: 0, column: 1});
-
 
       var passwdLabel = new qx.ui.basic.Label("Password");
       container.add(passwdLabel, {row: 1, column: 0});
       var passwdInput = new qx.ui.form.PasswordField;
       this.setPasswordField(passwdInput);
       container.add(passwdInput, {row: 1, column: 1});
+
+      var langLabel = new qx.ui.basic.Label("Idioma");
+      container.add(langLabel, {row: 2, column: 0});
+      var langCombo = new qx.ui.form.SelectBox;
+      inventario.widget.Form.loadComboBox(langCombo, lang_list, true);
+      this.setLangCombo(langCombo);
+      container.add(langCombo, { row: 2, column: 1 });
 
       vbox.add(container);
 
@@ -239,7 +254,7 @@ qx.Class.define("inventario.sistema.Login",
     _eventHandler : function(e)
     {
         if (e.getKeyIdentifier() == 'Enter') {
-            this.loginHandler(this.getNameField().getValue(), this.getPasswordField().getValue());
+          this._call_login();
         }
     },
 
@@ -252,7 +267,7 @@ qx.Class.define("inventario.sistema.Login",
      * @param passwd {var} TODOC
      * @return {void} void
      */
-    loginHandler : function(userName, passwd)
+    loginHandler : function(userName, passwd, lang)
     {
       /*
        * SECURITY WARNING: habria que chequear si estamos sobre https o rehusar hacer esto...
@@ -276,7 +291,8 @@ qx.Class.define("inventario.sistema.Login",
       var data =
 	{
 	  username : userName,
-	  password : hex_sha1(passwd.toString())
+	  password : hex_sha1(passwd.toString()),
+    lang : lang
 	};
 
       var url = this.getLoginUrl();
@@ -318,6 +334,7 @@ qx.Class.define("inventario.sistema.Login",
         c.setUserName(this.getUserName());
         this.getCallBackFn().call(c, remoteData["privs"]);  /* ceder el mando al que pidio la autenticacion */
         this.getWindow().close();
+        this._set_language(remoteData.verified_lang);
       }
       else
       {
@@ -334,9 +351,36 @@ qx.Class.define("inventario.sistema.Login",
     },
 
     _login_cb : function(e) {
-      this.loginHandler(this.getNameField().getValue(), this.getPasswordField().getValue());
-    }
+      this._call_login();
+    },
 
+    _call_login : function() {
+      var username = this.getNameField().getValue();
+      var password = this.getPasswordField().getValue();
+      var lang = inventario.widget.Form.getInputValue(this.getLangCombo());
+
+      this.loginHandler(username, password, lang);
+    },
+
+    // Recieves the combobox list format and sets the current language
+    _set_language_from_list : function(lang_list) {
+
+      var lang = null;
+      if (lang_list.length > 0){
+    
+        lang = lang_list[0].value
+      }
+
+      this._set_language(lang);
+    },
+
+    _set_language : function(lang){
+
+      if (lang == null){
+        lang = "es";
+      }
+      qx.locale.Manager.getInstance().setLocale(lang);
+    }
 
   }
 });

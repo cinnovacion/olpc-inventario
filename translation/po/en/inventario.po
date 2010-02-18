@@ -13,3 +13,6 @@ msgstr ""
 
 msgid "No tiene autorizacion para esta seccion"
 msgstr "You lack of permissions"
+
+msgid "Usuario o password equivocado"
+msgstr "Wrong login information"

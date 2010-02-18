@@ -38,10 +38,11 @@ class ApplicationController < ActionController::Base
   audit Person, Place, Laptop
 
   #gettext support
-  init_gettext("inventario", :locale_path => "#{RAILS_ROOT}/translation/locale")
-  GetText.locale = "es"
+  #init_gettext("inventario", :locale_path => "#{RAILS_ROOT}/translation/locale")
+  #GetText.locale = "es"
 
   cache_sweeper :object_sweeper
+  before_init_gettext :default_locale
   before_filter :auth_control
   before_filter :access_control
   around_filter :do_scoping
@@ -52,6 +53,16 @@ class ApplicationController < ActionController::Base
   end
 
   private 
+
+  def default_locale
+    if (session["lang"].nil? or session["lang"].empty?)
+      set_locale "es"
+    else
+      set_locale session["lang"]
+    end
+  end
+ 
+  init_gettext("inventario", :locale_path => "#{RAILS_ROOT}/translation/locale")
 
   ###
   # tch says: 
@@ -400,6 +411,38 @@ class ApplicationController < ActionController::Base
     entry[:value] = classObj ? classObj.id : -1
     entry[:selected] = (classObj && classObj.id == targetId) || (!classObj) ? true : false
     entry
+  end
+
+  # #
+  # Language support facilities
+  #
+  def getAcceptedLang
+    accepted_languages = ["es", "en"]
+  end
+
+  def getDefaultLang
+    default_lang = DefaultValue.getJsonValue("lang")
+    default_lang  = (default_lang && getAcceptedLang.include?(default_lang)) ? default_lang : "es"
+  end
+
+  def langCombo
+    default_lang = session["lang"] ? session["lang"] : getDefaultLang
+    lang_full_list = [default_lang] + (getAcceptedLang - [default_lang])
+
+    comboDef = []
+    first = true
+    lang_full_list.each { |lang|
+
+      comboDef.push({ :text => lang, :value => lang, :selected => first })
+      first = false if first
+    }
+
+    comboDef
+  end
+
+  def setLanguage(lang)
+    accepted_languages = getAcceptedLang
+    session["lang"] = accepted_languages.include?(lang) ? lang : getDefaultLang
   end
 
 end
