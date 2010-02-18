@@ -176,4 +176,5 @@
 
   create_if_not_exists(DefaultValue, { :id => "1", :key => "google_api_url", :value => "http://www.google.com/jsapi?key=" })
   create_if_not_exists(DefaultValue, { :id => "2", :key => "google_api_key", :value => "ABCDEFG" })
+  create_if_not_exists(DefaultValue, { :id => "3", :key => "lang", :value => "es" })
 

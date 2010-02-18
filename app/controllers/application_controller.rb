@@ -55,8 +55,8 @@ class ApplicationController < ActionController::Base
   private 
 
   def default_locale
-    if (session["lang"].nil? or session["lang"].empty?)
-      set_locale "es"
+    if !session["lang"]
+      set_locale getDefaultLang
     else
       set_locale session["lang"]
     end
@@ -421,7 +421,8 @@ class ApplicationController < ActionController::Base
   end
 
   def getDefaultLang
-    default_lang = DefaultValue.getJsonValue("lang")
+    default = DefaultValue.find_by_key("lang")
+    default_lang = default ? default.value : nil
     default_lang  = (default_lang && getAcceptedLang.include?(default_lang)) ? default_lang : "es"
   end
 

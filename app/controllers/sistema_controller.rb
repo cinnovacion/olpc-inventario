@@ -68,6 +68,7 @@ class SistemaController < ApplicationController
   
   def logout
     session[:user_id] = nil
+    session["lang"] = getDefaultLang
     @output["msg"] = "Ya no se encuentra en el sistema, hasta luego"
   end
 
