@@ -122,11 +122,11 @@ fi
 %changelog
 
 * Thu Feb 18 2010 Martin Abente <mabente@paraguayeduca.org>
-- Ticket 530: Seleccion de idioma en tiempo de ejecucion
+- Ticket 530: Runtime language selection
 
 * Wed Feb 17 2010 Martin Abente <mabente@paraguayeduca.org>
-- Ticket 528: bug en buscador simple solucionado 
-- Especificacion de recusos a mano y script para esconder datos en la demo
+- Ticket 528: Simple search bug fixed when using empty string
+- Manual resources specs on qooxdoo sources
 
 * Tue Feb 16 2010 Raul Gutierrez S. <rgs@paraguayeduca.org>
 - copy database config example as default config (to be able to complete install)
