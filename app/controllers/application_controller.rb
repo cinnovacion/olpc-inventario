@@ -420,6 +420,11 @@ class ApplicationController < ActionController::Base
     accepted_languages = ["es", "en"]
   end
 
+  def getLangText(lang)
+    lang_texts = { "es" => "Español", "en" => "English" }
+    lang_texts[lang]
+  end
+
   def getDefaultLang
     default = DefaultValue.find_by_key("lang")
     default_lang = default ? default.value : nil
@@ -434,7 +439,7 @@ class ApplicationController < ActionController::Base
     first = true
     lang_full_list.each { |lang|
 
-      comboDef.push({ :text => lang, :value => lang, :selected => first })
+      comboDef.push({ :text => getLangText(lang), :value => lang, :selected => first })
       first = false if first
     }
 
