@@ -1,7 +1,7 @@
 # spec file for our tracking, monitoring and support web app
 Name: inventario		
 Version: 0.3
-Release: 5
+Release: 6
 Vendor: Paraguay Educa
 Summary: This (Ruby on Rails based) web app lets you track laptops given out, status of networks and support tickets.
 Group:	Applications/Internet
@@ -120,6 +120,9 @@ fi
 /var/%{name}/vendor
 
 %changelog
+
+* Fri Feb 19 2010 Martin Abente <mabente@paraguayeduca.org>
+- Ticket 530: Showing languages full text at login screen
 
 * Thu Feb 18 2010 Martin Abente <mabente@paraguayeduca.org>
 - Ticket 530: Runtime language selection
