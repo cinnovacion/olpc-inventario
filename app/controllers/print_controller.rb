@@ -20,9 +20,13 @@
 # Author: Raúl Gutiérrez - rgs@paraguayeduca.org
 # Author: Martin Abente - mabente@paraguayeduca.org
 #
+#
 # TODO:
+# - maybe the data gathering and calculation shouldn't be here. Perhaps in a module in lib/ ?
 # - setting the variable 'nombre' could be infered and setup automatically
 # - the imprimir function could be called automatically by an 'after' hook
+#
+
 
 class PrintController < ApplicationController
 
@@ -351,7 +355,7 @@ class PrintController < ApplicationController
     }
 
 
-    @image_name = "/" + PyEducaGraph::createLine(graph_data,"Tendencia del Promedio(P)", graph_labels)
+    @image_name = "/" + PyEducaGraph::createLine(graph_data, _("Average trend"), graph_labels)
     imprimir("problems_time_distribution", "print/" + "report")
   end
 
@@ -374,9 +378,9 @@ class PrintController < ApplicationController
       buildComboBoxQuery(cond, places_ids, "spare_parts_registries.place_id")
     end
 
-    @titulo = "Entrada de Repuestos"
+    @titulo = _("Incoming repair parts")
     @titulo += "  en #{root_place.getName}" if root_place
-    @columnas = ["Fecha", "Localidad", "Registrado por", "Asignado a", "Dispositivo", "Parte", "Cantidad"]
+    @columnas = [_("Date"), _("Location"), _("Registered by"), _("Assigned to"), _("Device"), _("Part"), _("Quantity")]
     @datos = []
 
     SparePartsRegistry.find(:all, :conditions => cond, :include => inc, :order => "spare_parts_registries.created_at ASC").each { |registry|
@@ -425,8 +429,8 @@ class PrintController < ApplicationController
       results[bank_deposit.deposit].push(row) 
     }
 
-    @titulo = "Depositos en "+ root_place.getName
-    @columnas = ["Deposito","Monto","Banco","Fecha"]
+    @titulo = _("Deposits in %s") %s root_place.getName
+    @columnas = [_("Deposit"), _("Quantity"), _("Bank"), _("Date")]
     @fecha_desde = timeRange["date_since"]
     @fecha_hasta =  timeRange["date_to"]
     @datos = []
@@ -479,7 +483,7 @@ class PrintController < ApplicationController
       bank_deposits = problem_solution ? problem_solution.bank_deposits : nil
 
       row = [
-              (solved ? "Si" : "No"),
+              (solved ? _("Yes") : _("No")),
               problem_type.name,
               owner.getFullName,
               place.getName,
@@ -492,8 +496,8 @@ class PrintController < ApplicationController
       results[solved].push(row)
     }
 
-    @titulo = "Problemas en #{root_place.getName}"
-    @columnas = ["#","Solucionado","Problema", "Persona", "Localidad", "Serial", "Reporte", "Solucion", "Depositos"]
+    @titulo = "Problems in " % root_place.getName
+    @columnas = ["#", _("Solved"), _("Problem"), _("Person"), _("Location"), _("Serial Num."), _("Report"), _("Solution"), _("Deposits")]
     @fecha_desde = timeRange["date_since"]
     @fecha_hasta =  timeRange["date_to"]
     @fontsize = 0.5
@@ -530,7 +534,7 @@ class PrintController < ApplicationController
     if ["day","week","month","year"].include?(group_criteria)
       group_method = "beginning_of_"+group_criteria
     else
-      raise "Not allowed"
+      raise _("Not allowed")
     end
 
     place = nil
@@ -571,11 +575,11 @@ class PrintController < ApplicationController
 
     }
 
-    @titulo = "Cantidad de cedulaciones<br>"
+    @titulo = _("Number of document ids generated") + "<br>"
     @titulo += "#{place.getName}\n" if place
     @fecha_desde = since
     @fecha_hasta = to
-    @columnas = [group_criteria, "Parcial Cedulados", "Parcial Alumnos", "Total Cedulados", "Total Alumnos", "Total No Cedulados", "%"]
+    @columnas = [group_criteria, _("Partially documented"), _("Partial students"), _("Total documented"), _("Total students"), _("Total not documented"), "%"]
     @datos = []
     graph_data = []
 
@@ -606,7 +610,7 @@ class PrintController < ApplicationController
       aux_window += 1.send(group_criteria)
     end
 
-    @image_name = "/" + PyEducaGraph::createBar(graph_data, "Grafico", { :min => 0, :max => 100 })
+    @image_name = "/" + PyEducaGraph::createBar(graph_data, _("Graph"), { :min => 0, :max => 100 })
     imprimir("students_ids_distro", "print/" + "report")
   end
 
@@ -631,8 +635,8 @@ class PrintController < ApplicationController
       root_places.push(root) if isRoot
     }
 
-    @titulo = "Seriales por Localidad"
-    @columnas = ["Localidad", "Total", "Listado"]
+    @titulo = _("Serial numbers by location")
+    @columnas = [_("Location"), _("Total"), _("Entries")]
     @datos = []
 
     root_places.each { |root|
@@ -665,7 +669,7 @@ class PrintController < ApplicationController
 
     root_place_id = print_params.pop.to_i
     root_place = Place.find_by_id(root_place_id)
-    raise "Place not found" if !root_place
+    raise _("Place not found") if !root_place
     root_places_ids = root_place.getDescendantsIds.push(root_place_id)
 
     results = Hash.new
@@ -760,8 +764,8 @@ class PrintController < ApplicationController
       end
     }
 
-    @titulo = "Tiempo de funcionamiento acumulado"
-    @columnas = ["Localidad", "Arriba(Hrs)", "Abajo(Hrs)", "Arriba(%)"]
+    @titulo = _("Accumulated running time")
+    @columnas = [_("Location"), _("Uptime (hrs)"), _("Downtime (hrs)"), _("Up (%)")]
     @fecha_desde = range_start
     @fecha_hasta =  range_end
     @datos = []
@@ -811,7 +815,7 @@ class PrintController < ApplicationController
 
     @datos.sort! { |a,b| a[3] < b[3] ? 1 : -1 }
 
-    @image_name = "/" + PyEducaGraph::createBar(graph_data, "Porcentajes", { :min => 0, :max => 100 })
+    @image_name = "/" + PyEducaGraph::createBar(graph_data, _("Percentages"), { :min => 0, :max => 100 })
     imprimir("online_time_statistics", "print/" + "report")
   end
 
@@ -844,9 +848,9 @@ class PrintController < ApplicationController
       @datos.push([laptop_serial, "NITS", "NITS", "NITS"])
     }
 
-    @titulo = "Donde estan las laptops?"
-    @titulo += "<br>"+"<font size=\"1\"> NITS (Not in the system)</font>" if laptops_not_found != []
-    @columnas = ["Laptop", "Persona", "Localidad", "Estado"]
+    @titulo = _("Where are the laptops?")
+    @titulo += "<br><font size=\"1\">" + _("NITS (Not in the system)") + "</font>" if laptops_not_found != []
+    @columnas = [_("Laptop"), _("Person"), _("Location"), _("Status")]
 
     imprimir("where_are_these_laptops", "print/" + "report")
   end
@@ -867,7 +871,7 @@ class PrintController < ApplicationController
       cond_v[0] += "problem_reports.place_id in (?)"
       cond_v.push(place.getDescendantsIds.push(place_id))
     else
-      raise "Debe seleccionar la localidad"
+      raise _("You must select the location")
     end
 
     part_ids = print_params.pop
@@ -912,8 +916,8 @@ class PrintController < ApplicationController
       end
     }
 
-    @titulo = "Partes de reemplazo utilizadas"
-    @columnas = ["Persona", "Localidad"]+part_types.map { |part| part.getDescription }+["Total"]
+    @titulo = _("Repair parts used")
+    @columnas = [_("Person"), _("Location") ] + part_types.map { |part| part.getDescription } + [_("Total")]
     @datos = []
 
     results.keys.each { |person|
@@ -944,7 +948,7 @@ class PrintController < ApplicationController
         if part_type
           sort_index = @columnas.index(part_type.getDescription)
         else
-          raise "No se puede ordenar por esa parte"
+          raise _("Can't sort by that part.")
         end
     end
 
@@ -971,7 +975,7 @@ class PrintController < ApplicationController
       place = Place.find_by_id(place_id)
       buildComboBoxQuery(cond_v, place.getDescendantsIds.push(place_id), "places.id") if place
     else
-      raise "Debe seleccionar la localidad"
+      raise _("You must select a location.")
     end
  
     problems_type_ids = print_params.pop
@@ -1012,11 +1016,11 @@ class PrintController < ApplicationController
     }
 
     @titulo = place.getName+"<br>"
-    @titulo += "Problemas por Grado<br>"
+    @titulo += _("Problems by grade") + "<br>"
     @titulo += "<font size=\"2\">"+problems_type_titles.join(', ')+"</font><br>"
     @fecha_desde = timeRange["date_since"]
     @fecha_hasta =  timeRange["date_to"]
-    @columnas = ["Grado", "Cantidad"]
+    @columnas = [_("Grade"), _("Quantity")]
     @datos = []
     graph_data = []
 
@@ -1028,7 +1032,7 @@ class PrintController < ApplicationController
     }
     @datos.sort! { |a,b| a[1].to_i < b[1].to_i ? 1 : -1 }
 
-    @image_name = "/" + PyEducaGraph::createBar(graph_data,"Distribucion")
+    @image_name = "/" + PyEducaGraph::createBar(graph_data, _("Distribution"))
     imprimir("problems_per_grade", "print/" + "report")
   end
 
@@ -1082,11 +1086,11 @@ class PrintController < ApplicationController
       end
     }
 
-    @titulo = "Problemas por Localidad<br>"
+    @titulo = _("Problems by location") + "<br>"
     @titulo += "<font size=\"2\">"+problems_type_titles.join(', ')+"</font>"
     @fecha_desde = timeRange["date_since"]
     @fecha_hasta =  timeRange["date_to"]
-    @columnas = ["Localidad", "Solucionados", "No Solucionados", "Total Absoluto", "Personas", "Por Persona", "Eficiencia(%)"]
+    @columnas = [_("Location"), _("Solved"), _("Not solved"), _("Absolute total"), _("People"), _("Per person"), _("Eficiency (%)")]
     @datos = []
     graph_data = []
 
@@ -1106,7 +1110,7 @@ class PrintController < ApplicationController
     }
     @datos.sort! { |a,b| a[sort_criteria].to_f < b[sort_criteria].to_f ? 1 : -1 }
 
-    @image_name = "/" + PyEducaGraph::createPie(graph_data,"Distribucion (Absoluta)")
+    @image_name = "/" + PyEducaGraph::createPie(graph_data,_("Distribution (absolute)"))
     imprimir("problems_per_place", "print/" + "report")
   end
 
@@ -1116,9 +1120,9 @@ class PrintController < ApplicationController
     root_place_id = print_params.pop.to_i
     filters = print_params.pop
 
-    @title = "Estado de Registro de Laptops"
+    @title = _("Status of registered laptops")
     @hashes_array = Array.new
-    @columns = ["Propietario", "CI", "Numero de Serial", "Activacion"]
+    @columns = [_("Owner"), _("Document id"), _("Serial number"), _("Registered")]
 
     root_place = Place.find_by_id(root_place_id)
 
@@ -1141,7 +1145,6 @@ class PrintController < ApplicationController
            laptops.each { |laptop|
       
              if filters.include?(laptop.registered)
-
                place_hash[:sub_array].push([person_name, person.id_document, person.profile.description, laptop.getSerialNumber, laptop.getRegistered])
              end
            }
@@ -1162,7 +1165,7 @@ class PrintController < ApplicationController
     print_params = JSON.parse(params[:print_params]).reverse
     mov_ids = print_params.pop.map {| pair| pair["value"].to_i }
  
-    @title = "Nota de Entrega"
+    @title = _("Delivery receipt")
     @data = Array.new
    
     cond_v = ["movements.id in (?)", mov_ids]
@@ -1186,8 +1189,8 @@ class PrintController < ApplicationController
     place_id = print_params.pop
     root_place = Place.find_by_id(place_id)
 
-    @titulo = "Posibles errores durante la entrega en #{root_place.getName}"
-    @columnas = ["Nombre","Cedula","Laptop","Tiene Laptop"]
+    @titulo = _("Possible errors during deliery in %s") % root_place.getName
+    @columnas = [_("Name"), _("Document id"), _("Laptop"), _("Has laptop?")]
     @datos = []
 
     total = 0
@@ -1219,12 +1222,12 @@ class PrintController < ApplicationController
 
               laptops = possible_clone.laptops
               if laptops == []
-                laptop_str = "No"
+                laptop_str = _("No")
                 laptops_srl = ""
               else
                 total_con_laptops+=1
                 sub_total_con_laptops+=1
-                laptop_str = "Si"
+                laptop_str = _("Yes")
                 laptops_srl = laptops.first.serial_number
               end
               @datos.push([possible_clone.name, possible_clone.id_document,laptops_srl,laptop_str])
@@ -1233,7 +1236,8 @@ class PrintController < ApplicationController
         }
 
         if sub_total > 0
-          sub_print_str = "<B>(#{place.getName}):</B> Existen #{sub_total.to_s} repetidos, de los cuales #{sub_total_con_laptops.to_s} tienen laptops y #{(sub_total-sub_total_con_laptops).to_s} no."
+          str_vars = [ place.getName, sub_total.to_s, sub_total_con_laptops.to_s, (sub_total-sub_total_con_laptops).to_s]
+          sub_print_str = _("<b>(%s):</b> There is %s repeated, of which %s have laptops y %s don't.") % str_vars
           @datos.push([sub_print_str,"","",""])
           @datos.push(["","","",""])
         end
@@ -1243,9 +1247,10 @@ class PrintController < ApplicationController
     end
 
     if total > 0
-      print_str = "<B>En total:</B> Existen #{total.to_s} estudiantes repetidos, de los cuales #{total_con_laptops.to_s} tienen laptops y #{(total-total_con_laptops).to_s} no."
+      str_vars = [total.to_s, total_con_laptops.to_s, (total-total_con_laptops).to_s]
+      print_str = _("<B>In total:</B> there is %s repeated students, of which %s have laptos and %s don't.") % str_vars
     else
-      print_str = "No se encontraron posibles errores."
+      print_str = _("No possible errors found.")
     end
     @datos.push([print_str,"","",""])
 
