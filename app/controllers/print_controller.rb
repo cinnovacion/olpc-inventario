@@ -1264,8 +1264,8 @@ class PrintController < ApplicationController
     place_id = print_params.pop
     place = Place.find_by_id(place_id)
 
-    @titulo = "Distribucion de laptops en " + place.getName
-    @columnas = ["#Escuela","Nombre","Cantidad"]
+    @titulo = "Laptops distributions at %s " % place.getName
+    @columnas = [_("School num."), _("School name"), _("Quantity")]
     @datos = []
     @grand_total = 0
     place.places.each { |subPlace|
@@ -1426,10 +1426,10 @@ class PrintController < ApplicationController
       buildComboBoxQuery(cond_v, places, "places.id")
     end
 
-    @titulo = "Entregas"
+    @titulo = _("Laptop movements")
     @fecha_desde = dateOpts["date_since"]
     @fecha_hasta = dateOpts["date_to"]
-    @columnas = ["#Mov","Fecha","Art","Serial","Entrego","Recibio","Motivo"]
+    @columnas = [_("Mov \#"), _("Fecha"), _("Desc"), _("Serial"), _("Given by"), _("Received by"), _("Reason")]
     @datos = []
 
     inc_v = [{:movement_details => :laptop},:movement_type,:source_person, {:destination_person => {:performs => :place}}]
@@ -1471,14 +1471,14 @@ class PrintController < ApplicationController
       places = Place.find_by_id(place_id).getDescendantsIds().push(place_id.to_i)
       buildComboBoxQuery(cond_v, places, "performs.place_id")
     else
-      raise "Localidad no especificada"
+      raise _("You must select a location.")
     end
 
-    @titulo = "Totales por tipo de movimiento"
+    @titulo = _("Totals by movement type")
     @fecha_desde = dateOpts["date_since"]
     @fecha_hasta = dateOpts["date_to"]
-    @columnas = ["Tipo"]
-    @columnas.push("Laptops")
+    @columnas = [_("Type")]
+    @columnas.push(_("Laptops"))
     @datos = []
 
     graph_data = Array.new
@@ -1524,10 +1524,10 @@ class PrintController < ApplicationController
     movements = Movement.find(:all, :conditions => cond_v,:include => include_v)
 
     # Se definen los elementos del view.
-    @titulo = "Movimientos en ventana de tiempo"
+    @titulo = _("Movements on a given timeframe")
     @fecha_desde = dateOpts["date_since"]
     @fecha_hasta = dateOpts["date_to"]
-    @columnas = ["Nro.","Fecha","Partes","Responsable","Entregado por","Recibido por"]
+    @columnas = [_("\#"), _("Date"), _("Parts"), _("Responsible"), _("Delivered by"), _("Received by")]
     @datos = movements.map { |d|
       a = Array.new
       a.push(d.id)
@@ -1542,7 +1542,7 @@ class PrintController < ApplicationController
   end
 
   ##
-  # Distribucion de laptops por personas.
+  # Distribution of laptops owned per person. 
   def laptops_per_owner
 
     print_params = JSON.parse(params[:print_params]).reverse
@@ -1564,23 +1564,22 @@ class PrintController < ApplicationController
     # order according number of laptops (descending)
     @datos.sort! { |a,b| a[1] >= b[1] ?  -1  : 1 }
 
-    @titulo = "Laptops por propietario"
-    @columnas = ["Propietario","Cantidad"]
+    @titulo = _("Laptops per owner")
+    @columnas = [_("Person"), _("Quantity")]
     imprimir("laptops", "print/" + "report")
-
   end
 
   ##
-  # Distribucion de laptops entregadas por persona
- def laptops_per_source_person
+  # Distribution of laptops handed off per person. 
+  def laptops_per_source_person
     print_params = JSON.parse(params[:print_params]).reverse
     cond_v = [""]
 
     source_person = print_params.pop
     buildPersonQuery(cond_v,source_person,"id")
 
-    @titulo = "Laptops entregadas por persona"
-    @columnas =  ["Persona","Cantidad"]
+    @titulo = _("Laptops handed out per person")
+    @columnas = [_("Person"), _("Quantity")]
     @datos = []
     include_v = [{:source_movements => :movement_details}]
     Person.find(:all,:conditions => cond_v, :include => include_v).each { |p|
@@ -1598,21 +1597,24 @@ class PrintController < ApplicationController
     # Sort by count in descending order
     @datos.sort! { |a,b| a[1] >= b[1] ?  -1  : 1 }
 
-   imprimir("laptops", "print/" + "report")
- end
+    imprimir("laptops", "print/" + "report")
+  end
 
- ##
- # God (dijkstra)forgive me. (Casi Cope/paste del reporte anterior.)
- # Distribucion de laptops a personas.
- def laptops_per_destination_person
+  ##
+  # God (Dijkstra) forgive me. 
+  #
+  # FIXME: this almost an *exact* copy of the above method. Refactoring?
+  #
+  # Distribution of laptops to people.
+  def laptops_per_destination_person
     print_params = JSON.parse(params[:print_params]).reverse
     cond_v = [""]
 
     destination_person = print_params.pop
     buildPersonQuery(cond_v,destination_person,"id")
 
-    @titulo = "Laptops entregadas a persona"
-    @columnas =  ["Persona","Cantidad"]
+    @titulo = _("Laptops given to people")
+    @columnas = [_("Person"), _("Quantity")]
     @datos = []
     include_v = [{:destination_movements => :movement_details}]
     Person.find(:all,:conditions => cond_v, :include => include_v).each { |p|
@@ -1630,35 +1632,12 @@ class PrintController < ApplicationController
     # Sort by count in descending order
     @datos.sort! { |a,b| a[1] >= b[1] ?  -1  : 1 }
 
-   imprimir("laptops", "print/" + "report")
- end
- 
- ##
- # Activaciones dentro de un rango de tiempo y por activador.
-  def activations
-    print_params = JSON.parse(params[:print_params]).reverse
-    cond_v = [""]
-
-    timeRange = print_params.pop
-    buildDateQuery(cond_v,timeRange,"date_activated_at")
-
-    activator = print_params.pop
-    buildPersonQuery(cond_v,activator,"person_activated_id")
-
-    @titulo = "Activaciones"
-    @fecha_desde = timeRange["date_since"]
-    @fecha_hasta = timeRange["date_to"]
-    @columnas = ["Laptop Serial","Activador","Fecha Activacion","Comentario"]
-    @datos = []
-    include_v = [:laptop,:person_who_activated]
-    Activation.find(:all,:conditions => cond_v,:include => include_v, :order => "date_activated_at DESC").each { |a|
-      @datos.push([a.getSerialNumber(),a.getActivator(),a.getActivationDate(),a.getComment()])
-    }
-    imprimir("activaciones", "print/" + "report")
+    imprimir("laptops", "print/" + "report")
   end
-
+ 
   ##
-  # Prestamos realizados
+  # Laptops lended. 
+  #
   def lendings
     print_params = JSON.parse(params[:print_params]).reverse
     cond_v = [" return_date is not null "]
