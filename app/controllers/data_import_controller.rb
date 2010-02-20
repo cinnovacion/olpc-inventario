@@ -29,14 +29,14 @@ class DataImportController < ApplicationController
     definition = Hash.new
 
     models = Array.new
-    models.push({:text => "Cargar estudiantes", :value => "students", :selected => true})
-    models.push({:text => "Cargar maestros", :value => "teachers", :selected => false})
-    models.push({:text => "Cargar UUIDs", :value => "uuids", :selected => false})
+    models.push({:text => _("Load students"), :value => "students", :selected => true})
+    models.push({:text => _("Load teachers"), :value => "teachers", :selected => false})
+    models.push({:text => _("Load UUIDs"), :value => "uuids", :selected => false})
     definition[:models] = models
 
     #For now we are going to use fixed format for every file type.
     formats = Array.new
-    formats.push({:text => "Planilla", :value => "xls",:selected => true})
+    formats.push({:text => _("Spreadsheet"), :value => "xls",:selected => true})
     definition[:formats] = formats
 
     @output["definition"] = definition
@@ -61,9 +61,9 @@ class DataImportController < ApplicationController
       end
 
     else
-      raise "Nada que importar."
+      raise _("Nothing to import.")
     end
-    @output["msg"] = "El archivo fue importado correctamente."
+    @output["msg"] = _("The file was imported correctly.")
   end
 
 end

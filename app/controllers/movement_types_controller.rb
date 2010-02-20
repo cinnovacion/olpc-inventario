@@ -44,11 +44,11 @@ class MovementTypesController < SearchController
     @output["fields"] = []
 
 
-    h = { "label" => "Descripcion", "datatype" => "textfield" }.merge( p ? {"value" => p.description } : {} )
+    h = { "label" => _("Description"), "datatype" => "textfield" }.merge( p ? {"value" => p.description } : {} )
     @output["fields"].push(h)
 
     options = buildBooleanSelectHash2(p ? p.is_delivery : true)
-    h = { "label" => "Es una entrega?", "datatype" => "combobox", :options => options }
+    h = { "label" => _("Handoff?"), "datatype" => "combobox", :options => options }
     @output["fields"].push(h)
 
   end
@@ -66,15 +66,13 @@ class MovementTypesController < SearchController
       MovementType.create!(attribs)
     end
 
-    @output["msg"] = datos["id"] ? "Cambios guardados" : "Tipo de Movimiento agregado"  
+    @output["msg"] = datos["id"] ? _("Changes saved.") : _("Movement type added.")
   end
 
   def delete
     ids = JSON.parse(params[:payload])
     MovementType.destroy(ids)
-    @output["msg"] = "Elementos eliminados"
+    @output["msg"] = _("Elements deleted.")
   end
-  
-
 
 end

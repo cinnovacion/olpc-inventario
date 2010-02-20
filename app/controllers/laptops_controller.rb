@@ -97,13 +97,13 @@ class LaptopsController < SearchController
         end
       end
     end 
-    @output["msg"] = datos["id"] || datos["ids"] ? "Cambios guardados" : "Laptop agregada"  
+    @output["msg"] = datos["id"] || datos["ids"] ? _("Changes saved.") : _("Laptop added.")  
   end
 
   def delete
     ids = JSON.parse(params[:payload])
     Laptop.destroy(ids)
-    @output["msg"] = "Elementos eliminados"
+    @output["msg"] = _("Elements deleted.")
   end
 
   def requestBlackList
@@ -157,26 +157,26 @@ class LaptopsController < SearchController
     end
     
 
-    h = { "label" => "Nro. Serial","datatype" => "textfield" }.merge( p ? {"value" => p.serial_number } : {} )
+    h = { "label" => _("Serial Number"),"datatype" => "textfield" }.merge( p ? {"value" => p.serial_number } : {} )
     @output["fields"].push(h)
 
-    h = { "label" => "Version SO","datatype" => "textfield" }.merge( p ? {"value" => p.build_version } : {} )
+    h = { "label" => _("OS version"),"datatype" => "textfield" }.merge( p ? {"value" => p.build_version } : {} )
     @output["fields"].push(h)
 
     id = p ? p.model_id : -1
     modelos = buildSelectHash2(Model,id,"name",false,[])
-    h = { "label" => "Modelo","datatype" => "combobox","options" => modelos }
+    h = { "label" => _("Model"),"datatype" => "combobox","options" => modelos }
     @output["fields"].push(h)
 
     id =  p ? p.shipment_arrival_id : -1
     shipments = buildSelectHash2(Shipment,id,"comment",false,[])
-    h = { "label" => "Cargamento","datatype" => "combobox","options" => shipments }
+    h = { "label" => _("Shipment"), "datatype" => "combobox","options" => shipments }
     @output["fields"].push(h)
 
     id = p ? p.owner_id : -1
     #people = buildSelectHash2(Person,id,"getFullName()",false,[])
     people = buildSelectHashSingle(Person, id, "getFullName()")
-    h = { "label" => "En manos de","datatype" => "select","options" => people, :option => "personas" }
+    h = { "label" => _("Owned by"),"datatype" => "select","options" => people, :option => "personas" }
     @output["fields"].push(h)
 
     #h = { "label" => "Id Caja","datatype" => "textfield" }.merge( p ? {"value" => p.box_serial_number } : {} )
@@ -184,20 +184,20 @@ class LaptopsController < SearchController
 
     id = p && p.status ? p.status_id : Status.find_by_internal_tag("deactivated").id
     statuses = buildSelectHash2(Status,id,"getDescription()",false,[])
-    h = { "label" => "Estado","datatype" => "combobox","options" => statuses }
+    h = { "label" => _("Status"),"datatype" => "combobox","options" => statuses }
     @output["fields"].push(h)
 
-    h = { "label" => "Uuid","datatype" => "textfield" }.merge( p ? {"value" => p.uuid } : {} )
+    h = { "label" => _("UUID"),"datatype" => "textfield" }.merge( p ? {"value" => p.uuid } : {} )
     @output["fields"].push(h)
 
-   h = { "label" => "Cargar .xls","datatype" => "uploadfield", :field_name => :uploadfile }
+   h = { "label" => _("Load .xls"),"datatype" => "uploadfield", :field_name => :uploadfile }
    @output["fields"].push(h)
 
   end
 
 
   ###
-  # Ponemos los datos de la 1era laptop
+  # We save the attributes of the first laptop (only). 
   #
   def new_batch_edit(ids)
     p = Laptop.find(ids[0])
@@ -207,22 +207,22 @@ class LaptopsController < SearchController
     # User must check fields that where updated 
     @output["needs_update"] = true
 
-    h = { "label" => "Version SO","datatype" => "textfield" }.merge( p ? {"value" => p.build_version } : {} )
+    h = { "label" => _("OS version"),"datatype" => "textfield" }.merge( p ? {"value" => p.build_version } : {} )
     @output["fields"].push(h)
 
     id = p ? p.model_id : -1
     modelos = buildSelectHash2(Model,id,"name",false,[])
-    h = { "label" => "Modelo","datatype" => "combobox","options" => modelos }
+    h = { "label" => _("Model"),"datatype" => "combobox","options" => modelos }
     @output["fields"].push(h)
 
     id =  p ? p.shipment_arrival_id : -1
     shipments = buildSelectHash2(Shipment,id,"comment",false,[])
-    h = { "label" => "Cargamento","datatype" => "combobox","options" => shipments }
+    h = { "label" => _("Shipment"),"datatype" => "combobox","options" => shipments }
     @output["fields"].push(h)
 
     id = p ? p.owner_id : -1
     people = buildSelectHash2(Person,id,"getFullName()",false,[])
-    h = { "label" => "En manos de","datatype" => "combobox","options" => people }
+    h = { "label" => _("Owned by"), "datatype" => "combobox","options" => people }
     @output["fields"].push(h)
 
     #h = { "label" => "Id Caja","datatype" => "textfield" }.merge( p ? {"value" => p.box_serial_number } : {} )
@@ -230,7 +230,7 @@ class LaptopsController < SearchController
 
     id = p && p.status ? p.status_id : Status.find_by_internal_tag("deactivated").id
     statuses = buildSelectHash2(Status,id,"getDescription()",false,[])
-    h = { "label" => "Estado","datatype" => "combobox","options" => statuses }
+    h = { "label" => _("Status"), "datatype" => "combobox","options" => statuses }
     @output["fields"].push(h)
 
   end

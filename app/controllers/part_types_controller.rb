@@ -33,7 +33,7 @@ class PartTypesController < SearchController
 
   def new
 
-    @output["window_title"] = "Tipo de partes"
+    @output["window_title"] = _("Part types")
 
     @output["fields"] = []
 
@@ -44,13 +44,13 @@ class PartTypesController < SearchController
       type = nil
     end
 
-    h = { "label" => "Nombre", "datatype" => "textfield" }.merge( type ? {"value" => type.getDescription() } : {} )
+    h = { "label" => _("Name"), "datatype" => "textfield" }.merge( type ? {"value" => type.getDescription() } : {} )
     @output["fields"].push(h)
 
-    h = { "label" => "Costo", "datatype" => "textfield" }.merge( type ? {"value" => type.getCost() } : {} )
+    h = { "label" => _("Cost"), "datatype" => "textfield" }.merge( type ? {"value" => type.getCost() } : {} )
     @output["fields"].push(h)
 
-    h = { "label" => "Tag", "datatype" => "textfield" }.merge( type ? {"value" => type.getInternalTag() } : {} )
+    h = { "label" => _("Tag"), "datatype" => "textfield" }.merge( type ? {"value" => type.getInternalTag() } : {} )
     @output["fields"].push(h)
 
   end
@@ -76,7 +76,7 @@ class PartTypesController < SearchController
   def delete
     ids = JSON.parse(params[:payload])
     PartType.destroy(ids)
-    @output["msg"] = "Elementos eliminados"
+    @output["msg"] = _("Elements deleted.")
   end
 
 end

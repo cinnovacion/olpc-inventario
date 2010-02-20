@@ -1,7 +1,26 @@
+#     Copyright Paraguay Educa 2010
+#
+#     This program is free software: you can redistribute it and/or modify
+#     it under the terms of the GNU General Public License as published by
+#     the Free Software Foundation, either version 3 of the License, or
+#     (at your option) any later version.
+# 
+#     This program is distributed in the hope that it will be useful,
+#     but WITHOUT ANY WARRANTY; without even the implied warranty of
+#     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#     GNU General Public License for more details.
+# 
+#     You should have received a copy of the GNU General Public License
+#     along with this program.  If not, see <http://www.gnu.org/licenses/>
+# 
+#
+# Author: Martin Abente - mabente@paraguayeduca.org
+#
+
 class PartMovementTypesController < SearchController
 
   def search
-    do_search(PartMovementType,nil)
+    do_search(PartMovementType, nil)
   end
 
   def search_options
@@ -19,21 +38,21 @@ class PartMovementTypesController < SearchController
     
     @output["fields"] = []
 
-    h = { "label" => "Nombre", "datatype" => "textfield" }.merge( part_movement_type ? {"value" => part_movement_type.getName } : {} )
+    h = { "label" => _("Name"), "datatype" => "textfield" }.merge( part_movement_type ? {"value" => part_movement_type.getName } : {} )
     @output["fields"].push(h)
 
-    h = { "label" => "Descripcion", "datatype" => "textfield" }.merge( part_movement_type ? {"value" => part_movement_type.getDescription } : {} )
+    h = { "label" => _("Description"), "datatype" => "textfield" }.merge( part_movement_type ? {"value" => part_movement_type.getDescription } : {} )
     @output["fields"].push(h)
 
-    h = { "label" => "Tag interno", "datatype" => "textfield" }.merge( part_movement_type ? {"value" => part_movement_type.getInternalTag } : {} )
+    h = { "label" => _("Internal tag"), "datatype" => "textfield" }.merge( part_movement_type ? {"value" => part_movement_type.getInternalTag } : {} )
     @output["fields"].push(h)
 
     direction = part_movement_type ? part_movement_type.direction ? true : false : false
     options = [
-      { :text => "Entrada", :value => true, :selected =>  direction},
-      { :text => "Salida", :value => false, :selected => !direction}
+      { :text => _("Incoming"), :value => true, :selected =>  direction},
+      { :text => _("Outgoing"), :value => false, :selected => !direction}
     ]
-    h = { "label" => "Direccion", "datatype" => "combobox", :options => options }
+    h = { "label" => _("Direction"), "datatype" => "combobox", :options => options }
     @output["fields"].push(h)
   end
 
@@ -54,13 +73,13 @@ class PartMovementTypesController < SearchController
       PartMovementType.create!(attribs)
     end
 
-    @output["msg"] = datos["id"] ? "Cambios guardados" : "Tipo de Movimiento de parte agregado"  
+    @output["msg"] = datos["id"] ? _("Changes saved") : "Part movement type added."  
   end
 
   def delete
     ids = JSON.parse(params[:payload])
     PartMovementType.destroy(ids)
-    @output["msg"] = "Elementos eliminados"
+    @output["msg"] = "Elements deleted."
   end
 
 end

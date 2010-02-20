@@ -90,39 +90,39 @@ class NodesController < SearchController
 
     @output["fields"] = []
 
-    h = { "label" => "Nombre","datatype" => "textfield" }.merge( node ? {"value" => node.getName } : {} )
+    h = { "label" => _("Name"),"datatype" => "textfield" }.merge( node ? {"value" => node.getName } : {} )
     @output["fields"].push(h)
 
-    h = { "label" => "Latitud","datatype" => "coords_text_field" }.merge( node ? {"value" => node.getLat } : {} )
+    h = { "label" => _("Latitude"),"datatype" => "coords_text_field" }.merge( node ? {"value" => node.getLat } : {} )
     @output["fields"].push(h)
 
-    h = { "label" => "Longitud","datatype" => "coords_text_field" }.merge( node ? {"value" => node.getLng } : {} )
+    h = { "label" => _("Longitude"),"datatype" => "coords_text_field" }.merge( node ? {"value" => node.getLng } : {} )
     @output["fields"].push(h)
 
-    h = { "label" => "Altura","datatype" => "textfield" }.merge( node ? {"value" => node.getHeight } : {} )
+    h = { "label" => _("Height"),"datatype" => "textfield" }.merge( node ? {"value" => node.getHeight } : {} )
     @output["fields"].push(h)
 
     val = node ? node.getZoom : Node::DEFAULT_ZOOM_VALUE
-    h = { "label" => "Zoom","datatype" => "textfield", "value" => val }
+    h = { "label" => _("Zoom"),"datatype" => "textfield", "value" => val }
     @output["fields"].push(h)
 
     id = (node && node.place) ? node.place_id : -1
     places = buildHierarchyHash(Place, "places", "places.place_id", "name", id, nil, nil, false)
-    h = { "label" => "Localidad","datatype" => "select","options" => places, "option" => "localidades" }
+    h = { "label" => _("Place"),"datatype" => "select","options" => places, "option" => "localidades" }
     @output["fields"].push(h)
 
     id = (node && node.node_type) ? node.node_type_id : -1
     types = buildSelectHash2(NodeType,id,"getName",true,[])
-    h = { "label" => "Tipo","datatype" => "combobox","options" => types }
+    h = { "label" => _("Type"),"datatype" => "combobox","options" => types }
     @output["fields"].push(h)
 
-    h = { "label" => "Direccion Ip", "datatype" => "textfield" }.merge( node ? {"value" => node.getIpAddress } : {} )
+    h = { "label" => _("IP address"), "datatype" => "textfield" }.merge( node ? {"value" => node.getIpAddress } : {} )
     @output["fields"].push(h)
 
-    h = { "label" => "Username","datatype" => "textfield" }.merge( node ? {"value" => node.getUsername } : {} )
+    h = { "label" => _("Username"),"datatype" => "textfield" }.merge( node ? {"value" => node.getUsername } : {} )
     @output["fields"].push(h)
 
-    h = { "label" => "Password","datatype" => "textfield" }.merge( node ? {"value" => node.getPassword } : {} )
+    h = { "label" => _("Password"),"datatype" => "textfield" }.merge( node ? {"value" => node.getPassword } : {} )
     @output["fields"].push(h)
 
   end
@@ -150,13 +150,13 @@ class NodesController < SearchController
       Node.create!(attribs)
     end
 
-    @output["msg"] = datos["id"] ? "Cambios guardados." : "Nodo agregado."
+    @output["msg"] = datos["id"] ? _("Changes saved.") : _("Node added.")
   end
 
   def delete
     ids = JSON.parse(params[:payload])
     Node.destroy(ids)
-    @output["msg"] = "Elementos eliminados"
+    @output["msg"] = _("Elements deleted")
   end
 
   ##

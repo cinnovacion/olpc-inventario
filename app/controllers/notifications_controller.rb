@@ -41,17 +41,17 @@ class NotificationsController < SearchController
 
     @output["fields"] = []
 
-    h = { "label" => "Nombre", "datatype" => "textfield" }.merge( notification ? {"value" => notification.getName } : {} )
+    h = { "label" => _("Name"), "datatype" => "textfield" }.merge( notification ? {"value" => notification.getName } : {} )
     @output["fields"].push(h)
 
-    h = { "label" => "Descripcion", "datatype" => "textfield" }.merge( notification ? {"value" => notification.getDescription } : {} )
+    h = { "label" => _("Description"), "datatype" => "textfield" }.merge( notification ? {"value" => notification.getDescription } : {} )
     @output["fields"].push(h)
 
-    h = { "label" => "Tag interno", "datatype" => "textfield" }.merge( notification ? {"value" => notification.getInternalTag } : {} )
+    h = { "label" => _("Internal tag"), "datatype" => "textfield" }.merge( notification ? {"value" => notification.getInternalTag } : {} )
     @output["fields"].push(h)
 
     options = buildBooleanSelectHash(notification ? notification.getActiveStatus() : true)
-    h = { "label" => "Activado", "datatype" => "combobox", "options" => options }
+    h = { "label" => _("Active"), "datatype" => "combobox", "options" => options }
     @output["fields"].push(h)
   end
 
@@ -73,12 +73,13 @@ class NotificationsController < SearchController
       Notification.create(attribs)
     end
 
+    @output["msg"] = datos["id"] ? _("Changes saved.") : _("Notification added.")
   end
 
   def delete
     ids = JSON.parse(params[:payload])
     Notification.destroy(ids)
-    @output["msg"] = "Elementos eliminados"
+    @output["msg"] = _("Elements deleted")
   end
 
 end

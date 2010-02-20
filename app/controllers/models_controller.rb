@@ -43,17 +43,16 @@ class ModelsController < SearchController
     
     @output["fields"] = []
 
-    h = { "label" => "Nombre","datatype" => "textfield" }.merge( p ? {"value" => p.name } : {} )
+    h = { "label" => _("Name"), "datatype" => "textfield" }.merge( p ? {"value" => p.name } : {} )
     @output["fields"].push(h)
 
 
-    h = { "label" => "Descripcion","datatype" => "textfield" }.merge( p ? {"value" => p.description } : {} )
+    h = { "label" => _("Description"), "datatype" => "textfield" }.merge( p ? {"value" => p.description } : {} )
     @output["fields"].push(h)
 
   end
 	
   def save
-
     datos = JSON.parse(params[:payload])
     attribs = Hash.new
     attribs[:name] = datos["fields"][0]
@@ -66,15 +65,13 @@ class ModelsController < SearchController
       Model.create!(attribs)
     end
 
-    
-    @output["msg"] = datos["id"] ? "Cambios guardados" : "Modelo agregado"  
+    @output["msg"] = datos["id"] ? _("Changes saved.") : _("Model added.")  
   end
 
   def delete
     ids = JSON.parse(params[:payload])
     Model.destroy(ids)
-    @output["msg"] = "Elementos eliminados"
+    @output["msg"] = _("Elements deleted.")
   end
-
 
 end

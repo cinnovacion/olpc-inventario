@@ -1,3 +1,22 @@
+#     Copyright Paraguay Educa 2010
+#
+#     This program is free software: you can redistribute it and/or modify
+#     it under the terms of the GNU General Public License as published by
+#     the Free Software Foundation, either version 3 of the License, or
+#     (at your option) any later version.
+# 
+#     This program is distributed in the hope that it will be useful,
+#     but WITHOUT ANY WARRANTY; without even the implied warranty of
+#     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#     GNU General Public License for more details.
+# 
+#     You should have received a copy of the GNU General Public License
+#     along with this program.  If not, see <http://www.gnu.org/licenses/>
+# 
+#
+# Author: Martin Abente - mabente@paraguayeduca.org
+#
+
 class PartMovementsController < SearchController
 
   def initialize
@@ -6,12 +25,12 @@ class PartMovementsController < SearchController
   end
 
   def search
-    do_search(PartMovement,{:include => @include_str })
+    do_search(PartMovement, {:include => @include_str })
   end
 
   def search_options
     crearColumnasCriterios(PartMovement)
-    do_search(PartMovement,{:include => @include_str })
+    do_search(PartMovement, {:include => @include_str })
   end
 
   def new 
@@ -22,27 +41,27 @@ class PartMovementsController < SearchController
       @output["id"] = part_movement.id
     end
 
-    @output["window_title"] = "Nuevo movimiento de partes"
+    @output["window_title"] = _("Add a new movement of parts.")
     @output["fields"] = []
 
     id = part_movement ? part_movement.part_movement_type.id : nil
     part_movement_types = buildSelectHash2(PartMovementType, id, "getName", false, [])
-    h = { "label" => "Tipo de movimiento", "datatype" => "combobox", "options" => part_movement_types }
+    h = { "label" => _("Movement type"), "datatype" => "combobox", "options" => part_movement_types }
     @output["fields"].push(h)
 
     id = part_movement ? part_movement.part_type.id : nil
     part_types = buildSelectHash2(PartType, id, "getDescription", false, [])
-    h = { "label" => "Tipo de parte", "datatype" => "combobox", "options" => part_types }
+    h = { "label" => _("Part type"), "datatype" => "combobox", "options" => part_types }
     @output["fields"].push(h)
 
-    h = { "label" => "Cantidad", "datatype" => "textfield" }.merge( part_movement ? {"value" => part_movement.getAmount } : {} )
+    h = { "label" => _("Quantity"), "datatype" => "textfield" }.merge( part_movement ? {"value" => part_movement.getAmount } : {} )
     @output["fields"].push(h)
 
     #options = (part_movement && part_movement.person) ? [{ :text => part_movement.person.getFullName, :value => part_movement.person.id, :selected => true}] : []
     #h = { "label" => "Responsable (CI)", "datatype" => "select", "options" => options, "option" => "personas" }
     #@output["fields"].push(h)
 
-    h = { "label" => "Localidad", "datatype" => "hierarchy_on_demand", "options" => { "width" => 360, "height" => 50 }}
+    h = { "label" => _("Place"), "datatype" => "hierarchy_on_demand", "options" => { "width" => 360, "height" => 50 }}
     h.merge!( part_movement && part_movement.place ? {"dataHash" => part_movement.place.getElementsHash } : {} )
     @output["fields"].push(h)
 
@@ -71,25 +90,25 @@ class PartMovementsController < SearchController
   def delete
     part_movement_ids = JSON.parse(params[:payload])
     PartMovement.delete(part_movement_ids)
-    @output["msg"] = "Elementos eliminados"
+    @output["msg"] = _("Elements deleted.")
   end
 
   def new_transfer
 
-    @output["window_title"] = "Transferencia de partes"
+    @output["window_title"] = _("Transfer parts.")
     @output["fields"] = []
 
     part_types = buildSelectHash2(PartType, -1, "getDescription", false, [])
-    h = { "label" => "Tipo de parte", "datatype" => "combobox", "options" => part_types }
+    h = { "label" => _("Part type"), "datatype" => "combobox", "options" => part_types }
     @output["fields"].push(h)
 
-    h = { "label" => "Cantidad", "datatype" => "textfield" }
+    h = { "label" => _("Quantity"), "datatype" => "textfield" }
     @output["fields"].push(h)
 
-    h = { "label" => "Localidad Origen", "datatype" => "hierarchy_on_demand", "options" => { "width" => 360, "height" => 50 }}
+    h = { "label" => _("Source place"), "datatype" => "hierarchy_on_demand", "options" => { "width" => 360, "height" => 50 }}
     @output["fields"].push(h)
 
-    h = { "label" => "Localidad Destino", "datatype" => "hierarchy_on_demand", "options" => { "width" => 360, "height" => 50 }}
+    h = { "label" => _("Destination place"), "datatype" => "hierarchy_on_demand", "options" => { "width" => 360, "height" => 50 }}
     @output["fields"].push(h)
   end
 
@@ -107,7 +126,7 @@ class PartMovementsController < SearchController
     to_place_id = data_fields.pop.to_i
 
     PartMovement.registerTransfer(attribs, from_place_id, to_place_id)
-    @output["msg"] = "La transferencia se ha realizado correctamente"
+    @output["msg"] = _("Transfer saved.")
   end
 
 end

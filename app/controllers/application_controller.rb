@@ -33,13 +33,9 @@
 
 class ApplicationController < ActionController::Base
 
-  #Deprecated but still needed for audited_classes method (Plugin's bug)
-  #It also requied to add acts_as_audited inside each model
+  # DEPRECATED: but still needed for audited_classes method (Plugin's bug).
+  #             It also requied to add acts_as_audited inside each model
   audit Person, Place, Laptop
-
-  #gettext support
-  #init_gettext("inventario", :locale_path => "#{RAILS_ROOT}/translation/locale")
-  #GetText.locale = "es"
 
   cache_sweeper :object_sweeper
   before_init_gettext :default_locale
@@ -195,7 +191,7 @@ class ApplicationController < ActionController::Base
 
     if @check_authentication && !session[:user_id]
       @output["result"] = "Error"
-      @output["msg"] =  "No esta autenticado"
+      @output["msg"] =  _("You are not authenticated")
       render :text => @output.to_json
       return false
     else
@@ -293,27 +289,26 @@ class ApplicationController < ActionController::Base
     [hash]
   end
 
-  # Genera un ComboBox p/ atributos Booleanos
+  # Generates a combobox with boolean values
   #
-  # FIXME: usar bool en la DB!
+  # FIXME: we should use the bool datatype in the Database
   def buildBooleanSelectHash(yesSelected)
     ret = []
-    ret.push( {:text => "Si",:value => "S",:selected => yesSelected ? true : false} )
-    ret.push( {:text => "No",:value => "N",:selected => yesSelected == false ? true : false} )
+    ret.push( {:text => _("Yes"),:value => "S",:selected => yesSelected ? true : false} )
+    ret.push( {:text => _("No"),:value => "N",:selected => yesSelected == false ? true : false} )
     ret
   end
 
-  # Genera un ComboBox p/ atributos Booleanos
+  # Generates a combobox with boolean values
   def buildBooleanSelectHash2(yesSelected)
     ret = []
-    ret.push( {:text => "Si",:value => "1",:selected => yesSelected ? true : false} )
-    ret.push( {:text => "No",:value => "0",:selected => yesSelected == false ? true : false} )
+    ret.push( {:text => _("Yes"),:value => "1",:selected => yesSelected ? true : false} )
+    ret.push( {:text => _("No"),:value => "0",:selected => yesSelected == false ? true : false} )
     ret
   end
 
-  # Genera un ComboBox p/ atributos variables
-  # @datos vector de hashes { text, value, selected (bool) }
-  # FIXME: usar bool en la DB!
+  # Generates a combobox for a variable attributes
+  # @datos Array of Hashes [ { text, value, selected (bool) } , ... ]
   def buildVariableSelectHash(datos,key)
     ret = []
     for d in datos
@@ -322,16 +317,16 @@ class ApplicationController < ActionController::Base
     ret
   end
 
-  # rpc_block(): esta funcion es un wrapper para nuestras llamadas desde Qooxdoo
-  #
+  ###
+  # rpc_block(): here we handle AJAX requests (and serialization out to JSON)
   #
   def rpc_block
 
     begin
-    # aca llamamos al metodo....
+      # call the actual controller method that is being called.
       yield
     rescue
-      # Hack warning..... no se como evitar esta excepcion.
+      # HACK: no idea on how to handle this exception gracefully.
       if $!.class.to_s != "ActionView::MissingTemplate"
         @output["result"] = "Error"
         @output["msg"] = $!.to_s
@@ -342,15 +337,9 @@ class ApplicationController < ActionController::Base
     render :text => @output.to_json
   end
 
-  
-  ##
-  # Obtener el nombre del usuario autenticado..
-  #  Esto tal vez deberia ir en un modulo SessionUsuario::getUsuario() p/ q se pueda usar desde los modelos
-  def getUsuario() 
-    current_user ? current_user.person.getNombreCompleto() : " "
-  end
-
-  # Create a hash for Check Boxes.
+  ###
+  # Create an Array of Hashes for Checkboxes.
+  #
   def buildCheckHash(pClassName,method,check_included=false,included_list=[])
     list = []
     pClassName.find(:all, :order => "id").each  { |o|
@@ -421,7 +410,7 @@ class ApplicationController < ActionController::Base
   end
 
   def getLangText(lang)
-    lang_texts = { "es" => "Español", "en" => "English" }
+    lang_texts = { "es" => _("Spanish"), "en" => _("English") }
     lang_texts[lang]
   end
 

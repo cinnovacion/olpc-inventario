@@ -53,11 +53,11 @@ class ImagesController < SearchController
 
     if image
       path = "/images/view/#{image.id}"
-      h = { "label" => "Imagen","datatype" => "image", "value" => path }
+      h = { "label" => _("Image"),"datatype" => "image", "value" => path }
       @output["fields"].push(h)
     end
 
-    h = { "label" => "Cargar Imagen", "datatype" => "uploadfield", :field_name => :uploadfile }
+    h = { "label" => _("Load image"), "datatype" => "uploadfield", :field_name => :uploadfile }
     @output["fields"].push(h)
 
   end
@@ -73,13 +73,13 @@ class ImagesController < SearchController
         Image.register(params[:uploadfile])
       end
     end
-  @output["msg"] = datos["id"] ? "Cambios guardados" : "Imagen agregada"
+  @output["msg"] = datos["id"] ? _("Changes saved.") : _("Image added.")
   end
 
   def delete
     id = JSON.parse(params[:payload])
     Image.destroy(id)
-    @output["msg"] = "Imagen Eliminada"
+    @output["msg"] = _("Image deleted.")
   end
 
   def view

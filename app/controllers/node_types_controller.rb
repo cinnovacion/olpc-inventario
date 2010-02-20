@@ -50,24 +50,24 @@ class NodeTypesController < SearchController
 
     @output["fields"] = []
 
-    h = { "label" => "Nombre","datatype" => "textfield" }.merge( type ? {"value" => type.getName } : {} )
+    h = { "label" => _("Name"),"datatype" => "textfield" }.merge( type ? {"value" => type.getName } : {} )
     @output["fields"].push(h)
 
-    h = { "label" => "Descripcion", "datatype" => "textarea", "width" => 250, "height" => 50 }.merge( type ? {"value" => type.getDescription } : {} )
+    h = { "label" => _("Description"), "datatype" => "textarea", "width" => 250, "height" => 50 }.merge( type ? {"value" => type.getDescription } : {} )
     @output["fields"].push(h)
 
-    h = { "label" => "Tag","datatype" => "textfield" }.merge( type ? {"value" => type.getInternalTag } : {} )
+    h = { "label" => _("Tag"), "datatype" => "textfield" }.merge( type ? {"value" => type.getInternalTag } : {} )
     @output["fields"].push(h)
 
     if type and type.image
       path = "/images/view/#{type.image.id}"
-      h = { "label" => "Imagen","datatype" => "image", "value" => path }
+      h = { "label" => _("Image"),"datatype" => "image", "value" => path }
       @output["fields"].push(h)
     end
 
     id = (type and type.image_id) ? type.image.id : -1
-    images = buildSelectHash2(Image,id,"getImageName()",true,[])
-    h = { "label" => "Imagen", "datatype" => "select", "options" => images, "option" => "images" }
+    images = buildSelectHash2(Image, id, "getImageName()", true, [])
+    h = { "label" => _("Image"), "datatype" => "select", "options" => images, "option" => "images" }
     @output["fields"].push(h)
 
   end
@@ -89,13 +89,13 @@ class NodeTypesController < SearchController
       NodeType.create!(attribs)
     end
 
-    @output["msg"] = datos["id"] ? "Cambios guardados." : "Tipo de nodo agregad."
-  end
+    @output["msg"] = datos["id"] ? _("Changes saved.") : _("Node type added.")
+ end
 
   def delete
     ids = JSON.parse(params[:payload])
     NodeType.destroy(ids)
-    @output["msg"] = "Elementos eliminados"
+    @output["msg"] = "Elements deleted."
   end
 
 

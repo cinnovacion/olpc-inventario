@@ -15,7 +15,7 @@ msgstr ""
 
 #: app/controllers/laptops_controller.rb:100
 msgid "Laptop added."
-msgstr "Laptop added."
+msgstr ""
 
 #: app/controllers/laptops_controller.rb:106
 #: app/controllers/places_controller.rb:117
@@ -98,13 +98,12 @@ msgid "Type"
 msgstr ""
 
 #: app/controllers/places_controller.rb:111
-#, fuzzy
 msgid "Location added."
-msgstr "Laptop added."
+msgstr ""
 
 #: app/controllers/sistema_controller.rb:65
 msgid "Usuario o password equivocado"
-msgstr "Wrong user or password"
+msgstr ""
 
 #: app/controllers/lots_controller.rb:51
 msgid "Num. of boxes"
@@ -250,9 +249,8 @@ msgstr ""
 
 #: app/controllers/movements_controller.rb:229
 #: app/controllers/print_controller.rb:312
-#, fuzzy
 msgid "Laptops"
-msgstr "Laptop added."
+msgstr ""
 
 #: app/controllers/movements_controller.rb:264
 msgid "Insufficient data given!"
@@ -296,9 +294,8 @@ msgid "Password"
 msgstr ""
 
 #: app/controllers/nodes_controller.rb:153
-#, fuzzy
 msgid "Node added."
-msgstr "Laptop added."
+msgstr ""
 
 #: app/controllers/nodes_controller.rb:159
 #: app/controllers/notifications_controller.rb:82
@@ -306,9 +303,8 @@ msgid "Elements deleted"
 msgstr ""
 
 #: app/controllers/place_types_controller.rb:67
-#, fuzzy
 msgid "Location type added."
-msgstr "Laptop added."
+msgstr ""
 
 #: app/controllers/images_controller.rb:56
 #: app/controllers/people_controller.rb:85
@@ -334,9 +330,8 @@ msgid "Active"
 msgstr ""
 
 #: app/controllers/notifications_controller.rb:76
-#, fuzzy
 msgid "Notification added."
-msgstr "Laptop added."
+msgstr ""
 
 #: app/controllers/application_controller.rb:142
 msgid "No tiene autorizacion para esta seccion"
@@ -434,9 +429,8 @@ msgid "Roles"
 msgstr ""
 
 #: app/controllers/people_controller.rb:157
-#, fuzzy
 msgid "Person added."
-msgstr "Laptop added."
+msgstr ""
 
 #: app/controllers/node_types_controller.rb:59
 #: app/controllers/part_types_controller.rb:53
@@ -444,9 +438,8 @@ msgid "Tag"
 msgstr ""
 
 #: app/controllers/node_types_controller.rb:92
-#, fuzzy
 msgid "Node type added."
-msgstr "Laptop added."
+msgstr ""
 
 #: app/controllers/movement_types_controller.rb:51
 msgid "Handoff?"

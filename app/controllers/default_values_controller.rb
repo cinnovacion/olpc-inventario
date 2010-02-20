@@ -1,3 +1,24 @@
+#########
+#     Copyright Paraguay Educa 2009, 2010
+#
+#     This program is free software: you can redistribute it and/or modify
+#     it under the terms of the GNU General Public License as published by
+#     the Free Software Foundation, either version 3 of the License, or
+#     (at your option) any later version.
+# 
+#     This program is distributed in the hope that it will be useful,
+#     but WITHOUT ANY WARRANTY; without even the implied warranty of
+#     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#     GNU General Public License for more details.
+# 
+#     You should have received a copy of the GNU General Public License
+#     along with this program.  If not, see <http://www.gnu.org/licenses/>
+# 
+#                                                                          
+# Author: Martin Abente - mabente@paraguayeduca.org
+
+
+
 class DefaultValuesController < SearchController
   attr_accessor :include_str
 
@@ -25,10 +46,10 @@ class DefaultValuesController < SearchController
     
     @output["fields"] = []
 
-    h = { "label" => "Key","datatype" => "textfield" }.merge( value ? {"value" => value.getKey } : {} )
+    h = { "label" => _("Key"),"datatype" => "textfield" }.merge( value ? {"value" => value.getKey } : {} )
     @output["fields"].push(h)
 
-    h = { "label" => "Value","datatype" => "textfield" }.merge( value ? {"value" => value.getValue } : {} )
+    h = { "label" => _("Value"),"datatype" => "textfield" }.merge( value ? {"value" => value.getValue } : {} )
     @output["fields"].push(h)
 
   end
@@ -56,7 +77,7 @@ class DefaultValuesController < SearchController
   def delete
     to_delete_ids = JSON.parse(params[:payload])
     DefaultValue.destroy(to_delete_ids)
-    @output["msg"] = "Elementos eliminados"
+    @output["msg"] = _("Elements deleted.")
   end
 
   def requestKeys

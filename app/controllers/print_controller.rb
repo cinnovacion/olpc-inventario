@@ -1,4 +1,4 @@
-#     Copyright Paraguay Educa 2009
+#     Copyright Paraguay Educa 2009, 2010
 #
 #     This program is free software: you can redistribute it and/or modify
 #     it under the terms of the GNU General Public License as published by
@@ -15,30 +15,22 @@
 # 
 #                                                                          
 # print_controller: Based on HTMLDoc ( http://wiki.rubyonrails.org/rails/pages/HowtoGeneratePDFs )
-# Fecha: 2009/01/06
-# Author: Raul Gutierrez S.
 #
+#
+# Author: Raúl Gutiérrez - rgs@paraguayeduca.org
+# Author: Martin Abente - mabente@paraguayeduca.org
 #
 # TODO:
-# - El seteo de la variable nombre se podria hacer automaticamente (via @controller.action_name?)
-# - imprimir podria llamarse automaticamente via un gancho after
-
-# # #
-# Author: Raúl Gutiérrez
-# E-mail Address: rgs@paraguayeduca.org
-# 2009
-# # #
-
-# # #
-# Author: Martin Abente
-# E-mail Address:  (tincho_02@hotmail.com | mabente@paraguayeduca.org) 
-# 2009
-# # #
+# - setting the variable 'nombre' could be infered and setup automatically
+# - the imprimir function could be called automatically by an 'after' hook
 
 class PrintController < ApplicationController
 
-  ### Jodido, al parecer el data scoping sobre-escribe el include?
-  #skip_filter :do_scoping
+  #
+  # Jodido, al parecer el data scoping sobre-escribe el include? (tch)
+  # skip_filter :do_scoping
+  #
+  # FIXME: is (commenting) this save?!? (rgs)
 
   def initialize 
     @image_name = nil
@@ -77,8 +69,8 @@ class PrintController < ApplicationController
       stock_status[part_movement.part_type][part_movement.part_movement_type.direction] += part_movement.amount
     }
 
-    @titulo = "Estado del stock en #{root_place.getName}"
-    @columnas = ["Parte", "Entrante", "Saliente", "Diferencia"]
+    @titulo = _("Estado del stock en %s") % root_place.getName
+    @columnas = [_("Part"), _("Incoming"), _("Outgoing"), _("Difference")]
     @datos = []
     
     stock_status.keys.each { |part_type|
@@ -100,8 +92,8 @@ class PrintController < ApplicationController
     cond[0] += " and audits.auditable_type = ?"
     cond.push(auditable_type)
 
-    @titulo = "Audit at #{auditable_type}"
-    @columnas = ["Fecha", "Usuario", "Id", "Columna", "Antes", "Despues"]
+    @titulo = _("Audit at %s") % auditable_type
+    @columnas = [_("Date"), _("User"), _("Id"), _("Column"), _("Before"), _("After")]
     @fecha_desde = timeRange["date_since"]
     @fecha_hasta =  timeRange["date_to"]
     @datos = []
@@ -154,17 +146,17 @@ class PrintController < ApplicationController
       time_count += 1
     }
 
-    @titulo = "Tiempo de reparacion promedio"
+    @titulo = _("Average repair time")
     @titulo += "  en #{root_place.getName}" if root_place
-    @columnas = ["Valor", "Dias"]
+    @columnas = [_("Value"), _("Days")]
     @datos = [
 
-      ["Mayor", time_max],
-      ["Menor", time_min],
-      ["Promedio", time_acum.to_f/time_count.to_f]
+      [_("Max"), time_max],
+      [_("Min"), time_min],
+      [_("Avg"), time_acum.to_f/time_count.to_f]
     ]
 
-    imprimir("Tiempo promedio", "print/" + "report")
+    imprimir(_("Average time"), "print/" + "report")
   end
 
   def laptops_problems_recurrence
@@ -195,9 +187,9 @@ class PrintController < ApplicationController
       }
     }
 
-    @titulo = "Tabla de recurrencia"
+    @titulo = _("Recurrence table")
     @titulo += "  en #{root_place.getName}" if root_place
-    @columnas = ["Cantidad", "Total"]
+    @columnas = [_("Quantity"), _("Total")]
     @datos = []
     graph_data = []
     graph_labels = {}
@@ -207,9 +199,9 @@ class PrintController < ApplicationController
       graph_labels[index] = (index+1).to_s
     }
 
-    graph_data.push({ :name => "Valores", :value => results })
-    @image_name = "/" + PyEducaGraph::createLine(graph_data, "Recurrencias (incluyentes)", graph_labels)
-    imprimir("Recurrence_problems", "print/" + "report")
+    graph_data.push({ :name => _("Values"), :value => results })
+    @image_name = "/" + PyEducaGraph::createLine(graph_data, "Recurrences (inclusive)", graph_labels)
+    imprimir(_("Recurrence problems"), "print/" + "report")
   end
 
   def is_hardware_dist
@@ -235,9 +227,9 @@ class PrintController < ApplicationController
       results[problem_class] += 1
     }
 
-    @titulo = "Distribucion hardware vs software"
-    @titulo += "  en #{root_place.getName}" if root_place
-    @columnas = ["Tipo", "Cantidad", "%"]
+    @titulo = _("Problem dist. (Hardware vs Software)")
+    @titulo += _("  in %s") % root_place.getName if root_place
+    @columnas = [_("Type"), _("Quantity"), _("%")]
     @datos = []
     graph_data = []
 
@@ -245,13 +237,13 @@ class PrintController < ApplicationController
     hardware_percent = "%4.1f" % ((results[true]*100).to_f/total.to_f)
     software_percent = "%4.1f" % ((results[false]*100).to_f/total.to_f)
 
-    @datos.push(["Hardware", results[true], hardware_percent])
-    graph_data.push({ :name => "Hardware", :value => hardware_percent.to_f })
+    @datos.push([_("Hardware"), results[true], hardware_percent])
+    graph_data.push({ :name => _("Hardware"), :value => hardware_percent.to_f })
 
-    @datos.push(["Software", results[false], software_percent])
-    graph_data.push({ :name => "Software", :value => software_percent.to_f })
+    @datos.push([_("Software"), results[false], software_percent])
+    graph_data.push({ :name => _("Software"), :value => software_percent.to_f })
 
-    @image_name = "/" + PyEducaGraph::createPie(graph_data, "Distribucion")
+    @image_name = "/" + PyEducaGraph::createPie(graph_data, _("Distribution"))
     imprimir("distribution_hardware_software", "print/" + "report")
   end
 
@@ -303,21 +295,21 @@ class PrintController < ApplicationController
     }
 
     @titulo = root_place.getName
-    @titulo += "<br>Distribucion en el tiempo de los problemas"
+    @titulo += "<br>"  + _("Distribucion en el tiempo de los problemas") + "</br>"
 
     ventana = ""
     case window_size
       when "day"
-        ventana = "Dia"
+        ventana = _("Day")
       when "week"
-        ventana = "Semana"
+        ventana = _("Week")
       when "month"
-        ventana = "Mes"
+        ventana = _("Month")
       when "year"
-        ventana = "Año"
+        ventana = _("Year")
     end
 
-    @columnas = ["Problema", ventana, "Cantidad", "Promedio(P)", "Acumulado","%(Total)", "Laptops"]
+    @columnas = [_("Problem"), ventana, _("Quantity"), _("Average"), _("Acumulated"), _("%(Total)"), _("Laptops")]
     @datos = []
     graph_labels = Hash.new
     graph_data = Array.new

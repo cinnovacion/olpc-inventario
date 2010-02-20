@@ -75,7 +75,7 @@ class MovementsController < SearchController
 
   def new 
 
-    @output["window_title"] = "Entregar laptops"
+    @output["window_title"] = _("Handout Laptop")
 
     @output["fields"] = []
 
@@ -90,23 +90,23 @@ class MovementsController < SearchController
 
     id = MovementType.find_by_internal_tag("entrega_alumno").id
     movement_types = buildSelectHash2(MovementType,id,"description",false,[])
-    h = { "label" => "Motivo","datatype" => "combobox","options" => movement_types }
+    h = { "label" => _("Handoff reason"),"datatype" => "combobox","options" => movement_types }
     @output["fields"].push(h)
 
     people = []
-    h = { "label" => "Entregada a (CI)","datatype" => "select","options" => people, "option" => "personas" }
+    h = { "label" => _("Handed to (document id):"),"datatype" => "select","options" => people, "option" => "personas" }
     h.merge!( { "text_value" => true, "vista" => "movements" } )
     @output["fields"].push(h)
     
-    h = { "label" => "Nro. Serie Laptop","datatype" => "select","options" => [],"option" => "laptops" } 
+    h = { "label" => _("Serial Number"),"datatype" => "select","options" => [],"option" => "laptops" } 
     h.merge!( { "text_value" => true } )
     @output["fields"].push(h)
 
     fecha = ""
-    h = { "label" => "Fch. Devolucion","datatype" => "date",  :value => fecha  }
+    h = { "label" => _("Return date"),"datatype" => "date",  :value => fecha  }
     @output["fields"].push(h)
 
-    h = { "label" => "Observacion", "datatype" => "textarea","width" => 250, "height" => 50 }
+    h = { "label" => _("Observation"), "datatype" => "textarea","width" => 250, "height" => 50 }
     @output["fields"].push(h)
   end
 
@@ -116,29 +116,29 @@ class MovementsController < SearchController
     mov_type_desc = MovementType.find(attribs[:movement_type_id]).description
     personObj = Person.find_by_id_document(attribs[:id_document])
     if !personObj
-      raise "No encuentro la persona con documento #{attribs[:id_document]}"
+      raise _("Can't find person with document id ") + attribs[:id_document].to_s
     end
     person_desc = personObj.getFullName()
 
     str = ""
-    str += "Tipo de Entrega: #{mov_type_desc}\n"
-    str += "Entregado a: #{person_desc}\n"
+    str += _("Handoff reason") + " : " + mov_type_desc  + "\n"
+    str += _("Handed to") + " : " + person_desc + "\n"
 
     if strNotEmpty(attribs[:serial_number_laptop])
       lapObj = Laptop.find_by_serial_number attribs[:serial_number_laptop]
       if !lapObj
-        raise "No encuentro la laptop con numero serial #{attribs[:serial_number_laptop]}"
+        raise _("Can't find laptop with serial number") + attribs[:serial_number_laptop].to_s
       end
       owner = lapObj.owner ? lapObj.owner.getFullName() : "nadie"
-      str += "Num. Serie Laptop: #{attribs[:serial_number_laptop]} (En manos de #{owner})\n"
+      str += _("Serial Number") +  attribs[:serial_number_laptop].to_s + " (" + _("Owned by ") + owner + "\n"
     end
 
     if strNotEmpty(attribs[:return_date])
-      str += "Fch Devolucion: #{attribs[:return_date]}\n"
+      str += _("Return date:") +  attribs[:return_date] + "\n"
     end
     
     if strNotEmpty(attribs[:comment])
-      str += "Comentario: #{attribs[:comment]}\n"
+      str += _("Comment:") +  attribs[:comment] + "\n"
     end
 
     @output["obj_data"] = str
@@ -147,13 +147,13 @@ class MovementsController < SearchController
   def save
     attribs = getData()
     Movement.register(attribs)
-    @output["msg"] = "La entrega ha sido registrada"
+    @output["msg"] = _("The handoff has been registered.")
   end
 
   def delete
     ids = JSON.parse(params[:payload])
     Movement.cancel(ids)
-    @output["msg"] = ids.length == 1 ? "La entrega ha sido anulada" : "Las entregas han sido anulada"
+    @output["msg"] = ids.length == 1 ? _("The handoff has been cancelled") : _("The handoffs has been cancelled")
   end
 
 
@@ -169,12 +169,12 @@ class MovementsController < SearchController
 
   def new_mass_delivery
 
-    @output["window_title"] = "Entrega a alumnos por lote"
+    @output["window_title"] = _("Handoff by lot")
     @output["fields"] = []
 
     id = MovementType.find_by_internal_tag("entrega_alumno").id
-    movement_types = buildSelectHash2(MovementType,id,"description",false,[])
-    h = { "label" => "Motivo","datatype" => "combobox","options" => movement_types }
+    movement_types = buildSelectHash2(MovementType, id, "description", false, [])
+    h = { "label" => _("Reason"), "datatype" => "combobox", "options" => movement_types }
     @output["fields"].push(h)
 
     h = { "label" => "", "datatype" => "dynamic_delivery_form" }
@@ -192,40 +192,41 @@ class MovementsController < SearchController
       deliveries.each { |delivery|
 
         person = Person.find_by_barcode(delivery["person"])
-        raise "#{delivery["person"]} no existe." if !person
+        raise _("%s doesn't exist.") % delivery["person"].to_s if !person
 
         laptop = Laptop.find_by_serial_number(delivery["laptop"])
-        raise "#{delivery["laptop"]} no existe." if !laptop
+        raise _("The laptop with serial number %s doesn't exist.") % delivery["laptop"] if !laptop
 
         attribs = Hash.new
         attribs[:id_document] = person.getIdDoc()
         attribs[:movement_type_id] = movement_type_id
         attribs[:serial_number_laptop] = laptop.getSerialNumber()
-        attribs[:comment] = "Laptops entregadas desde el Formulario dinamico de entregas masivas."
+        attribs[:comment] = _("Laptops handed out with the massive delivery form.")
         Movement.register(attribs)
       }
     end
-    @output["msg"] = "Las entregas han sido registradas."
+    @output["msg"] = _("The handouts have been registered.")
   end
 
   ###
   # When it is needed to deliver a set of laptops to a single person
+  #
   def single_mass_delivery
-    @output["window_title"] = "Entrega de lote a persona"
+    @output["window_title"] = _("Handing out a lot.")
     @output["fields"] = []
 
-    movement_types = buildSelectHash2(MovementType,-1,"description",false,[])
-    h = { "label" => "Motivo","datatype" => "combobox","options" => movement_types }
+    movement_types = buildSelectHash2(MovementType, -1, "description", false, [])
+    h = { "label" => _("Reason"), "datatype" => "combobox", "options" => movement_types }
     @output["fields"].push(h)
 
-    h = { "label" => "Entregada a (CI)","datatype" => "select","options" => [], "option" => "personas" }
+    h = { "label" => _("Handed to (document id):"), "datatype" => "select", "options" => [], "option" => "personas" }
     h.merge!( { "text_value" => true, "vista" => "movements" } )
     @output["fields"].push(h)
 
-    h = { "label" => "Fch. Devolucion","datatype" => "date",  :value => ""  }
+    h = { "label" => _("Return date:"),"datatype" => "date",  :value => ""  }
     @output["fields"].push(h)
 
-    h = { "label" => "Laptops", "datatype" => "textarea","width" => 250, "height" => 50 }
+    h = { "label" => _("Laptops"), "datatype" => "textarea","width" => 250, "height" => 50 }
     @output["fields"].push(h)
   end
 
@@ -239,8 +240,8 @@ class MovementsController < SearchController
     if movement_type && person
       attribs = Hash.new
       attribs[:id_document] = person.getIdDoc()
-      attribs[:movement_type_id] = movement_type.id
-      attribs[:comment] = "Laptop entregada desde la ventana de entrega masiva a persona"
+      attribs[:movement_type_id] = movement_type.id 
+      attribs[:comment] = _("Laptops handed out with the massive delivery form.")
       return_date = form_fields.pop
       attribs[:return_date] = return_date if return_date != "" && movement_type.internal_tag == "prestamo"
    
@@ -260,12 +261,12 @@ class MovementsController < SearchController
         end 
       }
     else
-      raise "Los datos son insuficientes!"
+      raise _("Insufficient data given!")
     end
 
-    @output["msg"] = "Las entregas han sido registradas"
+    @output["msg"] = _("The handouts have been registered.")
     if not_recognised != []
-      @output["msg"]+= ". Las siguientes laptops no fueron reconocidas por el sistema "
+      @output["msg"]+= "." + _("The following laptops weren't recognized ")
       @output["msg"]+= "("+not_recognised.join(',')+")"
     end
     true
@@ -289,6 +290,10 @@ class MovementsController < SearchController
     attribs
   end
 
+  ###
+  # FIXME: Isn't this used somewhere else? If so it should be moved to ApplicationController 
+  #        or to a lib. 
+  #
   def strNotEmpty(str)
     str && !str.to_s.match(/^ *$/)
   end

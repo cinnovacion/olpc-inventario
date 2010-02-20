@@ -28,7 +28,7 @@
 # # #
                                                                           
 class PeopleController < SearchController
-   skip_filter :rpc_block, :only => [ :show, :update, :requestStudents ]
+  skip_filter :rpc_block, :only => [ :show, :update, :requestStudents ]
 
   attr_accessor :include_str
 
@@ -58,56 +58,56 @@ class PeopleController < SearchController
     
     @output["fields"] = []
 
-    h = { "label" => "Nombre","datatype" => "textfield" }.merge( p ? {"value" => p.name } : {} )
+    h = { "label" => _("Name"),"datatype" => "textfield" }.merge( p ? {"value" => p.name } : {} )
     @output["fields"].push(h)
 
-    h = { "label" => "Apellido","datatype" => "textfield" }.merge( p ? {"value" => p.lastname } : {} )
+    h = { "label" => _("Lastname"),"datatype" => "textfield" }.merge( p ? {"value" => p.lastname } : {} )
     @output["fields"].push(h)
 
-    h = { "label" => "CI Policial","datatype" => "textfield" }.merge( p ? {"value" => p.id_document } : {} )
+    h = { "label" => _("Document ID"),"datatype" => "textfield" }.merge( p ? {"value" => p.id_document } : {} )
     @output["fields"].push(h)
 
     fecha = p && p.birth_date ? Fecha::pyDate(p.birth_date.to_s) : ""
-    h = { "label" => "Fch. Nacimiento","datatype" => "date",  :value => fecha  }
+    h = { "label" => _("Birth date"),"datatype" => "date",  :value => fecha  }
     @output["fields"].push(h)
 
-    h = { "label" => "Telefono","datatype" => "textfield" }.merge( p ? {"value" => p.phone } : {} )
+    h = { "label" => _("Phone num."),"datatype" => "textfield" }.merge( p ? {"value" => p.phone } : {} )
     @output["fields"].push(h)
 
-    h = { "label" => "Celular","datatype" => "textfield" }.merge( p ? {"value" => p.cell_phone } : {} )
+    h = { "label" => _("Cell num."),"datatype" => "textfield" }.merge( p ? {"value" => p.cell_phone } : {} )
     @output["fields"].push(h)
 
-    h = { "label" => "Email","datatype" => "textfield" }.merge( p ? {"value" => p.email } : {} )
+    h = { "label" => _("Email"),"datatype" => "textfield" }.merge( p ? {"value" => p.email } : {} )
     @output["fields"].push(h)
 
     if p and p.image
       path = "/images/view/#{p.image.id}"
-      h = { "label" => "Imagen","datatype" => "image", "value" => path }
+      h = { "label" => _("Image"),"datatype" => "image", "value" => path }
       @output["fields"].push(h)
     end
 
-    h = { "label" => "Foto Carnet", "datatype" => "uploadfield", :field_name => :fotocarnet }
+    h = { "label" => _("Personal image"), "datatype" => "uploadfield", :field_name => :fotocarnet }
     @output["fields"].push(h)
 
-    profiles = buildSelectHash2(Profile,-1,"getDescription()",false)
+    profiles = buildSelectHash2(Profile, -1, "getDescription()", false)
 
-    h = { "datatype" => "tab_break", "title" => "Actuaciones" }
+    h = { "datatype" => "tab_break", "title" => _("Roles") }
     @output["fields"].push(h)
 
-   ###Dynamic Table for Performs
-   options = Array.new
+    ###Dynamic Table for Performs
+    options = Array.new
    
-   dataGrid = Perform.find_all_by_person_id(p.id).map { |perform|
-     [
+    dataGrid = Perform.find_all_by_person_id(p.id).map { |perform|
+      [
        { :value => perform.place_id, :text => perform.place.getName },
        { :value => perform.profile_id, :text => perform.profile.getDescription }
-     ]
-   } if p
+      ]
+    } if p
 
-    h = { "label" => "Localidad", "datatype" => "hierarchy_on_demand", "options" => { "width" => 360, "height" => 50 }}
+    h = { "label" => "Place", "datatype" => "hierarchy_on_demand", "options" => { "width" => 360, "height" => 50 }}
     options.push(h)
 
-    h = { "label" => "Perfil", "datatype" => "combobox", "options" => profiles }
+    h = { "label" => "Profile", "datatype" => "combobox", "options" => profiles }
     options.push(h)
 
     h = {"label" => "", "datatype" => "dyntable", :widths => [320,160], "options" => options}
@@ -116,6 +116,10 @@ class PeopleController < SearchController
    ###end
 
     # DrillDown Info
+    #
+    # FIXME: this has to be implemented: the ability to navigate through related objects. 
+    #
+    
 #     assoc_objs = p ? p.associatedObjs : []
 #     if assoc_objs.length > 0
 #       h = { "datatype" => "tab_break", "title" => "Objetos Relacionados" }
@@ -150,59 +154,13 @@ class PeopleController < SearchController
       Person.register(attribs, performs, params[:fotocarnet], current_user.person)
     end
  
-    @output["msg"] = datos["id"] ? "Cambios guardados" : "Persona agregada"  
-  end
-
-  def new_visitor
-    
-    @output["fields"] = []
-
-    h = { "label" => "Nombre","datatype" => "textfield" }
-    @output["fields"].push(h)
-
-    h = { "label" => "Apellido","datatype" => "textfield" }
-    @output["fields"].push(h)
-
-    h = { "label" => "Telefono","datatype" => "textfield" }
-    @output["fields"].push(h)
-
-    h = { "label" => "Email","datatype" => "textfield" }
-    @output["fields"].push(h)
-  end
-
-  def save_visitor
-    datos = JSON.parse(params[:payload])
-    data_fields = datos["fields"].reverse
-
-    attribs = Hash.new
-    attribs[:name] = data_fields.pop
-    attribs[:lastname] = data_fields.pop
-    attribs[:phone] = data_fields.pop
-    attribs[:email] = data_fields.pop
-    
-    ###
-    # Dijkstra please forgive us.
-    fake_id_document = ""
-    while true
-      fake_id_document = "visitor_"+rand(9999999999999).to_s
-      break if !Person.find_by_id_document(fake_id_document)
-    end
-    attribs[:id_document] = fake_id_document
-
-    visitor_profile = Profile.find_by_internal_tag("visitor")
-    profiles = [visitor_profile.id]
-    relationships = []
-    performs = []
-
-    Person.register(attribs, profiles, relationships, performs)
-
-    @output["msg"] = "Sus datos han sido guardado! Gracias!"
+    @output["msg"] = datos["id"] ? _("Changes saved.") : _("Person added.")  
   end
 
   def delete
     people_ids = JSON.parse(params[:payload])
     Person.unregister(people_ids, current_user.person)
-    @output["msg"] = "Elementos eliminados"
+    @output["msg"] = "Elements deleted."
   end
 
   ##
@@ -242,8 +200,6 @@ class PeopleController < SearchController
   ##
   # Methods for Dynamic Delivery Form.
   def studentsAmount
-
-
     place_id = params[:place_id].to_i
     with_filter = (params[:withFilter] == "true")
 

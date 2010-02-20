@@ -58,16 +58,16 @@ class PlacesController < SearchController
     
     @output["fields"] = []
 
-    h = { "label" => "Nombre","datatype" => "textfield" }.merge( p ? {"value" => p.name } : {} )
+    h = { "label" => _("Name"), "datatype" => "textfield" }.merge( p ? {"value" => p.name } : {} )
     @output["fields"].push(h)
 
 
-    h = { "label" => "Descripcion","datatype" => "textfield" }.merge( p ? {"value" => p.description } : {} )
+    h = { "label" => _("Description"),"datatype" => "textfield" }.merge( p ? {"value" => p.description } : {} )
     @output["fields"].push(h)
 
     ###
     # Test for Hierarchy on Demand Widget.
-    h = { "label" => "Lugar padre", "datatype" => "hierarchy_on_demand", "options" => { "width" => 360, "height" => 50 }}
+    h = { "label" => _("Parent location"), "datatype" => "hierarchy_on_demand", "options" => { "width" => 360, "height" => 50 }}
     h.merge!( p && p.place ? {"dataHash" => p.place.getElementsHash } : {} )
     @output["fields"].push(h)
     #
@@ -75,7 +75,7 @@ class PlacesController < SearchController
 
     id = p && p.place_type ? p.place_type_id : PlaceType.find_by_internal_tag("school").id
     types = buildSelectHash2(PlaceType,id,"name",true,[])
-    h = {"label" => "Tipo", "datatype" => "combobox", "options" => types}
+    h = {"label" => _("Type"), "datatype" => "combobox", "options" => types}
     @output["fields"].push(h)
 
     h = { "datatype" => "tab_break", "title" => "Mapa" }
@@ -108,13 +108,13 @@ class PlacesController < SearchController
       Place.register(attribs, nodes, current_user.person)
     end
 
-    @output["msg"] = datos["id"] ? "Cambios guardados" : "Localidad agregada"  
+    @output["msg"] = datos["id"] ? _("Changes saved.") : _("Location added.")  
   end
 
   def delete
     places_ids = JSON.parse(params[:payload])
     Place.unregister(places_ids, current_user.person)
-    @output["msg"] = "Elementos eliminados"
+    @output["msg"] = _("Elements deleted.")
   end 
 
   def schools

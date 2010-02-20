@@ -75,7 +75,7 @@ class LaptopConfigsController < SearchController
     p.value = value
     p.save!
 
-    @output["msg"] = "Cambios guardados"  
+    @output["msg"] = _("Changes saved.")  
   end
 
 end

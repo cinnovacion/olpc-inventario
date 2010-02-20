@@ -51,14 +51,14 @@ class NotificationSubscribersController < SearchController
     if p
       opts = buildSelectHash2(Notification, p.notification_id, "getName()",false,["notifications.id = ?", p.notification_id])
     end
-    h = { "label" => "Notification","datatype" => "select","options" => opts, "option" => "notifications" }
+    h = { "label" => _("Notification"), "datatype" => "select", "options" => opts, "option" => "notifications" }
     @output["fields"].push(h)
 
     opts = []
     if p 
       opts = buildSelectHash2(Person, p.person_id, "getFullName()",false,["people.id = ?", p.person_id])
     end
-    h = { "label" => "Suscriptor","datatype" => "select","options" => opts, "option" => "personas" }
+    h = { "label" => _("Suscriber"),"datatype" => "select","options" => opts, "option" => "personas" }
     @output["fields"].push(h)
 
   end
@@ -72,8 +72,7 @@ class NotificationSubscribersController < SearchController
     attribs[:created_at] = Fecha::getFecha()
 
     save_object(NotificationSubscriber,datos["id"],attribs)
-    @output["msg"] = "Cambios Registrados en las Suscripciones"
-
+    @output["msg"] = _("Changes saved.")
   end
 
   def delete
@@ -81,7 +80,7 @@ class NotificationSubscribersController < SearchController
     NotificationSubscriber.transaction do
       NotificationSubscriber.destroy(ids)
     end
-    @output["msg"] = "Suscripcion eliminada."
+    @output["msg"] = "Suscription deleted."
   end
 
 end

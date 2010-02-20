@@ -41,10 +41,10 @@ class PlaceTypesController < SearchController
       type = nil
     end
 
-    h = { "label" => "Nombre","datatype" => "textfield" }.merge( type ? {"value" => type.getName } : {} )
+    h = { "label" => _("Name"), "datatype" => "textfield" }.merge( type ? {"value" => type.getName } : {} )
     @output["fields"].push(h)
 
-    h = { "label" => "Internal Tag","datatype" => "textfield" }.merge( type ? {"value" => type.getInternalTag } : {} )
+    h = { "label" => _("Internal tag"),"datatype" => "textfield" }.merge( type ? {"value" => type.getInternalTag } : {} )
     @output["fields"].push(h)
 
   end
@@ -64,13 +64,13 @@ class PlaceTypesController < SearchController
      PlaceType.create!(attribs)
    end
 
-    @output["msg"] = datos["id"] ? "Cambios guardados" : "Tipo de lugar agregado"
+    @output["msg"] = datos["id"] ? _("Changes saved.") : _("Location type added.")
   end
 
   def delete
     ids = JSON.parse(params[:payload])
     PlaceType.destroy(ids)
-    @output["msg"] = "Elementos eliminados"
+    @output["msg"] = "Elements deleted."
   end
 
 end

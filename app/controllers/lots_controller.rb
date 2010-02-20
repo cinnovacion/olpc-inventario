@@ -48,21 +48,21 @@ class LotsController < SearchController
       lot = nil
     end
 
-    h = { "label" => "Numero de cajas", "datatype" => "textfield" }.merge( lot ? {"value" => lot.getBoxesNumber } : {} )
+    h = { "label" => _("Num. of boxes"), "datatype" => "textfield" }.merge( lot ? {"value" => lot.getBoxesNumber } : {} )
     @output["fields"].push(h)
 
     id = lot ? lot.person_id : -1
     people = buildSelectHashSingle(Person, id, "getFullName()")
-    h = { "label" => "Responsable", "datatype" => "select", "options" => people, :option => "personas" }
+    h = { "label" => _("Responsible person"), "datatype" => "select", "options" => people, :option => "personas" }
     @output["fields"].push(h)
 
     delivered = lot ? lot.delivered : false
     options = buildBooleanSelectHash(delivered)
-    h = { "label" => "Entregado?", "datatype" => "combobox", "options" => options }
+    h = { "label" => _("Delivered?"), "datatype" => "combobox", "options" => options }
     @output["fields"].push(h)
 
     fecha = lot ? lot.delivery_date.to_s : Fecha::getFecha()
-    h = { "label" => "Fecha Entrega","datatype" => "date", "value" => fecha }
+    h = { "label" => _("Delivery date"),"datatype" => "date", "value" => fecha }
     @output["fields"].push(h)
 
     ###Dynamic Table for adding sections to the lot.
@@ -71,7 +71,7 @@ class LotsController < SearchController
     sections = lot ? lot.section_details.map { |detail| [{ :value => detail.place_id, :text => detail.place.getName }] } : []
 
     places = buildHierarchyHash(Place, "places", "places.place_id", "name", -1, nil, nil, false)
-    h = { "label" => "Seccion", "datatype" => "combobox", "options" => places }
+    h = { "label" => _("Section"), "datatype" => "combobox", "options" => places }
     options.push(h)
 
     h = {"label" => "", "datatype" => "dyntable", :widths => [320], "options" => options}.merge( lot ? {"data" => sections } : {} )
@@ -100,14 +100,14 @@ class LotsController < SearchController
       Lot.register(attribs, sections)
     end
 
-    @output["msg"] = "Lote creado satisfactoriamente."
+    @output["msg"] = _("Lot created.")
   end
 
   def delete
     ids = JSON.parse(params[:payload])
     lot = Lot.find_by_id(ids)
     Lot.register_die(lot)
-    @output["msg"] = "Lote eliminado."
+    @output["msg"] = _("Lot deleted.")
   end
 
 end

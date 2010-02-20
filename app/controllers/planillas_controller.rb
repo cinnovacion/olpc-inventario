@@ -27,12 +27,10 @@ class PlanillasController < ApplicationController
 
   ###
   # HACK:
-  #  - Usamos iFrames para el tema de impresion (por limitaciones del navegador, tendiramos que usar 
-  #    Adobe Air)
-  #  - Entonces como no podemos hacer POST con un iFrame y necesitamos enviar muchos datos hacemos doble
-  #    llamada:
-  #        * la 1era con POST para pasar los datos de la planilla que quedan retenido via session
-  #        * la 2da via GET para retirar la planilla..
+  #  - We use iFrames because its the only way of bringing files in an AJAX fashion (true?) 
+  #  - So, we can't do POST with an iFrame and lots of data needs to be send, so double-call:
+  #        * 1st: a POST to pass the data about the spreadsheet we want to generate (it gets saved in the session)
+  #        * 2nd: we do GET request to pick up our spreadsheet.
   #
   def planilla_carga_datos
     session[:datos] = JSON.parse(params[:datos])
