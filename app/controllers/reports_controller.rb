@@ -252,7 +252,7 @@ class ReportsController < SearchController
 
   def used_parts_per_person
     @output["widgets"] = Array.new
-    cb_options = [{ :text => "Propietarios", :value => "owner" },{ :text => "Tecnicos", :value => "solved_by_person" }]
+    cb_options = [{ :text => _("Owners"), :value => "owner" },{ :text => "Tecnicos", :value => "solved_by_person" }]
     @output["widgets"].push(comboBoxSelector("A los", cb_options))
     @output["widgets"].push(comboBoxSelector("Agrupar por", buildSelectHash2(PlaceType, -1, "getName", false, ["internal_tag in (?)",["school","city"]])))
     @output["widgets"].push(hierarchy("A partir de"))

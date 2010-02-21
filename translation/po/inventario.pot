@@ -420,6 +420,10 @@ msgstr ""
 msgid "Belong to"
 msgstr ""
 
+#: app/controllers/reports_controller.rb:255
+msgid "Owners"
+msgstr ""
+
 #: app/controllers/lots_controller.rb:51
 msgid "Num. of boxes"
 msgstr ""
