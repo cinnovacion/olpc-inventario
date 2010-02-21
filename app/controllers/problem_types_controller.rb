@@ -32,7 +32,7 @@ class ProblemTypesController < SearchController
   end
 
   def new
-    @output["window_title"] = "Configuracion de tipo de problemas"
+    @output["window_title"] = _("Configuration of problem types")
 
     if params[:id]
       problem_type = ProblemType.find_by_id(params[:id])
@@ -43,21 +43,21 @@ class ProblemTypesController < SearchController
 
     @output["fields"] = []
 
-    h = { "label" => "Nombre", "datatype" => "textfield" }.merge( problem_type ? {"value" => problem_type.getName } : {} )
+    h = { "label" => _("Name"), "datatype" => "textfield" }.merge( problem_type ? {"value" => problem_type.getName } : {} )
     @output["fields"].push(h)
 
-    h = { "label" => "Descripcion", "datatype" => "textarea" }.merge( problem_type ? {"value" => problem_type.getDescription } : {} )
+    h = { "label" => _("Description"), "datatype" => "textarea" }.merge( problem_type ? {"value" => problem_type.getDescription } : {} )
     @output["fields"].push(h)
 
-    h = { "label" => "Mas info", "datatype" => "textarea" }.merge( problem_type ? {"value" => problem_type.getExtInfo } : {} )
+    h = { "label" => _("More info"), "datatype" => "textarea" }.merge( problem_type ? {"value" => problem_type.getExtInfo } : {} )
     @output["fields"].push(h)
 
-    h = { "label" => "Tag interno", "datatype" => "textfield" }.merge( problem_type ? {"value" => problem_type.getInternalTag } : {} )
+    h = { "label" => _("Internal tag"), "datatype" => "textfield" }.merge( problem_type ? {"value" => problem_type.getInternalTag } : {} )
     @output["fields"].push(h)
 
     yesSelected = problem_type ? problem_type.is_hardware : false
     options = buildBooleanSelectHash(yesSelected)
-    h = { "label" => "Es Hardware?", "datatype" => "combobox", "options" => options}
+    h = { "label" => _("Hardware?"), "datatype" => "combobox", "options" => options}
     @output["fields"].push(h)
 
   end
@@ -80,11 +80,13 @@ class ProblemTypesController < SearchController
       ProblemType.create(attribs)
     end
 
+    @output["msg"] = datos["id"] ? _("Changes saved.") : _("Problem type created.")  
   end
 
   def delete
     ids = JSON.parse(params[:payload])
     ProblemType.destroy(ids)
+    @output["msg"] = _("Elements deleted.")
   end
 
 end

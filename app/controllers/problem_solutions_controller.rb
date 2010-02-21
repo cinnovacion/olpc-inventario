@@ -39,34 +39,34 @@ class ProblemSolutionsController < SearchController
   end
 
   def simple_solution
-
-    @output["window_title"] = "Soluciones Simples"
+    @output["window_title"] = _("Soluciones Simples")
     @output["fields"] = Array.new
 
-    h = { "label" => "#Reporte*", "datatype" => "select", "options" => [], "option" => "problem_reports", "text_value" => true }
+    h = { "label" => _("\#Report*"), "datatype" => "select", "options" => [], "option" => "problem_reports", "text_value" => true }
     @output["fields"].push(h)
 
     solution_types = buildSelectHash2(SolutionType, -1, "getName", false)
-    h = { "label" => "Solucion*", "datatype" => "combobox", "options" => solution_types }
+    h = { "label" => _("Solution*"), "datatype" => "combobox", "options" => solution_types }
     @output["fields"].push(h)
 
     fecha = Fecha.usDate(Date.today.to_s)
-    h = { "label" => "Fch. Solucion", "datatype" => "date", :value => fecha  }
+    h = { "label" => _("Date solved"), "datatype" => "date", :value => fecha  }
     @output["fields"].push(h)
 
-    h = { "label" => "Comentarios", "datatype" => "textarea","width" => 250, "height" => 50}
+    h = { "label" => _("Comments"), "datatype" => "textarea","width" => 250, "height" => 50}
     @output["fields"].push(h)
 
-    h = { "datatype" => "tab_break", "title" => "Depositos" }
+    h = { "datatype" => "tab_break", "title" => _("Deposits") }
     @output["fields"].push(h)
 
     # Table for solutions deposits, aka Ca$h.
     @output["fields"].push(deposits_view)
-
   end
 
+  ###
+  # FIXME: an explanation on what 'impure_attribs' are might be useful.
+  #
   def save_simple_solution
-
     datos = JSON.parse(params[:payload])
     data_fields = datos["fields"].reverse
 
@@ -78,8 +78,10 @@ class ProblemSolutionsController < SearchController
     impure_attribs[:comment] = data_fields.pop
     bank_deposits_data = parse_deposits(data_fields.pop)
 
-    raise "No esta permitido editar desde esta ventana." if datos["id"]
+    raise _("Editing not allowed in this window.") if datos["id"]
     ProblemSolution.register_simple_solution(impure_attribs, bank_deposits_data)
+
+    @output["msg"] =  _("Solution saved.")  
 
     true
   end
@@ -87,26 +89,26 @@ class ProblemSolutionsController < SearchController
   def delete
     ids = JSON.parse(params[:payload])
     ProblemSolution.destroy(ids)
+    @output["msg"] = "Elements deleted."
   end
 
   def change_solution
-
-    @output["window_title"] = "Cambio de Laptop"
+    @output["window_title"] = _("Laptop exchange")
     @output["verify_before_save"] = true
     @output["verify_save_url"] = "/problem_solutions/verify_change_solution"
 
     @output["fields"] = []
 
-    h = { "label" => "Reporte", "datatype" => "select", "options" => [], "option" => "problem_reports", "text_value" => true }
+    h = { "label" => _("Report"), "datatype" => "select", "options" => [], "option" => "problem_reports", "text_value" => true }
     @output["fields"].push(h)
 
-    h = { "label" => "#Serial del Repuesto", "datatype" => "textfield" }
+    h = { "label" => _("Serial \# of repair part"), "datatype" => "textfield" }
     @output["fields"].push(h)
 
-    h = { "label" => "Comentarios", "datatype" => "textarea","width" => 250, "height" => 50 }
+    h = { "label" => _("Comments"), "datatype" => "textarea","width" => 250, "height" => 50 }
     @output["fields"].push(h)
 
-    h = { "datatype" => "tab_break", "title" => "Depositos" }
+    h = { "datatype" => "tab_break", "title" => _("Deposits") }
     @output["fields"].push(h)
 
     # Table for solutions deposits, aka Ca$h.
@@ -116,7 +118,6 @@ class ProblemSolutionsController < SearchController
   end
 
   def verify_change_solution
-
     datos = JSON.parse(params[:payload])
     data_fields = datos["fields"]
 
@@ -127,16 +128,19 @@ class ProblemSolutionsController < SearchController
     owner_laptop = problem_report.laptop
     replacement_laptop = Laptop.find_by_serial_number(replacement_laptop_srl)
 
-    raise "No se puede realizar operacion, los datos ingresados no existen en el sistema." if !problem_report || !owner_laptop || !replacement_laptop
+    if !problem_report || !owner_laptop || !replacement_laptop
+      raise _("The operation can't be completed, the provided data doesn't exist in the system.") 
+    end
 
-    msg = "Esta seguro que desea cambiar la computadora #{owner_laptop.getSerialNumber} por #{replacement_laptop_srl}, "
-    msg += "como solucion al problema numero #{problem_report_id} (#{problem_report.problem_type.getName})?"
+    str_vars = [owner_laptop.getSerialNumber, replacement_laptop_srl]
+    msg = "Are you sure you want to replace the laptop %s with %s, " % str_vars
+    str_vars = [problem_report_id, problem_report.problem_type.getName]
+    msg += "as a solution for problem number %s (%s)?" % str_vars
 
     @output["obj_data"] =  msg
   end
 
   def save_change_solution
-
     datos = JSON.parse(params[:payload])
     data_fields = datos["fields"].reverse
 
@@ -147,18 +151,18 @@ class ProblemSolutionsController < SearchController
     bank_deposits_data = parse_deposits(data_fields.pop)
     attribs[:solved_by_person_id] = current_user.person.id
 
-    raise "No esta permitido editar desde esta ventana" if datos["id"]
+    raise _("Editing not allowed in this window.") if datos["id"]
     ProblemSolution.register_change(attribs, rep_dev_srl, bank_deposits_data)
 
     true
   end
 
   def new
-    raise "Not available"
+    raise _("Not available")
   end
 
   def save
-    raise "Not available"
+    raise _("Not available")
   end
 
   private
@@ -168,9 +172,9 @@ class ProblemSolutionsController < SearchController
 
     data_field.each { |data| 
 
-      raise "El deposito no es valido" if !data["Deposito"].match("^\\d+$")
-      raise "El monto no es valido." if !data["Monto"].match("^\\d+(.\\d+|)$")
-      raise "La fecha no es valida." if !data["Fecha"].match("^(\\d+)-(\\d+)-(\\d+)$")
+      raise _("Invalid deposit number.") if !data["Deposito"].match("^\\d+$")
+      raise _("Invalid specified amount.") if !data["Monto"].match("^\\d+(.\\d+|)$")
+      raise _("Invalid date.") if !data["Fecha"].match("^(\\d+)-(\\d+)-(\\d+)$")
 
       deposits_list.push([data["Deposito"], data["Monto"].to_f, data["Fecha"]]) 
     }
@@ -178,6 +182,11 @@ class ProblemSolutionsController < SearchController
     deposits_list
   end
 
+  ####
+  # FIXME: labels can't be translated here cause it will break code that depends on the value 
+  #        of the labels. Can't we use something like UserData or tags to not depend on the labels?
+  #
+  #
   def deposits_view(problem_solution = nil)
 
     options = Array.new

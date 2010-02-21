@@ -23,57 +23,14 @@
                                                                        
 class ReportsController < SearchController
 
-  def test_report_widget
-
-    @output["widgets"] = Array.new
-
-    h = Hash.new
-    h["widget_type"] = "combobox_selector"
-    h["options"] = Hash.new
-    h["options"]["label"] = "Club"
-    v = Array.new
-    v.push( { :text => "Olimpia", :value => 1 } )
-    v.push( { :text => "Cerro", :value => 2 } )
-    h["options"]["cb_options"] = v
-    @output["widgets"].push(h)
-
-    h = Hash.new
-    h["widget_type"] = "checkbox_selector"
-    h["options"] = Hash.new
-    h["options"]["label"] = "Club"
-    v = Array.new
-    v.push( { :label => "Laptop:", :cb_name => "laptop" } )
-    v.push( { :label => "Cargador:", :cb_name => "charger" } )
-    h["options"]["cb_options"] = v
-    @output["widgets"].push(h)
-
-    h = Hash.new
-    h["widget_type"] = "column_value_selector"
-    h["options"] = Hash.new
-    v = Array.new
-    v.push( { :text => "Laptop:", :value => "laptop", :datatype => "textfield" } )
-    v.push( { :text => "Charger:", :value => "charger", :datatype => "textfield" } )
-    h["options"]["col_options"] = v
-    @output["widgets"].push(h)
-
-    h = Hash.new
-    h["widget_type"] = "date_range"
-    @output["widgets"].push(h)
-
-
-    @output["print_method"] = "test_print_report"
-    
-  end
-
-
   def movement_types
     @output["widgets"] = Array.new
 
     # from person
-    @output["widgets"].push(listSelector("Entrego: ","personas"))
+    @output["widgets"].push(listSelector(_("Given by: "), "personas"))
 
     # to person
-    @output["widgets"].push(listSelector("Recibio: ","personas"))
+    @output["widgets"].push(listSelector(_("Received by: "), "personas"))
 
     #Rango de fecha
     @output["widgets"].push(dateRange())
@@ -93,18 +50,18 @@ class ReportsController < SearchController
 
     #Seriales.
     csv_fields = Array.new
-    csv_fields.push( { :text => "#Laptop", :value => "laptop", :datatype => "textfield" } )
+    csv_fields.push( { :text => _("#Laptop"), :value => "laptop", :datatype => "textfield" } )
     @output["widgets"].push(columnValueSelector(csv_fields))
 
     #Motivos posibles
     cb_options = buildCheckHash(MovementType, "getDescription")
-    @output["widgets"].push(checkBoxSelector("Motivos",cb_options,3))
+    @output["widgets"].push(checkBoxSelector(_("Reasons"), cb_options,3))
 
     # from person
-    @output["widgets"].push(listSelector("Entregador por:","personas"))
+    @output["widgets"].push(listSelector(_("Given by: "), "personas"))
 
     # to person
-    @output["widgets"].push(listSelector("Recibido por:","personas"))
+    @output["widgets"].push(listSelector(_("Received by: "), "personas"))
 
     # Place
     @output["widgets"].push(hierarchy(""))
@@ -118,7 +75,7 @@ class ReportsController < SearchController
     @output["widgets"] = Array.new
     @output["widgets"].push(dateRange())
     cb_data = buildHierarchyHash(Place, "places", "places.place_id", "name", -1, nil, nil, true)
-    @output["widgets"].push(comboBoxSelector("Localidad",cb_data))
+    @output["widgets"].push(comboBoxSelector(_("Location"), cb_data))
     @output["print_method"] = "movements_time_range"
   end
 
@@ -126,7 +83,7 @@ class ReportsController < SearchController
   # Distribucion de laptops por propietario
   def laptops_per_owner
     @output["widgets"] = Array.new
-    @output["widgets"].push(listSelector("Propietario","personas"))
+    @output["widgets"].push(listSelector(_("Owner"), "personas"))
     @output["print_method"] = "laptops_per_owner"
   end
 
@@ -142,7 +99,7 @@ class ReportsController < SearchController
   # Distribucion de laptops entregadas a personas
   def laptops_per_destination_person
     @output["widgets"] = Array.new
-    @output["widgets"].push(listSelector("Entregada a","personas"))
+    @output["widgets"].push(listSelector(_("Given to"), "personas"))
     @output["print_method"] = "laptops_per_destination_person"
   end
 
@@ -151,7 +108,7 @@ class ReportsController < SearchController
   def activations
     @output["widgets"] = Array.new
     @output["widgets"].push(dateRange())
-    @output["widgets"].push(listSelector("Activada por","personas"))
+    @output["widgets"].push(listSelector("Activated by", "personas"))
     @output["print_method"] = "activations"
   end
 
@@ -162,13 +119,13 @@ class ReportsController < SearchController
     #Rango de fecha
     @output["widgets"].push(dateRange())
     #Persona que entrego y recibio.
-    @output["widgets"].push(listSelector("Prestada por ","personas"))
-    @output["widgets"].push(listSelector("Prestada a   ","personas"))
+    @output["widgets"].push(listSelector(_("Lended by "), "personas"))
+    @output["widgets"].push(listSelector(_("Lended to "), "personas"))
     #Filtros por prestamos entregado y no entregados.
     cb_filters = Array.new
-    cb_filters.push( { :label => "Devueltos", :cb_name => "returned",:checked => true } )
-    cb_filters.push( { :label => "No devueltos", :cb_name => "not_returned",:checked => true } )
-    @output["widgets"].push(checkBoxSelector("Filtros",cb_filters))
+    cb_filters.push( { :label => _("Returned"), :cb_name => "returned",:checked => true } )
+    cb_filters.push( { :label => _("Not returned"), :cb_name => "not_returned",:checked => true } )
+    @output["widgets"].push(checkBoxSelector(_("Filters"), cb_filters))
     @output["print_method"] = "lendings"
   end
 
@@ -197,16 +154,16 @@ class ReportsController < SearchController
     since = Fecha.usDate((Date.today - 1.month).to_s)
     to = Fecha.usDate(Date.today.to_s)
     @output["widgets"] += multipleDataRange(since, to)
-    @output["widgets"].push(hierarchy("Localidades"))
-    @output["widgets"].push(checkBoxSelector("Partes",buildCheckHash(PartType,"getDescription"),6))
+    @output["widgets"].push(hierarchy(_("Locations")))
+    @output["widgets"].push(checkBoxSelector(_("Parts"), buildCheckHash(PartType, "getDescription"), 6))
     @output["print_method"] = "parts_replaced"
   end
 
   def problems_per_type
     @output["widgets"] = Array.new
     @output["widgets"].push(dateRange())
-    @output["widgets"].push(hierarchy("A partir de"))
-    @output["widgets"].push(checkBoxSelector("Problemas",buildCheckHash(ProblemType,"getName"),3))
+    @output["widgets"].push(hierarchy(_("Since")))
+    @output["widgets"].push(checkBoxSelector("Problemas", buildCheckHash(ProblemType, "getName"), 3))
     @output["print_method"] = "problems_per_type"
   end
 
@@ -216,16 +173,16 @@ class ReportsController < SearchController
     @output["widgets"].push(multipleHierarchy(""))
 
     cb_options = Array.new
-    cb_options.push( { :label => "Con laptops asignadas", :cb_name => "with",:checked => true } )
-    cb_options.push( { :label => "Sin laptops asignadas", :cb_name => "with_out",:checked => true } )
-    @output["widgets"].push(checkBoxSelector("Filtros",cb_options))
+    cb_options.push( { :label => _("With laptops assigned"), :cb_name => "with",:checked => true } )
+    cb_options.push( { :label => _("Without laptops assigned"), :cb_name => "with_out",:checked => true } )
+    @output["widgets"].push(checkBoxSelector("Filters", cb_options))
 
     @output["print_method"] = "barcodes"
   end
 
   def lots_labels
     @output["widgets"] = Array.new
-    @output["widgets"].push(comboBoxSelector("Lote", buildSelectHash2(Lot,-1,"getTitle",false,[])))
+    @output["widgets"].push(comboBoxSelector(_("Lot"), buildSelectHash2(Lot,-1,"getTitle",false,[])))
     @output["print_method"] = "lots_labels"
   end
 
@@ -233,7 +190,7 @@ class ReportsController < SearchController
     @output["widgets"] = Array.new
     cb_filter = buildSelectHash2(PlaceType,id,"name",true,[])
     cb_data = buildHierarchyHash(Place, "places", "places.place_id", "name", -1, nil, nil, false)
-    @output["widgets"].push(comboBoxFiltered("Localidad",cb_filter, cb_data, 360, "/places/requestPlaces"))
+    @output["widgets"].push(comboBoxFiltered(_("Location"), cb_filter, cb_data, 360, "/places/requestPlaces"))
     @output["print_method"] = "laptops_per_tree"
   end
 
@@ -246,7 +203,7 @@ class ReportsController < SearchController
   def printable_delivery
     @output["widgets"] = Array.new
     mov_ids_fields = Array.new
-    mov_ids_fields.push( { :text => "#Movimiento", :value => "id", :datatype => "textfield" } )
+    mov_ids_fields.push( { :text => _("#Movement"), :value => "id", :datatype => "textfield" } )
     @output["widgets"].push(columnValueSelector(mov_ids_fields))
     @output["print_method"] = "printable_delivery"
   end
@@ -254,12 +211,12 @@ class ReportsController < SearchController
   def registered_laptops
     @output["widgets"] = Array.new
 
-    @output["widgets"].push(hierarchy("Localidad"))
+    @output["widgets"].push(hierarchy(_("Location")))
 
     cb_options = Array.new
-    cb_options.push( { :label => "Registradas", :cb_name => true,:checked => true } )
-    cb_options.push( { :label => "No registradas", :cb_name => false,:checked => true } )
-    @output["widgets"].push(checkBoxSelector("Filtros",cb_options))
+    cb_options.push( { :label => _("Registered"), :cb_name => true,:checked => true } )
+    cb_options.push( { :label => _("Not registered"), :cb_name => false,:checked => true } )
+    @output["widgets"].push(checkBoxSelector(_("Filters"), cb_options))
 
     @output["print_method"] = "registered_laptops"
   end
@@ -267,29 +224,29 @@ class ReportsController < SearchController
   def problems_per_school
     @output["widgets"] = Array.new
     @output["widgets"].push(dateRange())
-    @output["widgets"].push(comboBoxSelector("Agrupar por", buildSelectHash2(PlaceType, -1, "getName", false, [])))
-    @output["widgets"].push(hierarchy("A partir de"))
-    @output["widgets"].push(checkBoxSelector("Problemas",buildCheckHash(ProblemType,"getName"),2))
+    @output["widgets"].push(comboBoxSelector(_("Group by"), buildSelectHash2(PlaceType, -1, "getName", false, [])))
+    @output["widgets"].push(hierarchy(_("Since")))
+    @output["widgets"].push(checkBoxSelector(_("Problems"), buildCheckHash(ProblemType,"getName"),2))
     cb_options = Array.new
-    cb_options.push( { :label => "Si", :cb_name => true,:checked => true } )
-    cb_options.push( { :label => "No", :cb_name => false,:checked => true } )
-    @output["widgets"].push(checkBoxSelector("Solucionado",cb_options))
+    cb_options.push( { :label => _("Yes"), :cb_name => true,:checked => true } )
+    cb_options.push( { :label => _("No"), :cb_name => false,:checked => true } )
+    @output["widgets"].push(checkBoxSelector(_("Solved"), cb_options))
     cb_options = Array.new
-    cb_options.push({ :text => "Solucionados", :value => 1 })
-    cb_options.push({ :text => "No Solucionados", :value => 2 })
-    cb_options.push({ :text => "Total", :value => 3 })
-    cb_options.push({ :text => "Numero de Personas", :value => 4 })
-    cb_options.push({ :text => "Problemas por Persona", :value => 5 })
-    cb_options.push({ :text => "Eficiencia", :value => 6 })
-    @output["widgets"].push(comboBoxSelector("Ordenar por", cb_options))
+    cb_options.push({ :text => _("Solved"), :value => 1 })
+    cb_options.push({ :text => _("Not solved"), :value => 2 })
+    cb_options.push({ :text => _("Total"), :value => 3 })
+    cb_options.push({ :text => _("Number of people"), :value => 4 })
+    cb_options.push({ :text => _("Problems per person"), :value => 5 })
+    cb_options.push({ :text => _("Eficiency"), :value => 6 })
+    @output["widgets"].push(comboBoxSelector(_("Order by"), cb_options))
     @output["print_method"] = "problems_per_school"
   end
 
   def problems_per_grade
     @output["widgets"] = Array.new
     @output["widgets"].push(dateRange())
-    @output["widgets"].push(hierarchy("Habitan en"))
-    @output["widgets"].push(checkBoxSelector("Problemas",buildCheckHash(ProblemType,"getName"),1))
+    @output["widgets"].push(hierarchy(_("Belong to")))
+    @output["widgets"].push(checkBoxSelector(_("Problems"), buildCheckHash(ProblemType,"getName"),1))
     @output["print_method"] = "problems_per_grade"
   end
 
@@ -418,6 +375,50 @@ class ReportsController < SearchController
     @output["widgets"].push(hierarchy(""))
     @output["print_method"] = "stock_status_report"
   end
+
+
+  def test_report_widget
+
+    @output["widgets"] = Array.new
+
+    h = Hash.new
+    h["widget_type"] = "combobox_selector"
+    h["options"] = Hash.new
+    h["options"]["label"] = "Club"
+    v = Array.new
+    v.push( { :text => "Olimpia", :value => 1 } )
+    v.push( { :text => "Cerro", :value => 2 } )
+    h["options"]["cb_options"] = v
+    @output["widgets"].push(h)
+
+    h = Hash.new
+    h["widget_type"] = "checkbox_selector"
+    h["options"] = Hash.new
+    h["options"]["label"] = "Club"
+    v = Array.new
+    v.push( { :label => "Laptop:", :cb_name => "laptop" } )
+    v.push( { :label => "Cargador:", :cb_name => "charger" } )
+    h["options"]["cb_options"] = v
+    @output["widgets"].push(h)
+
+    h = Hash.new
+    h["widget_type"] = "column_value_selector"
+    h["options"] = Hash.new
+    v = Array.new
+    v.push( { :text => "Laptop:", :value => "laptop", :datatype => "textfield" } )
+    v.push( { :text => "Charger:", :value => "charger", :datatype => "textfield" } )
+    h["options"]["col_options"] = v
+    @output["widgets"].push(h)
+
+    h = Hash.new
+    h["widget_type"] = "date_range"
+    @output["widgets"].push(h)
+
+
+    @output["print_method"] = "test_print_report"
+  end
+
+
 
   # Para mejorar la legibilidad del codigo.
   private

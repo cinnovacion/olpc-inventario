@@ -43,20 +43,19 @@ class ProfilesController < SearchController
     
     @output["fields"] = []
 
-    h = { "label" => "Descripcion","datatype" => "textfield" }.merge( profile ? {"value" => profile.getDescription } : {} )
+    h = { "label" => _("Description"), "datatype" => "textfield" }.merge( profile ? {"value" => profile.getDescription } : {} )
     @output["fields"].push(h)
 
-    h = { "label" => "Internal Tag","datatype" => "textfield" }.merge( profile ? {"value" => profile.getInternalTag } : {} )
+    h = { "label" => _("Internal Tag"), "datatype" => "textfield" }.merge( profile ? {"value" => profile.getInternalTag } : {} )
     @output["fields"].push(h)
 
     tree = Controller.refreshMethodsTree
     profile.getMethodsTree(tree)  if profile
-    h = { "label" => "Permisos", "datatype" => "permissions", "tree" => tree }
+    h = { "label" => _("Permissions"), "datatype" => "permissions", "tree" => tree }
     @output["fields"].push(h)
 
-    h = { "label" => "Nivel de Acceso", "datatype" => "textfield" }.merge( profile ? {"value" => profile.getAccessLevel } : {} )
+    h = { "label" => _("Access level"), "datatype" => "textfield" }.merge( profile ? {"value" => profile.getAccessLevel } : {} )
     @output["fields"].push(h)
-
   end
 
   def save
@@ -76,14 +75,13 @@ class ProfilesController < SearchController
       Profile.register(attribs, permissions, current_user.person)
     end
 
-    @output["msg"] = datos["id"] ? "Cambios guardados" : "Registro agregada"  
-
+    @output["msg"] = datos["id"] ? _("Changes saved.") : _("Profile created.")  
   end
 
   def delete
     ids = JSON.parse(params[:payload])
     Profile.unregister(ids, current_user.person)
-    @output["msg"] = "Elementos eliminados"
+    @output["msg"] = _("Elements deleted.")
   end
 
 end

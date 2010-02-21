@@ -40,7 +40,7 @@ class ProblemReportsController < SearchController
   end
 
   def new
-    @output["window_title"] = "Reporte de problemas"
+    @output["window_title"] = _("Report a problem")
 
     @output["verify_before_save"] = true
     @output["verify_save_url"] = "/problem_reports/verify_save"
@@ -56,32 +56,31 @@ class ProblemReportsController < SearchController
 
     id = problem_report ? problem_report.problem_type_id : -1
     problem_types = buildSelectHash2(ProblemType, id, "getName", false, [])
-    h = { "label" => "Problema", "datatype" => "combobox", "options" => problem_types }
+    h = { "label" => _("Problem"), "datatype" => "combobox", "options" => problem_types }
     @output["fields"].push(h)
 
     id = problem_report ? problem_report.laptop_id : -1
     laptop = buildSelectHashSingle(Laptop, id, "getSerialNumber()")
-    h = { "label" => "Laptop", "datatype" => "select", "options" => laptop, :option => "laptops", "text_value" => true }
+    h = { "label" => _("Laptop"), "datatype" => "select", "options" => laptop, :option => "laptops", "text_value" => true }
     @output["fields"].push(h)
 
     yesSelected = problem_report && problem_report.solved ? true : false
     options = buildBooleanSelectHash(yesSelected) 
-    h = {"label" => "Solucionado?", "datatype" => "combobox", "options" => options}
+    h = {"label" => _("Solved?"), "datatype" => "combobox", "options" => options}
     @output["fields"].push(h)
 
     comment = problem_report ? problem_report.getComment : ""
-    h = { "label" => "Comentarios", "datatype" => "textarea","width" => 250, "height" => 50, :value => comment }
+    h = { "label" => _("Comments"), "datatype" => "textarea","width" => 250, "height" => 50, :value => comment }
     @output["fields"].push(h)
 
   end
 
   def verify_save
-
     str = ""
     attribs = getData()
 
-    owner_name = "Nadie"
-    place_name = "Ningun lugar"
+    owner_name = _("Nobody")
+    place_name = _("No place")
     laptop = Laptop.find_by_id(attribs[:laptop_id])
     if laptop
       owner = laptop.owner
@@ -89,21 +88,21 @@ class ProblemReportsController < SearchController
       owner_name = owner.getFullName
       place_name = place.getName
     end 
-    str += "Esta maquina esta en manos de " + owner_name + " cuyo lugar de referencia es " + place_name
+    str += _("This laptop is owned by %s who belongs to %s ") % [owner_name, place_name]
 
     cond = ["problem_type_id = ? and laptop_id = ?", attribs[:problem_type_id], attribs[:laptop_id]]
     reports = ProblemReport.find(:all, :conditions => cond)
 
     if reports != []
-      str += " Este problema ya habia sido registrado #{reports.length} veces"
+      str += _(" This problem has already been report %d times") % reports.length
       
       non_solved_reports = []
       reports.each { |report|
         non_solved_reports.push(report.id) if !report.solved
       }
       if non_solved_reports != []
-        str += ", de los cuales los siguientes no fueron solucionados: [" + non_solved_reports.join(',') + "]"
-        str += " Es muy probable que este reporte sea repetido."
+        str += _(", of which the following haven't been solved yet: [%s]") % non_solved_reports.join(',')
+        str += _(" It is highly probable that this report is repeated.")
       end
     end
 
@@ -111,7 +110,6 @@ class ProblemReportsController < SearchController
   end
 
   def save
-
     datos = JSON.parse(params[:payload])
     attribs = getData()
 
@@ -121,7 +119,8 @@ class ProblemReportsController < SearchController
     else
       ProblemReport.create!(attribs)
     end
-
+    
+    @output["msg"] = datos["id"] ? _("Changes saved.") : _("Problem report created.")  
   end
 
   def getData
@@ -144,6 +143,7 @@ class ProblemReportsController < SearchController
   def delete
     ids = JSON.parse(params[:payload])
     ProblemReport.destroy(ids)
+    @output["msg"] = _("Elements deleted.")
   end
 
 end

@@ -1657,10 +1657,10 @@ class PrintController < ApplicationController
       cond_v[0] += " and movement_details.returned = true " if !filters.include? "not_returned"
     end
 
-    @titulo = "Prestamos"
+    @titulo = _("Lendings")
     @fecha_desde = timeRange["date_since"]
     @fecha_hasta = timeRange["date_to"]
-    @columnas = ["Fecha","Entrego","Recibio","Retorno","Parte","Serial","Devuelto"]
+    @columnas = [_("Date"), _("Given by"), _("Received by"), _("Return date"), _("Part"), _("Serial number"), _("Returned?")]
     @datos =[]
     include_v = [:movement_details]
     Movement.find(:all,:conditions => cond_v, :order => "date_moved_at DESC", :include => include_v).each { |m|
@@ -1680,6 +1680,9 @@ class PrintController < ApplicationController
     imprimir("prestamos", "print/" + "report")
   end
 
+  ###
+  # Laptops grouped by status. 
+  #
   def statuses_distribution
     print_params = JSON.parse(params[:print_params]).reverse
 
@@ -1694,8 +1697,8 @@ class PrintController < ApplicationController
       buildComboBoxQuery(cond_v, places_ids, "performs.place_id") 
     end
 
-    @titulo = "Distribucion de laptops por estado"
-    @columnas = ["Estado", "Cantidad"]
+    @titulo = _("Distribution of laptops grouped by status")
+    @columnas = [_("Status"), _("Quantity")]
     @datos = []
 
     graph_data = Array.new
@@ -1715,12 +1718,14 @@ class PrintController < ApplicationController
     }
 
     # TODO: this should be conditional
-    @image_name = "/" + PyEducaGraph::createPie(graph_data,@titulo)
+    @image_name = "/" + PyEducaGraph::createPie(graph_data, @titulo)
  
     imprimir("statuses_distribution", "print/" + "report")
-    
   end
-  
+
+  ###
+  # Changes of status. 
+  #
   def status_changes
     print_params = JSON.parse(params[:print_params]).reverse
     cond_v = [""]
@@ -1728,10 +1733,10 @@ class PrintController < ApplicationController
     timeRange = print_params.pop
     buildDateQuery(cond_v,timeRange,"status_changes.date_created_at")
 
-    @titulo = "Cambios de estado"
+    @titulo = _("Status changes")
     @fecha_desde = timeRange["date_since"]
     @fecha_hasta = timeRange["date_to"]
-    @columnas = ["Fecha", "Anterior", "Siguiente", "Serial"]
+    @columnas = [_("Date"), _("Previous"), _("Next"), _("Serial Number")]
     @datos = []
 
     include_v = [:previous_state,:new_state,:laptop]
@@ -1740,9 +1745,11 @@ class PrintController < ApplicationController
     }
 
     imprimir("cambios_de_estado", "print/" + "report")
-
   end
 
+  ###
+  # Laptops grouped by their location. 
+  #
   def laptops_per_place
     print_params = JSON.parse(params[:print_params]).reverse
     place_id = print_params.pop
@@ -1750,12 +1757,15 @@ class PrintController < ApplicationController
     p = Place.find_by_id(place_id)
     root = p.getPartDistribution(:laptops)
     @matrix = p.buildMatrix(root, Array.new, 0, p.getTreeDepth(root))
-    @title = "Numero de Laptops por Localidad"
+    @title = _("Number of laptops per location")
     @date = Fecha.getFecha()
 
     imprimir("laptops_por_tipo_localidad", "print/" + "laptops_per_place_type")
   end
 
+  ###
+  # Parts replaced. 
+  #
   def parts_replaced
     print_params = JSON.parse(params[:print_params]).reverse
 
@@ -1769,7 +1779,7 @@ class PrintController < ApplicationController
     if ["day","week","month","year"].include?(group_criteria)
       group_method = "beginning_of_"+group_criteria
     else
-      raise "Not allowed"
+      raise _("Not allowed")
     end
 
     place_id = print_params.pop.to_i
@@ -1807,26 +1817,26 @@ class PrintController < ApplicationController
       end
     }
 
-    @titulo = "Repuestos Utilizados"
+    @titulo = _("Used repair parts")
     @fecha_desde = timeRange["date_since"]
     @fecha_hasta =  timeRange["date_to"]
-    @columnas = ["Parte",group_criteria.camelize,"Cantidad"]
+    @columnas = [_("Part"), group_criteria.camelize, _("Quantity")]
     @datos = []
     graph_data = []
     graph_labels = {}
 
-    #TODO: Optimize me, oh godddddd....
+    # TODO: Optimize me, oh godddddd....
     swapped_results = {}
     part_types.each { |part_type| swapped_results[part_type] = {} }
     ordered_results = results.keys.sort { |a,b| a <= b ?  -1  : 1 }
 
-    #Swapping elements and creating labels for the line graph
+    # Swapping elements and creating labels for the line graph
     ordered_results.each_with_index { |window, index|
       results[window].keys.each { |type| swapped_results[type][window] = results[window][type] }
       graph_labels[index] = Fecha.pyDate(window.to_date)
     }
 
-    #generating data for the report and graph
+    # generating data for the report and graph
     swapped_results.keys.each { |type|
 
       name = type.description
@@ -1841,7 +1851,7 @@ class PrintController < ApplicationController
       graph_data.push({ :name => type.description, :value => value })
     }
 
-    @image_name = "/" + PyEducaGraph::createLine(graph_data,"Linea de Tiempo", graph_labels)
+    @image_name = "/" + PyEducaGraph::createLine(graph_data, _("Timeline"), graph_labels)
     imprimir("repuestos_utilizados", "print/" + "report")
   end
 
@@ -1861,10 +1871,10 @@ class PrintController < ApplicationController
     problem_types = print_params.pop
     buildComboBoxQuery(cond_v,problem_types,"problem_types.id")
 
-    @titulo = "Distribucion de Problemas por Tipo" 
+    @titulo = _("Problems grouped by type") 
     @fecha_desde = timeRange["date_since"]
     @fecha_hasta =  timeRange["date_to"]
-    @columnas = ["Tipo","Cantidad"]
+    @columnas = [_("Type"), _("Quantity")]
     @datos = []
 
     graph_data = Array.new
@@ -1877,18 +1887,16 @@ class PrintController < ApplicationController
     }
     @datos.sort! { |a,b| a[1] >= b[1] ?  -1  : 1 }
 
-    @image_name = "/" + PyEducaGraph::createPie(graph_data, "Distribucion")
+    @image_name = "/" + PyEducaGraph::createPie(graph_data, _("Distribution"))
     imprimir("problemas_por_tipo", "print/" + "report")
   end
 
   private
   
-  def getNombreUsuario()
-    current_user ? current_user.person.getNombreCompleto():" "
-  end
 
   ###
-  # Generamos el PDF
+  # Generate the PDF
+  #
   #  opciones(Hash):
   #   :margen_superior
   #   :margen_inferior
@@ -1936,7 +1944,7 @@ class PrintController < ApplicationController
     begin
       if output_pdf
         generator = IO.popen(open_arg, "w+")
-        # Descomentar esto en Windows
+        # FIXME: we should test if we are in Windows and included the following method call
         # generator.binmode
         generator.puts @template.render(:file => template_file)
         generator.close_write

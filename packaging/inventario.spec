@@ -1,7 +1,7 @@
 # spec file for our tracking, monitoring and support web app
 Name: inventario		
 Version: 0.3
-Release: 7
+Release: 8
 Vendor: Paraguay Educa
 Summary: This (Ruby on Rails based) web app lets you track laptops given out, status of networks and support tickets.
 Group:	Applications/Internet
@@ -120,6 +120,9 @@ fi
 /var/%{name}/vendor
 
 %changelog
+
+* Sun Feb 21 2010 Raul Gutierrez S. <rgs@paraguayeduca.org>
+- Unstable release with new (rake) translation tasks and lots of calls to _(). 
 
 * Fri Feb 19 2010 Raul Gutierrez S. <rgs@paraguayeduca.org>
 - Qooxdoos build job was re-defined in config.json (thus preventing the inclusion of the translation files). 
