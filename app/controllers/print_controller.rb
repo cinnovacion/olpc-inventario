@@ -429,7 +429,7 @@ class PrintController < ApplicationController
       results[bank_deposit.deposit].push(row) 
     }
 
-    @titulo = _("Deposits in %s") %s root_place.getName
+    @titulo = _("Deposits in %s") % root_place.getName
     @columnas = [_("Deposit"), _("Quantity"), _("Bank"), _("Date")]
     @fecha_desde = timeRange["date_since"]
     @fecha_hasta =  timeRange["date_to"]
