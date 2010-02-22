@@ -254,14 +254,14 @@ class ReportsController < SearchController
     @output["widgets"] = Array.new
     cb_options = [{ :text => _("Owners"), :value => "owner" },{ :text => "Tecnicos", :value => "solved_by_person" }]
     @output["widgets"].push(comboBoxSelector(_("Given to"), cb_options))
-    @output["widgets"].push(comboBoxSelector("Agrupar por", buildSelectHash2(PlaceType, -1, "getName", false, ["internal_tag in (?)",["school","city"]])))
-    @output["widgets"].push(hierarchy("A partir de"))
-    @output["widgets"].push(checkBoxSelector("Partes", buildCheckHash(PartType,"getDescription"),6))
+    @output["widgets"].push(comboBoxSelector(_("Group by"), buildSelectHash2(PlaceType, -1, "getName", false, ["internal_tag in (?)",["school","city"]])))
+    @output["widgets"].push(hierarchy(_("From")))
+    @output["widgets"].push(checkBoxSelector(_("Parts"), buildCheckHash(PartType,"getDescription"),6))
     cb_options = buildSelectHash2(PartType, -1, "getDescription", false)
-    cb_options += [{ :text => "Total", :value => -1}, { :text => "Persona", :value => -2}]
+    cb_options += [{ :text => _("Total"), :value => -1}, { :text => "Persona", :value => -2}]
     @output["widgets"].push(comboBoxSelector("Ordenar por", cb_options))
-    cb_options = [{ :text => "Descendente", :value => "DESC"}, { :text => "Ascendente", :value => "ASC"}]
-    @output["widgets"].push(comboBoxSelector("Orden", cb_options))
+    cb_options = [{ :text => _("Descending"), :value => "DESC"}, { :text => _("Ascending"), :value => "ASC"}]
+    @output["widgets"].push(comboBoxSelector(_("Order"), cb_options))
     @output["print_method"] = "used_parts_per_person"
   end
 
@@ -276,7 +276,7 @@ class ReportsController < SearchController
     since = Fecha.usDate((Date.today - 1.month).to_s)
     to = Fecha.usDate(Date.today.to_s)
     @output["widgets"].push(dateRange(since, to))
-    @output["widgets"].push(hierarchy("En"))
+    @output["widgets"].push(hierarchy(_("In")))
     @output["print_method"] = "online_time_statistics"
   end
 
@@ -303,9 +303,9 @@ class ReportsController < SearchController
     @output["widgets"].push(dateRange(since, to))
     @output["widgets"].push(hierarchy(""))
     cb_options = Array.new
-    cb_options.push( { :label => "Si", :cb_name => true,:checked => true } )
-    cb_options.push( { :label => "No", :cb_name => false,:checked => true } )
-    @output["widgets"].push(checkBoxSelector("Solucionado",cb_options))
+    cb_options.push( { :label => _("Yes"), :cb_name => true,:checked => true } )
+    cb_options.push( { :label => _("No"), :cb_name => false,:checked => true } )
+    @output["widgets"].push(checkBoxSelector(_("Solved"),cb_options))
     @output["print_method"] = "problems_and_deposits"
   end
 
@@ -332,7 +332,7 @@ class ReportsController < SearchController
     to = Fecha.usDate(Date.today.to_s)
     @output["widgets"] += multipleDataRange(since, to)
     @output["widgets"].push(hierarchy(""))
-    @output["widgets"].push(checkBoxSelector("Problemas",buildCheckHash(ProblemType,"getName"),3))
+    @output["widgets"].push(checkBoxSelector(_("Problems"),buildCheckHash(ProblemType,"getName"),3))
     @output["print_method"] = "problems_time_distribution"
   end
 
@@ -366,7 +366,7 @@ class ReportsController < SearchController
       class_name = audited_class.name
       { :text => class_name, :value => class_name, :selected => true }
     }
-    @output["widgets"].push(comboBoxSelector("Model", cb_options))
+    @output["widgets"].push(comboBoxSelector(_("Model"), cb_options))
     @output["print_method"] = "audit_report"
   end
 
@@ -376,51 +376,10 @@ class ReportsController < SearchController
     @output["print_method"] = "stock_status_report"
   end
 
+  #
+  # Helper methods. 
+  # 
 
-  def test_report_widget
-
-    @output["widgets"] = Array.new
-
-    h = Hash.new
-    h["widget_type"] = "combobox_selector"
-    h["options"] = Hash.new
-    h["options"]["label"] = "Club"
-    v = Array.new
-    v.push( { :text => "Olimpia", :value => 1 } )
-    v.push( { :text => "Cerro", :value => 2 } )
-    h["options"]["cb_options"] = v
-    @output["widgets"].push(h)
-
-    h = Hash.new
-    h["widget_type"] = "checkbox_selector"
-    h["options"] = Hash.new
-    h["options"]["label"] = "Club"
-    v = Array.new
-    v.push( { :label => "Laptop:", :cb_name => "laptop" } )
-    v.push( { :label => "Cargador:", :cb_name => "charger" } )
-    h["options"]["cb_options"] = v
-    @output["widgets"].push(h)
-
-    h = Hash.new
-    h["widget_type"] = "column_value_selector"
-    h["options"] = Hash.new
-    v = Array.new
-    v.push( { :text => "Laptop:", :value => "laptop", :datatype => "textfield" } )
-    v.push( { :text => "Charger:", :value => "charger", :datatype => "textfield" } )
-    h["options"]["col_options"] = v
-    @output["widgets"].push(h)
-
-    h = Hash.new
-    h["widget_type"] = "date_range"
-    @output["widgets"].push(h)
-
-
-    @output["print_method"] = "test_print_report"
-  end
-
-
-
-  # Para mejorar la legibilidad del codigo.
   private
   def dateRange(since = nil, to = nil)
     h = Hash.new
@@ -493,11 +452,11 @@ class ReportsController < SearchController
     widgets = []
     widgets.push(dateRange(since, to))
     cb_options = Array.new
-    cb_options.push({ :text => "Dia", :value => "day" })
-    cb_options.push({ :text => "Semana", :value => "week" })
-    cb_options.push({ :text => "Mes", :value => "month" })
-    cb_options.push({ :text => "Anho", :value => "year" })
-    widgets.push(comboBoxSelector("Agrupado por: ",cb_options))
+    cb_options.push({ :text => _("Day"), :value => "day" })
+    cb_options.push({ :text => _("Week"), :value => "week" })
+    cb_options.push({ :text => _("Month"), :value => "month" })
+    cb_options.push({ :text => _("Year"), :value => "year" })
+    widgets.push(comboBoxSelector(_("Grouped by: "),cb_options))
     widgets
   end
 
