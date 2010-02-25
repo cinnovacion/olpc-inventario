@@ -131,7 +131,7 @@ class SearchController < ApplicationController
   #
   def crearColumnasCriterios(clazz_ref)
     model_config = @vista == "" ? clazz_ref.getColumnas() : clazz_ref.getColumnas(@vista)
-    column_config = model_config.class.is_a?(Array) ? model_config : model_config[:columnas]
+    column_config = model_config.is_a?(Array) ? model_config : model_config[:columnas]
 
     @output["criterios"] = column_config.map { |x|
       sel = x[:selected] && x[:selected] == true ? true : false
@@ -165,13 +165,15 @@ class SearchController < ApplicationController
   # on the Client side. 
   #
   def getDataToSend(clazz_ref, objects)
-    column_config = @model_config.class.is_a?(Array) ? @model_config : @model_config[:columnas]
+    column_config = @model_config.is_a?(Array) ? @model_config : @model_config[:columnas]
 
     objects.map { |obj|
       column_config.map { |c| 
         if c[:related_attribute]
           begin
-            newCol = obj.send(c[:related_attribute].to_sym)
+            #It would be nice to use obj.send(...) But in getColumnas some strings 
+            #include "()" which breaks the send call.
+            newCol = eval("obj." + c[:related_attribute])
             newCol =  "" if newCol == nil
           rescue
             newCol =  ""
