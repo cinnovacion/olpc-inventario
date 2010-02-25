@@ -42,20 +42,18 @@ class ShipmentsController < SearchController
   
     @output["fields"] = []
 
-    h = { "label" => "Comentario","datatype" => "textfield" }.merge( p ? {"value" => p.getComment } : {} )
+    h = { "label" => _("Comment"), "datatype" => "textfield" }.merge( p ? {"value" => p.getComment } : {} )
     @output["fields"].push(h)
 
     fecha = p ? p.arrived_at.to_s : Fecha::getFecha()
-    h = { "label" => "Fch. Llegada","datatype" => "date", "value" => fecha }
+    h = { "label" => _("Arrival date"), "datatype" => "date", "value" => fecha }
     @output["fields"].push(h)
 
-    h = { "label" => "Numero","datatype" => "textfield" }.merge( p ? {"value" => p.getShipmentNumber } : {} )
+    h = { "label" => _("Number"), "datatype" => "textfield" }.merge( p ? {"value" => p.getShipmentNumber } : {} )
     @output["fields"].push(h)
-
   end
 	
   def save
-
     datos = JSON.parse(params[:payload])
     attribs = Hash.new
     attribs[:comment] = datos["fields"][0]
@@ -70,15 +68,13 @@ class ShipmentsController < SearchController
       Shipment.create!(attribs)
     end
 
-    @output["msg"] = datos["id"] ? "Cambios guardados" : "Cargamento agregado"  
+    @output["msg"] = datos["id"] ? _("Changes saved.") : _("Shipment added.")  
   end
 
   def delete
     ids = JSON.parse(params[:payload])
     Shipment.destroy(ids)
-    @output["msg"] = "Elementos eliminados"
+    @output["msg"] = _("Elements deleted.")
   end
-
-
 
 end

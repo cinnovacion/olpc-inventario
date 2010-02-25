@@ -1,54 +1,72 @@
-#: app/controllers/problem_reports_controller.rb:43
-msgid "Report a problem"
-msgstr ""
-
-#: app/controllers/problem_reports_controller.rb:59
-#: app/controllers/print_controller.rb:316
-#: app/controllers/print_controller.rb:500
-msgid "Problem"
-msgstr ""
-
-#: app/controllers/problem_reports_controller.rb:64
-#: app/controllers/print_controller.rb:853
-#: app/controllers/print_controller.rb:1193
+# Inventory system.
+#
+# Martin Abente <mabente@paraguayeduca.org>, 2010.
+# Raúl Gutierrez S. <rgs@paraguayeduca.org>, 2010.
+#
 #, fuzzy
-msgid "Laptop"
-msgstr "Laptop agregada."
+msgid ""
+msgstr ""
+"Project-Id-Version: 0.3\n"
+"POT-Creation-Date: 2010-02-25 01:34-0300\n"
+"PO-Revision-Date: 2010-02-25 HO:MI+ZONE\n"
+"Last-Translator: Raul Gutierrez S. <rgs@paraguayeduca.org>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
 
-#: app/controllers/problem_reports_controller.rb:69
-msgid "Solved?"
+#: app/controllers/solution_types_controller.rb:35
+#: app/controllers/sistema_controller.rb:349
+#, fuzzy
+msgid "Solution types"
+msgstr "SoluciÃ³n"
+
+#: app/controllers/solution_types_controller.rb:46
+#: app/controllers/places_controller.rb:61
+#: app/controllers/part_movement_types_controller.rb:41
+#: app/controllers/nodes_controller.rb:93
+#: app/controllers/place_types_controller.rb:44
+#: app/controllers/problem_types_controller.rb:46
+#: app/controllers/notifications_controller.rb:44
+#: app/controllers/models_controller.rb:46
+#: app/controllers/people_controller.rb:61
+#: app/controllers/node_types_controller.rb:53
+#: app/controllers/schools_controller.rb:36
+#: app/controllers/print_controller.rb:1193
+#: app/controllers/part_types_controller.rb:47
+msgid "Name"
+msgstr "Nombre"
+
+#: app/controllers/solution_types_controller.rb:49
+#: app/controllers/statuses_controller.rb:44
+#: app/controllers/places_controller.rb:65
+#: app/controllers/part_movement_types_controller.rb:44
+#: app/controllers/problem_types_controller.rb:49
+#: app/controllers/notifications_controller.rb:47
+#: app/controllers/models_controller.rb:50
+#: app/controllers/node_types_controller.rb:56
+#: app/controllers/movement_types_controller.rb:47
+#: app/controllers/profiles_controller.rb:46
+msgid "Description"
+msgstr "descripciÃ³n "
+
+#: app/controllers/solution_types_controller.rb:52
+#: app/controllers/problem_types_controller.rb:52
+msgid "More info"
+msgstr "Mas Info"
+
+#: app/controllers/solution_types_controller.rb:55
+#: app/controllers/node_types_controller.rb:59
+#: app/controllers/part_types_controller.rb:53
+msgid "Tag"
+msgstr "Etiqueta "
+
+#: app/controllers/solution_types_controller.rb:58
+msgid "Required parts"
 msgstr ""
 
-#: app/controllers/problem_reports_controller.rb:73
-#: app/controllers/problem_solutions_controller.rb:56
-#: app/controllers/problem_solutions_controller.rb:108
-msgid "Comments"
-msgstr ""
-
-#: app/controllers/problem_reports_controller.rb:82
-msgid "Nobody"
-msgstr ""
-
-#: app/controllers/problem_reports_controller.rb:83
-msgid "No place"
-msgstr ""
-
-#: app/controllers/problem_reports_controller.rb:91
-msgid "This laptop is owned by %s who belongs to %s "
-msgstr ""
-
-#: app/controllers/problem_reports_controller.rb:97
-msgid " This problem has already been report %d times"
-msgstr ""
-
-#: app/controllers/problem_reports_controller.rb:104
-msgid ", of which the following haven't been solved yet: [%s]"
-msgstr ""
-
-#: app/controllers/problem_reports_controller.rb:105
-msgid " It is highly probable that this report is repeated."
-msgstr ""
-
+#: app/controllers/solution_types_controller.rb:92
+#: app/controllers/statuses_controller.rb:59
 #: app/controllers/problem_reports_controller.rb:123
 #: app/controllers/bank_deposits_controller.rb:90
 #: app/controllers/laptops_controller.rb:100
@@ -56,9 +74,12 @@ msgstr ""
 #: app/controllers/nodes_controller.rb:153
 #: app/controllers/place_types_controller.rb:67
 #: app/controllers/images_controller.rb:76
+#: app/controllers/users_controller.rb:85
+#: app/controllers/shipments_controller.rb:71
 #: app/controllers/problem_types_controller.rb:83
 #: app/controllers/notifications_controller.rb:76
 #: app/controllers/models_controller.rb:68
+#: app/controllers/school_infos_controller.rb:96
 #: app/controllers/people_controller.rb:157
 #: app/controllers/node_types_controller.rb:92
 #: app/controllers/movement_types_controller.rb:69
@@ -66,42 +87,122 @@ msgstr ""
 #: app/controllers/profiles_controller.rb:78
 #: app/controllers/laptop_configs_controller.rb:78
 msgid "Changes saved."
-msgstr ""
+msgstr "Cambios guardados"
 
-#: app/controllers/problem_reports_controller.rb:123
-msgid "Problem report created."
-msgstr ""
+#: app/controllers/solution_types_controller.rb:92
+#, fuzzy
+msgid "Solution type added."
+msgstr "Tipo de locaciÃ³n agregada"
 
+#: app/controllers/solution_types_controller.rb:98
+#: app/controllers/statuses_controller.rb:65
 #: app/controllers/problem_reports_controller.rb:146
 #: app/controllers/laptops_controller.rb:106
 #: app/controllers/places_controller.rb:117
+#: app/controllers/users_controller.rb:91
+#: app/controllers/shipments_controller.rb:77
 #: app/controllers/problem_types_controller.rb:89
 #: app/controllers/default_values_controller.rb:80
 #: app/controllers/models_controller.rb:74
+#: app/controllers/people_controller.rb:163
 #: app/controllers/movement_types_controller.rb:75
 #: app/controllers/profiles_controller.rb:84
 #: app/controllers/part_types_controller.rb:79
 #: app/controllers/part_movements_controller.rb:93
 msgid "Elements deleted."
+msgstr "Elementos borrados  "
+
+#: app/controllers/script_runner_controller.rb:40
+msgid "No such script %s"
 msgstr ""
+
+#: app/controllers/script_runner_controller.rb:43
+msgid "Script run successfully. "
+msgstr ""
+
+#: app/controllers/statuses_controller.rb:47
+#, fuzzy
+msgid "Abbreviation"
+msgstr "ObservaciÃ³n"
+
+#: app/controllers/statuses_controller.rb:59
+#, fuzzy
+msgid "New status added."
+msgstr "Tipo de Nodo aggregado."
+
+#: app/controllers/problem_reports_controller.rb:43
+#: app/controllers/sistema_controller.rb:308
+msgid "Report a problem"
+msgstr "Reportar un Problema"
+
+#: app/controllers/problem_reports_controller.rb:59
+#: app/controllers/print_controller.rb:316
+#: app/controllers/print_controller.rb:500
+msgid "Problem"
+msgstr "Problema"
+
+#: app/controllers/problem_reports_controller.rb:64
+#: app/controllers/print_controller.rb:853
+#: app/controllers/print_controller.rb:1193
+#, fuzzy
+msgid "Laptop"
+msgstr "Laptop"
+
+#: app/controllers/problem_reports_controller.rb:69
+msgid "Solved?"
+msgstr "Resuelto?"
+
+#: app/controllers/problem_reports_controller.rb:73
+#: app/controllers/problem_solutions_controller.rb:56
+#: app/controllers/problem_solutions_controller.rb:108
+msgid "Comments"
+msgstr "Comentarios"
+
+#: app/controllers/problem_reports_controller.rb:82
+msgid "Nobody"
+msgstr "Nadie"
+
+#: app/controllers/problem_reports_controller.rb:83
+msgid "No place"
+msgstr "Sin Lugar"
+
+#: app/controllers/problem_reports_controller.rb:91
+msgid "This laptop is owned by %s who belongs to %s "
+msgstr "Esta laptop es probidad de %s quien es de %s"
+
+#: app/controllers/problem_reports_controller.rb:97
+msgid " This problem has already been report %d times"
+msgstr "Este problema ya ha sido reportado %d  de veces "
+
+#: app/controllers/problem_reports_controller.rb:104
+msgid ", of which the following haven't been solved yet: [%s]"
+msgstr ", de la cuales los siguientes no han sido resuelto: [%s]"
+
+#: app/controllers/problem_reports_controller.rb:105
+msgid " It is highly probable that this report is repeated."
+msgstr "Es alta mente probable que este reporte es repetido  "
+
+#: app/controllers/problem_reports_controller.rb:123
+msgid "Problem report created."
+msgstr "Reporte de problemas creados "
 
 #: app/controllers/bank_deposits_controller.rb:56
 #: app/controllers/print_controller.rb:433
 msgid "Deposit"
-msgstr ""
+msgstr "Depositos"
 
 #: app/controllers/bank_deposits_controller.rb:59
 msgid "Amount"
-msgstr ""
+msgstr "Monto"
 
 #: app/controllers/bank_deposits_controller.rb:63
 msgid "Deposit date"
-msgstr ""
+msgstr "Dia de deposito"
 
 #: app/controllers/bank_deposits_controller.rb:66
 #: app/controllers/print_controller.rb:433
 msgid "Bank"
-msgstr ""
+msgstr "Banco"
 
 #: app/controllers/bank_deposits_controller.rb:90
 #, fuzzy
@@ -117,71 +218,47 @@ msgstr "Laptop agregada."
 #: app/controllers/movements_controller.rb:133
 #: app/controllers/print_controller.rb:1739
 msgid "Serial Number"
-msgstr ""
+msgstr "Numero de serial "
 
 #: app/controllers/laptops_controller.rb:163
 #: app/controllers/laptops_controller.rb:210
 msgid "OS version"
-msgstr ""
+msgstr "Version de Sistema Operativo"
 
 #: app/controllers/laptops_controller.rb:168
 #: app/controllers/laptops_controller.rb:215
+#: app/controllers/reports_controller.rb:369
 msgid "Model"
-msgstr ""
+msgstr "Modelo"
 
 #: app/controllers/laptops_controller.rb:173
 #: app/controllers/laptops_controller.rb:220
 msgid "Shipment"
-msgstr ""
+msgstr "Cargamento "
 
 #: app/controllers/laptops_controller.rb:179
 #: app/controllers/laptops_controller.rb:225
 msgid "Owned by"
-msgstr ""
+msgstr "Propiedad de"
 
 #: app/controllers/laptops_controller.rb:187
 #: app/controllers/laptops_controller.rb:233
 #: app/controllers/print_controller.rb:853
 #: app/controllers/print_controller.rb:1701
 msgid "Status"
-msgstr ""
+msgstr "Estado "
 
 #: app/controllers/laptops_controller.rb:190
 msgid "UUID"
-msgstr ""
+msgstr "UUID"
 
 #: app/controllers/laptops_controller.rb:193
 msgid "Load .xls"
-msgstr ""
-
-#: app/controllers/places_controller.rb:61
-#: app/controllers/part_movement_types_controller.rb:41
-#: app/controllers/nodes_controller.rb:93
-#: app/controllers/place_types_controller.rb:44
-#: app/controllers/problem_types_controller.rb:46
-#: app/controllers/notifications_controller.rb:44
-#: app/controllers/models_controller.rb:46
-#: app/controllers/people_controller.rb:61
-#: app/controllers/node_types_controller.rb:53
-#: app/controllers/print_controller.rb:1193
-#: app/controllers/part_types_controller.rb:47
-msgid "Name"
-msgstr ""
-
-#: app/controllers/places_controller.rb:65
-#: app/controllers/part_movement_types_controller.rb:44
-#: app/controllers/problem_types_controller.rb:49
-#: app/controllers/notifications_controller.rb:47
-#: app/controllers/models_controller.rb:50
-#: app/controllers/node_types_controller.rb:56
-#: app/controllers/movement_types_controller.rb:47
-#: app/controllers/profiles_controller.rb:46
-msgid "Description"
-msgstr ""
+msgstr "Load .xls"
 
 #: app/controllers/places_controller.rb:70
 msgid "Parent location"
-msgstr ""
+msgstr "Localidad  Parental"
 
 #: app/controllers/places_controller.rb:78
 #: app/controllers/nodes_controller.rb:116
@@ -189,39 +266,42 @@ msgstr ""
 #: app/controllers/print_controller.rb:1480
 #: app/controllers/print_controller.rb:1877
 msgid "Type"
-msgstr ""
+msgstr "Tipo"
 
 #: app/controllers/places_controller.rb:111
 #, fuzzy
 msgid "Location added."
-msgstr "Laptop agregada."
+msgstr "LocaciÃ³n agregada."
 
 #: app/controllers/problem_solutions_controller.rb:42
+#, fuzzy
 msgid "Soluciones Simples"
-msgstr ""
+msgstr "Lugar de fuente"
 
 #: app/controllers/problem_solutions_controller.rb:45
 msgid "#Report*"
-msgstr ""
+msgstr "Reporte"
 
 #: app/controllers/problem_solutions_controller.rb:49
 msgid "Solution*"
-msgstr ""
+msgstr "Solucion*"
 
 #: app/controllers/problem_solutions_controller.rb:53
 msgid "Date solved"
-msgstr ""
+msgstr "DÃ­a resulto"
 
 #: app/controllers/problem_solutions_controller.rb:59
 #: app/controllers/problem_solutions_controller.rb:111
+#: app/controllers/sistema_controller.rb:318
+#: app/controllers/sistema_controller.rb:335
 #: app/controllers/print_controller.rb:500
 msgid "Deposits"
-msgstr ""
+msgstr "Deposito"
 
 #: app/controllers/problem_solutions_controller.rb:81
 #: app/controllers/problem_solutions_controller.rb:154
 msgid "Editing not allowed in this window."
-msgstr ""
+msgstr "Editar no es permitido en esta ventana"
 
 #: app/controllers/problem_solutions_controller.rb:84
 #, fuzzy
@@ -236,11 +316,11 @@ msgstr "Laptop agregada."
 #: app/controllers/problem_solutions_controller.rb:102
 #: app/controllers/print_controller.rb:500
 msgid "Report"
-msgstr ""
+msgstr "Reporte"
 
 #: app/controllers/problem_solutions_controller.rb:105
 msgid "Serial # of repair part"
-msgstr ""
+msgstr "Numero de serial de parte reparada    "
 
 #: app/controllers/problem_solutions_controller.rb:132
 msgid ""
@@ -256,33 +336,418 @@ msgstr ""
 #: app/controllers/problem_solutions_controller.rb:175
 msgid "Invalid deposit number."
 msgstr ""
+"Esta operaciÃ³n no puede ser completada, los datos no existen en el sistema"
 
 #: app/controllers/problem_solutions_controller.rb:176
 msgid "Invalid specified amount."
-msgstr ""
+msgstr "Monto significado es invÃ¡lido"
 
 #: app/controllers/problem_solutions_controller.rb:177
 msgid "Invalid date."
-msgstr ""
+msgstr "Dia invÃ¡lido "
 
 #: app/controllers/sistema_controller.rb:65
-msgid "Usuario o password equivocado"
+msgid "Wrong user or password."
 msgstr ""
+
+#: app/controllers/sistema_controller.rb:72
+msgid "You are no longer in the system, bye-bye."
+msgstr ""
+
+#: app/controllers/sistema_controller.rb:82
+#, fuzzy
+msgid "Applications"
+msgstr "LocaciÃ³n."
+
+#: app/controllers/sistema_controller.rb:189
+#, fuzzy
+msgid "Schools info"
+msgstr "Numero de escuela"
+
+#: app/controllers/sistema_controller.rb:203
+#, fuzzy
+msgid "School "
+msgstr "Numero de escuela"
+
+#: app/controllers/sistema_controller.rb:212
+msgid "Developer config options"
+msgstr ""
+
+#: app/controllers/sistema_controller.rb:213
+#, fuzzy
+msgid "Run code"
+msgstr "DÃ­a regresado"
+
+#: app/controllers/sistema_controller.rb:214
+#, fuzzy
+msgid "Notification types"
+msgstr "NotificaciÃ³n "
+
+#: app/controllers/sistema_controller.rb:215
+#, fuzzy
+msgid "Images"
+msgstr "Imagen"
+
+#: app/controllers/sistema_controller.rb:216
+#, fuzzy
+msgid "Profiles"
+msgstr "Problemas"
+
+#: app/controllers/sistema_controller.rb:217
+msgid "Default values"
+msgstr ""
+
+#: app/controllers/sistema_controller.rb:223
+msgid "System configuration"
+msgstr ""
+
+#: app/controllers/sistema_controller.rb:224
+msgid "Audit records"
+msgstr ""
+
+#: app/controllers/sistema_controller.rb:229
+msgid "Add "
+msgstr ""
+
+#: app/controllers/sistema_controller.rb:230
+msgid "List "
+msgstr ""
+
+#: app/controllers/sistema_controller.rb:240
+msgid "Inventory"
+msgstr ""
+
+#: app/controllers/sistema_controller.rb:242
+#: app/controllers/movements_controller.rb:229
+#: app/controllers/print_controller.rb:316
+#: app/controllers/print_controller.rb:1481
+#, fuzzy
+msgid "Laptops"
+msgstr "Laptop"
+
+#: app/controllers/sistema_controller.rb:247
+#, fuzzy
+msgid "Handouts"
+msgstr "Laptops donadas"
+
+#: app/controllers/sistema_controller.rb:248
+#: app/controllers/sistema_controller.rb:250
+msgid "Done handout"
+msgstr ""
+
+#: app/controllers/sistema_controller.rb:249
+msgid "Massive handout"
+msgstr ""
+
+#: app/controllers/sistema_controller.rb:251
+msgid "Students lot"
+msgstr ""
+
+#: app/controllers/sistema_controller.rb:252
+msgid "List handouts"
+msgstr ""
+
+#: app/controllers/sistema_controller.rb:254
+msgid "New handout"
+msgstr ""
+
+#: app/controllers/sistema_controller.rb:259
+#, fuzzy
+msgid "Lots"
+msgstr "Lote"
+
+#: app/controllers/sistema_controller.rb:266
+#: app/controllers/sistema_controller.rb:326
+#: app/controllers/sistema_controller.rb:369
+#, fuzzy
+msgid "Reports"
+msgstr "Reporte"
+
+#: app/controllers/sistema_controller.rb:267
+#, fuzzy
+msgid "Serial numbers per location"
+msgstr "Numero de serial por localidad"
+
+#: app/controllers/sistema_controller.rb:268
+#, fuzzy
+msgid "Where are these laptops?"
+msgstr "Donde estan las Laptops?"
+
+#: app/controllers/sistema_controller.rb:269
+#, fuzzy
+msgid "Movements"
+msgstr "Tipo de movimiento"
+
+#: app/controllers/sistema_controller.rb:270
+#, fuzzy
+msgid "Movements grouped by type"
+msgstr "Problemas en grupo por tipo"
+
+#: app/controllers/sistema_controller.rb:273
+#, fuzzy
+msgid "Laptops per location"
+msgstr "Numero de laptops por localidad"
+
+#: app/controllers/sistema_controller.rb:277
+#: app/controllers/print_controller.rb:1660
+msgid "Lendings"
+msgstr "Prestamos"
+
+#: app/controllers/sistema_controller.rb:278
+#, fuzzy
+msgid "Laptops per status"
+msgstr "Laptops por dueÃ±o"
+
+#: app/controllers/sistema_controller.rb:279
+#, fuzzy
+msgid "Registry of status changes"
+msgstr "Cambio en estado"
+
+#: app/controllers/sistema_controller.rb:280
+msgid "Print barcodes"
+msgstr ""
+
+#: app/controllers/sistema_controller.rb:281
+msgid "Print lot receipt"
+msgstr ""
+
+#: app/controllers/sistema_controller.rb:283
+#, fuzzy
+msgid "Posible errors and inconsistencies"
+msgstr "Errores posibles durante la entrega en %s"
+
+#: app/controllers/sistema_controller.rb:284
+msgid "Receipts for individuals"
+msgstr ""
+
+#: app/controllers/sistema_controller.rb:285
+#, fuzzy
+msgid "Registered laptops"
+msgstr "Estado de las laptops registradas"
+
+#: app/controllers/sistema_controller.rb:290
+#: app/controllers/sistema_controller.rb:345
+#: app/controllers/sistema_controller.rb:375
+#, fuzzy
+msgid "Configuration"
+msgstr "NotificaciÃ³n "
+
+#: app/controllers/sistema_controller.rb:291
+#, fuzzy
+msgid "Import data"
+msgstr "Dia de deposito"
+
+#: app/controllers/sistema_controller.rb:292
+#, fuzzy
+msgid "Laptop models"
+msgstr "Movimiento de laptops"
+
+#: app/controllers/sistema_controller.rb:293
+#, fuzzy
+msgid "Movement types"
+msgstr "Tipo de movimiento"
+
+#: app/controllers/sistema_controller.rb:294
+#, fuzzy
+msgid "Status types"
+msgstr "Tipo de partes"
+
+#: app/controllers/sistema_controller.rb:295
+msgid "Laptop (default) values"
+msgstr ""
+
+#: app/controllers/sistema_controller.rb:296
+#, fuzzy
+msgid "Shipments"
+msgstr "Cargamento "
+
+#: app/controllers/sistema_controller.rb:301
+msgid "Technical support"
+msgstr ""
+
+#: app/controllers/sistema_controller.rb:302
+#, fuzzy
+msgid "Events"
+msgstr "Entrada"
+
+#: app/controllers/sistema_controller.rb:303
+msgid "Network nodes tracking"
+msgstr ""
+
+#: app/controllers/sistema_controller.rb:305
+#, fuzzy
+msgid "Transfers"
+msgstr "Traslado de partes"
+
+#: app/controllers/sistema_controller.rb:306
+#, fuzzy
+msgid "Part movements"
+msgstr "Movimiento de laptops"
+
+#: app/controllers/sistema_controller.rb:311
+#: app/controllers/sistema_controller.rb:313
+#, fuzzy
+msgid "Register solution"
+msgstr "Soluciones Simples"
+
+#: app/controllers/sistema_controller.rb:312
+msgid "Replacement"
+msgstr ""
+
+#: app/controllers/sistema_controller.rb:314
+msgid "Simples"
+msgstr ""
+
+#: app/controllers/sistema_controller.rb:315
+#, fuzzy
+msgid "Problem solutions"
+msgstr "Problemas por localidad"
+
+#: app/controllers/sistema_controller.rb:327
+msgid "Replaced parts distribution"
+msgstr ""
+
+#: app/controllers/sistema_controller.rb:328
+#, fuzzy
+msgid "Problem time response"
+msgstr "Problema por persona"
+
+#: app/controllers/sistema_controller.rb:329
+#, fuzzy
+msgid "Problems by type"
+msgstr "Problemas en grupo por tipo"
+
+#: app/controllers/sistema_controller.rb:330
+#, fuzzy
+msgid "Problems by school"
+msgstr "Problemas por localidad"
+
+#: app/controllers/sistema_controller.rb:331
+#: app/controllers/print_controller.rb:1019
+msgid "Problems by grade"
+msgstr "Problemas por grado"
+
+#: app/controllers/sistema_controller.rb:332
+msgid "Replacement parts used by each person"
+msgstr ""
+
+#: app/controllers/sistema_controller.rb:333
+msgid "Network nodes uptime"
+msgstr ""
+
+#: app/controllers/sistema_controller.rb:334
+#, fuzzy
+msgid "Problems & deposits"
+msgstr "Problemas por grado"
+
+#: app/controllers/sistema_controller.rb:336
+#, fuzzy
+msgid "Stock status"
+msgstr "Estado "
+
+#: app/controllers/sistema_controller.rb:337
+#, fuzzy
+msgid "Hardware vs. software dist."
+msgstr "DistribuciÃ³n de problemas (Hardware vs Software)"
+
+#: app/controllers/sistema_controller.rb:338
+#, fuzzy
+msgid "Laptops with recurring problems"
+msgstr "Repeticion de problemas"
+
+#: app/controllers/sistema_controller.rb:339
+#: app/controllers/print_controller.rb:153
+msgid "Average repair time"
+msgstr "Promedio de tiempo de reparaciÃ³n"
+
+#: app/controllers/sistema_controller.rb:347
+#: app/controllers/part_types_controller.rb:36
+msgid "Part types"
+msgstr "Tipo de partes"
+
+#: app/controllers/sistema_controller.rb:348
+#, fuzzy
+msgid "Problem types"
+msgstr "Problemas"
+
+#: app/controllers/sistema_controller.rb:350
+#, fuzzy
+msgid "Node types"
+msgstr "Tipo de Nodo aggregado."
+
+#: app/controllers/sistema_controller.rb:351
+#, fuzzy
+msgid "Nodes"
+msgstr "Modelo"
+
+#: app/controllers/sistema_controller.rb:352
+#, fuzzy
+msgid "School Servers"
+msgstr "Nombre de escuela"
+
+#: app/controllers/sistema_controller.rb:353
+#, fuzzy
+msgid "Part movement types"
+msgstr "Tipo de movimiento"
+
+#: app/controllers/sistema_controller.rb:358
+#, fuzzy
+msgid "People & locations"
+msgstr "Problemas por localidad"
+
+#: app/controllers/sistema_controller.rb:359
+#: app/controllers/reports_controller.rb:157
+#, fuzzy
+msgid "Locations"
+msgstr "LocaciÃ³n."
+
+#: app/controllers/sistema_controller.rb:360
+msgid "Tool Box"
+msgstr ""
+
+#: app/controllers/sistema_controller.rb:361
+#, fuzzy
+msgid "Personas"
+msgstr "Persona"
+
+#: app/controllers/sistema_controller.rb:370
+#, fuzzy
+msgid "Students & document ids"
+msgstr "Entregado a (Numero de Documento):"
+
+#: app/controllers/sistema_controller.rb:376
+#, fuzzy
+msgid "Location types"
+msgstr "LocaciÃ³n."
+
+#: app/controllers/sistema_controller.rb:381
+msgid "Administrator's configuration"
+msgstr ""
+
+#: app/controllers/sistema_controller.rb:382
+#, fuzzy
+msgid "Notification suscriptions"
+msgstr "NotificaciÃ³n "
+
+#: app/controllers/sistema_controller.rb:383
+#, fuzzy
+msgid "Users"
+msgstr "Usuario"
 
 #: app/controllers/reports_controller.rb:30
 #: app/controllers/reports_controller.rb:61
 msgid "Given by: "
-msgstr ""
+msgstr "Dado por:"
 
 #: app/controllers/reports_controller.rb:33
 #: app/controllers/reports_controller.rb:64
 msgid "Received by: "
-msgstr ""
+msgstr "Recibido por:"
 
 #: app/controllers/reports_controller.rb:58
 #, fuzzy
 msgid "Reasons"
-msgstr "Laptop agregada."
+msgstr "Razones"
 
 #: app/controllers/reports_controller.rb:78
 #: app/controllers/reports_controller.rb:193
@@ -296,293 +761,337 @@ msgstr "Laptop agregada."
 #: app/controllers/print_controller.rb:1093
 #, fuzzy
 msgid "Location"
-msgstr "Laptop agregada."
+msgstr "Localidad"
 
 #: app/controllers/reports_controller.rb:86
 #: app/controllers/print_controller.rb:1125
 msgid "Owner"
-msgstr ""
+msgstr "DueÃ±o"
 
 #: app/controllers/reports_controller.rb:102
+#: app/controllers/reports_controller.rb:256
 msgid "Given to"
-msgstr ""
+msgstr "Dado a"
 
 #: app/controllers/reports_controller.rb:122
 msgid "Lended by "
-msgstr ""
+msgstr "Prestado por"
 
 #: app/controllers/reports_controller.rb:123
 msgid "Lended to "
-msgstr ""
+msgstr "Prestado a"
 
 #: app/controllers/reports_controller.rb:126
 msgid "Returned"
-msgstr ""
+msgstr "Regresado"
 
 #: app/controllers/reports_controller.rb:127
 msgid "Not returned"
-msgstr ""
+msgstr "No regresado"
 
 #: app/controllers/reports_controller.rb:128
 #: app/controllers/reports_controller.rb:219
 msgid "Filters"
-msgstr ""
-
-#: app/controllers/reports_controller.rb:157
-#, fuzzy
-msgid "Locations"
-msgstr "Laptop agregada."
+msgstr "Filtres "
 
 #: app/controllers/reports_controller.rb:158
+#: app/controllers/reports_controller.rb:259
 #: app/controllers/print_controller.rb:1530
 msgid "Parts"
-msgstr ""
+msgstr "Partes"
 
 #: app/controllers/reports_controller.rb:165
 #: app/controllers/reports_controller.rb:228
 msgid "Since"
-msgstr ""
+msgstr "Desde"
 
 #: app/controllers/reports_controller.rb:176
 msgid "With laptops assigned"
-msgstr ""
+msgstr "Con laptops asignadas"
 
 #: app/controllers/reports_controller.rb:177
 msgid "Without laptops assigned"
-msgstr ""
+msgstr "Sin laptops asignadas"
 
 #: app/controllers/reports_controller.rb:185
 msgid "Lot"
-msgstr ""
+msgstr "Lote"
 
 #: app/controllers/reports_controller.rb:217
 #: app/controllers/print_controller.rb:1125
 msgid "Registered"
-msgstr ""
+msgstr "Registrada"
 
 #: app/controllers/reports_controller.rb:218
 msgid "Not registered"
-msgstr ""
+msgstr "No registrada"
 
 #: app/controllers/reports_controller.rb:227
+#: app/controllers/reports_controller.rb:257
 msgid "Group by"
-msgstr ""
+msgstr "Grupo por"
 
 #: app/controllers/reports_controller.rb:229
 #: app/controllers/reports_controller.rb:249
+#: app/controllers/reports_controller.rb:335
 msgid "Problems"
-msgstr ""
+msgstr "Problemas"
 
 #: app/controllers/reports_controller.rb:231
-#: app/controllers/application_controller.rb:297
-#: app/controllers/application_controller.rb:305
+#: app/controllers/reports_controller.rb:306
+#: app/controllers/application_controller.rb:295
+#: app/controllers/application_controller.rb:303
 #: app/controllers/print_controller.rb:486
 #: app/controllers/print_controller.rb:1230
 msgid "Yes"
-msgstr ""
+msgstr "Si"
 
 #: app/controllers/reports_controller.rb:232
-#: app/controllers/application_controller.rb:298
-#: app/controllers/application_controller.rb:306
+#: app/controllers/reports_controller.rb:307
+#: app/controllers/application_controller.rb:296
+#: app/controllers/application_controller.rb:304
 #: app/controllers/print_controller.rb:486
 #: app/controllers/print_controller.rb:1225
 msgid "No"
-msgstr ""
+msgstr "No"
 
 #: app/controllers/reports_controller.rb:233
 #: app/controllers/reports_controller.rb:235
+#: app/controllers/reports_controller.rb:308
 #: app/controllers/print_controller.rb:500
 #: app/controllers/print_controller.rb:1093
 msgid "Solved"
-msgstr ""
+msgstr "Resulto"
 
 #: app/controllers/reports_controller.rb:236
 #: app/controllers/print_controller.rb:1093
 msgid "Not solved"
-msgstr ""
+msgstr "No resulto"
 
 #: app/controllers/reports_controller.rb:237
+#: app/controllers/reports_controller.rb:261
 #: app/controllers/print_controller.rb:196
 #: app/controllers/print_controller.rb:639
 #: app/controllers/print_controller.rb:920
 msgid "Total"
-msgstr ""
+msgstr "Total"
 
 #: app/controllers/reports_controller.rb:238
 msgid "Number of people"
-msgstr ""
+msgstr "Numero de gente"
 
 #: app/controllers/reports_controller.rb:239
 msgid "Problems per person"
-msgstr ""
+msgstr "Problema por persona"
 
 #: app/controllers/reports_controller.rb:240
 msgid "Eficiency"
-msgstr ""
+msgstr "Eficiencia"
 
 #: app/controllers/reports_controller.rb:241
 msgid "Order by"
-msgstr ""
+msgstr "Ordenado por"
 
 #: app/controllers/reports_controller.rb:248
 msgid "Belong to"
-msgstr ""
+msgstr "Probidad de"
 
 #: app/controllers/reports_controller.rb:255
 msgid "Owners"
+msgstr "DueÃ±os"
+
+#: app/controllers/reports_controller.rb:258
+msgid "From"
 msgstr ""
+
+#: app/controllers/reports_controller.rb:263
+#, fuzzy
+msgid "Descending"
+msgstr "Prestamos"
+
+#: app/controllers/reports_controller.rb:263
+#, fuzzy
+msgid "Ascending"
+msgstr "Prestamos"
+
+#: app/controllers/reports_controller.rb:264
+#, fuzzy
+msgid "Order"
+msgstr "Ordenado por"
+
+#: app/controllers/reports_controller.rb:279
+msgid "In"
+msgstr ""
+
+#: app/controllers/reports_controller.rb:455
+#: app/controllers/print_controller.rb:307
+msgid "Day"
+msgstr "Dia"
+
+#: app/controllers/reports_controller.rb:456
+#: app/controllers/print_controller.rb:309
+msgid "Week"
+msgstr "Semana"
+
+#: app/controllers/reports_controller.rb:457
+#: app/controllers/print_controller.rb:311
+msgid "Month"
+msgstr "Mes"
+
+#: app/controllers/reports_controller.rb:458
+#: app/controllers/print_controller.rb:313
+msgid "Year"
+msgstr "AÃ±o"
+
+#: app/controllers/reports_controller.rb:459
+#, fuzzy
+msgid "Grouped by: "
+msgstr "Grupo por"
 
 #: app/controllers/lots_controller.rb:51
 msgid "Num. of boxes"
-msgstr ""
+msgstr "Numero de cajas"
 
 #: app/controllers/lots_controller.rb:56
 msgid "Responsible person"
-msgstr ""
+msgstr "Persona responsable"
 
 #: app/controllers/lots_controller.rb:61
 msgid "Delivered?"
-msgstr ""
+msgstr "Entregado?"
 
 #: app/controllers/lots_controller.rb:65
 msgid "Delivery date"
-msgstr ""
+msgstr "Dia de entrega"
 
 #: app/controllers/lots_controller.rb:74
 msgid "Section"
-msgstr ""
+msgstr "SecciÃ³n"
 
 #: app/controllers/lots_controller.rb:103
 msgid "Lot created."
-msgstr ""
+msgstr "Lote agregado"
 
 #: app/controllers/lots_controller.rb:110
 msgid "Lot deleted."
-msgstr ""
+msgstr "Lote borrado "
 
 #: app/controllers/part_movement_types_controller.rb:47
 #: app/controllers/place_types_controller.rb:47
 #: app/controllers/problem_types_controller.rb:55
 #: app/controllers/notifications_controller.rb:50
 msgid "Internal tag"
-msgstr ""
+msgstr "Etiqueta internal"
 
 #: app/controllers/part_movement_types_controller.rb:52
 #: app/controllers/print_controller.rb:77
 msgid "Incoming"
-msgstr ""
+msgstr "Entrante"
 
 #: app/controllers/part_movement_types_controller.rb:53
 #: app/controllers/print_controller.rb:77
 msgid "Outgoing"
-msgstr ""
+msgstr "Saliendo"
 
 #: app/controllers/part_movement_types_controller.rb:55
 msgid "Direction"
-msgstr ""
+msgstr "DirecciÃ³n"
 
 #: app/controllers/part_movement_types_controller.rb:76
 msgid "Changes saved"
-msgstr ""
+msgstr "Cambios guardados"
 
 #: app/controllers/movements_controller.rb:78
 msgid "Handout Laptop"
-msgstr ""
+msgstr "Laptops donadas"
 
 #: app/controllers/movements_controller.rb:93
 #: app/controllers/movements_controller.rb:124
 msgid "Handoff reason"
-msgstr ""
+msgstr "RazÃ³n por entrega"
 
 #: app/controllers/movements_controller.rb:97
 #: app/controllers/movements_controller.rb:222
 msgid "Handed to (document id):"
-msgstr ""
+msgstr "Entregado a (Numero de Documento):"
 
 #: app/controllers/movements_controller.rb:106
 #: app/controllers/print_controller.rb:1663
 msgid "Return date"
-msgstr ""
+msgstr "DÃ­a regresado"
 
 #: app/controllers/movements_controller.rb:109
 msgid "Observation"
-msgstr ""
+msgstr "ObservaciÃ³n"
 
 #: app/controllers/movements_controller.rb:119
 msgid "Can't find person with document id "
-msgstr ""
+msgstr "No se encuentra la persona con nÃºmero de Identidad"
 
 #: app/controllers/movements_controller.rb:125
 msgid "Handed to"
-msgstr ""
+msgstr "Entregado a"
 
 #: app/controllers/movements_controller.rb:130
 msgid "Can't find laptop with serial number"
-msgstr ""
+msgstr "No se encuentra la laptop con nÃºmero de serial"
 
 #: app/controllers/movements_controller.rb:133
 msgid "Owned by "
-msgstr ""
+msgstr "Propiedad de"
 
 #: app/controllers/movements_controller.rb:137
 #: app/controllers/movements_controller.rb:226
 msgid "Return date:"
-msgstr ""
+msgstr "DÃ­a devoluciÃ³n"
 
 #: app/controllers/movements_controller.rb:141
 msgid "Comment:"
-msgstr ""
+msgstr "Comentario"
 
 #: app/controllers/movements_controller.rb:150
 msgid "The handoff has been registered."
-msgstr ""
+msgstr "La entrega ha sido registrada           "
 
 #: app/controllers/movements_controller.rb:156
 msgid "The handoff has been cancelled"
-msgstr ""
+msgstr "La engrega ha sido cancelada"
 
 #: app/controllers/movements_controller.rb:156
 msgid "The handoffs has been cancelled"
-msgstr ""
+msgstr "La engrega ha sido cancelada"
 
 #: app/controllers/movements_controller.rb:172
 msgid "Handoff by lot"
-msgstr ""
+msgstr "Entrega por lote"
 
 #: app/controllers/movements_controller.rb:177
 #: app/controllers/movements_controller.rb:219
 #: app/controllers/print_controller.rb:1432
 msgid "Reason"
-msgstr ""
+msgstr "Razon"
 
 #: app/controllers/movements_controller.rb:195
 msgid "%s doesn't exist."
-msgstr ""
+msgstr "%s no existe"
 
 #: app/controllers/movements_controller.rb:198
 msgid "The laptop with serial number %s doesn't exist."
-msgstr ""
+msgstr "La laptop con numer de serial %s no existe"
 
 #: app/controllers/movements_controller.rb:204
 #: app/controllers/movements_controller.rb:244
 msgid "Laptops handed out with the massive delivery form."
-msgstr ""
+msgstr "Laptop entregada con el formulario de entregas enormes"
 
 #: app/controllers/movements_controller.rb:208
 #: app/controllers/movements_controller.rb:267
 msgid "The handouts have been registered."
-msgstr ""
+msgstr "La entrega ha sido regristada"
 
 #: app/controllers/movements_controller.rb:215
 msgid "Handing out a lot."
-msgstr ""
-
-#: app/controllers/movements_controller.rb:229
-#: app/controllers/print_controller.rb:316
-#: app/controllers/print_controller.rb:1481
-#, fuzzy
-msgid "Laptops"
-msgstr "Laptop agregada."
+msgstr "Entregas de lote"
 
 #: app/controllers/movements_controller.rb:264
 msgid "Insufficient data given!"
@@ -590,100 +1099,149 @@ msgstr ""
 
 #: app/controllers/movements_controller.rb:269
 msgid "The following laptops weren't recognized "
-msgstr ""
+msgstr "Las siguientes laptops no fueron reconocidas"
 
 #: app/controllers/nodes_controller.rb:96
 msgid "Latitude"
-msgstr ""
+msgstr "Latitud"
 
 #: app/controllers/nodes_controller.rb:99
 msgid "Longitude"
-msgstr ""
+msgstr "Longitud"
 
 #: app/controllers/nodes_controller.rb:102
 msgid "Height"
-msgstr ""
+msgstr "Altura"
 
 #: app/controllers/nodes_controller.rb:106
 msgid "Zoom"
-msgstr ""
+msgstr "Zoom"
 
 #: app/controllers/nodes_controller.rb:111
 #: app/controllers/part_movements_controller.rb:64
 msgid "Place"
-msgstr ""
+msgstr "Lugar"
 
 #: app/controllers/nodes_controller.rb:119
+#: app/controllers/school_infos_controller.rb:66
 msgid "IP address"
-msgstr ""
+msgstr "DirecciÃ³n de IP"
 
 #: app/controllers/nodes_controller.rb:122
 msgid "Username"
-msgstr ""
+msgstr "Nombre de Usario"
 
 #: app/controllers/nodes_controller.rb:125
+#: app/controllers/users_controller.rb:54
 msgid "Password"
-msgstr ""
+msgstr "ContraseÃ±a"
 
 #: app/controllers/nodes_controller.rb:153
 #, fuzzy
 msgid "Node added."
-msgstr "Laptop agregada."
+msgstr "Network agregada."
 
 #: app/controllers/nodes_controller.rb:159
 #: app/controllers/notifications_controller.rb:82
 msgid "Elements deleted"
-msgstr ""
+msgstr "Elemento borrado"
 
 #: app/controllers/place_types_controller.rb:67
 #, fuzzy
 msgid "Location type added."
-msgstr "Laptop agregada."
+msgstr "Tipo de locaciÃ³n agregada"
 
 #: app/controllers/images_controller.rb:56
 #: app/controllers/people_controller.rb:85
 #: app/controllers/node_types_controller.rb:64
 #: app/controllers/node_types_controller.rb:70
 msgid "Image"
-msgstr ""
+msgstr "Imagen"
 
 #: app/controllers/images_controller.rb:60
 msgid "Load image"
-msgstr ""
+msgstr "Cargar imagen"
 
 #: app/controllers/images_controller.rb:76
 msgid "Image added."
-msgstr ""
+msgstr "Imagen agregada"
 
 #: app/controllers/images_controller.rb:82
 msgid "Image deleted."
+msgstr "Imagen borrada"
+
+#: app/controllers/users_controller.rb:51
+#: app/controllers/print_controller.rb:100
+msgid "User"
+msgstr "Usuario"
+
+#: app/controllers/users_controller.rb:57
+#, fuzzy
+msgid "Re-type Password"
+msgstr "ContraseÃ±a"
+
+#: app/controllers/users_controller.rb:62
+#: app/controllers/print_controller.rb:500
+#: app/controllers/print_controller.rb:853
+#: app/controllers/print_controller.rb:920
+#: app/controllers/print_controller.rb:1568
+#: app/controllers/print_controller.rb:1582
+#: app/controllers/print_controller.rb:1617
+#, fuzzy
+msgid "Person"
+msgstr "Persona"
+
+#: app/controllers/users_controller.rb:76
+msgid "Passwords don't match."
 msgstr ""
+
+#: app/controllers/users_controller.rb:85
+#, fuzzy
+msgid "User added."
+msgstr "Persona agregada."
+
+#: app/controllers/shipments_controller.rb:45
+#, fuzzy
+msgid "Comment"
+msgstr "Comentarios"
+
+#: app/controllers/shipments_controller.rb:49
+#, fuzzy
+msgid "Arrival date"
+msgstr "Dia invÃ¡lido "
+
+#: app/controllers/shipments_controller.rb:52
+#: app/controllers/schools_controller.rb:35
+#, fuzzy
+msgid "Number"
+msgstr "Numero de serial "
+
+#: app/controllers/shipments_controller.rb:71
+#, fuzzy
+msgid "Shipment added."
+msgstr "Cargamento "
 
 #: app/controllers/problem_types_controller.rb:35
 msgid "Configuration of problem types"
-msgstr ""
-
-#: app/controllers/problem_types_controller.rb:52
-msgid "More info"
-msgstr ""
+msgstr "ConfiguraciÃ³n de tipos de problemas"
 
 #: app/controllers/problem_types_controller.rb:60
 msgid "Hardware?"
-msgstr ""
+msgstr "Hardware?"
 
 #: app/controllers/problem_types_controller.rb:83
 #, fuzzy
 msgid "Problem type created."
-msgstr "Laptop agregada."
+msgstr "Tipo de Problema creado"
 
 #: app/controllers/notifications_controller.rb:54
 msgid "Active"
-msgstr ""
+msgstr "Activo"
 
 #: app/controllers/notifications_controller.rb:76
 #, fuzzy
 msgid "Notification added."
-msgstr "Laptop agregada."
+msgstr "NotificaciÃ³n agregada"
 
 #: app/controllers/application_controller.rb:142
 msgid "No tiene autorizacion para esta seccion"
@@ -691,126 +1249,200 @@ msgstr ""
 
 #: app/controllers/application_controller.rb:194
 msgid "You are not authenticated"
-msgstr ""
+msgstr "Usted no esta autenticado"
 
-#: app/controllers/application_controller.rb:413
+#: app/controllers/application_controller.rb:411
 msgid "Spanish"
-msgstr ""
+msgstr "EspaÃ±ol"
 
-#: app/controllers/application_controller.rb:413
+#: app/controllers/application_controller.rb:411
 msgid "English"
-msgstr ""
+msgstr "Ingles"
 
 #: app/controllers/data_import_controller.rb:32
 msgid "Load students"
-msgstr ""
+msgstr "Cargar estudiantes"
 
 #: app/controllers/data_import_controller.rb:33
 msgid "Load teachers"
-msgstr ""
+msgstr "Cargar docentes"
 
 #: app/controllers/data_import_controller.rb:34
 msgid "Load UUIDs"
-msgstr ""
+msgstr "Cargar UUIDs"
 
 #: app/controllers/data_import_controller.rb:39
 msgid "Spreadsheet"
-msgstr ""
+msgstr "Hoja de cÃ¡lculo"
 
 #: app/controllers/data_import_controller.rb:64
 msgid "Nothing to import."
-msgstr ""
+msgstr "Nada muy importante"
 
 #: app/controllers/data_import_controller.rb:66
 msgid "The file was imported correctly."
-msgstr ""
+msgstr "El archivo a sido importado correcta mente"
 
 #: app/controllers/default_values_controller.rb:49
 msgid "Key"
-msgstr ""
+msgstr "LLave"
 
 #: app/controllers/default_values_controller.rb:52
 #: app/controllers/print_controller.rb:155
 msgid "Value"
-msgstr ""
+msgstr "Valor"
 
 #: app/controllers/models_controller.rb:68
 msgid "Model added."
+msgstr "Modelo agregado"
+
+#: app/controllers/school_infos_controller.rb:57
+#, fuzzy
+msgid "School"
+msgstr "Numero de escuela"
+
+#: app/controllers/school_infos_controller.rb:60
+#, fuzzy
+msgid "Lease duration"
+msgstr "ObservaciÃ³n"
+
+#: app/controllers/school_infos_controller.rb:63
+#, fuzzy
+msgid "Hostname"
+msgstr "Apellido"
+
+#: app/controllers/school_infos_controller.rb:69
+msgid "Netmask"
 msgstr ""
+
+#: app/controllers/school_infos_controller.rb:72
+msgid "Gateway"
+msgstr ""
+
+#: app/controllers/school_infos_controller.rb:96
+#, fuzzy
+msgid "Information added."
+msgstr "LocaciÃ³n agregada."
 
 #: app/controllers/people_controller.rb:64
 msgid "Lastname"
-msgstr ""
+msgstr "Apellido"
 
 #: app/controllers/people_controller.rb:67
 msgid "Document ID"
-msgstr ""
+msgstr "Numero de identidad"
 
 #: app/controllers/people_controller.rb:71
 msgid "Birth date"
-msgstr ""
+msgstr "CumpleaÃ±os"
 
 #: app/controllers/people_controller.rb:74
 msgid "Phone num."
-msgstr ""
+msgstr "Numero de telÃ©fono"
 
 #: app/controllers/people_controller.rb:77
 msgid "Cell num."
-msgstr ""
+msgstr "Numero de cellular"
 
 #: app/controllers/people_controller.rb:80
 msgid "Email"
-msgstr ""
+msgstr "Email"
 
 #: app/controllers/people_controller.rb:89
 msgid "Personal image"
-msgstr ""
+msgstr "Imagen Peronsonal"
 
 #: app/controllers/people_controller.rb:94
 msgid "Roles"
-msgstr ""
+msgstr "Encargo"
 
 #: app/controllers/people_controller.rb:157
 #, fuzzy
 msgid "Person added."
-msgstr "Laptop agregada."
-
-#: app/controllers/node_types_controller.rb:59
-#: app/controllers/part_types_controller.rb:53
-msgid "Tag"
-msgstr ""
+msgstr "Persona agregada."
 
 #: app/controllers/node_types_controller.rb:92
 #, fuzzy
 msgid "Node type added."
-msgstr "Laptop agregada."
+msgstr "Tipo de Nodo aggregado."
+
+#: app/controllers/schools_controller.rb:34
+msgid "General info of the school"
+msgstr ""
+
+#: app/controllers/schools_controller.rb:43
+#, fuzzy
+msgid "Number of students"
+msgstr "Numero de gente"
+
+#: app/controllers/schools_controller.rb:46
+#, fuzzy
+msgid "Number of teachers"
+msgstr "Numero de gente"
+
+#: app/controllers/schools_controller.rb:48
+msgid "Principals"
+msgstr ""
+
+#: app/controllers/schools_controller.rb:83
+#, fuzzy
+msgid "Place added."
+msgstr "Imagen agregada"
+
+#: app/controllers/schools_controller.rb:85
+#: app/controllers/schools_controller.rb:123
+#, fuzzy
+msgid "The data provided is not correct."
+msgstr "El archivo a sido importado correcta mente"
+
+#: app/controllers/schools_controller.rb:97
+msgid "Can't delete the place (it probably has dependencies)."
+msgstr ""
+
+#: app/controllers/schools_controller.rb:121
+#, fuzzy
+msgid "Person registered."
+msgstr "No registrada"
+
+#: app/controllers/schools_controller.rb:127
+msgid "Couldn't great the person."
+msgstr ""
+
+#: app/controllers/schools_controller.rb:135
+msgid "This person can't be deleted."
+msgstr ""
+
+#: app/controllers/schools_controller.rb:152
+msgid "Can't update this person."
+msgstr ""
 
 #: app/controllers/movement_types_controller.rb:51
 msgid "Handoff?"
-msgstr ""
+msgstr "deliverd?"
 
 #: app/controllers/movement_types_controller.rb:69
 msgid "Movement type added."
-msgstr ""
+msgstr "Tipo de movimiento agregado"
 
 #: app/controllers/print_controller.rb:76
+#, fuzzy
 msgid "Estado del stock en %s"
-msgstr ""
+msgstr "Estado del stock en %s"
 
 #: app/controllers/print_controller.rb:77
 #: app/controllers/print_controller.rb:383
 #: app/controllers/print_controller.rb:1663
 #: app/controllers/print_controller.rb:1823
 msgid "Part"
-msgstr ""
+msgstr "Parte"
 
 #: app/controllers/print_controller.rb:77
 msgid "Difference"
-msgstr ""
+msgstr "Diferencias"
 
 #: app/controllers/print_controller.rb:99
 msgid "Audit at %s"
-msgstr ""
+msgstr "AuditorÃ­a en %s "
 
 #: app/controllers/print_controller.rb:100
 #: app/controllers/print_controller.rb:383
@@ -819,55 +1451,47 @@ msgstr ""
 #: app/controllers/print_controller.rb:1663
 #: app/controllers/print_controller.rb:1739
 msgid "Date"
-msgstr ""
-
-#: app/controllers/print_controller.rb:100
-msgid "User"
-msgstr ""
+msgstr "Fecha"
 
 #: app/controllers/print_controller.rb:100
 msgid "Id"
-msgstr ""
+msgstr "Id"
 
 #: app/controllers/print_controller.rb:100
 msgid "Column"
-msgstr ""
+msgstr "Columna"
 
 #: app/controllers/print_controller.rb:100
 msgid "Before"
-msgstr ""
+msgstr "Antes"
 
 #: app/controllers/print_controller.rb:100
 msgid "After"
-msgstr ""
-
-#: app/controllers/print_controller.rb:153
-msgid "Average repair time"
-msgstr ""
+msgstr "Despues"
 
 #: app/controllers/print_controller.rb:155
 msgid "Days"
-msgstr ""
+msgstr "Dias"
 
 #: app/controllers/print_controller.rb:158
 msgid "Max"
-msgstr ""
+msgstr "Maximo"
 
 #: app/controllers/print_controller.rb:159
 msgid "Min"
-msgstr ""
+msgstr "Minimo"
 
 #: app/controllers/print_controller.rb:160
 msgid "Avg"
-msgstr ""
+msgstr "Promedio"
 
 #: app/controllers/print_controller.rb:163
 msgid "Average time"
-msgstr ""
+msgstr "Tiempo de Promedio"
 
 #: app/controllers/print_controller.rb:194
 msgid "Recurrence table"
-msgstr ""
+msgstr "Tabla de repeticiÃ³n"
 
 #: app/controllers/print_controller.rb:196
 #: app/controllers/print_controller.rb:236
@@ -885,23 +1509,23 @@ msgstr ""
 #: app/controllers/part_movements_controller.rb:57
 #: app/controllers/part_movements_controller.rb:105
 msgid "Quantity"
-msgstr ""
+msgstr "Cantidad"
 
 #: app/controllers/print_controller.rb:206
 msgid "Values"
-msgstr ""
+msgstr "Valores"
 
 #: app/controllers/print_controller.rb:208
 msgid "Recurrence problems"
-msgstr ""
+msgstr "Repeticion de problemas"
 
 #: app/controllers/print_controller.rb:234
 msgid "Problem dist. (Hardware vs Software)"
-msgstr ""
+msgstr "DistribuciÃ³n de problemas (Hardware vs Software)"
 
 #: app/controllers/print_controller.rb:235
 msgid "  in %s"
-msgstr ""
+msgstr "en %s"
 
 #: app/controllers/print_controller.rb:236
 msgid "%"
@@ -910,101 +1534,76 @@ msgstr ""
 #: app/controllers/print_controller.rb:244
 #: app/controllers/print_controller.rb:245
 msgid "Hardware"
-msgstr ""
+msgstr "Hardware"
 
 #: app/controllers/print_controller.rb:247
 #: app/controllers/print_controller.rb:248
 msgid "Software"
-msgstr ""
+msgstr "Software"
 
 #: app/controllers/print_controller.rb:250
 #: app/controllers/print_controller.rb:1035
 #: app/controllers/print_controller.rb:1890
 msgid "Distribution"
-msgstr ""
+msgstr "DistribuciÃ³n"
 
 #: app/controllers/print_controller.rb:302
+#, fuzzy
 msgid "Distribucion en el tiempo de los problemas"
-msgstr ""
-
-#: app/controllers/print_controller.rb:307
-msgid "Day"
-msgstr ""
-
-#: app/controllers/print_controller.rb:309
-msgid "Week"
-msgstr ""
-
-#: app/controllers/print_controller.rb:311
-msgid "Month"
-msgstr ""
-
-#: app/controllers/print_controller.rb:313
-msgid "Year"
-msgstr ""
+msgstr "Distribucion en el tiempo de los problemas"
 
 #: app/controllers/print_controller.rb:316
 msgid "Average"
-msgstr ""
+msgstr "Promedio"
 
 #: app/controllers/print_controller.rb:316
 msgid "Acumulated"
-msgstr ""
+msgstr "Acumulado"
 
 #: app/controllers/print_controller.rb:316
 msgid "%(Total)"
-msgstr ""
+msgstr "% (Total)"
 
 #: app/controllers/print_controller.rb:358
 msgid "Average trend"
-msgstr ""
+msgstr "Tendencia de promedio"
 
 #: app/controllers/print_controller.rb:381
 msgid "Incoming repair parts"
-msgstr ""
+msgstr "Partes de repuestos entrantes"
 
 #: app/controllers/print_controller.rb:383
 msgid "Registered by"
-msgstr ""
+msgstr "Registrado por"
 
 #: app/controllers/print_controller.rb:383
 msgid "Assigned to"
-msgstr ""
+msgstr "Asignado a"
 
 #: app/controllers/print_controller.rb:383
 msgid "Device"
-msgstr ""
+msgstr "Aparato"
 
 #: app/controllers/print_controller.rb:432
 msgid "Deposits in %s"
-msgstr ""
-
-#: app/controllers/print_controller.rb:500
-#: app/controllers/print_controller.rb:853
-#: app/controllers/print_controller.rb:920
-#: app/controllers/print_controller.rb:1568
-#: app/controllers/print_controller.rb:1582
-#: app/controllers/print_controller.rb:1617
-#, fuzzy
-msgid "Person"
-msgstr "Laptop agregada."
+msgstr "Depositos en %s"
 
 #: app/controllers/print_controller.rb:500
 msgid "Serial Num."
-msgstr ""
+msgstr "Numero de serial"
 
 #: app/controllers/print_controller.rb:500
 msgid "Solution"
-msgstr ""
+msgstr "SoluciÃ³n"
 
 #: app/controllers/print_controller.rb:537
 #: app/controllers/print_controller.rb:1782
 msgid "Not allowed"
-msgstr ""
+msgstr "No permitido"
 
 #: app/controllers/print_controller.rb:578
 msgid "Number of document ids generated"
-msgstr ""
+msgstr "Numero de documento de identidad generado"
 
 #: app/controllers/print_controller.rb:582
 msgid "Partially documented"
@@ -1012,63 +1611,63 @@ msgstr ""
 
 #: app/controllers/print_controller.rb:582
 msgid "Partial students"
-msgstr ""
+msgstr "Parcialmente documentado"
 
 #: app/controllers/print_controller.rb:582
 msgid "Total documented"
-msgstr ""
+msgstr "Totalmente documentado"
 
 #: app/controllers/print_controller.rb:582
 msgid "Total students"
-msgstr ""
+msgstr "Total de estudiantes"
 
 #: app/controllers/print_controller.rb:582
 msgid "Total not documented"
-msgstr ""
+msgstr "Total no documentados"
 
 #: app/controllers/print_controller.rb:613
 msgid "Graph"
-msgstr ""
+msgstr "GrÃ¡fico "
 
 #: app/controllers/print_controller.rb:638
 msgid "Serial numbers by location"
-msgstr ""
+msgstr "Numero de serial por localidad"
 
 #: app/controllers/print_controller.rb:639
 msgid "Entries"
-msgstr ""
+msgstr "Entrada"
 
 #: app/controllers/print_controller.rb:672
 msgid "Place not found"
-msgstr ""
+msgstr "Lugar no encontrado"
 
 #: app/controllers/print_controller.rb:767
 msgid "Accumulated running time"
-msgstr ""
+msgstr "Tiempo operando acumulado"
 
 #: app/controllers/print_controller.rb:768
 msgid "Uptime (hrs)"
-msgstr ""
+msgstr "Uptime (hrs)"
 
 #: app/controllers/print_controller.rb:768
 msgid "Downtime (hrs)"
-msgstr ""
+msgstr "Downtime (hrs)"
 
 #: app/controllers/print_controller.rb:768
 msgid "Up (%)"
-msgstr ""
+msgstr "Up (%)"
 
 #: app/controllers/print_controller.rb:818
 msgid "Percentages"
-msgstr ""
+msgstr "Porcentajes"
 
 #: app/controllers/print_controller.rb:851
 msgid "Where are the laptops?"
-msgstr ""
+msgstr "Donde estan las Laptops?"
 
 #: app/controllers/print_controller.rb:852
 msgid "NITS (Not in the system)"
-msgstr ""
+msgstr "No en el sistema"
 
 #: app/controllers/print_controller.rb:874
 msgid "You must select the location"
@@ -1085,96 +1684,95 @@ msgstr ""
 #: app/controllers/print_controller.rb:978
 #: app/controllers/print_controller.rb:1474
 msgid "You must select a location."
-msgstr ""
-
-#: app/controllers/print_controller.rb:1019
-msgid "Problems by grade"
-msgstr ""
+msgstr "Debes seleccionar una localidad "
 
 #: app/controllers/print_controller.rb:1023
 msgid "Grade"
-msgstr ""
+msgstr "Grado"
 
 #: app/controllers/print_controller.rb:1089
 msgid "Problems by location"
-msgstr ""
+msgstr "Problemas por localidad"
 
 #: app/controllers/print_controller.rb:1093
 msgid "Absolute total"
-msgstr ""
+msgstr "Aboluto total"
 
 #: app/controllers/print_controller.rb:1093
 msgid "People"
-msgstr ""
+msgstr "Gente"
 
 #: app/controllers/print_controller.rb:1093
 msgid "Per person"
-msgstr ""
+msgstr "Por persona"
 
 #: app/controllers/print_controller.rb:1093
 msgid "Eficiency (%)"
-msgstr ""
+msgstr "Eficiencia (%)"
 
 #: app/controllers/print_controller.rb:1113
 msgid "Distribution (absolute)"
-msgstr ""
+msgstr "DistribuciÃ³n  (absoluta)"
 
 #: app/controllers/print_controller.rb:1123
 msgid "Status of registered laptops"
-msgstr ""
+msgstr "Estado de las laptops registradas"
 
 #: app/controllers/print_controller.rb:1125
 #: app/controllers/print_controller.rb:1193
 msgid "Document id"
-msgstr ""
+msgstr "Numero de identidad "
 
 #: app/controllers/print_controller.rb:1125
 #: app/controllers/print_controller.rb:1663
 msgid "Serial number"
-msgstr ""
+msgstr "Numero de serial"
 
 #: app/controllers/print_controller.rb:1168
 msgid "Delivery receipt"
-msgstr ""
+msgstr "Recibo de entrega"
 
 #: app/controllers/print_controller.rb:1192
 msgid "Possible errors during deliery in %s"
-msgstr ""
+msgstr "Errores posibles durante la entrega en %s"
 
 #: app/controllers/print_controller.rb:1193
 msgid "Has laptop?"
-msgstr ""
+msgstr "Tiene laptop?"
 
 #: app/controllers/print_controller.rb:1240
 msgid "<b>(%s):</b> There is %s repeated, of which %s have laptops y %s don't."
 msgstr ""
+"<b>(%s):</b> Hay %s repetidas, en cual %s tienen laptops y %s no tienen"
 
 #: app/controllers/print_controller.rb:1251
 msgid ""
 "<B>In total:</B> there is %s repeated students, of which %s have laptos and %"
 "s don't."
 msgstr ""
+"<B> En total:</B>  hay %s estudiantes repetidos, en cual %s tienen laptops y "
+"%s no tienen"
 
 #: app/controllers/print_controller.rb:1253
 msgid "No possible errors found."
-msgstr ""
+msgstr "No errores possibles encontrados"
 
 #: app/controllers/print_controller.rb:1268
 msgid "School num."
-msgstr ""
+msgstr "Numero de escuela"
 
 #: app/controllers/print_controller.rb:1268
 msgid "School name"
-msgstr ""
+msgstr "Nombre de escuela"
 
 #: app/controllers/print_controller.rb:1429
 #, fuzzy
 msgid "Laptop movements"
-msgstr "Laptop agregada."
+msgstr "Movimiento de laptops"
 
 #: app/controllers/print_controller.rb:1432
 msgid "Mov #"
-msgstr ""
+msgstr "Movimiento #"
 
 #: app/controllers/print_controller.rb:1432
 msgid "Fecha"
@@ -1182,153 +1780,155 @@ msgstr ""
 
 #: app/controllers/print_controller.rb:1432
 msgid "Desc"
-msgstr ""
+msgstr "Desc"
 
 #: app/controllers/print_controller.rb:1432
 msgid "Serial"
-msgstr ""
+msgstr "Serial"
 
 #: app/controllers/print_controller.rb:1432
 #: app/controllers/print_controller.rb:1663
 msgid "Given by"
-msgstr ""
+msgstr "Entregado por"
 
 #: app/controllers/print_controller.rb:1432
 #: app/controllers/print_controller.rb:1530
 #: app/controllers/print_controller.rb:1663
 msgid "Received by"
-msgstr ""
+msgstr "Recibido por"
 
 #: app/controllers/print_controller.rb:1477
 msgid "Totals by movement type"
-msgstr ""
+msgstr "Total de tipos de movimiento"
 
 #: app/controllers/print_controller.rb:1527
 msgid "Movements on a given timeframe"
-msgstr ""
+msgstr "Movimientos en una escena de tiempo"
 
 #: app/controllers/print_controller.rb:1530
 msgid "#"
-msgstr ""
+msgstr "#"
 
 #: app/controllers/print_controller.rb:1530
 msgid "Responsible"
-msgstr ""
+msgstr "Responsable"
 
 #: app/controllers/print_controller.rb:1530
 msgid "Delivered by"
-msgstr ""
+msgstr "Entregado por"
 
 #: app/controllers/print_controller.rb:1567
 msgid "Laptops per owner"
-msgstr ""
+msgstr "Laptops por dueÃ±o"
 
 #: app/controllers/print_controller.rb:1581
 msgid "Laptops handed out per person"
-msgstr ""
+msgstr "Laptops entregadas por per persona"
 
 #: app/controllers/print_controller.rb:1616
 msgid "Laptops given to people"
-msgstr ""
-
-#: app/controllers/print_controller.rb:1660
-msgid "Lendings"
-msgstr ""
+msgstr "Laptops dadas a gente"
 
 #: app/controllers/print_controller.rb:1663
 msgid "Returned?"
-msgstr ""
+msgstr "Regresadas"
 
 #: app/controllers/print_controller.rb:1700
 msgid "Distribution of laptops grouped by status"
-msgstr ""
+msgstr "DistribuciÃ³n de laptops por grupo de estado"
 
 #: app/controllers/print_controller.rb:1736
 msgid "Status changes"
-msgstr ""
+msgstr "Cambio en estado"
 
 #: app/controllers/print_controller.rb:1739
 msgid "Previous"
-msgstr ""
+msgstr "Previo"
 
 #: app/controllers/print_controller.rb:1739
 msgid "Next"
-msgstr ""
+msgstr "Siguiente"
 
 #: app/controllers/print_controller.rb:1760
 msgid "Number of laptops per location"
-msgstr ""
+msgstr "Numero de laptops por localidad"
 
 #: app/controllers/print_controller.rb:1820
 msgid "Used repair parts"
-msgstr ""
+msgstr "Partes de repuestos usadas"
 
 #: app/controllers/print_controller.rb:1854
 msgid "Timeline"
-msgstr ""
+msgstr "Escena de tiempo"
 
 #: app/controllers/print_controller.rb:1874
 msgid "Problems grouped by type"
-msgstr ""
+msgstr "Problemas en grupo por tipo"
 
 #: app/controllers/notification_subscribers_controller.rb:54
 msgid "Notification"
-msgstr ""
+msgstr "NotificaciÃ³n "
 
 #: app/controllers/notification_subscribers_controller.rb:61
+#, fuzzy
 msgid "Suscriber"
-msgstr ""
+msgstr "Subscriber"
 
 #: app/controllers/profiles_controller.rb:49
 msgid "Internal Tag"
-msgstr ""
+msgstr "Etiquita interna"
 
 #: app/controllers/profiles_controller.rb:54
 #, fuzzy
 msgid "Permissions"
-msgstr "Laptop agregada."
+msgstr "Permiso"
 
 #: app/controllers/profiles_controller.rb:57
 msgid "Access level"
-msgstr ""
+msgstr "Nivel de acceso"
 
 #: app/controllers/profiles_controller.rb:78
 msgid "Profile created."
-msgstr ""
-
-#: app/controllers/part_types_controller.rb:36
-msgid "Part types"
-msgstr ""
+msgstr "Perfil creado"
 
 #: app/controllers/part_types_controller.rb:50
 msgid "Cost"
-msgstr ""
+msgstr "Costo"
 
 #: app/controllers/part_movements_controller.rb:44
 msgid "Add a new movement of parts."
-msgstr ""
+msgstr "Agrega nuevo movimiento de parte"
 
 #: app/controllers/part_movements_controller.rb:49
 msgid "Movement type"
-msgstr ""
+msgstr "Tipo de movimiento"
 
 #: app/controllers/part_movements_controller.rb:54
 #: app/controllers/part_movements_controller.rb:102
 msgid "Part type"
-msgstr ""
+msgstr "Tipo de parte"
 
 #: app/controllers/part_movements_controller.rb:98
 msgid "Transfer parts."
-msgstr ""
+msgstr "Traslado de partes"
 
 #: app/controllers/part_movements_controller.rb:108
 msgid "Source place"
-msgstr ""
+msgstr "Lugar de fuente"
 
 #: app/controllers/part_movements_controller.rb:111
 msgid "Destination place"
-msgstr ""
+msgstr "Lugar de destino "
 
 #: app/controllers/part_movements_controller.rb:129
 msgid "Transfer saved."
-msgstr ""
+msgstr "Transferencia guardada"
+
+#~ msgid "Usuario o password equivocado"
+#~ msgstr "Usuario o password equivocado"
+
+#~ msgid "Datos insuficientes dados!"
+#~ msgstr "Insufficient data given!"
+
+#~ msgid "You do not have authorty for this section"
+#~ msgstr "No tiene autorizacion para esta seccion"

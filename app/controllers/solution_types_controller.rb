@@ -32,7 +32,7 @@ class SolutionTypesController < SearchController
   end
 
   def new
-    @output["window_title"] = "Tipo de soluciones"
+    @output["window_title"] = _("Solution types")
 
     if params[:id]
       solution_type = SolutionType.find_by_id(params[:id])
@@ -43,19 +43,19 @@ class SolutionTypesController < SearchController
 
     @output["fields"] = []
 
-    h = { "label" => "Nombre", "datatype" => "textfield" }.merge( solution_type ? {"value" => solution_type.getName } : {} )
+    h = { "label" => _("Name"), "datatype" => "textfield" }.merge( solution_type ? {"value" => solution_type.getName } : {} )
     @output["fields"].push(h)
 
-    h = { "label" => "Descripcion", "datatype" => "textarea" }.merge( solution_type ? {"value" => solution_type.getDescription } : {} )
+    h = { "label" => _("Description"), "datatype" => "textarea" }.merge( solution_type ? {"value" => solution_type.getDescription } : {} )
     @output["fields"].push(h)
 
-    h = { "label" => "Mas info", "datatype" => "textarea" }.merge( solution_type ? {"value" => solution_type.getExtInfo } : {} )
+    h = { "label" => _("More info"), "datatype" => "textarea" }.merge( solution_type ? {"value" => solution_type.getExtInfo } : {} )
     @output["fields"].push(h)
 
-    h = { "label" => "Tag", "datatype" => "textfield" }.merge( solution_type ? {"value" => solution_type.getInternalTag } : {} )
+    h = { "label" => _("Tag"), "datatype" => "textfield" }.merge( solution_type ? {"value" => solution_type.getInternalTag } : {} )
     @output["fields"].push(h)
 
-    h = { "datatype" => "tab_break", "title" => "Partes Requeridas" }
+    h = { "datatype" => "tab_break", "title" => _("Required parts") }
     @output["fields"].push(h)
 
     included_part_types = solution_type ? solution_type.part_types : []
@@ -69,7 +69,6 @@ class SolutionTypesController < SearchController
 
     h = { "label" => "", "datatype" => "checkbox_selector", :cb_options => options, "max_column" => 1 }
     @output["fields"].push(h)
-    
   end
 
   def save
@@ -90,11 +89,13 @@ class SolutionTypesController < SearchController
       SolutionType.register(attribs, part_type_ids)
     end
 
+    @output["msg"] = datos["id"] ? _("Changes saved.") : _("Solution type added.")  
   end
 
   def delete
     ids = JSON.parse(params[:payload])
     SolutionType.unregister(ids)
+    @output["msg"] = _("Elements deleted.")
   end
 
 end

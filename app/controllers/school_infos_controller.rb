@@ -54,28 +54,27 @@ class SchoolInfosController < SearchController
     pruneInc = [:place_type]
     places = buildHierarchyHash(Place, "places", "places.place_id", "name", id, pruneCond, pruneInc, false)
 
-    h = { "label" => "Escuela", "datatype" => "combobox", "options" => places }
+    h = { "label" => _("School"), "datatype" => "combobox", "options" => places }
     @output["fields"].push(h)
 
-    h = { "label" => "Duracion Leases (en segs.)", "datatype" => "textfield" }.merge( schoolInfo ? {"value" => schoolInfo.getDuration.to_s } : {} )
+    h = { "label" => _("Lease duration"), "datatype" => "textfield" }.merge( schoolInfo ? {"value" => schoolInfo.getDuration.to_s } : {} )
     @output["fields"].push(h)
 
-    h = { "label" => "Hostname", "datatype" => "textfield" }.merge( schoolInfo ? {"value" => schoolInfo.getHostname } : {} )
+    h = { "label" => _("Hostname"), "datatype" => "textfield" }.merge( schoolInfo ? {"value" => schoolInfo.getHostname } : {} )
     @output["fields"].push(h)
 
-    h = { "label" => "Ip Address", "datatype" => "textfield" }.merge( schoolInfo ? {"value" => schoolInfo.getIpAddress } : {} )
+    h = { "label" => _("IP address"), "datatype" => "textfield" }.merge( schoolInfo ? {"value" => schoolInfo.getIpAddress } : {} )
     @output["fields"].push(h)
 
-    h = { "label" => "Netmask", "datatype" => "textfield" }.merge( schoolInfo ? {"value" => schoolInfo.getNetmask } : {} )
+    h = { "label" => _("Netmask"), "datatype" => "textfield" }.merge( schoolInfo ? {"value" => schoolInfo.getNetmask } : {} )
     @output["fields"].push(h)
 
-    h = { "label" => "Gateway", "datatype" => "textfield" }.merge( schoolInfo ? {"value" => schoolInfo.getGateway } : {} )
+    h = { "label" => _("Gateway"), "datatype" => "textfield" }.merge( schoolInfo ? {"value" => schoolInfo.getGateway } : {} )
     @output["fields"].push(h)
 
   end
 
   def save
-
     datos = JSON.parse(params[:payload])
     data_fields = datos["fields"].reverse
 
@@ -87,20 +86,20 @@ class SchoolInfosController < SearchController
     attribs[:wan_netmask] = data_fields.pop
     attribs[:wan_gateway] = data_fields.pop
 
-   if datos["id"]
-     schoolInfo = SchoolInfo.find_by_id(datos["id"])
-     schoolInfo.update_attributes(attribs)
-   else
-    SchoolInfo.create!(attribs)
-   end
-    @output["msg"] = datos["id"] ? "Cambios guardados" : "Informacion ingresada correctamente."
+    if datos["id"]
+      schoolInfo = SchoolInfo.find_by_id(datos["id"])
+      schoolInfo.update_attributes(attribs)
+    else
+      SchoolInfo.create!(attribs)
+    end
 
+    @output["msg"] = datos["id"] ? _("Changes saved.") : _("Information added.")  
   end
 
   def delete
     ids = JSON.parse(params[:payload])
     SchoolInfo.destroy(ids)
-    @output["msg"] = "Elementos eliminados"
+    @output["msg"] = "Elements deleted."
   end
 
 end

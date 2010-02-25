@@ -31,35 +31,38 @@ class SchoolsController < ApplicationController
 
     school = Place.find_by_id(school_id)
 
-    info.push({ :label => "Informacion General de la Escuela", :data => "" })
-    info.push({:label => "Numero", :data => school.name })
-    info.push({ :label => "Nombre", :data => school.getDescription })
+    info.push({ :label => _("General info of the school"), :data => "" })
+    info.push({:label => _("Number"), :data => school.name })
+    info.push({ :label => _("Name"), :data => school.getDescription })
 
     student_profile_id = Profile.find_by_internal_tag("student").id
     teacher_profile_id = Profile.find_by_internal_tag("teacher").id
     director_profile_id = Profile.find_by_internal_tag("director").id
 
     length = Perform.peopleFromAs(school_id, true, [student_profile_id]).length
-    info.push ({ :label => "Numero de estudiantes", :data => length })
+    info.push({ :label => _("Number of students"), :data => length })
 
     length = Perform.peopleFromAs(school_id, true, [teacher_profile_id]).length
-    info.push({ :label => "Numero de maestros", :data => length })
+    info.push({ :label => _("Number of teachers"), :data => length })
 
-    info.push({ :label => "Directores", :data => "" })
+    info.push({ :label => _("Principals"), :data => "" })
     inc = [:person,:profile]
     cond = ["performs.place_id = ? and profiles.id = ?", school_id, director_profile_id]
     Perform.find(:all, :include => inc, :conditions => cond).each { |member|
       info.push({ :label => member.person.getFullName, :data => member.person.getPhone })
     }
 
+    #
+    # FIXME: please write a comment about the following block of code or otherwise remove it. 
+    #
+
     #info.push({ :label => "Servidores de la Escuela", :data => "" })
     #cond = ["school_infos.place_id = ?", school_id]
     #SchoolInfo.find(:all, :conditions => cond).each { |server|
-       #info.push({ :label => "", :data => server.getHostname })
+    #info.push({ :label => "", :data => server.getHostname })
     #}
 
     @output[:info] = info
-
   end
 
   def createPlace
@@ -77,8 +80,9 @@ class SchoolsController < ApplicationController
         attribs[:place_id] = getId(parent_place_id)
 
         Place.register(attribs, [], current_user.person)
+        @output["msg"] = _("Place added.")  
       else
-        #raise "Los datos no son correctos."
+        raise _("The data provided is not correct.")
       end
     end
 
@@ -88,8 +92,9 @@ class SchoolsController < ApplicationController
     to_delete_place_id = params[:id]
     begin
       Place.unregister([to_delete_place_id], current_user.person)
+      @output["msg"] = "Place deleted."
     rescue
-      raise "No se pudo borrar, probablemente otros datos dependan de este."
+      raise _("Can't delete the place (it probably has dependencies).")
     end
   end
 
@@ -112,12 +117,14 @@ class SchoolsController < ApplicationController
         attribs[:id_document] = id_document
         performs = [[place.id, profile.id]]
         Person.register(attribs, performs, "", current_user.person)
+        
+        @output["msg"] = _("Person registered.") 
       else
-        raise "Los datos son incorrectos."  
+        raise _("The data provided is not correct.")
       end 
 
     rescue
-      raise "No se pudo crear la persona."
+      raise _("Couldn't great the person.")
     end
   end
 
@@ -125,12 +132,11 @@ class SchoolsController < ApplicationController
     begin
       Person.unregister([params[:id].to_i], current_user.person)     
     rescue
-      raise "Esta persona no puede ser eliminada."
+      raise _("This person can't be deleted.")
     end
   end
 
   def updatePerson
-
     person = Person.find_by_id(params[:id])
     name = params[:name]
     lastname = params[:lastname]
@@ -143,9 +149,8 @@ class SchoolsController < ApplicationController
       attribs[:id_document] = id_document if id_document != ""
       person.update_attributes(attribs)
     else
-      raise "No se pudo actualizar a esta persona."
+      raise _("Can't update this person.")
     end
-    
   end
 
 end

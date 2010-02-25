@@ -15,7 +15,11 @@
 # 
 #                                                                          
 # TODO:
-# - hay sentencias de proteccion (!= "null") pq en Qooxdoo 0.6.1 el null venia como string. En el 0.7.1 ya no ocurre
+# - set_vista (in spanish view) should be rename to something like set_models_scope
+#   since that is what it really does. On the client side the same should be done. 
+# - cleanup?
+# - is checking strings against "null" still needed? This was an old (0.6.1) Qooxdoo
+#   bug. 
 #
 #
 
@@ -31,9 +35,11 @@ class SearchController < ApplicationController
   around_filter :rpc_block
   before_filter :set_vista
   attr_accessor :vista
-  
+
+  #####
+  # check if you would like to scope your models?
+  #
   def set_vista
-    # soporte p/ vistas
     if params[:vista] and params[:vista] != "null"
       @vista = params[:vista]
     else
@@ -41,179 +47,150 @@ class SearchController < ApplicationController
     end
   end
   
-  def do_search(class_ref,options)
+  ####
+  # this method does the actual search of a Model's objects. 
+  #
+  def do_search(clazz_ref,options)
+    @find_options = options ? options : {}
+    extract_client_options()
+    clients_conditions = extract_conditions()
 
-    payload = params[:payload] ? JSON.parse(params[:payload]) : {}
+    # merge the search conditions that come from the client request with those set
+    # in the controller where do_search() was called. 
+    @search_conditions = merge_conditions(@find_options[:conditions], clients_conditions)
 
-    ban = false
-    condicion = ""
+    # We need to ask the model what columns and what other conditions does it want. 
+    @model_config = @vista == "" ? clazz_ref.getColumnas() : clazz_ref.getColumnas(@vista)
 
-    options = options ? options : { }
-
-    ban = true if payload
-    condicion = convertir(payload)
-    #raise condicion.to_json
- 
-    # Aca habria que ver si la vista (ademas de tener columnas distintas) tiene condicions especiales via if  @vista == ""
-    # esta parte es para unir la condicion que vino desde arriba y la que vino del lado cliente
-    # condicion solamente es el que vino del cliente y options[:conditions] lo que se vino del controller que llamo
-    if options[:conditions]
-      if ban
-        condicion = merge_conditions(options[:conditions],condicion)
-      else
-        condicion = options[:conditions]
-      end
-    end
-    #ahora condicion se tiene que mezclar con lo que viene de la base de datos
-    ret_columnas = @vista == "" ? class_ref.getColumnas() : class_ref.getColumnas(@vista)
-
-    case ret_columnas.class.to_s
+    case @model_config.class.to_s
     when "Array"
-      columnas = ret_columnas
+      @output["cols_titles"] = @model_config.map { |x| x[:name] }
     when "Hash"
-      columnas = ret_columnas[:columnas]
-            #raise ret_columnas[:conditions].to_json
-      if ret_columnas[:conditions]
-        if condicion == ""
-          condicion = ret_columnas[:conditions]
-        else
-          condicion = merge_conditions(ret_columnas[:conditions],condicion)
-        end
-        ban = true
-      end
-      # Sobre escribo el metodo de ordenamiento si me envian uno desde el modelo
-      if ret_columnas[:order]
-        options[:order] = ret_columnas[:order]
-      end
-
-      # Verifico si hay pedido de Join
-      options[:joins] = ret_columnas[:joins] if ret_columnas[:joins]
-
-      # Verifico si hay include
-      if ret_columnas[:include]
-        if !options[:include]
-          options[:include] = ret_columnas[:include]
-        else
-          options[:include] += ret_columnas[:include]
-        end
-      end
-      
-      # Verifico si pide un group by 
-      options[:group] = ret_columnas[:group] if ret_columnas[:group]
-
-      # Verfico si hay vector de visibilidad
-      @output[:columnas_visibles] = ret_columnas[:columnas_visibles] if ret_columnas[:columnas_visibles]
-    end
-    #carga los titulos de las columnas 
-    @output["cols_titles"] = columnas.map{|x| x[:name]}
-    options.merge!( {:conditions => condicion } ) if ban
-    
-    # Cantidad de registros por pagina
-    per_page =  params[:cant_fila] ? params[:cant_fila].to_i : 30
-    options[:per_page] = per_page
-    #options[:order] = opt if not options[:order] and opt != ""
-    
-    # options[:class_name] = class_ref.class_name
-    page_num = params[:page] || 1
-    options[:page] = page_num
-
-    #RAILS_DEFAULT_LOGGER.error("\n\n\n\n #{options.to_json} \n\n\n\n\n\n ")
-    objetos = class_ref.paginate(options)
-   
-    
-    ret = getDataToSend(class_ref,objetos)
-    @output["rows"] = ret
-
-    # WillPaginate::Collection
-    @output["results"] = objetos.total_entries
-    @output["page_count"] = objetos.total_pages
-
-    
-    # Soporte p/ el boton "Elegir" en Abm2
-    if defined? class_ref.getChooseButtonColumns != nil
-      h = @vista == "" ? class_ref.getChooseButtonColumns : class_ref.getChooseButtonColumns(@vista)
-      if h["desc_col"].class.to_s == "Fixnum"
-        h["desc_col"] = {:columnas => [h["desc_col"]],:separator => ""}
-      end
-      @output["elegir_data"] = h
+      extract_model_config()
     end
 
-    # fecha actual
+    @find_options.merge!( { :conditions => @search_conditions } ) if @search_conditions[0] != ""
+
+    returned_objects = clazz_ref.paginate(@find_options)
+
+    @output["rows"] = getDataToSend(clazz_ref, returned_objects)
+    @output["results"] = returned_objects.total_entries
+    @output["page_count"] = returned_objects.total_pages
     @output["fecha"] = Fecha::getFecha()
-
+    setup_choose_button_options(clazz_ref)
   end
   
-  
-  def crearColumnasCriterios(class_ref)
-    ret = []
-    ret_columnas = @vista == "" ? class_ref.getColumnas() : class_ref.getColumnas(@vista)
+  private
 
-    case ret_columnas.class.to_s
+  ####
+  # Extract options sent by our HTTP client. 
+  #
+  def extract_client_options()
+    @client_payload = params[:payload] ? JSON.parse(params[:payload]) : {}
 
-     when "Array"
-       columnas = ret_columnas
-     when "Hash"
-       columnas = ret_columnas[:columnas]
+    # Some options for the listing of rows.  
+    @find_options[:per_page] = params[:cant_fila] ? params[:cant_fila].to_i : 30
+    @find_options[:page] = params[:page] || 1
+  end
+
+
+  ####
+  # setup options established in the Model. 
+  #
+  def extract_model_config()
+    @output["cols_titles"] = @model_config[:columnas].map { |x| x[:name] }
+
+    @search_conditions = merge_conditions(@model_config[:conditions], @search_conditions)
+
+    # if the order was established in the Model, we use that one. 
+    @find_options[:order] = @model_config[:order] if @model_config[:order]
+
+    # Any joins configured in the model?
+    @find_options[:joins] = @model_config[:joins] if @model_config[:joins]
+
+    # include?
+    if @model_config[:include]
+      if !@find_options[:include]
+        @find_options[:include] = @model_config[:include]
+      else
+        @find_options[:include] += @model_config[:include]
+      end
     end
+    
+    # group by?
+    @find_options[:group] = @model_config[:group] if @model_config[:group]
 
-    columnas.each{ |x|
+    # in the Model you can set what columns should be displayed in the client-side listing. 
+    @output["columnas_visibles"] = @model_config[:columnas_visibles] if @model_config[:columnas_visibles]
+  end
 
+
+  ####
+  # Create the data needed for the combobox the lets the user search by 
+  # different criteria in our Listings. 
+  #
+  def crearColumnasCriterios(clazz_ref)
+    model_config = @vista == "" ? clazz_ref.getColumnas() : clazz_ref.getColumnas(@vista)
+    column_config = model_config.class.is_a?(Array) ? model_config : model_config[:columnas]
+
+    @output["criterios"] = column_config.map { |x|
       sel = x[:selected] && x[:selected] == true ? true : false
-      tmp = {:text=>x[:name],:value=>x[:key],:selected => sel}
+      tmp = { :text=> x[:name], :value => x[:key], :selected => sel}
       tmp.merge!({:datatype => x[:datatype]}) if x[:datatype]
       tmp.merge!({:options => x[:options]}) if x[:options]
       tmp.merge!({:data => eval(x[:data])}) if x[:data]
       tmp.merge!({:vista => x[:vista]}) if x[:vista]
       tmp.merge!({:width => x[:width]}) if x[:width]
-      ret.push(tmp)
+      tmp
     }
-
-    @output["criterios"] = ret
   end
-  
-  private
+
+
+  ####
+  # Config option for the 'Choose' button. 
+  #
+  def setup_choose_button_options(clazz_ref)
+    if clazz_ref.respond_to?(:getChooseButtonColumns)
+      h = @vista == "" ? clazz_ref.getChooseButtonColumns : clazz_ref.getChooseButtonColumns(@vista)
+      if h["desc_col"].class.to_s == "Fixnum"
+        h["desc_col"] = {:columnas => [h["desc_col"]],:separator => ""}
+      end
+      @output["elegir_data"] = h
+    end
+  end
+
 
   ##
-  # Retorna una matriz de datos que se va cargar en la tabla del cliente
-  #  como efecto secundarios se pobla @output["ids_para_abm"] con los IDs de los objetos que estamos enviando
+  # We return the table (array of arrays) of data that will be loaded in the Listing 
+  # on the Client side. 
   #
-  def getDataToSend(class_ref,objetos)
-    ret = []
-    ret_columnas = @vista == "" ? class_ref.getColumnas() : class_ref.getColumnas(@vista)
-    case ret_columnas.class.to_s
-    when "Array"
-      columnas = ret_columnas
-    when "Hash"
-      columnas = ret_columnas[:columnas]
-    end
+  def getDataToSend(clazz_ref, objects)
+    column_config = @model_config.class.is_a?(Array) ? @model_config : @model_config[:columnas]
 
-    objetos.each{ |x|
-      
-      tmp = Array.new
-      for c in columnas
+    objects.map { |obj|
+      column_config.map { |c| 
         if c[:related_attribute]
-          # Agregue esta rama para el caso de que te interesen columnas de objetos relacionados (via belongs_to generalmente)
           begin
-            newCol = eval("x." + c[:related_attribute])
+            newCol = obj.send(c[:related_attribute].to_sym)
             newCol =  "" if newCol == nil
           rescue
-            newCol =  ""  # no tiene el objeto relacionado (probablemente y ojala, pq osino estamos escondiendo otro error)
+            newCol =  ""
           end
         else
-          # Codigo original de Uchi.
-          newCol = x[c[:key]]? x[c[:key]] : ""
+          newCol = obj[c[:key]] ? obj[c[:key]] : ""
         end
-        tmp.push(newCol)
-      end
-      ret.push(tmp)
-
+        newCol
+      }
     }
-    ret
   end
-  
-  def merge_conditions(a,b)
 
-   
+  ###
+  # merges 2 conditions arrays in ActiveRecord's format
+  #
+  def merge_conditions(a,b)
+    a = a == nil ? [""] : a
+    b = b == nil ? [""] : b
+
     conditions = [a,b]
     conditions.delete([""])
 
@@ -223,16 +200,19 @@ class SearchController < ApplicationController
     ret
   end
 
-  def convertir(components)
-
+  ####
+  # extract the conditions sent by the client request and 
+  # return them in ActiveRecords conditions format
+  def extract_conditions()
     cond = [""]
     condStrArr = []
-    components.keys.each { |key| 
 
-      oprLen = components[key]["operators"].length
-      valLen = components[key]["values"].length
+    @client_payload.keys.each { |key| 
+      oprLen = @client_payload[key]["operators"].length
+      valLen = @client_payload[key]["values"].length
     
-      components[key]["values"].map { |m| 
+      # we treat letter with/without accents indistinctively. 
+      @client_payload[key]["values"].map { |m| 
         begin
             m.gsub!(/n|ñ/,'(n|ñ)')
             m.gsub!(/a|á/,'(a|á)')
@@ -241,21 +221,19 @@ class SearchController < ApplicationController
             m.gsub!(/o|ó/,'(o|ó)')
             m.gsub!(/u|ú/,'(u|ú)')
         rescue
-        end;
+        end
       }
     
       oprArr = []
-      (valLen/oprLen).times do
-
-        subOprStr = components[key]["operators"].map { |opr|
-            " #{key} #{opr} "
+      (valLen / oprLen).times do
+        subOprStr = @client_payload[key]["operators"].map { |opr|
+          " #{key} #{opr} "
         }.join(" and ")
         oprArr.push("(#{subOprStr})")
       end
       oprStr = oprArr.join(" or ")
       condStrArr.push("(#{oprStr})")
-      cond += components[key]["values"]
-
+      cond += @client_payload[key]["values"]
     }
 
     cond[0] = condStrArr.join(" and ")

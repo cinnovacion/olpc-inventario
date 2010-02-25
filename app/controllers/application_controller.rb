@@ -200,10 +200,9 @@ class ApplicationController < ActionController::Base
   end
 
   ####
-  #
+  # If the editing id exists, we just save. Otherwise we create. 
   #
   def save_object(model_ref, editing_id, attribs)
-
     if editing_id
       obj = model_ref.find(editing_id)
       obj.update_attributes!(attribs)
@@ -211,7 +210,6 @@ class ApplicationController < ActionController::Base
       obj = model_ref.create!(attribs)
     end
     obj
-
   end
 
 

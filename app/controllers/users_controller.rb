@@ -30,7 +30,7 @@ class UsersController < SearchController
   end
 
   def search
-    do_search(User,{:include => @include_str })
+    do_search(User, {:include => @include_str })
   end
 
   def search_options
@@ -39,7 +39,6 @@ class UsersController < SearchController
   end
 
   def new
-
     if params[:id]
       user = User.find(params[:id])
       @output["id"] = user.id
@@ -49,20 +48,19 @@ class UsersController < SearchController
 
     @output["fields"] = []
 
-    h = { "label" => "Usuario", "datatype" => "textfield" }.merge( user ? {"value" => user.usuario } : {} )
+    h = { "label" => _("User"), "datatype" => "textfield" }.merge( user ? {"value" => user.usuario } : {} )
     @output["fields"].push(h)
 
-    h = { "label" => "Clave", "datatype" => "passwordfield" }
+    h = { "label" => _("Password"), "datatype" => "passwordfield" }
     @output["fields"].push(h)
 
-    h = { "label" => "Repeticion", "datatype" => "passwordfield" }
+    h = { "label" => _("Re-type Password"), "datatype" => "passwordfield" }
     @output["fields"].push(h)
 
     id = user ? user.person_id : -1
-    people = buildSelectHash2(Person,id,"getFullName()",false,["people.id = ?", id])
-    h = { "label" => "Persona", "datatype" => "select", :option => "personas" }.merge( user ? {"options" => people} : {} )
+    people = buildSelectHash2(Person, id, "getFullName()", false, ["people.id = ?", id])
+    h = { "label" => _("Person"), "datatype" => "select", :option => "personas" }.merge( user ? {"options" => people} : {} )
     @output["fields"].push(h)
-
   end
 
   def save
@@ -75,7 +73,7 @@ class UsersController < SearchController
     rep = data_fields.pop
     attribs[:person_id] = data_fields.pop
 
-    raise "Las claves no son iguales." if attribs[:password] != rep
+    raise _("Passwords don't match.") if attribs[:password] != rep
 
     if datos["id"]
       user = User.find_by_id(datos["id"])
@@ -84,14 +82,13 @@ class UsersController < SearchController
       User.register(attribs, current_user.person)
     end
 
-
-    @output["msg"] = datos["id"] ? "Cambios guardados" : "Usuario agregado"
+    @output["msg"] = datos["id"] ? _("Changes saved.") : _("User added.")
   end
 
   def delete
     ids = JSON.parse(params[:payload])
     User.unregister(ids, current_user.person)
-    @output["msg"] = "Elementos eliminados"
+    @output["msg"] = _("Elements deleted.")
   end
 
 end

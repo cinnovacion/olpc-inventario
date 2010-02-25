@@ -41,12 +41,11 @@ class StatusesController < SearchController
     
     @output["fields"] = []
 
-    h = { "label" => "Descripcion","datatype" => "textfield" }.merge( p ? {"value" => p.description } : {} )
+    h = { "label" => _("Description"),"datatype" => "textfield" }.merge( p ? {"value" => p.description } : {} )
     @output["fields"].push(h)
 
-    h = { "label" => "Abreviatura","datatype" => "textfield" }.merge( p ? {"value" => p.abbrev } : {} )
+    h = { "label" => _("Abbreviation"),"datatype" => "textfield" }.merge( p ? {"value" => p.abbrev } : {} )
     @output["fields"].push(h)
-
   end
 
   def save
@@ -57,13 +56,13 @@ class StatusesController < SearchController
     
     Status.create!(attribs)
     
-    @output["msg"] = datos["id"] ? "Cambios guardados" : "Estado agregado"  
+    @output["msg"] = datos["id"] ? _("Changes saved.") : _("New status added.")  
   end
 
   def delete
     ids = JSON.parse(params[:payload])
     Status.destroy(ids)
-    @output["msg"] = "Elementos eliminados"
+    @output["msg"] = _("Elements deleted.")
   end
 
 end

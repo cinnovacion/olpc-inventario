@@ -160,7 +160,7 @@ class PeopleController < SearchController
   def delete
     people_ids = JSON.parse(params[:payload])
     Person.unregister(people_ids, current_user.person)
-    @output["msg"] = "Elements deleted."
+    @output["msg"] = _("Elements deleted.")
   end
 
   ##
