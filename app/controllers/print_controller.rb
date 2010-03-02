@@ -1660,12 +1660,14 @@ class PrintController < ApplicationController
     @titulo = _("Lendings")
     @fecha_desde = timeRange["date_since"]
     @fecha_hasta = timeRange["date_to"]
-    @columnas = [_("Date"), _("Given by"), _("Received by"), _("Return date"), _("Part"), _("Serial number"), _("Returned?")]
+    @columnas = [_("#"), _("Date"), _("Given by"), _("Received by"), _("Return date"), _("Part"), _("Serial number"), _("Returned?")]
     @datos =[]
     include_v = [:movement_details]
+    counter = 1
     Movement.find(:all,:conditions => cond_v, :order => "date_moved_at DESC", :include => include_v).each { |m|
       m.movement_details.each { |md|
         @datos.push([
+                     counter,
                      m.getMovementDate(),
                      m.getSourcePerson(),
                      m.getDestinationPerson(),
@@ -1674,6 +1676,7 @@ class PrintController < ApplicationController
                      md.getSerialNumber(),
                      md.getReturned()
                     ])
+        counter+=1
       }
     }
 
