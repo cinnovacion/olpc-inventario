@@ -28,9 +28,9 @@ class LaptopConfig < ActiveRecord::Base
     
     ret[:columnas] = 
       [ 
-       {:name => "Id",:key => "id",:related_attribute => "id", :width => 50},
-       {:name => "Descripcion",:key => "laptops.created_at",:related_attribute => "description", :width => 180},
-       {:name => "Valor",:key => "laptops.serial_number",:related_attribute => "getValue()", :width => 120}
+       {:name => _("Id"),:key => "id",:related_attribute => "id", :width => 50},
+       {:name => _("Description"),:key => "laptops.created_at",:related_attribute => "description", :width => 180},
+       {:name => _("Value"),:key => "laptops.serial_number",:related_attribute => "getValue()", :width => 120}
       ]
 
     ret[:columnas_visibles] = [false, true, true ]

@@ -26,15 +26,15 @@ class SolutionType < ActiveRecord::Base
   has_many :solution_type_part_types
   has_many :part_types, :through => :solution_type_part_types, :source => :part_type
 
-  validates_uniqueness_of :internal_tag, :message => "El tag debe ser unico"
+  validates_uniqueness_of :internal_tag, :message => _("The tag must be unique")
 
   def self.getColumnas()
     [ 
-      {:name => "Id", :key => "solution_types.id", :related_attribute => "id", :width => 50},
-      {:name => "Nombre", :key => "solution_types.name", :related_attribute => "getName()", :width => 200},
-      {:name => "Descripcion", :key => "solution_types.description", :related_attribute => "getDescription()", :width => 360},
-      {:name => "Tag", :key => "solution_types.name", :related_attribute => "getInternalTag()", :width => 200},
-      {:name => "Requiere Parte", :key => "solution_types.part_type_id", :related_attribute => "getPartType()", :width => 200}
+      {:name => _("Id"), :key => "solution_types.id", :related_attribute => "id", :width => 50},
+      {:name => _("Name"), :key => "solution_types.name", :related_attribute => "getName()", :width => 200},
+      {:name => _("Description"), :key => "solution_types.description", :related_attribute => "getDescription()", :width => 360},
+      {:name => _("Tag"), :key => "solution_types.name", :related_attribute => "getInternalTag()", :width => 200},
+      {:name => _("Requires party"), :key => "solution_types.part_type_id", :related_attribute => "getPartType()", :width => 200}
     ]
   end
 

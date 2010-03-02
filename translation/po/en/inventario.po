@@ -1,9 +1,21 @@
-#: app/controllers/solution_types_controller.rb:35
-#: app/controllers/sistema_controller.rb:349
-#, fuzzy
-msgid "Solution types"
-msgstr "Laptop added."
+#: app/models/user.rb:40 app/models/user.rb:41
+msgid "Must be at least %d characters"
+msgstr ""
 
+#: app/models/user.rb:49
+msgid "ID"
+msgstr ""
+
+#: app/models/user.rb:50 app/models/node.rb:57
+#: app/controllers/nodes_controller.rb:122
+msgid "Username"
+msgstr ""
+
+#: app/models/user.rb:51 app/models/place.rb:59 app/models/solution_type.rb:34
+#: app/models/problem_type.rb:32 app/models/person.rb:74
+#: app/models/person.rb:95 app/models/model.rb:34
+#: app/models/part_movement_type.rb:6 app/models/node_type.rb:34
+#: app/models/notification.rb:41 app/models/image.rb:35 app/models/node.rb:47
 #: app/controllers/solution_types_controller.rb:46
 #: app/controllers/places_controller.rb:61
 #: app/controllers/part_movement_types_controller.rb:41
@@ -20,6 +32,44 @@ msgstr "Laptop added."
 msgid "Name"
 msgstr ""
 
+#: app/models/user.rb:72
+msgid "You do not have enough access level."
+msgstr ""
+
+#: app/models/user.rb:81 app/models/user.rb:92 app/models/profile.rb:84
+#: app/models/profile.rb:97 app/models/profile.rb:112
+msgid "You do not have the sufficient level of access"
+msgstr ""
+
+#: app/models/place.rb:56 app/models/teach.rb:12 app/models/shipment.rb:35
+#: app/models/solution_type.rb:33 app/models/lot.rb:32
+#: app/models/part_type.rb:31 app/models/laptop_config.rb:31
+#: app/models/problem_type.rb:31 app/models/default_value.rb:7
+#: app/models/problem_report.rb:40 app/models/person.rb:71
+#: app/models/person.rb:94 app/models/profile.rb:37
+#: app/models/bank_deposit.rb:7 app/models/model.rb:32 app/models/event.rb:30
+#: app/models/status.rb:36 app/models/part_movement_type.rb:5
+#: app/models/place_type.rb:33 app/models/problem_solution.rb:36
+#: app/models/laptop.rb:49 app/models/node_type.rb:33
+#: app/models/notification_subscriber.rb:35 app/models/perform.rb:37
+#: app/models/notification.rb:36 app/models/image.rb:34 app/models/node.rb:46
+#: app/models/status_change.rb:38 app/models/school_info.rb:37
+#: app/models/part_movement.rb:29 app/models/movement_type.rb:37
+#: app/controllers/print_controller.rb:100
+msgid "Id"
+msgstr ""
+
+#: app/models/place.rb:57 app/models/shipment.rb:36 app/models/lot.rb:34
+#: app/models/status_change.rb:74 app/models/part_movement.rb:34
+msgid "Creation Date"
+msgstr ""
+
+#: app/models/place.rb:60 app/models/solution_type.rb:35
+#: app/models/part_type.rb:32 app/models/laptop_config.rb:32
+#: app/models/problem_type.rb:33 app/models/profile.rb:38
+#: app/models/model.rb:35 app/models/status.rb:42
+#: app/models/part_movement_type.rb:7 app/models/node_type.rb:35
+#: app/models/notification.rb:46
 #: app/controllers/solution_types_controller.rb:49
 #: app/controllers/statuses_controller.rb:44
 #: app/controllers/places_controller.rb:65
@@ -33,15 +83,824 @@ msgstr ""
 msgid "Description"
 msgstr ""
 
-#: app/controllers/solution_types_controller.rb:52
-#: app/controllers/problem_types_controller.rb:52
-msgid "More info"
+#: app/models/place.rb:62 app/models/problem_report.rb:42
+#: app/models/movement.rb:47 app/models/node.rb:54
+#: app/controllers/places_controller.rb:78
+#: app/controllers/nodes_controller.rb:116
+#: app/controllers/print_controller.rb:236
+#: app/controllers/print_controller.rb:1480
+#: app/controllers/print_controller.rb:1877
+msgid "Type"
 msgstr ""
 
+#: app/models/place.rb:117
+msgid "A child may not be the father nor the father the son."
+msgstr ""
+
+#: app/models/place.rb:165 app/models/place.rb:178 app/models/place.rb:199
+msgid "No sufficient level of access!"
+msgstr ""
+
+#: app/models/teach.rb:5
+msgid "Specify the person."
+msgstr ""
+
+#: app/models/teach.rb:6
+msgid "Specify the place."
+msgstr ""
+
+#: app/models/teach.rb:13
+msgid "Teacher"
+msgstr ""
+
+#: app/models/teach.rb:14 app/models/perform.rb:39 app/models/node.rb:52
+#: app/controllers/reports_controller.rb:78
+#: app/controllers/reports_controller.rb:193
+#: app/controllers/reports_controller.rb:214
+#: app/controllers/print_controller.rb:383
+#: app/controllers/print_controller.rb:500
+#: app/controllers/print_controller.rb:639
+#: app/controllers/print_controller.rb:768
+#: app/controllers/print_controller.rb:853
+#: app/controllers/print_controller.rb:920
+#: app/controllers/print_controller.rb:1093
+#, fuzzy
+msgid "Location"
+msgstr "Laptop added."
+
+#: app/models/shipment.rb:38
+msgid "Arrival Date"
+msgstr ""
+
+#: app/models/shipment.rb:40 app/models/problem_report.rb:48
+#: app/models/movement.rb:52 app/models/problem_solution.rb:41
+#: app/controllers/shipments_controller.rb:45
+msgid "Comment"
+msgstr ""
+
+#: app/models/shipment.rb:42 app/controllers/shipments_controller.rb:52
+#: app/controllers/schools_controller.rb:35
+msgid "Number"
+msgstr ""
+
+#: app/models/notifications_pool.rb:25
+msgid "You must specify the notification."
+msgstr ""
+
+#: app/models/notifications_pool.rb:26
+msgid "You must specify the Location."
+msgstr ""
+
+#: app/models/notifications_pool.rb:34
+#, fuzzy
+msgid "The notification %s does not exist"
+msgstr "Laptop added."
+
+#: app/models/notifications_pool.rb:56
+msgid "No one subscribed to the notification %s"
+msgstr ""
+
+#: app/models/movement_detail.rb:42
+msgid "Equipment Type"
+msgstr ""
+
+#: app/models/movement_detail.rb:44
+msgid "Serial Nbr."
+msgstr ""
+
+#: app/models/movement_detail.rb:46
+#, fuzzy
+msgid "Movement Reason"
+msgstr "Laptop added."
+
+#: app/models/movement_detail.rb:48
+msgid "Delivery Nbr."
+msgstr ""
+
+#: app/models/movement_detail.rb:50 app/controllers/lots_controller.rb:65
+msgid "Delivery date"
+msgstr ""
+
+#: app/models/solution_type.rb:29 app/models/part_type.rb:27
+#: app/models/problem_type.rb:27 app/models/profile.rb:31
+#: app/models/status.rb:30 app/models/place_type.rb:27
+#: app/models/node_type.rb:29 app/models/event_type.rb:27
+#: app/models/movement_type.rb:28
+msgid "The tag must be unique"
+msgstr ""
+
+#: app/models/solution_type.rb:36 app/models/node_type.rb:36
 #: app/controllers/solution_types_controller.rb:55
 #: app/controllers/node_types_controller.rb:59
 #: app/controllers/part_types_controller.rb:53
 msgid "Tag"
+msgstr ""
+
+#: app/models/solution_type.rb:37
+msgid "Requires party"
+msgstr ""
+
+#: app/models/lot.rb:33
+msgid "Nbr of Boxes"
+msgstr ""
+
+#: app/models/lot.rb:35 app/controllers/print_controller.rb:1530
+msgid "Responsible"
+msgstr ""
+
+#: app/models/lot.rb:36
+msgid "Delivered"
+msgstr ""
+
+#: app/models/lot.rb:37
+msgid "Delivery Date"
+msgstr ""
+
+#: app/models/part_type.rb:33 app/controllers/part_types_controller.rb:50
+msgid "Cost"
+msgstr ""
+
+#: app/models/part_type.rb:34 app/models/problem_type.rb:34
+#: app/models/profile.rb:39 app/models/part_movement_type.rb:8
+#: app/models/place_type.rb:35 app/controllers/profiles_controller.rb:49
+msgid "Internal Tag"
+msgstr ""
+
+#: app/models/laptop_config.rb:33 app/models/default_value.rb:9
+#: app/controllers/default_values_controller.rb:52
+#: app/controllers/print_controller.rb:155
+msgid "Value"
+msgstr ""
+
+#: app/models/default_value.rb:8
+#: app/controllers/default_values_controller.rb:49
+msgid "Key"
+msgstr ""
+
+#: app/models/problem_report.rb:33
+msgid "You must provide the type of problem."
+msgstr ""
+
+#: app/models/problem_report.rb:34
+msgid "You must provide the laptop linked to the problem."
+msgstr ""
+
+#: app/models/problem_report.rb:35
+msgid "You must provide the location of the owner."
+msgstr ""
+
+#: app/models/problem_report.rb:36
+msgid "You must provide the owner."
+msgstr ""
+
+#: app/models/problem_report.rb:41
+msgid "Technician CI"
+msgstr ""
+
+#: app/models/problem_report.rb:43 app/models/status_change.rb:56
+#: app/controllers/problem_reports_controller.rb:64
+#: app/controllers/print_controller.rb:853
+#: app/controllers/print_controller.rb:1193
+#, fuzzy
+msgid "Laptop"
+msgstr "Laptop added."
+
+#: app/models/problem_report.rb:44 app/models/school_info.rb:38
+#: app/controllers/nodes_controller.rb:111
+#: app/controllers/part_movements_controller.rb:64
+msgid "Place"
+msgstr ""
+
+#: app/models/problem_report.rb:45
+msgid "Report Date"
+msgstr ""
+
+#: app/models/problem_report.rb:46 app/controllers/reports_controller.rb:233
+#: app/controllers/reports_controller.rb:235
+#: app/controllers/reports_controller.rb:308
+#: app/controllers/print_controller.rb:500
+#: app/controllers/print_controller.rb:1093
+msgid "Solved"
+msgstr ""
+
+#: app/models/problem_report.rb:47
+msgid "Solved at"
+msgstr ""
+
+#: app/models/problem_report.rb:73
+msgid "Id:"
+msgstr ""
+
+#: app/models/problem_report.rb:74
+msgid "subject"
+msgstr ""
+
+#: app/models/problem_report.rb:75
+#, fuzzy
+msgid "Location:"
+msgstr "Laptop added."
+
+#: app/models/problem_report.rb:76
+msgid "Reported by:"
+msgstr ""
+
+#: app/models/movement.rb:38
+msgid "Please specify who delivered."
+msgstr ""
+
+#: app/models/movement.rb:39
+msgid "Please specify who gets it."
+msgstr ""
+
+#: app/models/movement.rb:44
+msgid "Mov. Nbr"
+msgstr ""
+
+#: app/models/movement.rb:45
+msgid "Mov. Date"
+msgstr ""
+
+#: app/models/movement.rb:46
+msgid "Mov. Time"
+msgstr ""
+
+#: app/models/movement.rb:48
+msgid "Serial Nbr"
+msgstr ""
+
+#: app/models/movement.rb:49 app/controllers/print_controller.rb:1432
+#: app/controllers/print_controller.rb:1663
+msgid "Given by"
+msgstr ""
+
+#: app/models/movement.rb:50 app/controllers/print_controller.rb:1432
+#: app/controllers/print_controller.rb:1530
+#: app/controllers/print_controller.rb:1663
+msgid "Received by"
+msgstr ""
+
+#: app/models/movement.rb:51
+msgid "Received (Doc id)"
+msgstr ""
+
+#: app/models/movement.rb:97
+msgid "Delivery from the CATS module"
+msgstr ""
+
+#: app/models/movement.rb:111
+#, fuzzy
+msgid "Invalid type of movement"
+msgstr "Laptop added."
+
+#: app/models/movement.rb:134
+msgid "Could not find the person with Document ID %s"
+msgstr ""
+
+#: app/models/movement.rb:165
+msgid "The loans require return date."
+msgstr ""
+
+#: app/models/movement.rb:166
+msgid "Only loans require return date."
+msgstr ""
+
+#: app/models/movement.rb:236
+msgid ""
+"This is a reminder that you are in their possession the following devices, "
+"which must be returned: \n"
+msgstr ""
+
+#: app/models/movement.rb:239
+msgid "Please communicate with info@paraguayeduca.org"
+msgstr ""
+
+#: app/models/person.rb:44
+msgid "Repeated document id number"
+msgstr ""
+
+#: app/models/person.rb:45
+msgid "Must have a document id number"
+msgstr ""
+
+#: app/models/person.rb:72 app/models/bank_deposit.rb:11
+#: app/models/model.rb:33 app/models/laptop.rb:50
+msgid "Created at"
+msgstr ""
+
+#: app/models/person.rb:75 app/models/person.rb:96
+msgid "Last name"
+msgstr ""
+
+#: app/models/person.rb:76
+msgid "Doc. Id."
+msgstr ""
+
+#: app/models/person.rb:78
+msgid "Doc. ID. Created at"
+msgstr ""
+
+#: app/models/person.rb:79
+msgid "Birth Date"
+msgstr ""
+
+#: app/models/person.rb:81
+msgid "Tel."
+msgstr ""
+
+#: app/models/person.rb:82
+msgid "Cell."
+msgstr ""
+
+#: app/models/person.rb:83 app/models/person.rb:97
+#: app/controllers/people_controller.rb:80
+msgid "Email"
+msgstr ""
+
+#: app/models/person.rb:84 app/controllers/sistema_controller.rb:216
+msgid "Profiles"
+msgstr ""
+
+#: app/models/person.rb:85
+msgid "Bar Code"
+msgstr ""
+
+#: app/models/person.rb:133
+msgid "Invalid Profile Configuration!"
+msgstr ""
+
+#: app/models/person.rb:159
+msgid "No sufficient level of access"
+msgstr ""
+
+#: app/models/person.rb:162
+msgid "Profile Configuration overrides!"
+msgstr ""
+
+#: app/models/person.rb:195
+msgid "No sufficient privileges"
+msgstr ""
+
+#: app/models/profile.rb:40
+msgid "Access Level"
+msgstr ""
+
+#: app/models/bank_deposit.rb:8 app/models/problem_solution.rb:39
+#: app/controllers/print_controller.rb:500
+msgid "Solution"
+msgstr ""
+
+#: app/models/bank_deposit.rb:9 app/controllers/bank_deposits_controller.rb:56
+#: app/controllers/print_controller.rb:433
+msgid "Deposit"
+msgstr ""
+
+#: app/models/bank_deposit.rb:10 app/models/part_movement.rb:32
+#: app/controllers/bank_deposits_controller.rb:59
+msgid "Amount"
+msgstr ""
+
+#: app/models/bank_deposit.rb:12
+#, fuzzy
+msgid "Deposited at"
+msgstr "Laptop added."
+
+#: app/models/bank_deposit.rb:13
+#: app/controllers/bank_deposits_controller.rb:66
+#: app/controllers/print_controller.rb:433
+msgid "Bank"
+msgstr ""
+
+#: app/models/event.rb:31
+msgid "Event"
+msgstr ""
+
+#: app/models/event.rb:32 app/models/problem_solution.rb:40
+#: app/controllers/print_controller.rb:100
+#: app/controllers/print_controller.rb:383
+#: app/controllers/print_controller.rb:433
+#: app/controllers/print_controller.rb:1530
+#: app/controllers/print_controller.rb:1663
+#: app/controllers/print_controller.rb:1739
+msgid "Date"
+msgstr ""
+
+#: app/models/event.rb:33
+msgid "Reporter"
+msgstr ""
+
+#: app/models/event.rb:34
+#, fuzzy
+msgid "Information"
+msgstr "Laptop added."
+
+#: app/models/event.rb:35
+#, fuzzy
+msgid "Location associated"
+msgstr "Laptop added."
+
+#: app/models/status.rb:48 app/controllers/statuses_controller.rb:47
+msgid "Abbreviation"
+msgstr ""
+
+#: app/models/part_movement_type.rb:9
+#: app/controllers/part_movement_types_controller.rb:55
+msgid "Direction"
+msgstr ""
+
+#: app/models/part_movement_type.rb:26
+msgid "Entry"
+msgstr ""
+
+#: app/models/part_movement_type.rb:26
+msgid "Departure"
+msgstr ""
+
+#: app/models/notifier.rb:41
+msgid "REMINDER"
+msgstr ""
+
+#: app/models/place_type.rb:34
+#, fuzzy
+msgid "Location type"
+msgstr "Laptop added."
+
+#: app/models/place_type.rb:74
+msgid "This script can be run only once a year"
+msgstr ""
+
+#: app/models/place_type.rb:88
+msgid "Not present to the next grade %s"
+msgstr ""
+
+#: app/models/problem_solution.rb:30
+msgid "Specify the solution."
+msgstr ""
+
+#: app/models/problem_solution.rb:31
+msgid "Specify who made the repair."
+msgstr ""
+
+#: app/models/problem_solution.rb:32
+msgid "Specify the problem."
+msgstr ""
+
+#: app/models/problem_solution.rb:37
+#: app/controllers/problem_solutions_controller.rb:102
+#: app/controllers/print_controller.rb:500
+msgid "Report"
+msgstr ""
+
+#: app/models/problem_solution.rb:38
+#: app/controllers/problem_reports_controller.rb:59
+#: app/controllers/print_controller.rb:316
+#: app/controllers/print_controller.rb:500
+msgid "Problem"
+msgstr ""
+
+#: app/models/problem_solution.rb:42
+msgid "Technician"
+msgstr ""
+
+#: app/models/problem_solution.rb:83
+msgid "The number of deposit is required"
+msgstr ""
+
+#: app/models/problem_solution.rb:84
+msgid "Select the type of solution"
+msgstr ""
+
+#: app/models/problem_solution.rb:85
+msgid "Specify the number of report"
+msgstr ""
+
+#: app/models/problem_solution.rb:117
+msgid "Id of the solution:"
+msgstr ""
+
+#: app/models/problem_solution.rb:118
+msgid "Id of the problem:"
+msgstr ""
+
+#: app/models/problem_solution.rb:119
+msgid "Subject"
+msgstr ""
+
+#: app/models/problem_solution.rb:120
+msgid "Solved by:"
+msgstr ""
+
+#: app/models/laptop_detail.rb:29
+msgid "You must provide the student."
+msgstr ""
+
+#: app/models/laptop_detail.rb:30
+msgid "There is a student without laptop."
+msgstr ""
+
+#: app/models/laptop.rb:41
+msgid "You must provide the serial number"
+msgstr ""
+
+#: app/models/laptop.rb:42
+msgid "Laptop Serial Number can not be repeated"
+msgstr ""
+
+#: app/models/laptop.rb:43
+msgid "You must provide the State"
+msgstr ""
+
+#: app/models/laptop.rb:44
+msgid "You must provide the Owner"
+msgstr ""
+
+#: app/models/laptop.rb:51
+msgid "Serial nbr."
+msgstr ""
+
+#: app/models/laptop.rb:53
+msgid "In hands of"
+msgstr ""
+
+#: app/models/laptop.rb:54
+msgid "Owners Doc Id"
+msgstr ""
+
+#: app/models/laptop.rb:55
+msgid "Code Bar Owner"
+msgstr ""
+
+#: app/models/laptop.rb:56
+msgid "Build Version"
+msgstr ""
+
+#: app/models/laptop.rb:57 app/controllers/laptops_controller.rb:173
+#: app/controllers/laptops_controller.rb:220
+msgid "Shipment"
+msgstr ""
+
+#: app/models/laptop.rb:58 app/controllers/laptops_controller.rb:168
+#: app/controllers/laptops_controller.rb:215
+#: app/controllers/reports_controller.rb:369
+msgid "Model"
+msgstr ""
+
+#: app/models/laptop.rb:59
+msgid "State"
+msgstr ""
+
+#: app/models/laptop.rb:60
+msgid "Id Box"
+msgstr ""
+
+#: app/models/laptop.rb:61 app/controllers/laptops_controller.rb:190
+msgid "UUID"
+msgstr ""
+
+#: app/models/laptop.rb:62 app/controllers/reports_controller.rb:217
+#: app/controllers/print_controller.rb:1125
+msgid "Registered"
+msgstr ""
+
+#: app/models/laptop.rb:63
+#, fuzzy
+msgid "Last activation"
+msgstr "Laptop added."
+
+#: app/models/laptop.rb:159 app/controllers/reports_controller.rb:231
+#: app/controllers/reports_controller.rb:306
+#: app/controllers/application_controller.rb:295
+#: app/controllers/application_controller.rb:303
+#: app/controllers/print_controller.rb:486
+#: app/controllers/print_controller.rb:1230
+msgid "Yes"
+msgstr ""
+
+#: app/models/laptop.rb:159 app/controllers/reports_controller.rb:232
+#: app/controllers/reports_controller.rb:307
+#: app/controllers/application_controller.rb:296
+#: app/controllers/application_controller.rb:304
+#: app/controllers/print_controller.rb:486
+#: app/controllers/print_controller.rb:1225
+msgid "No"
+msgstr ""
+
+#: app/models/laptop.rb:174
+msgid "Never"
+msgstr ""
+
+#: app/models/node_type.rb:27 app/models/node.rb:28
+msgid "Must specify the name."
+msgstr ""
+
+#: app/models/node_type.rb:28
+msgid "You must specify the internal tag"
+msgstr ""
+
+#: app/models/node_type.rb:37 app/controllers/images_controller.rb:56
+#: app/controllers/people_controller.rb:85
+#: app/controllers/node_types_controller.rb:64
+#: app/controllers/node_types_controller.rb:70
+msgid "Image"
+msgstr ""
+
+#: app/models/notification_subscriber.rb:29
+msgid "You must provide the subscriber."
+msgstr ""
+
+#: app/models/notification_subscriber.rb:30
+msgid "You must provide the Notification."
+msgstr ""
+
+#: app/models/notification_subscriber.rb:40
+#: app/controllers/notification_subscribers_controller.rb:54
+msgid "Notification"
+msgstr ""
+
+#: app/models/notification_subscriber.rb:45
+msgid "Subscriber"
+msgstr ""
+
+#: app/models/notification_subscriber.rb:50
+msgid "Date of Subscription"
+msgstr ""
+
+#: app/models/notification_subscriber.rb:65
+msgid "%s does not have a valid email address. It can not be signed"
+msgstr ""
+
+#: app/models/perform.rb:29
+msgid "You must specify the person."
+msgstr ""
+
+#: app/models/perform.rb:30
+msgid "You must specify the place."
+msgstr ""
+
+#: app/models/perform.rb:31
+msgid "You must specify the profile."
+msgstr ""
+
+#: app/models/perform.rb:38 app/controllers/users_controller.rb:62
+#: app/controllers/print_controller.rb:500
+#: app/controllers/print_controller.rb:853
+#: app/controllers/print_controller.rb:920
+#: app/controllers/print_controller.rb:1568
+#: app/controllers/print_controller.rb:1582
+#: app/controllers/print_controller.rb:1617
+#, fuzzy
+msgid "Person"
+msgstr "Laptop added."
+
+#: app/models/perform.rb:40
+msgid "Profile"
+msgstr ""
+
+#: app/models/notification.rb:51
+#: app/controllers/notifications_controller.rb:54
+msgid "Active"
+msgstr ""
+
+#: app/models/image.rb:28
+msgid "The image must be named."
+msgstr ""
+
+#: app/models/image.rb:29
+msgid "The image must have an associated file."
+msgstr ""
+
+#: app/models/node.rb:29
+msgid "Must specify the Latitude"
+msgstr ""
+
+#: app/models/node.rb:30
+msgid "Must specify the Longitude"
+msgstr ""
+
+#: app/models/node.rb:31
+msgid "You must specify the zoom."
+msgstr ""
+
+#: app/models/node.rb:32
+msgid "You must specify the place"
+msgstr ""
+
+#: app/models/node.rb:33
+msgid "You must specify the node type."
+msgstr ""
+
+#: app/models/node.rb:48 app/controllers/nodes_controller.rb:96
+msgid "Latitude"
+msgstr ""
+
+#: app/models/node.rb:49 app/controllers/nodes_controller.rb:99
+msgid "Longitude"
+msgstr ""
+
+#: app/models/node.rb:50 app/controllers/nodes_controller.rb:102
+msgid "Height"
+msgstr ""
+
+#: app/models/node.rb:51 app/controllers/nodes_controller.rb:106
+msgid "Zoom"
+msgstr ""
+
+#: app/models/node.rb:53
+#, fuzzy
+msgid "Parents Location"
+msgstr "Laptop added."
+
+#: app/models/node.rb:55
+msgid "Updated"
+msgstr ""
+
+#: app/models/node.rb:56
+msgid "IP Address"
+msgstr ""
+
+#: app/models/node.rb:58 app/controllers/nodes_controller.rb:125
+#: app/controllers/users_controller.rb:54
+msgid "Password"
+msgstr ""
+
+#: app/models/status_change.rb:32
+msgid "You must provide the new state."
+msgstr ""
+
+#: app/models/status_change.rb:44
+msgid "Previous state"
+msgstr ""
+
+#: app/models/status_change.rb:50
+#, fuzzy
+msgid "New State"
+msgstr "Laptop added."
+
+#: app/models/status_change.rb:62
+msgid "Battery"
+msgstr ""
+
+#: app/models/status_change.rb:68
+msgid "Charger"
+msgstr ""
+
+#: app/models/status_change.rb:80
+msgid "Creation Time"
+msgstr ""
+
+#: app/models/school_info.rb:39
+#, fuzzy
+msgid "Duration"
+msgstr "Laptop added."
+
+#: app/models/school_info.rb:40 app/controllers/school_infos_controller.rb:63
+msgid "Hostname"
+msgstr ""
+
+#: app/models/school_info.rb:41
+msgid "Address"
+msgstr ""
+
+#: app/models/school_info.rb:42 app/controllers/school_infos_controller.rb:69
+msgid "Netmask"
+msgstr ""
+
+#: app/models/school_info.rb:43 app/controllers/school_infos_controller.rb:72
+msgid "Gateway"
+msgstr ""
+
+#: app/models/part_movement.rb:30
+#, fuzzy
+msgid "Movement"
+msgstr "Laptop added."
+
+#: app/models/part_movement.rb:31 app/controllers/print_controller.rb:77
+#: app/controllers/print_controller.rb:383
+#: app/controllers/print_controller.rb:1663
+#: app/controllers/print_controller.rb:1823
+msgid "Part"
+msgstr ""
+
+#: app/models/part_movement.rb:33
+msgid "Responsible (CI)"
+msgstr ""
+
+#: app/models/movement_type.rb:38
+msgid "Descritpion"
+msgstr ""
+
+#: app/models/movement_type.rb:39
+msgid "Delivery?"
+msgstr ""
+
+#: app/controllers/solution_types_controller.rb:35
+#: app/controllers/sistema_controller.rb:349
+#, fuzzy
+msgid "Solution types"
+msgstr "Laptop added."
+
+#: app/controllers/solution_types_controller.rb:52
+#: app/controllers/problem_types_controller.rb:52
+msgid "More info"
 msgstr ""
 
 #: app/controllers/solution_types_controller.rb:58
@@ -103,10 +962,6 @@ msgstr ""
 msgid "Script run successfully. "
 msgstr ""
 
-#: app/controllers/statuses_controller.rb:47
-msgid "Abbreviation"
-msgstr ""
-
 #: app/controllers/statuses_controller.rb:59
 #, fuzzy
 msgid "New status added."
@@ -116,19 +971,6 @@ msgstr "Laptop added."
 #: app/controllers/sistema_controller.rb:308
 msgid "Report a problem"
 msgstr ""
-
-#: app/controllers/problem_reports_controller.rb:59
-#: app/controllers/print_controller.rb:316
-#: app/controllers/print_controller.rb:500
-msgid "Problem"
-msgstr ""
-
-#: app/controllers/problem_reports_controller.rb:64
-#: app/controllers/print_controller.rb:853
-#: app/controllers/print_controller.rb:1193
-#, fuzzy
-msgid "Laptop"
-msgstr "Laptop added."
 
 #: app/controllers/problem_reports_controller.rb:69
 msgid "Solved?"
@@ -168,22 +1010,8 @@ msgstr ""
 msgid "Problem report created."
 msgstr ""
 
-#: app/controllers/bank_deposits_controller.rb:56
-#: app/controllers/print_controller.rb:433
-msgid "Deposit"
-msgstr ""
-
-#: app/controllers/bank_deposits_controller.rb:59
-msgid "Amount"
-msgstr ""
-
 #: app/controllers/bank_deposits_controller.rb:63
 msgid "Deposit date"
-msgstr ""
-
-#: app/controllers/bank_deposits_controller.rb:66
-#: app/controllers/print_controller.rb:433
-msgid "Bank"
 msgstr ""
 
 #: app/controllers/bank_deposits_controller.rb:90
@@ -207,17 +1035,6 @@ msgstr ""
 msgid "OS version"
 msgstr ""
 
-#: app/controllers/laptops_controller.rb:168
-#: app/controllers/laptops_controller.rb:215
-#: app/controllers/reports_controller.rb:369
-msgid "Model"
-msgstr ""
-
-#: app/controllers/laptops_controller.rb:173
-#: app/controllers/laptops_controller.rb:220
-msgid "Shipment"
-msgstr ""
-
 #: app/controllers/laptops_controller.rb:179
 #: app/controllers/laptops_controller.rb:225
 msgid "Owned by"
@@ -230,24 +1047,12 @@ msgstr ""
 msgid "Status"
 msgstr ""
 
-#: app/controllers/laptops_controller.rb:190
-msgid "UUID"
-msgstr ""
-
 #: app/controllers/laptops_controller.rb:193
 msgid "Load .xls"
 msgstr ""
 
 #: app/controllers/places_controller.rb:70
 msgid "Parent location"
-msgstr ""
-
-#: app/controllers/places_controller.rb:78
-#: app/controllers/nodes_controller.rb:116
-#: app/controllers/print_controller.rb:236
-#: app/controllers/print_controller.rb:1480
-#: app/controllers/print_controller.rb:1877
-msgid "Type"
 msgstr ""
 
 #: app/controllers/places_controller.rb:111
@@ -293,11 +1098,6 @@ msgstr "Laptop added."
 #, fuzzy
 msgid "Laptop exchange"
 msgstr "Laptop added."
-
-#: app/controllers/problem_solutions_controller.rb:102
-#: app/controllers/print_controller.rb:500
-msgid "Report"
-msgstr ""
 
 #: app/controllers/problem_solutions_controller.rb:105
 msgid "Serial # of repair part"
@@ -362,10 +1162,6 @@ msgstr "Laptop added."
 
 #: app/controllers/sistema_controller.rb:215
 msgid "Images"
-msgstr ""
-
-#: app/controllers/sistema_controller.rb:216
-msgid "Profiles"
 msgstr ""
 
 #: app/controllers/sistema_controller.rb:217
@@ -695,20 +1491,6 @@ msgstr ""
 msgid "Reasons"
 msgstr "Laptop added."
 
-#: app/controllers/reports_controller.rb:78
-#: app/controllers/reports_controller.rb:193
-#: app/controllers/reports_controller.rb:214
-#: app/controllers/print_controller.rb:383
-#: app/controllers/print_controller.rb:500
-#: app/controllers/print_controller.rb:639
-#: app/controllers/print_controller.rb:768
-#: app/controllers/print_controller.rb:853
-#: app/controllers/print_controller.rb:920
-#: app/controllers/print_controller.rb:1093
-#, fuzzy
-msgid "Location"
-msgstr "Laptop added."
-
 #: app/controllers/reports_controller.rb:86
 #: app/controllers/print_controller.rb:1125
 msgid "Owner"
@@ -763,11 +1545,6 @@ msgstr ""
 msgid "Lot"
 msgstr ""
 
-#: app/controllers/reports_controller.rb:217
-#: app/controllers/print_controller.rb:1125
-msgid "Registered"
-msgstr ""
-
 #: app/controllers/reports_controller.rb:218
 msgid "Not registered"
 msgstr ""
@@ -781,32 +1558,6 @@ msgstr ""
 #: app/controllers/reports_controller.rb:249
 #: app/controllers/reports_controller.rb:335
 msgid "Problems"
-msgstr ""
-
-#: app/controllers/reports_controller.rb:231
-#: app/controllers/reports_controller.rb:306
-#: app/controllers/application_controller.rb:295
-#: app/controllers/application_controller.rb:303
-#: app/controllers/print_controller.rb:486
-#: app/controllers/print_controller.rb:1230
-msgid "Yes"
-msgstr ""
-
-#: app/controllers/reports_controller.rb:232
-#: app/controllers/reports_controller.rb:307
-#: app/controllers/application_controller.rb:296
-#: app/controllers/application_controller.rb:304
-#: app/controllers/print_controller.rb:486
-#: app/controllers/print_controller.rb:1225
-msgid "No"
-msgstr ""
-
-#: app/controllers/reports_controller.rb:233
-#: app/controllers/reports_controller.rb:235
-#: app/controllers/reports_controller.rb:308
-#: app/controllers/print_controller.rb:500
-#: app/controllers/print_controller.rb:1093
-msgid "Solved"
 msgstr ""
 
 #: app/controllers/reports_controller.rb:236
@@ -902,10 +1653,6 @@ msgstr ""
 msgid "Delivered?"
 msgstr ""
 
-#: app/controllers/lots_controller.rb:65
-msgid "Delivery date"
-msgstr ""
-
 #: app/controllers/lots_controller.rb:74
 msgid "Section"
 msgstr ""
@@ -933,10 +1680,6 @@ msgstr ""
 #: app/controllers/part_movement_types_controller.rb:53
 #: app/controllers/print_controller.rb:77
 msgid "Outgoing"
-msgstr ""
-
-#: app/controllers/part_movement_types_controller.rb:55
-msgid "Direction"
 msgstr ""
 
 #: app/controllers/part_movement_types_controller.rb:76
@@ -1043,39 +1786,9 @@ msgstr ""
 msgid "The following laptops weren't recognized "
 msgstr ""
 
-#: app/controllers/nodes_controller.rb:96
-msgid "Latitude"
-msgstr ""
-
-#: app/controllers/nodes_controller.rb:99
-msgid "Longitude"
-msgstr ""
-
-#: app/controllers/nodes_controller.rb:102
-msgid "Height"
-msgstr ""
-
-#: app/controllers/nodes_controller.rb:106
-msgid "Zoom"
-msgstr ""
-
-#: app/controllers/nodes_controller.rb:111
-#: app/controllers/part_movements_controller.rb:64
-msgid "Place"
-msgstr ""
-
 #: app/controllers/nodes_controller.rb:119
 #: app/controllers/school_infos_controller.rb:66
 msgid "IP address"
-msgstr ""
-
-#: app/controllers/nodes_controller.rb:122
-msgid "Username"
-msgstr ""
-
-#: app/controllers/nodes_controller.rb:125
-#: app/controllers/users_controller.rb:54
-msgid "Password"
 msgstr ""
 
 #: app/controllers/nodes_controller.rb:153
@@ -1092,13 +1805,6 @@ msgstr ""
 #, fuzzy
 msgid "Location type added."
 msgstr "Laptop added."
-
-#: app/controllers/images_controller.rb:56
-#: app/controllers/people_controller.rb:85
-#: app/controllers/node_types_controller.rb:64
-#: app/controllers/node_types_controller.rb:70
-msgid "Image"
-msgstr ""
 
 #: app/controllers/images_controller.rb:60
 msgid "Load image"
@@ -1121,17 +1827,6 @@ msgstr ""
 msgid "Re-type Password"
 msgstr ""
 
-#: app/controllers/users_controller.rb:62
-#: app/controllers/print_controller.rb:500
-#: app/controllers/print_controller.rb:853
-#: app/controllers/print_controller.rb:920
-#: app/controllers/print_controller.rb:1568
-#: app/controllers/print_controller.rb:1582
-#: app/controllers/print_controller.rb:1617
-#, fuzzy
-msgid "Person"
-msgstr "Laptop added."
-
 #: app/controllers/users_controller.rb:76
 msgid "Passwords don't match."
 msgstr ""
@@ -1141,17 +1836,8 @@ msgstr ""
 msgid "User added."
 msgstr "Laptop added."
 
-#: app/controllers/shipments_controller.rb:45
-msgid "Comment"
-msgstr ""
-
 #: app/controllers/shipments_controller.rb:49
 msgid "Arrival date"
-msgstr ""
-
-#: app/controllers/shipments_controller.rb:52
-#: app/controllers/schools_controller.rb:35
-msgid "Number"
 msgstr ""
 
 #: app/controllers/shipments_controller.rb:71
@@ -1171,10 +1857,6 @@ msgstr ""
 #, fuzzy
 msgid "Problem type created."
 msgstr "Laptop added."
-
-#: app/controllers/notifications_controller.rb:54
-msgid "Active"
-msgstr ""
 
 #: app/controllers/notifications_controller.rb:76
 #, fuzzy
@@ -1221,15 +1903,6 @@ msgstr ""
 msgid "The file was imported correctly."
 msgstr ""
 
-#: app/controllers/default_values_controller.rb:49
-msgid "Key"
-msgstr ""
-
-#: app/controllers/default_values_controller.rb:52
-#: app/controllers/print_controller.rb:155
-msgid "Value"
-msgstr ""
-
 #: app/controllers/models_controller.rb:68
 msgid "Model added."
 msgstr ""
@@ -1240,18 +1913,6 @@ msgstr ""
 
 #: app/controllers/school_infos_controller.rb:60
 msgid "Lease duration"
-msgstr ""
-
-#: app/controllers/school_infos_controller.rb:63
-msgid "Hostname"
-msgstr ""
-
-#: app/controllers/school_infos_controller.rb:69
-msgid "Netmask"
-msgstr ""
-
-#: app/controllers/school_infos_controller.rb:72
-msgid "Gateway"
 msgstr ""
 
 #: app/controllers/school_infos_controller.rb:96
@@ -1277,10 +1938,6 @@ msgstr ""
 
 #: app/controllers/people_controller.rb:77
 msgid "Cell num."
-msgstr ""
-
-#: app/controllers/people_controller.rb:80
-msgid "Email"
 msgstr ""
 
 #: app/controllers/people_controller.rb:89
@@ -1361,31 +2018,11 @@ msgid "Estado del stock en %s"
 msgstr ""
 
 #: app/controllers/print_controller.rb:77
-#: app/controllers/print_controller.rb:383
-#: app/controllers/print_controller.rb:1663
-#: app/controllers/print_controller.rb:1823
-msgid "Part"
-msgstr ""
-
-#: app/controllers/print_controller.rb:77
 msgid "Difference"
 msgstr ""
 
 #: app/controllers/print_controller.rb:99
 msgid "Audit at %s"
-msgstr ""
-
-#: app/controllers/print_controller.rb:100
-#: app/controllers/print_controller.rb:383
-#: app/controllers/print_controller.rb:433
-#: app/controllers/print_controller.rb:1530
-#: app/controllers/print_controller.rb:1663
-#: app/controllers/print_controller.rb:1739
-msgid "Date"
-msgstr ""
-
-#: app/controllers/print_controller.rb:100
-msgid "Id"
 msgstr ""
 
 #: app/controllers/print_controller.rb:100
@@ -1520,10 +2157,6 @@ msgstr ""
 
 #: app/controllers/print_controller.rb:500
 msgid "Serial Num."
-msgstr ""
-
-#: app/controllers/print_controller.rb:500
-msgid "Solution"
 msgstr ""
 
 #: app/controllers/print_controller.rb:537
@@ -1713,17 +2346,6 @@ msgstr ""
 msgid "Serial"
 msgstr ""
 
-#: app/controllers/print_controller.rb:1432
-#: app/controllers/print_controller.rb:1663
-msgid "Given by"
-msgstr ""
-
-#: app/controllers/print_controller.rb:1432
-#: app/controllers/print_controller.rb:1530
-#: app/controllers/print_controller.rb:1663
-msgid "Received by"
-msgstr ""
-
 #: app/controllers/print_controller.rb:1477
 msgid "Totals by movement type"
 msgstr ""
@@ -1734,10 +2356,6 @@ msgstr ""
 
 #: app/controllers/print_controller.rb:1530
 msgid "#"
-msgstr ""
-
-#: app/controllers/print_controller.rb:1530
-msgid "Responsible"
 msgstr ""
 
 #: app/controllers/print_controller.rb:1530
@@ -1792,16 +2410,8 @@ msgstr ""
 msgid "Problems grouped by type"
 msgstr ""
 
-#: app/controllers/notification_subscribers_controller.rb:54
-msgid "Notification"
-msgstr ""
-
 #: app/controllers/notification_subscribers_controller.rb:61
 msgid "Suscriber"
-msgstr ""
-
-#: app/controllers/profiles_controller.rb:49
-msgid "Internal Tag"
 msgstr ""
 
 #: app/controllers/profiles_controller.rb:54
@@ -1815,10 +2425,6 @@ msgstr ""
 
 #: app/controllers/profiles_controller.rb:78
 msgid "Profile created."
-msgstr ""
-
-#: app/controllers/part_types_controller.rb:50
-msgid "Cost"
 msgstr ""
 
 #: app/controllers/part_movements_controller.rb:44
@@ -1849,6 +2455,14 @@ msgstr ""
 #: app/controllers/part_movements_controller.rb:129
 msgid "Transfer saved."
 msgstr ""
+
+#, fuzzy
+#~ msgid "Person Name"
+#~ msgstr "Laptop added."
+
+#, fuzzy
+#~ msgid "laptop"
+#~ msgstr "Laptop added."
 
 #~ msgid "Usuario o password equivocado"
 #~ msgstr "Wrong user or password"

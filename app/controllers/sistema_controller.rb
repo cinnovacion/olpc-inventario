@@ -50,7 +50,7 @@ class SistemaController < ApplicationController
     lang = params[:lang] ? params[:lang].to_s : nil
 
     user = User.new(:usuario => user, :password => password)
-    logged_in_user = user.autenticar
+    logged_in_user = user.authenticate()
     if logged_in_user
       session[:user_id] = logged_in_user.id
       @output["auth"] = true

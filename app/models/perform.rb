@@ -26,18 +26,18 @@ class Perform < ActiveRecord::Base
   belongs_to :place
   belongs_to :profile
 
-  validates_presence_of :person_id, :message => "Debe especificar la Persona."
-  validates_presence_of :place_id, :message => "Debe especificar el lugar."
-  validates_presence_of :profile_id, :message => "Debe especificar el Perfil."
+  validates_presence_of :person_id, :message => _("You must specify the person.")
+  validates_presence_of :place_id, :message => _("You must specify the place.")
+  validates_presence_of :profile_id, :message => _("You must specify the profile.")
 
   def self.getColumnas()
     ret = Hash.new
 
     ret[:columnas] = [ 
-                      {:name => "Id",:key => "performs.id", :related_attribute => "id", :width => 120},
-                      {:name => "Persona",:key => "people.name", :related_attribute => "getPersonName", :width => 250},
-                      {:name => "Localidad",:key => "places.name", :related_attribute => "getPlaceName", :width => 250},
-                      {:name => "Perfil",:key => "profile.description", :related_attribute => "getProfileDescription", :width => 250}
+                      {:name => _("Id"),:key => "performs.id", :related_attribute => "id", :width => 120},
+                      {:name => _("Person"),:key => "people.name", :related_attribute => "getPersonName", :width => 250},
+                      {:name => _("Location"),:key => "places.name", :related_attribute => "getPlaceName", :width => 250},
+                      {:name => _("Profile"),:key => "profile.description", :related_attribute => "getProfileDescription", :width => 250}
                      ]
     ret[:columnas_visibles] = [true, true, true, true]
     ret
@@ -123,7 +123,7 @@ class Perform < ActiveRecord::Base
   protected
 
   def validate
-    errors.add(:person, "Este registro ya existe.") if Perform.alreadyExists?(self.person_id, self.place_id, self.profile_id)
+    errors.add(:person, "This registry already exists") if Perform.alreadyExists?(self.person_id, self.place_id, self.profile_id)
   end
 
 end

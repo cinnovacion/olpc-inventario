@@ -27,25 +27,25 @@ class Status < ActiveRecord::Base
 	has_many :batteries
 	has_many :chargers
 
-  validates_uniqueness_of :internal_tag, :message => "El tag debe ser unico"
+  validates_uniqueness_of :internal_tag, :message => _("The tag must be unique")
 
 	def self.getColumnas()
 		ret = Hash.new
 		ret[:columnas] = [
 				  {
-					:name => "Id",
+					:name => _("Id"),
 					:key => "statuses.id",
 					:related_attribute => "id",
 					:width => 50
 				  },
 				  {
-					:name => "Descripcion",
+					:name => _("Description"),
 					:key => "statuses.description",
 					:related_attribute => "getDescription()",
 					:width => 255
 				  },
 				  {
-					:name => "Abreviatura",
+					:name => _("Abbreviation"),
 					:key => "statuses.abbrev",
 					:related_attribute => "getAbbreviation()",
 					:width => 50

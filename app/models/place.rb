@@ -53,13 +53,13 @@ class Place < ActiveRecord::Base
     ret = Hash.new
     
     ret[:columnas] = [ 
-                      {:name => "Id",:key => "places.id",:related_attribute => "id", :width => 50},
-                      {:name => "Fch. Creacion",:key => "places.description", 
+                      {:name => _("Id"),:key => "places.id",:related_attribute => "id", :width => 50},
+                      {:name => _("Creation Date"),:key => "places.description", 
                         :related_attribute => "getDate()", :width => 120},
-                      {:name => "Nombre",:key => "places.name",:related_attribute => "getName()", :width => 325},
-                      {:name => "Descripcion",:key => "places.description",:related_attribute => "getDescription()",
+                      {:name => _("Name"),:key => "places.name",:related_attribute => "getName()", :width => 325},
+                      {:name => _("Description"),:key => "places.description",:related_attribute => "getDescription()",
                         :width => 150},
-                      {:name => "Tipo",:key => "place_types.name",:related_attribute => "getType()", :width => 100}
+                      {:name => _("Type"),:key => "place_types.name",:related_attribute => "getType()", :width => 100}
                      ]
 
     ret[:columnas_visibles] = [true, true, true, true, true]
@@ -114,7 +114,7 @@ class Place < ActiveRecord::Base
       father  = Place.find_by_id(self.place_id)    
       if father && father.calcAncestorsIds.push(self.place_id).include?(self.id)
 
-        raise "El hijo no puede ser el padre ni el padre el hijo."
+        raise _("A child may not be the father nor the father the son.")
       end
 
       old_me = Place.find_by_id(self.id)
@@ -162,7 +162,7 @@ class Place < ActiveRecord::Base
   def self.register(attribs, nodes, register)
 
     place_parent = Place.find_by_id(attribs[:place_id])
-    raise "No posee el suficiente nivel de acceso!" if !(place_parent && register.place.owns(place_parent))
+    raise _("No sufficient level of access!") if !(place_parent && register.place.owns(place_parent))
 
     Place.transaction do
 
@@ -175,7 +175,7 @@ class Place < ActiveRecord::Base
  
   def register_update(attribs, nodes, register)
 
-    raise "No posee el suficiente nivel de acceso!" if !(register.place.owns(self))
+    raise _("No sufficient level of access!") if !(register.place.owns(self))
 
     Place.transaction do
 
@@ -196,7 +196,7 @@ class Place < ActiveRecord::Base
 
   to_be_destroy_places = Place.find(:all, :conditions => ["places.id in (?)", places_ids])
   to_be_destroy_places.each { |place|
-    raise "No posee el suficiente nivel de acceso!" if !(unregister.place.owns(place))
+    raise _("No sufficient level of access!") if !(unregister.place.owns(place))
   }
 
   Place.destroy(to_be_destroy_places)

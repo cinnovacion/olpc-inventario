@@ -25,7 +25,7 @@ class MovementType < ActiveRecord::Base
   #DEPRECATED: has_many :movement_details
   has_many :movements
 
-  validates_uniqueness_of :internal_tag, :message => "El tag debe ser unico"
+  validates_uniqueness_of :internal_tag, :message => _("The tag must be unique")
   
   ###
   # Listado
@@ -34,9 +34,9 @@ class MovementType < ActiveRecord::Base
     ret = Hash.new
     
     ret[:columnas] = [ 
-                      {:name => "Id", :key => "movement_types.id", :related_attribute => "id", :width => 50},
-                      {:name => "Descripcion", :key => "movement_types.description", :related_attribute => "getDescription()", :width => 120},
-                      {:name => "Entrega?", :key => "movement_types.is_delivery", :related_attribute => "getIsDelivery()", :width => 50}                   
+                      {:name => _("Id"), :key => "movement_types.id", :related_attribute => "id", :width => 50},
+                      {:name => _("Descritpion"), :key => "movement_types.description", :related_attribute => "getDescription()", :width => 120},
+                      {:name => _("Delivery?"), :key => "movement_types.is_delivery", :related_attribute => "getIsDelivery()", :width => 50}                   
                      ]
 
     ret[:columnas_visibles] = [false, true]

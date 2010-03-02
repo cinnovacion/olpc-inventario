@@ -30,28 +30,25 @@
 require "digest/sha1"
 
 class User < ActiveRecord::Base
-
   belongs_to :person
 
-  # Atributos
   attr_accessor :password
   attr_accessible :usuario, :password, :person_id
 
-  # Validaciones
-  validates_uniqueness_of :usuario, :if => :existe_usuario
-  validates_presence_of :password, :if => :existe_passwd
-  validates_length_of :usuario, :allow_nil => true, :minimum => 5, :too_short => "Debe tener al menos %d caracteres"
-  validates_length_of :password, :allow_nil => true, :minimum => 5, :too_short => "Debe tener al menos %d caracteres"
+  validates_uniqueness_of :usuario, :if => :user_exists?
+  validates_presence_of :password, :if => :password_exists?
+  validates_length_of :usuario, :allow_nil => true, :minimum => 5, :too_short => _("Must be at least %d characters")
+  validates_length_of :password, :allow_nil => true, :minimum => 5, :too_short => _("Must be at least %d characters")
 
   
   ##
-  # Listado
+  # Listing
   #
   def self.getColumnas
     [ 
-     {:name => "Codigo",:key => "users.id",:related_attribute => "id", :width => 50},
-     {:name => "Nombre de Usuario",:key => "users.usuario",:related_attribute => "usuario", :width => 90},
-     {:name => "Nombre de Persona",:key => "people.name",:related_attribute => "getPersonName()", :width => 250}
+     {:name => _("ID"),:key => "users.id",:related_attribute => "id", :width => 50},
+     {:name => _("Username"),:key => "users.usuario",:related_attribute => "usuario", :width => 90},
+     {:name => _("Name"),:key => "people.name",:related_attribute => "getPersonName()", :width => 250}
     ]
   end
 
@@ -71,33 +68,34 @@ class User < ActiveRecord::Base
   # To add extra security control, we take over
   # the users creation.
   def self.register(attribs, register)
-
     users_person = Person.find_by_id(attribs[:person_id])
-    raise "Usted no posee el suficiente nivel de acceso." if !(register.owns(users_person))
+    raise _("You do not have enough access level.") if !(register.owns(users_person))
     User.create!(attribs)
-
-  end
-
-  def register_update(attribs, register)
-
-    new_users_person = Person.find_by_id(attribs[:person_id])
-    raise "Usted no posee el suficiente nivel de acceso." if !( register.owns(self.person) || register == new_users_person )
-    self.update_attributes(attribs)
-
-  end
-
-  def self.unregister(users_ids, unregister)
-
-    to_be_destroy_users = User.find(:all, :conditions => ["users.id in (?)", users_ids])
-    to_be_destroy_users.each { |user|
-       raise "Usted no posee el suficiente nivel de accesso" if !(unregister.owns(user.person))
-    }
-    User.destroy(to_be_destroy_users)
-
   end
 
   ###
-  # Nombre de usuario
+  # Update user's data.
+  # 
+  def register_update(attribs, register)
+    new_users_person = Person.find_by_id(attribs[:person_id])
+    raise _("You do not have the sufficient level of access") if !( register.owns(self.person) || register == new_users_person )
+    self.update_attributes(attribs)
+  end
+
+
+  ###
+  # Delete user.  
+  #
+  def self.unregister(users_ids, unregister)
+    to_be_destroy_users = User.find(:all, :conditions => ["users.id in (?)", users_ids])
+    to_be_destroy_users.each { |user|
+       raise _("You do not have the sufficient level of access") if !(unregister.owns(user.person))
+    }
+    User.destroy(to_be_destroy_users)
+  end
+
+  ###
+  # User's name. 
   #
   def getDescripcion()
     self.usuario
@@ -107,9 +105,13 @@ class User < ActiveRecord::Base
     self.person ? self.person.getFullName() : ""
   end
 
+  ####
+  # We presume the password comes hashed (with SHA1) from the client side. 
+  #
+  # FIXME: we should check if it _actually_ is hashed, otherwise hash it ourselves. 
+  #        Server-side code should never trust the client!
   def before_create
     if self.password and self.password != ""
-      #self.clave = User.hash_password(self.password)
       self.clave = self.password
     end
   end
@@ -120,7 +122,6 @@ class User < ActiveRecord::Base
   
   def before_update
     if self.password and self.password != ""
-      #self.clave = User.hash_password(self.password)
       self.clave = self.password
     end
   end
@@ -133,17 +134,18 @@ class User < ActiveRecord::Base
     Digest::SHA1.hexdigest(password)
   end
 
+  ####
+  # Again, we presume the password comes hashed (with SHA1) from the client side. 
+  #
   def self.login(name,password)
-    #hashed_password = hash_password(password || "")
     find(:first, :conditions => ["usuario = ? and clave = ?", name, password])
   end
 
-  def autenticar
+  def authenticate
     User.login(self.usuario, self.password)
   end
 
   def hasProfiles?(profiles_tags)
-
     inc = [:performs => :profile]
     cond = ["performs.person_id =? and profiles.internal_tag in (?)", self.person.id, profiles_tags]
     return true if Profile.find(:first, :conditions => cond, :include => inc)
@@ -155,7 +157,6 @@ class User < ActiveRecord::Base
   # User with data scope can only access objects that are related to his
   # performing places and sub-places.
   def self.setScope(places_ids)
-
     find_include = [:person => {:performs => {:place => :ancestor_dependencies}}]
     find_conditions = ["place_dependencies.ancestor_id in (?)", places_ids]
 
@@ -163,18 +164,16 @@ class User < ActiveRecord::Base
     User.with_scope(scope) do
       yield
     end
-
   end
 
   private
-  def existe_usuario
+  def user_exists?
     self.usuario ? true : false
   end
 
-  def existe_passwd
+  def password_exists?
     ret = false
-    if existe_usuario
-      #or (self.clave and self.clave != "")
+    if user_exists?
       if not self.clave 
         ret = true
       end

@@ -24,14 +24,14 @@
 class PartType < ActiveRecord::Base
   has_many :parts
 
-  validates_uniqueness_of :internal_tag, :message => "El tag debe ser unico"
+  validates_uniqueness_of :internal_tag, :message => _("The tag must be unique")
 
   def self.getColumnas()
     [ 
-     {:name => "Id",:key => "part_types.id",:related_attribute => "id", :width => 50},
-     {:name => "Descripcion",:key => "part_types.description",:related_attribute => "getDescription()", :width => 250},
-     {:name => "Costo", :key => "part_types.cost", :related_attribute => "getCost()", :width => 100},
-     {:name => "Tag Interno",:key => "part_types.internal_tag",:related_attribute => "getInternalTag()", :width => 250}
+     {:name => _("Id"),:key => "part_types.id",:related_attribute => "id", :width => 50},
+     {:name => _("Description"),:key => "part_types.description",:related_attribute => "getDescription()", :width => 250},
+     {:name => _("Cost"), :key => "part_types.cost", :related_attribute => "getCost()", :width => 100},
+     {:name => _("Internal Tag"),:key => "part_types.internal_tag",:related_attribute => "getInternalTag()", :width => 250}
     ]
   end
 

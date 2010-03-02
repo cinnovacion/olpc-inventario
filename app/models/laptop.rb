@@ -38,29 +38,29 @@ class Laptop < ActiveRecord::Base
   belongs_to :model
   belongs_to :status
 
-  validates_presence_of :serial_number, :message => "Debe proveer el nro. de serie"
-  validates_uniqueness_of :serial_number, :message => "El nro. de serie de la laptop no puede ser repetido"
-  validates_presence_of :status_id, :message => "Debe proveer el estado"
-  validates_presence_of :owner_id, :message => "Debe proveer el propietario"
+  validates_presence_of :serial_number, :message => _("You must provide the serial number")
+  validates_uniqueness_of :serial_number, :message => _("Laptop Serial Number can not be repeated")
+  validates_presence_of :status_id, :message => _("You must provide the State")
+  validates_presence_of :owner_id, :message => _("You must provide the Owner")
 
   def self.getColumnas()
     ret = Hash.new
     ret[:columnas] = [ 
-                      {:name => "Id",:key => "laptops.id",:related_attribute => "id", :width => 50},
-                      {:name => "Creacion",:key => "laptops.created_at",:related_attribute => "created_at.to_s", :width => 80},
-                      {:name => "Nro. Serial",:key => "laptops.serial_number",:related_attribute => "getSerialNumber()", :width => 120,
+                      {:name => _("Id"),:key => "laptops.id",:related_attribute => "id", :width => 50},
+                      {:name => _("Created at"),:key => "laptops.created_at",:related_attribute => "created_at.to_s", :width => 80},
+                      {:name => _("Serial nbr."),:key => "laptops.serial_number",:related_attribute => "getSerialNumber()", :width => 120,
                         :selected => true},
-                      {:name => "En manos de",:key => "people.name",:related_attribute => "getOwner()", :width => 210},
-                      {:name => "Propietario CI",:key => "people.id_document",:related_attribute => "getOwnerIdDoc()", :width => 80},
-                      {:name => "Propietario Cod Barra", :key => "people.barcode", :related_attribute => "getOwnerBarCode()", :width => 80},
-                      {:name => "Version build",:key => "laptops.build_version",:related_attribute => "getBuildVersion()", :width => 120},
-                      {:name => "Shipment",:key => "shipments.comment",:related_attribute => "getShipmentComment()", :width => 120},
-                      {:name => "Modelo",:key => "models.name",:related_attribute => "getModelDescription()", :width => 120},
-                      {:name => "Estado",:key => "statuses.description",:related_attribute => "getStatus()", :width => 160},
-                      {:name => "Id Caja",:key => "laptops.box_serial_number",:related_attribute => "getBoxSerialNumber()", :width => 80},
-                      {:name => "uuid",:key => "laptops.uuid",:related_attribute => "getUuid", :width => 80},
-                      {:name => "Registrado", :key => "laptops.registered", :related_attribute => "getRegistered", :width => 50},
-                      {:name => "Ultima activacion", :key => "laptops.last_activation_date", :related_attribute => "getLastActivation", :width => 100}
+                      {:name => _("In hands of"),:key => "people.name",:related_attribute => "getOwner()", :width => 210},
+                      {:name => _("Owners Doc Id"),:key => "people.id_document",:related_attribute => "getOwnerIdDoc()", :width => 80},
+                      {:name => _("Code Bar Owner"), :key => "people.barcode", :related_attribute => "getOwnerBarCode()", :width => 80},
+                      {:name => _("Build Version"),:key => "laptops.build_version",:related_attribute => "getBuildVersion()", :width => 120},
+                      {:name => _("Shipment"),:key => "shipments.comment",:related_attribute => "getShipmentComment()", :width => 120},
+                      {:name => _("Model"),:key => "models.name",:related_attribute => "getModelDescription()", :width => 120},
+                      {:name => _("State"),:key => "statuses.description",:related_attribute => "getStatus()", :width => 160},
+                      {:name => _("Id Box"),:key => "laptops.box_serial_number",:related_attribute => "getBoxSerialNumber()", :width => 80},
+                      {:name => _("UUID"),:key => "laptops.uuid",:related_attribute => "getUuid", :width => 80},
+                      {:name => _("Registered"), :key => "laptops.registered", :related_attribute => "getRegistered", :width => 50},
+                      {:name => _("Last activation"), :key => "laptops.last_activation_date", :related_attribute => "getLastActivation", :width => 100}
                      ]
     ret[:columnas_visibles] = [false, false, true, true, true, false, false, false, false, true, false, false, false]
     ret 
@@ -156,7 +156,7 @@ class Laptop < ActiveRecord::Base
   end
 
   def getRegistered()
-    self.registered ? "Si" : "No"
+    self.registered ? _("Yes") : _("No")
   end
 
   def getOwnerBarCode()
@@ -171,7 +171,7 @@ class Laptop < ActiveRecord::Base
   end
 
   def getLastActivation
-    self.last_activation_date ? self.last_activation_date.to_s : "Nunca"
+    self.last_activation_date ? self.last_activation_date.to_s : _("Never")
   end
 
   ###

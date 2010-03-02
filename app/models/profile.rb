@@ -28,16 +28,16 @@ class Profile < ActiveRecord::Base
   has_many :performs
   has_many :people, :through => :performs, :source => :person
 
-  validates_uniqueness_of :internal_tag, :message => "El tag debe ser unico"
+  validates_uniqueness_of :internal_tag, :message => _("The tag must be unique")
 
   def self.getColumnas(vista = "")
     ret = Hash.new
     
     ret[:columnas] = [ 
-                      {:name => "Id",:key => "profiles.id",:related_attribute => "id", :width => 50},
-                      {:name => "Descripcion",:key => "profiles.description",:related_attribute => "getDescription()", :width => 140},
-                      {:name => "Tag Interno",:key => "profiles.internal_tag",:related_attribute => "getInternalTag()", :width => 140},
-                      {:name => "Nivel de Acceso",:key => "profiles.access_level",:related_attribute => "getAccessLevel()", :width => 140}
+                      {:name => _("Id"),:key => "profiles.id",:related_attribute => "id", :width => 50},
+                      {:name => _("Description"),:key => "profiles.description",:related_attribute => "getDescription()", :width => 140},
+                      {:name => _("Internal Tag"),:key => "profiles.internal_tag",:related_attribute => "getInternalTag()", :width => 140},
+                      {:name => _("Access Level"),:key => "profiles.access_level",:related_attribute => "getAccessLevel()", :width => 140}
                      ]
     ret[:columnas_visibles] = [true,true,true]
     ret
@@ -81,7 +81,7 @@ class Profile < ActiveRecord::Base
 
   def self.register(attribs, permissions, register)
 
-   raise "No tiene el suficiente nivel de acceso" if !(register.profile.access_level > attribs[:access_level].to_i)
+   raise _("You do not have the sufficient level of access") if !(register.profile.access_level > attribs[:access_level].to_i)
 
     Profile.transaction do
       profile = Profile.new(attribs)
@@ -94,7 +94,7 @@ class Profile < ActiveRecord::Base
 
   def register_update(attribs, permissions, register)
 
-   raise "No tiene el suficiente nivel de acceso" if !(register.profile.owns(self))
+   raise _("You do not have the sufficient level of access") if !(register.profile.owns(self))
 
     Profile.transaction do
       if self.update_attributes!(attribs)
@@ -109,7 +109,7 @@ class Profile < ActiveRecord::Base
 
     to_destroy_profiles = Profile.find(:all, :conditions => ["profiles.id in (?)", profiles_ids ])
     to_destroy_profiles.each { |profile|
-      raise "No tiene el suficiente nivel de acceso" if !(unregister.profile.owns(profile))
+      raise _("You do not have the sufficient level of access") if !(unregister.profile.owns(profile))
     }
     Profile.destroy(to_destroy_profiles)
   end

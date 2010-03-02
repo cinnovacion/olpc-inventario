@@ -24,15 +24,15 @@
 class PlaceType < ActiveRecord::Base
   has_many :places
 
-  validates_uniqueness_of :internal_tag, :message => "El tag debe ser unico"
+  validates_uniqueness_of :internal_tag, :message => _("The tag must be unique")
 
   @@grades_list = ["first_grade", "second_grade", "third_grade", "fourth_grade", "fifth_grade", "sixth_grade", "seventh_grade", "eighth_grade","ninth_grade"]
 
   def self.getColumnas()
     [ 
-     {:name => "Id", :key => "place_types.id",:related_attribute => "id", :width => 50},
-     {:name => "Tipo de lugar", :key => "place_types.name",:related_attribute => "getName()", :width => 250},
-     {:name => "Tag interno",:key => "place_types.internal_tag",:related_attribute => "getInternalTag()", :width => 250}
+     {:name => _("Id"), :key => "place_types.id",:related_attribute => "id", :width => 50},
+     {:name => _("Location type"), :key => "place_types.name",:related_attribute => "getName()", :width => 250},
+     {:name => _("Internal Tag"),:key => "place_types.internal_tag",:related_attribute => "getInternalTag()", :width => 250}
     ]
   end
 
@@ -61,19 +61,17 @@ class PlaceType < ActiveRecord::Base
   end
 
   def self.nextGradeTag(current_grade_tag)
-
     @@grades_list[@@grades_list.index(current_grade_tag)+1]
   end
 
   def self.upGradeAll
-
     current_year = Date.today.year
     up_grade_list = DefaultValue.getJsonValue("up_grades")
     up_grade_list = up_grade_list ? up_grade_list : []
 
     if up_grade_list.include?(current_year)
 
-      raise "Este script solo puede ejecutarse una vez por año" 
+      raise _("This script can be run only once a year") 
     else
 
       up_grade_list.push(current_year)
@@ -83,13 +81,11 @@ class PlaceType < ActiveRecord::Base
     cond = ["place_types.internal_tag in (?)", @@grades_list]
 
     Place.transaction do
-
       Place.find(:all, :conditions => cond, :include => inc).each { |place|
-
         current_place_type = place.place_type
         next_place_type = PlaceType.find_by_internal_tag(nextGradeTag(current_place_type.internal_tag))
 
-        raise "Siguiente grado no presente para #{current_place_type.internal_tag}" if !next_place_type
+        raise _("Not present to the next grade %s") % current_place_type.internal_tag if !next_place_type
 
         place.name = next_place_type.name
         place.place_type_id = next_place_type.id

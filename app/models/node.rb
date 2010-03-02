@@ -25,12 +25,12 @@ class Node < ActiveRecord::Base
   belongs_to :place
   belongs_to :node_type
 
-  validates_presence_of :name, :message => "Debe especificar el nombre."
-  validates_presence_of :lat, :message => "Debe especificar la Latitud."
-  validates_presence_of :lng, :message => "Debe especificar la Longitud."
-  validates_presence_of :zoom, :message => "Debe especificar el Zoom."
-  validates_presence_of :place_id, :message => "Debe especificar el lugar."
-  validates_presence_of :node_type_id, :message => "Debe especificar el tipo de nodo."
+  validates_presence_of :name, :message => _("Must specify the name.")
+  validates_presence_of :lat, :message => _("Must specify the Latitude")
+  validates_presence_of :lng, :message => _("Must specify the Longitude")
+  validates_presence_of :zoom, :message => _("You must specify the zoom.")
+  validates_presence_of :place_id, :message => _("You must specify the place")
+  validates_presence_of :node_type_id, :message => _("You must specify the node type.")
 
   
   DEFAULT_ZOOM_VALUE = 17
@@ -43,19 +43,19 @@ class Node < ActiveRecord::Base
     ret = Hash.new
 
     ret[:columnas] = [
-                      {:name => "Id", :key => "nodes.id", :related_attribute => "id", :width => 50},
-                      {:name => "Nombre", :key => "nodes.name", :related_attribute => "getName()", :width => 100},
-                      {:name => "Latitud", :key => "nodes.lat", :related_attribute => "getLat()", :width => 100},
-                      {:name => "Longitud", :key => "nodes.lng", :related_attribute => "getLng()", :width => 100},
-                      {:name => "Altura", :key => "nodes.height", :related_attribute => "getHeight()", :width => 100},
-                      {:name => "Zoom", :key => "nodes.zoom", :related_attribute => "getZoom()", :width => 100},
-                      {:name => "Localidad", :key => "places.name", :related_attribute => "getPlaceName()", :width => 100},
-                      {:name => "Localidad Padre", :key => "places_places.name", :related_attribute => "getParentPlaceName()", :width => 100},
-                      {:name => "Tipo", :key => "node_types.name", :related_attribute => "getNodeTypeName()", :width => 100},
-                      {:name => "Actualizado", :key => "nodes.last_update_at", :related_attribute => "getLastUpdate()", :width => 100},
-                      {:name => "Address", :key => "nodes.ip_address", :related_attribute => "getIpAddress()", :width => 100},
-                      {:name => "Username", :key => "nodes.username", :related_attribute => "getUsername()", :width => 100},
-                      {:name => "Password", :key => "nodes.password", :related_attribute => "getPassword()", :width => 100}    
+                      {:name => _("Id"), :key => "nodes.id", :related_attribute => "id", :width => 50},
+                      {:name => _("Name"), :key => "nodes.name", :related_attribute => "getName()", :width => 100},
+                      {:name => _("Latitude"), :key => "nodes.lat", :related_attribute => "getLat()", :width => 100},
+                      {:name => _("Longitude"), :key => "nodes.lng", :related_attribute => "getLng()", :width => 100},
+                      {:name => _("Height"), :key => "nodes.height", :related_attribute => "getHeight()", :width => 100},
+                      {:name => _("Zoom"), :key => "nodes.zoom", :related_attribute => "getZoom()", :width => 100},
+                      {:name => _("Location"), :key => "places.name", :related_attribute => "getPlaceName()", :width => 100},
+                      {:name => _("Parents Location"), :key => "places_places.name", :related_attribute => "getParentPlaceName()", :width => 100},
+                      {:name => _("Type"), :key => "node_types.name", :related_attribute => "getNodeTypeName()", :width => 100},
+                      {:name => _("Updated"), :key => "nodes.last_update_at", :related_attribute => "getLastUpdate()", :width => 100},
+                      {:name => _("IP Address"), :key => "nodes.ip_address", :related_attribute => "getIpAddress()", :width => 100},
+                      {:name => _("Username"), :key => "nodes.username", :related_attribute => "getUsername()", :width => 100},
+                      {:name => _("Password"), :key => "nodes.password", :related_attribute => "getPassword()", :width => 100}    
                      ]
 
     # BROKEN: ver http://trac.paraguayeduca.org/ticket/22

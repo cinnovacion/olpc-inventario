@@ -4,13 +4,13 @@ class BankDeposit < ActiveRecord::Base
 
   def self.getColumnas()
     [ 
-     {:name => "Id", :key => "bank_deposits.id", :related_attribute => "getId", :width => 50},
-     {:name => "Solucion", :key => "problem_solutions.id", :related_attribute => "getSolutionId", :width => 100},
-     {:name => "Deposito", :key => "bank_deposits.deposit", :related_attribute => "getDeposit", :width => 100},
-     {:name => "Monto", :key => "bank_deposits.amount", :related_attribute => "getAmount", :width => 100},
-     {:name => "Creado", :key => "bank_deposits.created_at", :related_attribute => "getCreatedAt", :width => 100},
-     {:name => "Depositado", :key => "bank_deposits.deposited_at", :related_attribute => "getDepositedAt", :width => 100},
-     {:name => "Banco", :key => "bank_deposits.bank", :related_attribute => "getBank", :width => 100}
+     {:name => _("Id"), :key => "bank_deposits.id", :related_attribute => "getId", :width => 50},
+     {:name => _("Solution"), :key => "problem_solutions.id", :related_attribute => "getSolutionId", :width => 100},
+     {:name => _("Deposit"), :key => "bank_deposits.deposit", :related_attribute => "getDeposit", :width => 100},
+     {:name => _("Amount"), :key => "bank_deposits.amount", :related_attribute => "getAmount", :width => 100},
+     {:name => _("Created at"), :key => "bank_deposits.created_at", :related_attribute => "getCreatedAt", :width => 100},
+     {:name => _("Deposited at"), :key => "bank_deposits.deposited_at", :related_attribute => "getDepositedAt", :width => 100},
+     {:name => _("Bank"), :key => "bank_deposits.bank", :related_attribute => "getBank", :width => 100}
     ]
   end
 

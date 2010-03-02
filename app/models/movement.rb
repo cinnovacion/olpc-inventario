@@ -35,21 +35,21 @@ class Movement < ActiveRecord::Base
   has_many :movement_details
 
   
-  validates_presence_of :source_person_id, :message => "Debe decir quien entrega"
-  validates_presence_of :destination_person_id, :message => "Debe decir quien recibe"
+  validates_presence_of :source_person_id, :message => _("Please specify who delivered.")
+  validates_presence_of :destination_person_id, :message => _("Please specify who gets it.")
 
 
   def self.getColumnas()
     [ 
-     {:name => "Nro. Mov",:key => "movements.id",:related_attribute => "id", :width => 50},
-     {:name => "Fch. Mov.",:key => "movements.date_moved_at",:related_attribute => "getMovementDate()", :width => 90},
-     {:name => "Hora Mov.",:key => "movements.time_moved_at",:related_attribute => "getMovementTime()", :width => 90},
-     {:name => "Tipo", :key => "movement_types.description", :related_attribute => "getMovementType()", :width => 150},
-     {:name => "Serial", :key => "laptops.serial_number", :related_attribute => "getLaptopSerial()", :width => 150},
-     {:name => "Entrego",:key => "people.name",:related_attribute => "getSourcePerson()", :width => 180},
-     {:name => "Recibio",:key => "destination_people_movements.name",:related_attribute => "getDestinationPerson()", :width => 180},
-     {:name => "Recibio (CI)",:key => "destination_people_movements.id_document",:related_attribute => "getDestinationPerson()", :width => 180},
-     {:name => "Comentario",:key => "movements.comment",:related_attribute => "getComment()", :width => 160}
+     {:name => _("Mov. Nbr"),:key => "movements.id",:related_attribute => "id", :width => 50},
+     {:name => _("Mov. Date"),:key => "movements.date_moved_at",:related_attribute => "getMovementDate()", :width => 90},
+     {:name => _("Mov. Time"),:key => "movements.time_moved_at",:related_attribute => "getMovementTime()", :width => 90},
+     {:name => _("Type"), :key => "movement_types.description", :related_attribute => "getMovementType()", :width => 150},
+     {:name => _("Serial Nbr"), :key => "laptops.serial_number", :related_attribute => "getLaptopSerial()", :width => 150},
+     {:name => _("Given by"),:key => "people.name",:related_attribute => "getSourcePerson()", :width => 180},
+     {:name => _("Received by"),:key => "destination_people_movements.name",:related_attribute => "getDestinationPerson()", :width => 180},
+     {:name => _("Received (Doc id)"),:key => "destination_people_movements.id_document",:related_attribute => "getDestinationPerson()", :width => 180},
+     {:name => _("Comment"),:key => "movements.comment",:related_attribute => "getComment()", :width => 160}
     ]
   end
 
@@ -94,7 +94,7 @@ class Movement < ActiveRecord::Base
     attribs[:id_document] = to_person.getIdDoc()
     attribs[:movement_type_id] = movement_type.id
     attribs[serial_sym] = device.getSerialNumber()
-    attribs[:comment] = "Entrega desde el modulo de CATS"
+    attribs[:comment] = _("Delivery from the CATS module")
     Movement.register(attribs)
   end
 
@@ -108,7 +108,7 @@ class Movement < ActiveRecord::Base
 
       #Updating Laptop stats
       movement_type = MovementType.find_by_id(attribs[:movement_type_id])
-      raise "Tipo de movimiento invalido" if !movement_type
+      raise _("Invalid type of movement") if !movement_type
       if movement_type.is_delivery?
         device_status = Status.find_by_internal_tag("activated")
       else
@@ -131,7 +131,7 @@ class Movement < ActiveRecord::Base
       m.source_person_id = source_person_id
       personObj = Person.find_by_id_document(attribs[:id_document])
       if !personObj
-        raise "No pude encontrar a la persona con CI #{attribs[:id_document]}"
+        raise _("Could not find the person with Document ID %s") % attribs[:id_document]
       end
 
       m.destination_person_id = personObj.id
@@ -143,8 +143,8 @@ class Movement < ActiveRecord::Base
       #Checking movements FSM
       last_movement_type = lapObj.getLastMovementType
       if !MovementType.check(last_movement_type, movement_type)
-        error_str = "El movimiento a realizarse sobre #{device.getSerialNumber} no corresponde a su ultimo movimiento,"
-        error_str += "el movimiento anterior fue #{last_movement_type.description}"
+        error_str = "The movement carried on %s does not match latest move," % m.getLaptopSerial()
+        error_str += "the previous move was %s" % last_movement_type.description
         raise error_str
       end
 
@@ -162,8 +162,8 @@ class Movement < ActiveRecord::Base
   end
 
   def before_save
-    raise "Los prestamos REQUIEREN fecha de retorno." if !self.return_date and self.movement_type.internal_tag == "prestamo"
-    raise "Solo los prestamos requieren fecha de retorno." if self.return_date and self.movement_type.internal_tag != "prestamo"
+    raise _("The loans require return date.") if !self.return_date and self.movement_type.internal_tag == "prestamo"
+    raise _("Only loans require return date.") if self.return_date and self.movement_type.internal_tag != "prestamo"
     self.created_at = self.date_moved_at = self.time_moved_at = Time.now
   end
   
@@ -215,13 +215,12 @@ class Movement < ActiveRecord::Base
   ##
   # List all the lendings with expired return_date
   def self.expiredLendings(expiredBy = Time.now)
-
     people = Hash.new
 
     inc_v = [:movement_details, :destination_person]
-    cond_v = ["return_date is not null and movement_details.returned = ? and movements.return_date < ?", false, expiredBy]
+    cond_v = ["return_date is not null and movement_details.returned = ? and movements.return_date < ?", 
+              false, expiredBy]
     self.find(:all, :conditions => cond_v, :include => inc_v).each { |m|
-
       person = m.destination_person
       m.movement_details.each { |md|
             
@@ -233,11 +232,11 @@ class Movement < ActiveRecord::Base
 
     
     people.keys.map { |person| 
-
-      msg = "Estimado(a) #{person.getFullName}:\n"
-      msg += "Le recordamos que estan en su posecion los siguientes dispositivos, los cuales deben ser devueltos a las oficnas de Paraguay Educa\n"
-      msg += people[person].keys.map { |device_class| "#{device_class}: #{people[person][device_class]}\n" }.join()
-      msg += "Favor comunicarse a info@paraguayeduca.org"
+      msg = "Dear %s:\n" % person.getFullName
+      msg += _("This is a reminder that you are in their possession the following devices, which must be returned: \n")
+      str = people[person].keys.map { |device_class| "#{device_class}: #{people[person][device_class]}\n" }
+      msg += str.join()
+      msg += _("Please communicate with info@paraguayeduca.org")
       Notifier.deliver_lendings_reminder(person.email, msg)
     }
   end
@@ -247,7 +246,6 @@ class Movement < ActiveRecord::Base
   # User with data scope can only access objects that are related to his
   # performing places and sub-places.
   def self.setScope(places_ids)
-
     find_include = [:destination_person => {:performs => {:place => :ancestor_dependencies}}]
     find_conditions = ["place_dependencies.ancestor_id in (?)", places_ids]
 
@@ -255,7 +253,6 @@ class Movement < ActiveRecord::Base
     Movement.with_scope(scope) do
       yield
     end
-
   end
 
 end

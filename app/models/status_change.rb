@@ -22,134 +22,136 @@
 # # #
                                                                       
 class StatusChange < ActiveRecord::Base
-	belongs_to :previous_state, :class_name => "Status", :foreign_key => :previous_state_id
-	belongs_to :new_state, :class_name => "Status", :foreign_key => :new_state_id
-	belongs_to :laptop
-	belongs_to :battery
-	belongs_to :charger
+  belongs_to :previous_state, :class_name => "Status", :foreign_key => :previous_state_id
+  belongs_to :new_state, :class_name => "Status", :foreign_key => :new_state_id
+  belongs_to :laptop
+  belongs_to :battery
+  belongs_to :charger
 
-	#DEBUG: validates_presence_of :previous_state_id, :message => "Debe proveer el estado anterior."
-	validates_presence_of :new_state_id, :message => "Debe proveer el nuevo estado."
+  #DEBUG: validates_presence_of :previous_state_id, :message => "Debe proveer el estado anterior."
+  validates_presence_of :new_state_id, :message => _("You must provide the new state.")
 
-  	def self.getColumnas()
-		ret = Hash.new
-    		ret[:columnas] = [
-					{
-					:name => "Id",
-					:key => "status_changes.id",
-					:related_attribute => "id",
-					:width => 50
-					},
-					{
-					:name => "Anterior estado",
-					:key => "statuses.description",
-					:related_attribute => "getPreviousState()",
-					:width => 240
-					},
-					{
-					:name => "Nuevo estado",
-					:key => "statuses.description",
-					:related_attribute => "getNewState()",
-					:width => 240
-					},
-					{
-					:name => "Laptop",
-					:key => "laptops.serial_number",
-					:related_attribute => "getSerial()",
-					:width => 120
-					},
-					{
-					:name => "Bateria",
-					:key => "batteries.serial_number",
-					:related_attribute => "getSerial()",
-					:width => 120
-					},
-					{
-					:name => "Cargador",
-					:key => "chargers.serial_number",
-					:related_attribute => "getSerial()",
-					:width => 120
-					},
-					{
-					:name => "Fch. Creacion",
-					:key => "date_created_at",
-					:related_attribute => "getDate()",
-					:width => 120
-					},
-					{
-					:name => "Hora. Creacion",
-					:key => "time_created_at",
-					:related_attribute => "getTime()",
-					:width => 120
-					}
-      				]
+  def self.getColumnas()
+    ret = Hash.new
+    ret[:columnas] = [
+                      {
+                        :name => _("Id"),
+                        :key => "status_changes.id",
+                        :related_attribute => "id",
+                        :width => 50
+                      },
+                      {
+                        :name => _("Previous state"),
+                        :key => "statuses.description",
+                        :related_attribute => "getPreviousState()",
+                        :width => 240
+                      },
+                      {
+                        :name => _("New State"),
+                        :key => "statuses.description",
+                        :related_attribute => "getNewState()",
+                        :width => 240
+                      },
+                      {
+                        :name => _("Laptop"),
+                        :key => "laptops.serial_number",
+                        :related_attribute => "getSerial()",
+                        :width => 120
+                      },
+                      {
+                        :name => _("Battery"),
+                        :key => "batteries.serial_number",
+                        :related_attribute => "getSerial()",
+                        :width => 120
+                      },
+                      {
+                        :name => _("Charger"),
+                        :key => "chargers.serial_number",
+                        :related_attribute => "getSerial()",
+                        :width => 120
+                      },
+                      {
+                        :name => _("Creation Date"),
+                        :key => "date_created_at",
+                        :related_attribute => "getDate()",
+                        :width => 120
+                      },
+                      {
+                        :name => _("Creation Time"),
+                        :key => "time_created_at",
+                        :related_attribute => "getTime()",
+                        :width => 120
+                      }
+                     ]
 
-    		ret[:columnas_visibles] = [false,true,true,true,true,true,true,true]
-    		ret
-	end
-	
-	##
-	# Estado anterior
-	#
-	def getPreviousState()
-		return self.previous_state.getDescription() if self.previous_state_id
-                "null"
-	end
-
-	##
-	# Estado nuevo
-	#
-	def getNewState()
-		return self.new_state.getDescription() if self.new_state_id
-                "null"
-	end
-
-	##
-	# Serial de la laptop
-	#
-	def getLaptopSerial()
-          self.laptop.getSerialNumber()
-	end
-
-	##
-	# Serial de la bateria
-	#
-	def getBatterySerial()
-		self.battery.getSerialNumber()
-	end
-
-	##
-	# Serial del cargador
-	#
-	def getChargerSerial()
-		self.charger.getSerialNumber()
-	end
-
-	##
-	#  Fecha de la modificacion
-	#
-	def getDate()
-		self.date_created_at.to_s
-	end
-
-	##
-	#  Hora de la modificacion
-	#
-	def getTime()
-		self.time_created_at.to_s
-	end
+    ret[:columnas_visibles] = [false,true,true,true,true,true,true,true]
+    ret
+  end
+  
+  ##
+  # Previous state
+  #
+  def getPreviousState()
+    return self.previous_state.getDescription() if self.previous_state_id
+    "null"
+  end
 
   ##
-  # Retorna un string segun sea la parte contenida.
-	def getPart()
+  # New state
+  #
+  def getNewState()
+    return self.new_state.getDescription() if self.new_state_id
+    "null"
+  end
+
+  ##
+  # Laptop's serial number
+  #
+  def getLaptopSerial()
+    self.laptop.getSerialNumber()
+  end
+
+  ##
+  # Battery's serial number
+  #
+  def getBatterySerial()
+    self.battery.getSerialNumber()
+  end
+
+  ##
+  # Charger's serial number
+  #
+  def getChargerSerial()
+    self.charger.getSerialNumber()
+  end
+
+  ##
+  # Creation date
+  #
+  def getDate()
+    self.date_created_at.to_s
+  end
+
+  ##
+  # Creation time
+  #
+  def getTime()
+    self.time_created_at.to_s
+  end
+
+  ##
+  # what type of part are we talking about?
+  #
+  def getPart()
     return "laptop" if self.laptop_id
-	  return "battery" if self.battery_id
+    return "battery" if self.battery_id
     return "charger" if self.charger_id
     "error"
   end
 
   ##
-  # Retorna el serial.
+  # Serial number of the part.
+  #
   def getSerial()
     return getLaptopSerial() if self.laptop_id
     return getBatterySerial() if self.battery_id
@@ -162,7 +164,6 @@ class StatusChange < ActiveRecord::Base
   # User with data scope can only access objects that are related to his
   # performing places and sub-places.
   def self.setScope(places_ids)
-
     find_include = [:laptop => {:owner => {:performs => {:place => :ancestor_dependencies}}}]
     find_conditions = ["place_dependencies.ancestor_id in (?)", places_ids]
 
@@ -170,7 +171,6 @@ class StatusChange < ActiveRecord::Base
     StatusChange.with_scope(scope) do
       yield
     end
-
   end
 
 end

@@ -2,11 +2,11 @@ class PartMovementType < ActiveRecord::Base
 
   def self.getColumnas()
     [ 
-     {:name => "Id", :key => "part_movement_types.id", :related_attribute => "id", :width => 100},
-     {:name => "Nombre", :key => "part_movement_types.name", :related_attribute => "getName", :width => 100},
-     {:name => "Descripcion", :key => "part_movement_types.description", :related_attribute => "getDescription", :width => 255},
-     {:name => "Tag Interno", :key => "part_movement_types.internal_tag", :related_attribute => "getInternalTag", :width => 100},
-     {:name => "Direccion", :key => "part_movement_types.direction", :related_attribute => "getDirection", :width => 100}
+     {:name => _("Id"), :key => "part_movement_types.id", :related_attribute => "id", :width => 100},
+     {:name => _("Name"), :key => "part_movement_types.name", :related_attribute => "getName", :width => 100},
+     {:name => _("Description"), :key => "part_movement_types.description", :related_attribute => "getDescription", :width => 255},
+     {:name => _("Internal Tag"), :key => "part_movement_types.internal_tag", :related_attribute => "getInternalTag", :width => 100},
+     {:name => _("Direction"), :key => "part_movement_types.direction", :related_attribute => "getDirection", :width => 100}
     ]
   end
 
@@ -23,7 +23,7 @@ class PartMovementType < ActiveRecord::Base
   end
 
   def getDirection
-    self.direction ? "Entrada" : "Salida"
+    self.direction ? _("Entry") : _("Departure")
   end
 
 end

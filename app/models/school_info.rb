@@ -34,13 +34,13 @@ class SchoolInfo < ActiveRecord::Base
     end
 
     ret[:columnas] = [ 
-     {:name => "Id", :key => "school_infos.id", :related_attribute => "id", :width => 50},
-     {:name => "Place", :key => "places.description", :related_attribute => "getPlaceDescription", :width => 100},
-     {:name => "Duration",:key => "school_infos.lease_duration", :related_attribute => "getDuration()", :width => 100},
-     {:name => "Hostname", :key => "school_infos.server_hostname", :related_attribute => "getHostname()", :width => 100},
-     {:name => "Address", :key => "school_infos.wan_ip_address", :related_attribute => "getIpAddress()", :width => 100},
-     {:name => "Netmask", :key => "school_infos.wan_netmask", :related_attribute => "getNetmask()", :width => 100},
-     {:name => "Gateway", :key => "school_infos.wan_gateway", :related_attribute => "getGateway()", :width => 100}
+     {:name => _("Id"), :key => "school_infos.id", :related_attribute => "id", :width => 50},
+     {:name => _("Place"), :key => "places.description", :related_attribute => "getPlaceDescription", :width => 100},
+     {:name => _("Duration"),:key => "school_infos.lease_duration", :related_attribute => "getDuration()", :width => 100},
+     {:name => _("Hostname"), :key => "school_infos.server_hostname", :related_attribute => "getHostname()", :width => 100},
+     {:name => _("Address"), :key => "school_infos.wan_ip_address", :related_attribute => "getIpAddress()", :width => 100},
+     {:name => _("Netmask"), :key => "school_infos.wan_netmask", :related_attribute => "getNetmask()", :width => 100},
+     {:name => _("Gateway"), :key => "school_infos.wan_gateway", :related_attribute => "getGateway()", :width => 100}
     ]
 
     ret

@@ -32,14 +32,14 @@ class Shipment < ActiveRecord::Base
     ret = Hash.new
     
     ret[:columnas] = [ 
-                      {:name => "Id",:key => "shipments.id",:related_attribute => "id", :width => 50},
-                      {:name => "Fch. Creacion",:key => "shipments.description", 
+                      {:name => _("Id"),:key => "shipments.id",:related_attribute => "id", :width => 50},
+                      {:name => _("Creation Date"),:key => "shipments.description", 
                         :related_attribute => "getDate()", :width => 120},
-                      {:name => "Fecha Llegada",:key => "shipments.created_at",:related_attribute => "getArrivalDate()",
+                      {:name => _("Arrival Date"),:key => "shipments.created_at",:related_attribute => "getArrivalDate()",
                         :width => 150},
-                      {:name => "Comentario",:key => "shipments.comment",:related_attribute => "getComment()",
+                      {:name => _("Comment"),:key => "shipments.comment",:related_attribute => "getComment()",
                         :width => 350},
-                      {:name => "Numero",:key => "shipments.shipment_number",:related_attribute => "getShipmentNumber()",
+                      {:name => _("Number"),:key => "shipments.shipment_number",:related_attribute => "getShipmentNumber()",
                         :width => 350}
                      ]
 

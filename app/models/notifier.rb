@@ -28,20 +28,28 @@
 # # #
                                                                          
 class Notifier < ActionMailer::Base
-
+  
+  ###
+  # Prepare & send
+  #
+  # FIXME:
+  # - from addr shouldn't be hard-coded
+  # - return path shouldn't be hard-coded
   def lendings_reminder(email, message)
-
-    # Prepare & send
     from "inventario@paraguayeduca.org"
     recipients email
-    subject "Paraguay Educa le recuerda"
+    subject _("REMINDER")
     body :message => message
-    headers "return-path" => "sistema@paraguayeduca.org" 
+    headers "return-path" => "sistema@paraguayeduca.org"
     content_type "text/html"
   end
-  
+
+  ###
+  #
+  # FIXME:
+  # - from addr shouldn't be hard-coded
+  # - return path shouldn't be hard-coded
   def fire_notification(notification, extended_data, destinations)
-   
     recipients destinations
     from "sistema@paraguayeduca.org"
     subject notification.getName + (extended_data["subject"] ? " [#{extended_data["subject"]}]" : "") 

@@ -27,12 +27,12 @@ class Event < ActiveRecord::Base
 
   def self.getColumnas()
     [ 
-     {:name => "Id", :key => "events.id", :related_attribute => "id", :width => 50},
-     {:name => "Evento", :key => "event_types.name", :related_attribute => "getEventName()", :width => 160},
-     {:name => "Fecha", :key => "events.created_at", :related_attribute => "getCreatedAt()", :width => 120},
-     {:name => "Reportero", :key => "events.reporter_info", :related_attribute => "getReporterInfo", :width => 160},
-     {:name => "Informacion", :key => "events.extended_info", :related_attribute => "getExtendedInfo", :width => 255},
-     {:name => "Localidad asociada", :key => "events.place_id", :related_attribute => "getPlaceName", :width => 255}
+     {:name => _("Id"), :key => "events.id", :related_attribute => "id", :width => 50},
+     {:name => _("Event"), :key => "event_types.name", :related_attribute => "getEventName()", :width => 160},
+     {:name => _("Date"), :key => "events.created_at", :related_attribute => "getCreatedAt()", :width => 120},
+     {:name => _("Reporter"), :key => "events.reporter_info", :related_attribute => "getReporterInfo", :width => 160},
+     {:name => _("Information"), :key => "events.extended_info", :related_attribute => "getExtendedInfo", :width => 255},
+     {:name => _("Location associated"), :key => "events.place_id", :related_attribute => "getPlaceName", :width => 255}
     ]
   end
 

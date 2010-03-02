@@ -27,19 +27,19 @@ class ProblemSolution < ActiveRecord::Base
   belongs_to :problem_report
   has_many :bank_deposits
 
-  validates_presence_of :solution_type_id, :message => "Debe especificar la solucion."
-  validates_presence_of :solved_by_person_id, :message => "Debe especificar quien realizo la reparacion."
-  validates_presence_of :problem_report_id, :message => "Debe especificar el reporte del problema."
+  validates_presence_of :solution_type_id, :message => _("Specify the solution.")
+  validates_presence_of :solved_by_person_id, :message => _("Specify who made the repair.")
+  validates_presence_of :problem_report_id, :message => _("Specify the problem.")
 
   def self.getColumnas()
     [ 
-     {:name => "Id",:key => "problem_solutions.id", :related_attribute => "getId", :width => 50},
-     {:name => "Reporte",:key => "problem_reports.id", :related_attribute => "getReportId", :width => 50},
-     {:name => "Problema",:key => "problem_types.name", :related_attribute => "getProblemType", :width => 150},
-     {:name => "Solucion",:key => "solution_types.name", :related_attribute => "getSolutionName()", :width => 150},
-     {:name => "Fecha",:key => "problem_solutions.created_at",:related_attribute => "getDate()", :width => 100},
-     {:name => "Comentario",:key => "problem_solutions.comment",:related_attribute => "getComment()", :width => 100},
-     {:name => "Tecnico",:key => "people.name",:related_attribute => "getTechnicianName()", :width => 150},
+     {:name => _("Id"),:key => "problem_solutions.id", :related_attribute => "getId", :width => 50},
+     {:name => _("Report"),:key => "problem_reports.id", :related_attribute => "getReportId", :width => 50},
+     {:name => _("Problem"),:key => "problem_types.name", :related_attribute => "getProblemType", :width => 150},
+     {:name => _("Solution"),:key => "solution_types.name", :related_attribute => "getSolutionName()", :width => 150},
+     {:name => _("Date"),:key => "problem_solutions.created_at",:related_attribute => "getDate()", :width => 100},
+     {:name => _("Comment"),:key => "problem_solutions.comment",:related_attribute => "getComment()", :width => 100},
+     {:name => _("Technician"),:key => "people.name",:related_attribute => "getTechnicianName()", :width => 150},
     ]
   end
 
@@ -80,9 +80,9 @@ class ProblemSolution < ActiveRecord::Base
       problem_report = ProblemReport.find_by_id(impure_attribs[:problem_report_id].to_i)
       solution_type = SolutionType.find_by_id(impure_attribs[:solution_type_id].to_i)
 
-      raise "Se requiere el numero de deposito" if !BankDeposit.check(solution_type, bank_deposits_data)
-      raise "Debe seleccionar el tipo de solucion" if !solution_type
-      raise "Debe especificar el numero del reporte" if !problem_report
+      raise _("The number of deposit is required") if !BankDeposit.check(solution_type, bank_deposits_data)
+      raise _("Select the type of solution") if !solution_type
+      raise _("Specify the number of report") if !problem_report
 
       attribs = Hash.new
       attribs[:problem_report_id] = problem_report.id
@@ -114,10 +114,10 @@ class ProblemSolution < ActiveRecord::Base
 
     #Sending email for notification
     extended_data = { 
-                      "Id de la solucion:" => id,
-                      "Id del problema:" => problem_report.id,
-                      "subject" => solution_type.getName,
-                      "Solucionado por:" => solved_by_person.getFullName
+                      _("Id of the solution:") => id,
+                      _("Id of the problem:") => problem_report.id,
+                      _("Subject") => solution_type.getName,
+                      _("Solved by:") => solved_by_person.getFullName
                     }
     NotificationsPool.register("problem_solution", extended_data, problem_report.place)
   end

@@ -24,17 +24,17 @@
 class NodeType < ActiveRecord::Base
   belongs_to :image
 
-  validates_presence_of :name, :message => "Debe especificar el nombre."
-  validates_presence_of :internal_tag, :message => "Debe especificar el tag interno."
-  validates_uniqueness_of :internal_tag, :message => "El tag debe ser unico"
+  validates_presence_of :name, :message => _("Must specify the name.")
+  validates_presence_of :internal_tag, :message => _("You must specify the internal tag")
+  validates_uniqueness_of :internal_tag, :message => _("The tag must be unique")
 
   def self.getColumnas(vista = "")
     [
-     {:name => "Id", :key => "node_types.id", :related_attribute => "id", :width => 50},
-     {:name => "Nombre", :key => "node_types.name", :related_attribute => "getName()", :width => 100},
-     {:name => "Descripcion", :key => "node_types.description", :related_attribute => "getDescription()", :width => 255},
-     {:name => "Tag", :key => "node_types.internal_tag", :related_attribute => "getInternalTag()", :width => 100},
-     {:name => "Imagen", :key => "images.name", :related_attribute => "getImageName()", :width => 100}
+     {:name => _("Id"), :key => "node_types.id", :related_attribute => "id", :width => 50},
+     {:name => _("Name"), :key => "node_types.name", :related_attribute => "getName()", :width => 100},
+     {:name => _("Description"), :key => "node_types.description", :related_attribute => "getDescription()", :width => 255},
+     {:name => _("Tag"), :key => "node_types.internal_tag", :related_attribute => "getInternalTag()", :width => 100},
+     {:name => _("Image"), :key => "images.name", :related_attribute => "getImageName()", :width => 100}
     ]
   end
 

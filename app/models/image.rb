@@ -25,14 +25,14 @@ class Image < ActiveRecord::Base
   has_many :people
 
   #Se verifica la presencia de los campos.
-  validates_presence_of :name, :message => "La imagen debe tener nombre."
-  validates_presence_of :file, :message => "La imagen deben tener un archivo asociado."
+  validates_presence_of :name, :message => _("The image must be named.")
+  validates_presence_of :file, :message => _("The image must have an associated file.")
 
 
   def self.getColumnas(vista = "")
     [ 
-     {:name => "Id",:key => "images.id",:related_attribute => "id", :width => 120},
-     {:name => "Nombre",:key => "images.name",:related_attribute => "getImageName()", :width => 120}
+     {:name => _("Id"),:key => "images.id",:related_attribute => "id", :width => 120},
+     {:name => _("Name"),:key => "images.name",:related_attribute => "getImageName()", :width => 120}
     ]
   end
 

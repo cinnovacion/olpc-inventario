@@ -24,14 +24,14 @@
 class ProblemType < ActiveRecord::Base
   has_many :problem_reports
 
-  validates_uniqueness_of :internal_tag, :message => "El tag debe ser unico"
+  validates_uniqueness_of :internal_tag, :message => _("The tag must be unique")
 
   def self.getColumnas()
     [ 
-     {:name => "Id", :key => "problem_types.id", :related_attribute => "id", :width => 50},
-     {:name => "Nombre", :key => "problem_types.name", :related_attribute => "getName", :width => 100},
-     {:name => "Descripcion", :key => "problem_types.description", :related_attribute => "getDescription()", :width => 360},
-     {:name => "Tag Interno",:key => "problem_types.internal_tag",:related_attribute => "getInternalTag()", :width => 100}
+     {:name => _("Id"), :key => "problem_types.id", :related_attribute => "id", :width => 50},
+     {:name => _("Name"), :key => "problem_types.name", :related_attribute => "getName", :width => 100},
+     {:name => _("Description"), :key => "problem_types.description", :related_attribute => "getDescription()", :width => 360},
+     {:name => _("Internal Tag"),:key => "problem_types.internal_tag",:related_attribute => "getInternalTag()", :width => 100}
     ]
   end
 

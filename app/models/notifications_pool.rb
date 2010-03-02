@@ -1,21 +1,46 @@
+#     Copyright Paraguay Educa 2009, 2010
+#
+#     This program is free software: you can redistribute it and/or modify
+#     it under the terms of the GNU General Public License as published by
+#     the Free Software Foundation, either version 3 of the License, or
+#     (at your option) any later version.
+# 
+#     This program is distributed in the hope that it will be useful,
+#     but WITHOUT ANY WARRANTY; without even the implied warranty of
+#     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#     GNU General Public License for more details.
+# 
+#     You should have received a copy of the GNU General Public License
+#     along with this program.  If not, see <http://www.gnu.org/licenses/>
+# 
+#    
+# Author: Martin Abente - mabente@paraguayeduca.org
+#
+
 class NotificationsPool < ActiveRecord::Base
 
   belongs_to :notification
   belongs_to :place
 
-  validates_presence_of :notification_id, :message => "Debe especificar la Notification."
-  validates_presence_of :place_id, :message => "Debe especificar la Localidad."
+  validates_presence_of :notification_id, :message => _("You must specify the notification.")
+  validates_presence_of :place_id, :message => _("You must specify the Location.")
 
+
+  ####
+  #
+  #
   def self.register(notification_tag, extended_data, place)
-
     notification = Notification.find_by_internal_tag(notification_tag)
-    raise "No existe notificacion #{notification_tag}" if !notification
+    raise _("The notification %s does not exist") % notification_tag if !notification
       
     NotificationsPool.create!({ :notification_id => notification.id, :extended_data => extended_data.to_json, :place_id => place.id })
   end
 
-  def self.send_notifications
 
+  ####
+  #
+  #
+  def self.send_notifications
     cond = ["notifications_pools.sent = ?", false]
     NotificationsPool.find(:all, :conditions => cond).each { |pool_notification|
 
@@ -28,7 +53,7 @@ class NotificationsPool < ActiveRecord::Base
       destinations = Person.find(:all, :conditions => cond, :include => inc).map { |person| person.email }.compact.join(', ')
 
       if destinations.length == 0
-        raise " No hay nadie suscripto a la notificacion #{notification.name} "
+        raise _("No one subscribed to the notification %s") % notification.name
       end
  
       Notifier.deliver_fire_notification(notification, extended_data, destinations)
@@ -40,13 +65,11 @@ class NotificationsPool < ActiveRecord::Base
   end  
 
   def setExtendedData(hash = {})
-
     self.extended_data =  hash.to_json
   end
 
 
   def getExtendedData
-  
     self.extended_data ? JSON.parse(self.extended_data) : {}
   end
 

@@ -25,16 +25,16 @@ class Lot < ActiveRecord::Base
   has_many :section_details
   belongs_to :person
 
-  validates_presence_of :person_id, :message => "Debe proveer el responsable."
+  validates_presence_of :person_id, :message => "You must provide the responsible."
 
   def self.getColumnas()
     [ 
-     {:name => "Id",:key => "lots.id",:related_attribute => "id", :width => 120},
-     {:name => "Numero de cajas",:key => "lots.boxes_number",:related_attribute => "getBoxesNumber()", :width => 120},
-     {:name => "Fecha Creacion",:key => "lots.created_at",:related_attribute => "getCreatedAt()", :width => 120},
-     {:name => "Responsable",:key => "people.name",:related_attribute => "getResponsable()", :width => 255},
-     {:name => "Entregado",:key => "lots.delivered",:related_attribute => "getDelivered()", :width => 120},
-     {:name => "Fecha de Entrega",:key => "lots.delivery_date",:related_attribute => "getDeliveryDate()", :width => 120}
+     {:name => _("Id"),:key => "lots.id",:related_attribute => "id", :width => 120},
+     {:name => _("Nbr of Boxes"),:key => "lots.boxes_number",:related_attribute => "getBoxesNumber()", :width => 120},
+     {:name => _("Creation Date"),:key => "lots.created_at",:related_attribute => "getCreatedAt()", :width => 120},
+     {:name => _("Responsible"),:key => "people.name",:related_attribute => "getResponsable()", :width => 255},
+     {:name => _("Delivered"),:key => "lots.delivered",:related_attribute => "getDelivered()", :width => 120},
+     {:name => _("Delivery Date"),:key => "lots.delivery_date",:related_attribute => "getDeliveryDate()", :width => 120}
     ]
    end
 

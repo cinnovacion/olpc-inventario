@@ -26,28 +26,28 @@ class NotificationSubscriber < ActiveRecord::Base
   belongs_to :person
   belongs_to :notification
 
-  validates_presence_of :person_id, :message => "Debe proveer el suscriptor."
-  validates_presence_of :notification_id, :message => "Debe proveer la Notificacion."
+  validates_presence_of :person_id, :message => _("You must provide the subscriber.")
+  validates_presence_of :notification_id, :message => _("You must provide the Notification.")
 
   def self.getColumnas()
     ret = Hash.new 
     ret[:columnas] = [
-                      {:name => "Id",
+                      {:name => _("Id"),
                        :key => "notification_subscribers.id",
                        :related_attribute => "id",
                        :width => 50
                       },
-                      {:name => "Notificacion",
+                      {:name => _("Notification"),
                        :key => "notifications.name",
                        :related_attribute => "getNotificationName()",
                        :width => 100
                       },
-                      {:name => "Suscriptor",
+                      {:name => _("Subscriber"),
                        :key => "people.name",
                        :related_attribute => "getSubscriberName()",
                        :width => 100
                       },
-                      {:name => "Fecha de Suscripcion",
+                      {:name => _("Date of Subscription"),
                        :key => "notification_subscribers.created_at.name",
                        :related_attribute => "getDate()",
                        :width => 120
@@ -62,7 +62,7 @@ class NotificationSubscriber < ActiveRecord::Base
   def before_save()
     if !self.person.isEmailValid?
       person_name = self.person.getFullName()
-      error_msg = "#{person_name} no tiene una direccion de correo valida. No puede ser suscripto"
+      error_msg =  _("%s does not have a valid email address. It can not be signed") % person_name
       raise error_msg
     end
   end

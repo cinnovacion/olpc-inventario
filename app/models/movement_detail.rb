@@ -39,15 +39,15 @@ class MovementDetail < ActiveRecord::Base
     ret = Hash.new
     
     ret[:columnas] = [ 
-                      {:name => "Tipo Equipo",:key => "movement_details.description", :related_attribute => "getDescription()", 
+                      {:name => _("Equipment Type"),:key => "movement_details.description", :related_attribute => "getDescription()", 
                         :width => 120},
-                      {:name => "Nro. Serial",:key => "movement_details.serial_number",:related_attribute => "getSerialNumber()", 
+                      {:name => _("Serial Nbr."),:key => "movement_details.serial_number",:related_attribute => "getSerialNumber()", 
                         :width => 120},
-                      {:name => "Motivo Movimiento",:key => "movement_types.description", :related_attribute => "getMovementTypeDesc()", 
+                      {:name => _("Movement Reason"),:key => "movement_types.description", :related_attribute => "getMovementTypeDesc()", 
                         :width => 120},
-                      {:name => "Nro. Entrega",:key => "movements.id", :related_attribute => "getMovementNumber()", 
+                      {:name => _("Delivery Nbr."),:key => "movements.id", :related_attribute => "getMovementNumber()", 
                         :width => 120},                      
-                      {:name => "Fch. Entrega",:key => "movements.date_moved_at", :related_attribute => "getMovementDate()", 
+                      {:name => _("Delivery date"),:key => "movements.date_moved_at", :related_attribute => "getMovementDate()", 
                         :width => 120}                      
                      ]
 

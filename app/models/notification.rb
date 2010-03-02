@@ -33,22 +33,22 @@ class Notification < ActiveRecord::Base
   def self.getColumnas()
     ret = Hash.new 
     ret[:columnas] = [
-                      {:name => "Id",
+                      {:name => _("Id"),
                        :key => "notifications.id",
                        :related_attribute => "id",
                        :width => 50
                       },
-                      {:name => "Nombre",
+                      {:name => _("Name"),
                        :key => "notifications.name",
                        :related_attribute => "getName()",
                        :width => 100
                       },
-                      {:name => "Descripcion",
+                      {:name => _("Description"),
                        :key => "notifications.description",
                        :related_attribute => "getDescription()",
                        :width => 255
                       },
-                      {:name => "Activo",
+                      {:name => _("Active"),
                        :key => "notifications.description",
                        :related_attribute => "getActiveStatus()",
                        :width => 5

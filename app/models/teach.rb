@@ -2,16 +2,16 @@ class Teach < ActiveRecord::Base
   belongs_to :person
   belongs_to :place
 
-  validates_presence_of :person_id, :message => "Debe especificar la persona."
-  validates_presence_of :place_id, :message => "Debe especificar el lugar."
+  validates_presence_of :person_id, :message => _("Specify the person.")
+  validates_presence_of :place_id, :message => _("Specify the place.")
 
   def self.getColumnas(vista = "")
     ret = Hash.new
     
     ret[:columnas] = [ 
-                      {:name => "Id",:key => "profiles.id",:related_attribute => "id", :width => 50},
-                      {:name => "Maestra",:key => "people.name",:related_attribute => "getTeacherName()", :width => 140},
-                      {:name => "Localidad",:key => "places.description",:related_attribute => "getPlaceDescription()", :width => 140}
+                      {:name => _("Id"),:key => "profiles.id",:related_attribute => "id", :width => 50},
+                      {:name => _("Teacher"),:key => "people.name",:related_attribute => "getTeacherName()", :width => 140},
+                      {:name => _("Location"),:key => "places.description",:related_attribute => "getPlaceDescription()", :width => 140}
                      ]
     ret[:columnas_visibles] = [true,true,true]
     ret

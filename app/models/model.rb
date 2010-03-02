@@ -29,10 +29,10 @@ class Model < ActiveRecord::Base
 
   def self.getColumnas()
     [ 
-     {:name => "Id",:key => "models.id",:related_attribute => "id", :width => 50},
-     {:name => "Creacion",:key => "models.created_at",:related_attribute => "created_at.to_s", :width => 120},
-     {:name => "Nombre",:key => "models.name",:related_attribute => "getName()", :width => 200},
-     {:name => "Descripcion",:key => "models.description",:related_attribute => "getDescription()", :width => 400}
+     {:name => _("Id"),:key => "models.id",:related_attribute => "id", :width => 50},
+     {:name => _("Created at"),:key => "models.created_at",:related_attribute => "created_at.to_s", :width => 120},
+     {:name => _("Name"),:key => "models.name",:related_attribute => "getName()", :width => 200},
+     {:name => _("Description"),:key => "models.description",:related_attribute => "getDescription()", :width => 400}
     ]
   end
 

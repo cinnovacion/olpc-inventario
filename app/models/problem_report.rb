@@ -30,22 +30,22 @@ class ProblemReport < ActiveRecord::Base
   belongs_to :laptop
   has_one :problem_solution
 
-  validates_presence_of :problem_type_id, :message => "Debe proveer el tipo de problema."
-  validates_presence_of :laptop_id, :message => "Debe proveer la laptop asociada al problema."
-  validates_presence_of :place_id, :message => "Debe proveer la localidad del propietario."
-  validates_presence_of :owner_id, :message => "Debe proveer el propietario."
+  validates_presence_of :problem_type_id, :message => _("You must provide the type of problem.")
+  validates_presence_of :laptop_id, :message => _("You must provide the laptop linked to the problem.")
+  validates_presence_of :place_id, :message => _("You must provide the location of the owner.")
+  validates_presence_of :owner_id, :message => _("You must provide the owner.")
 
   def self.getColumnas()
     [ 
-     {:name => "Id", :key => "problem_reports.id", :related_attribute => "getId()", :width => 50},
-     {:name => "Tecnico CI", :key => "people.id_document", :related_attribute => "getTechnicianIdDoc()", :width => 120},
-     {:name => "Tipo", :key => "problem_types.name", :related_attribute => "getProblemName()", :width => 120},
-     {:name => "Laptop", :key => "laptops.serial_number", :related_attribute => "getLaptopSerialNumber()", :width => 120},
-     {:name => "Lugar", :key => "places.name", :related_attribute => "getParentPlaceName", :width => 120},
-     {:name => "Fecha Reporte", :key => "problem_reports.created_at", :related_attribute => "getDate()", :width => 120},
-     {:name => "Solucionado", :key => "problem_reports.solved", :related_attribute => "getSolvedStatus()", :width => 120},
-     {:name => "Solucionado el", :key => "problem_reports.solved_at", :related_attribute => "getSolvedDate()", :width => 120},
-     {:name => "Comentarios", :key => "problem_reports.comment", :related_attribute => "getComment()", :width => 120}
+     {:name => _("Id"), :key => "problem_reports.id", :related_attribute => "getId()", :width => 50},
+     {:name => _("Technician CI"), :key => "people.id_document", :related_attribute => "getTechnicianIdDoc()", :width => 120},
+     {:name => _("Type"), :key => "problem_types.name", :related_attribute => "getProblemName()", :width => 120},
+     {:name => _("Laptop"), :key => "laptops.serial_number", :related_attribute => "getLaptopSerialNumber()", :width => 120},
+     {:name => _("Place"), :key => "places.name", :related_attribute => "getParentPlaceName", :width => 120},
+     {:name => _("Report Date"), :key => "problem_reports.created_at", :related_attribute => "getDate()", :width => 120},
+     {:name => _("Solved"), :key => "problem_reports.solved", :related_attribute => "getSolvedStatus()", :width => 120},
+     {:name => _("Solved at"), :key => "problem_reports.solved_at", :related_attribute => "getSolvedDate()", :width => 120},
+     {:name => _("Comment"), :key => "problem_reports.comment", :related_attribute => "getComment()", :width => 120}
     ]
   end
 
@@ -70,10 +70,10 @@ class ProblemReport < ActiveRecord::Base
 
   def after_create
     extended_data = { 
-                      "Id:" => self.id,
-                      "subject" => self.problem_type.getName,
-                      "Localidad:" => self.place.getName,
-                      "Reportado por:" => self.person.getFullName
+                      _("Id:") => self.id,
+                      _("subject") => self.problem_type.getName,
+                      _("Location:") => self.place.getName,
+                      _("Reported by:") => self.person.getFullName
                     }
    NotificationsPool.register("problem_report", extended_data, place)
   end

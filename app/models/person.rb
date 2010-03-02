@@ -41,8 +41,8 @@ class Person < ActiveRecord::Base
   has_many :notification_subscribers
   has_one :user
 
-  validates_uniqueness_of :id_document, :message => "Numero de cedula repetido"
-  validates_presence_of :id_document, :message => "Debe tener numero de cedula"
+  validates_uniqueness_of :id_document, :message => _("Repeated document id number")
+  validates_presence_of :id_document, :message => _("Must have a document id number")
 
 
   include DrillDown 
@@ -62,39 +62,27 @@ class Person < ActiveRecord::Base
       ret.merge!(self.getDefaultCols())
     end
 
-    #case vista
-      #when /teacher_\d/
-         #ret[:conditions] =  Person.genAsFromCondition(vista)
-      #when /student_\d/
-        #ret[:conditions] =  Person.genAsFromCondition(vista)
-    #when /scope_\d/
-        #scope_id = vista.split("_")[1]
-        #ret[:conditions] =  ["place_dependencies.ancestor_id in (?)", scope_id]
-     #when /any_\d/
-        #ret[:conditions] =  Person.genAsFromCondition(vista)
-    #end
-
     ret
   end
 
   def self.getDefaultCols()
     ret = Hash.new
     ret[:columnas] = [ 
-                      {:name => "Id",:key => "people.id",:related_attribute => "id", :width => 50},
-                      {:name => "Fch. Creacion",:key => "people.created_at",
+                      {:name => _("Id"),:key => "people.id",:related_attribute => "id", :width => 50},
+                      {:name => _("Created at"),:key => "people.created_at",
                         :related_attribute => "getDate()", :width => 120},
-                      {:name => "Nombre",:key => "people.name",:related_attribute => "getName()", :width => 110},
-                      {:name => "Apellido",:key => "people.lastname", :related_attribute => "getLastName()", :width => 110}, 
-                      {:name => "Id. Doc.",:key => "people.id_document", :related_attribute => "getIdDoc()", 
+                      {:name => _("Name"),:key => "people.name",:related_attribute => "getName()", :width => 110},
+                      {:name => _("Last name"),:key => "people.lastname", :related_attribute => "getLastName()", :width => 110}, 
+                      {:name => _("Doc. Id."),:key => "people.id_document", :related_attribute => "getIdDoc()", 
                         :width => 100, :selected => true },
-                      {:name => "Fecha CI",:key => "people.id_document_created_at", :related_attribute => "getIdDocCreatedAt()", :width => 70}, 
-                      {:name => "Fch. Nacimiento",:key => "people.birth_date", :related_attribute => "getBirthDate()",
+                      {:name => _("Doc. ID. Created at"),:key => "people.id_document_created_at", :related_attribute => "getIdDocCreatedAt()", :width => 70}, 
+                      {:name => _("Birth Date"),:key => "people.birth_date", :related_attribute => "getBirthDate()",
                         :width => 100},                 
-                      {:name => "Tel.",:key => "people.phone", :related_attribute => "getPhone()", :width => 80},
-                      {:name => "Cel.",:key => "people.cell_phone", :related_attribute => "getCell()", :width => 80},
-                      {:name => "Email",:key => "people.email", :related_attribute => "getEmail()", :width => 100},
-                      {:name => "Perfiles", :key => "profiles.description", :related_attribute => "getProfiles()", :width => 250},
-                      {:name => "Codigo de barra", :key => "people.barcode", :related_attribute => "getBarcode()", :width => 250}
+                      {:name => _("Tel."),:key => "people.phone", :related_attribute => "getPhone()", :width => 80},
+                      {:name => _("Cell."),:key => "people.cell_phone", :related_attribute => "getCell()", :width => 80},
+                      {:name => _("Email"),:key => "people.email", :related_attribute => "getEmail()", :width => 100},
+                      {:name => _("Profiles"), :key => "profiles.description", :related_attribute => "getProfiles()", :width => 250},
+                      {:name => _("Bar Code"), :key => "people.barcode", :related_attribute => "getBarcode()", :width => 250}
                      ]
 
     ret
@@ -103,23 +91,22 @@ class Person < ActiveRecord::Base
   def self.getSelectionCols()
     ret = Hash.new
     ret[:columnas] = [ 
-                      {:name => "Id",:key => "people.id",:related_attribute => "id", :width => 50},
-                      {:name => "Nombre",:key => "people.name",:related_attribute => "getName()", :width => 110},
-                      {:name => "Apellido",:key => "people.lastname", :related_attribute => "getLastName()", :width => 110}, 
-                      {:name => "Email",:key => "people.email", :related_attribute => "getEmail()", :width => 100}
+                      {:name => _("Id"),:key => "people.id",:related_attribute => "id", :width => 50},
+                      {:name => _("Name"),:key => "people.name",:related_attribute => "getName()", :width => 110},
+                      {:name => _("Last name"),:key => "people.lastname", :related_attribute => "getLastName()", :width => 110}, 
+                      {:name => _("Email"),:key => "people.email", :related_attribute => "getEmail()", :width => 100}
                      ]
     ret[:columnas_visibles] = [false, true, true, true]
     ret
   end
 
   def self.genAsFromCondition(vista)
-
-        split = vista.split("_")
-
-        profile = Profile.find_by_internal_tag(split[0])
-        profile_ids = profile ? [profile.id] : []
-
-        [ "people.id in (?)",Perform.peopleFromAs(split[1].to_i, true, profile_ids) ]
+    split = vista.split("_")
+    
+    profile = Profile.find_by_internal_tag(split[0])
+    profile_ids = profile ? [profile.id] : []
+    
+    [ "people.id in (?)",Perform.peopleFromAs(split[1].to_i, true, profile_ids) ]
   end
 
   def self.getChooseButtonColumns(vista = "")
@@ -143,7 +130,7 @@ class Person < ActiveRecord::Base
   def self.register(attribs, performs = [], fotocarnet = "", register = nil)
 
     #Checking rules for performs
-    raise "Configuracion de perfiles invalida!" if !Perform.check(register, performs)
+    raise _("Invalid Profile Configuration!") if !Perform.check(register, performs)
 
     Person.transaction do
 
@@ -169,10 +156,10 @@ class Person < ActiveRecord::Base
   def register_update(attribs, performs = [], fotocarnet = "", register = nil)
 
     #Checking for person ownership
-    raise "No posee el suficiente nivel de acceso" if !(register.owns(self))
+    raise _("No sufficient level of access") if !(register.owns(self))
 
     #Checking rules for performs
-    raise "Configuracion de perfiles invalida!" if !Perform.check(register, performs)
+    raise _("Profile Configuration overrides!") if !Perform.check(register, performs)
 
     Person.transaction do
 
@@ -205,14 +192,13 @@ class Person < ActiveRecord::Base
     to_be_destroy_people = Person.find(:all, :conditions => cond)
 
     to_be_destroy_people.each { |person|
-      raise "No posee suficientes privilegios" if !(unregister.owns(person))
+      raise _("No sufficient privileges") if !(unregister.owns(person))
     }
 
     Person.transaction do
       Perform.transaction do
         Person.send(:with_exclusive_scope) do
           to_be_destroy_people.each { |person|
-
             Perform.destroy(person.performs)
             Person.destroy(person)
           }
@@ -310,7 +296,6 @@ class Person < ActiveRecord::Base
   # User with data scope can only access objects that are related to his
   # performing places and sub-places.
   def self.setScope(places_ids)
-
     find_include = [:performs => {:place => :ancestor_dependencies}]
     find_conditions = ["place_dependencies.ancestor_id in (?)", places_ids]
 
@@ -318,7 +303,6 @@ class Person < ActiveRecord::Base
     Person.with_scope(scope) do
       yield
     end
-
   end
 
   ###
@@ -345,7 +329,8 @@ class Person < ActiveRecord::Base
     self.barcode ? self.barcode : ""
   end
 
-  #Veryfies for a not auto-generated document
+  ##
+  #Verifies for a not auto-generated document
   #When id document data is not available, system
   #uses "_" and other not valid characters.
   def hasValidIdDoc?
@@ -357,7 +342,6 @@ class Person < ActiveRecord::Base
   ###
   #  Since the direct relation between people and places will be deprecated
   #  this is a small trick to avoid backwards compatibility problems.
-
   def place
     Place.highest(self.places)
   end
@@ -385,14 +369,12 @@ class Person < ActiveRecord::Base
   ###
   # Finds the nearest boss in the upper hierarchy subtree
   def boss
-
     profile = self.profile
     place = self.place
     higher_places = Place.sort(place.getAncestorsPlaces.push(place))
   
     bosses = []
     higher_places.reverse.each { |higher_place|
-    
       inc = [:performs => [:place, :profile]]
       cond = ["profiles.internal_tag in (?) and places.id = ?", ["root","developer"], higher_place.id]
       bosses = Person.find(:all, :conditions => cond, :include => inc)
@@ -400,7 +382,6 @@ class Person < ActiveRecord::Base
     }
 
     bosses.sort { |a,b| a.profile.access_level > b.profile.access_level ? 1 : -1 }.pop
-
   end
 
 end
