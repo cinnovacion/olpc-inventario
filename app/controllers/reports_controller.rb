@@ -91,7 +91,7 @@ class ReportsController < SearchController
   # Distribucion de laptops entregadas por personas
   def laptops_per_source_person
     @output["widgets"] = Array.new
-    @output["widgets"].push(listSelector("Entregada por","personas"))
+    @output["widgets"].push(listSelector(_("Delivered by"),"personas"))
     @output["print_method"] = "laptops_per_source_person"
   end
 
@@ -108,7 +108,7 @@ class ReportsController < SearchController
   def activations
     @output["widgets"] = Array.new
     @output["widgets"].push(dateRange())
-    @output["widgets"].push(listSelector("Activated by", "personas"))
+    @output["widgets"].push(listSelector(_("Activated by"), "personas"))
     @output["print_method"] = "activations"
   end
 
@@ -163,7 +163,7 @@ class ReportsController < SearchController
     @output["widgets"] = Array.new
     @output["widgets"].push(dateRange())
     @output["widgets"].push(hierarchy(_("Since")))
-    @output["widgets"].push(checkBoxSelector("Problemas", buildCheckHash(ProblemType, "getName"), 3))
+    @output["widgets"].push(checkBoxSelector(_("Problems"), buildCheckHash(ProblemType, "getName"), 3))
     @output["print_method"] = "problems_per_type"
   end
 
