@@ -1,7 +1,7 @@
 # spec file for our tracking, monitoring and support web app
 Name: inventario		
 Version: 0.3
-Release: 13
+Release: 14
 Vendor: Paraguay Educa
 Summary: This (Ruby on Rails based) web app lets you track laptops given out, status of networks and support tickets.
 Group:	Applications/Internet
@@ -121,10 +121,13 @@ fi
 
 %changelog
 
-* Fri Mar 05 2010 Raul Gutierrez S. <mabente@paraguayeduca.org>
+* Fri Mar 05 2010 Martin Abente. <mabente@paraguayeduca.org>
+- Tool Box bug fixes and missing translations
+
+* Fri Mar 05 2010 Raul Gutierrez S. <rgs@paraguayeduca.org>
 - Qooxdoo 1.x doesnt handle repeated values in SelectBox. Added a hack around this. 
 
-* Thu Mar 04 2010 Raul Gutierrez S. <mabente@paraguayeduca.org>
+* Thu Mar 04 2010 Raul Gutierrez S. <rgs@paraguayeduca.org>
 - Translations for the GUI side, deleted deprecated classes, cleaned up comments and indentation, lots of fixes here and there.
 
 * Tue Mar 02 2010 Martin Abente <mabente@paraguayeduca.org>
