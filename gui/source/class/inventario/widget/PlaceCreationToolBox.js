@@ -23,17 +23,9 @@ qx.Class.define("inventario.widget.PlaceCreationToolBox",
 {
   extend : inventario.window.AbstractWindow,
 
-  /*
-       * CONSTRUCTOR
-       */
-
   construct : function(page) {
     this.base(arguments, page);
   },
-
-  /*
-       * STATICS
-       */
 
   statics :
   {
@@ -52,10 +44,6 @@ qx.Class.define("inventario.widget.PlaceCreationToolBox",
       PCToolBox.show();
     }
   },
-
-  /*
-       * PROPERTIES
-       */
 
   properties :
   {
@@ -96,10 +84,6 @@ qx.Class.define("inventario.widget.PlaceCreationToolBox",
       init  : "/schools/updatePerson"
     }
   },
-
-  /*
-       * MEMBERS
-       */
 
   members :
   {
@@ -229,17 +213,18 @@ qx.Class.define("inventario.widget.PlaceCreationToolBox",
             place_name = comboBox.getSelection()[0].getLabel();
           }
 
+	  if (comboBox.getUserData("encoded_value")) {
+	    data.place_type = data.place_type.split("_")[1];
+	  }
+
           data.place_name = place_name;
 
           this._sendToServer(data, this.getRetrievePlaceUrl(), this._refreshAfterCreate);
-        }
-        else
-        {
+
+        } else {
           alert(qx.locale.Manager.tr("The selected item is not a location."));
         }
-      }
-      catch(e)
-      {
+      } catch(e) {
         alert(e.toString());
       }
     },
@@ -293,30 +278,31 @@ qx.Class.define("inventario.widget.PlaceCreationToolBox",
       var shiftData = [
       {
         text     : qx.locale.Manager.tr("Morning Shift"),
-        value    : "shift",
+        value    : "morning_shift",
         selected : true
       },
       {
         text     : qx.locale.Manager.tr("Afternoon Shift"),
-        value    : "shift",
+        value    : "afternoon_shift",
         selected : false
       },
       {
         text     : qx.locale.Manager.tr("Full Time"),
-        value    : "shift",
+        value    : "full_shift",
         selected : false
       } ];
 
       inventario.widget.Form.loadComboBox(shiftCombo, shiftData, false);
       var addShiftButton = new qx.ui.form.Button(qx.locale.Manager.tr("Add Time"));
 
+      shiftCombo.setUserData("encoded_value", true);
       addShiftButton.addListener("execute", function(e) {
         this._addPlaceCB(shiftCombo, null, null);
       }, this);
 
       /* Grade Creation form */
 
-      var gradeLabel = new qx.ui.basic.Label("Grado: ");
+      var gradeLabel = new qx.ui.basic.Label(qx.locale.Manager.tr("Grade: "));
       var gradeCombo = new qx.ui.form.SelectBox;
 
       var gradeData = [
@@ -371,17 +357,17 @@ qx.Class.define("inventario.widget.PlaceCreationToolBox",
       var sectionData = [
       {
         text     : qx.locale.Manager.tr("Section: A"),
-        value    : "section",
+        value    : "a_section",
         selected : true
       },
       {
         text     : qx.locale.Manager.tr("Section: B"),
-        value    : "section",
+        value    : "b_section",
         selected : false
       },
       {
         text     : qx.locale.Manager.tr("Section: C"),
-        value    : "section",
+        value    : "c_section",
         selected : false
       } ];
 
@@ -389,6 +375,7 @@ qx.Class.define("inventario.widget.PlaceCreationToolBox",
       var sectionText = new qx.ui.form.TextField();
       var addSectionButton = new qx.ui.form.Button(qx.locale.Manager.tr("Add Section:"));
 
+      sectionCombo.setUserData("encoded_value", true);
       addSectionButton.addListener("execute", function(e) {
         this._addPlaceCB(sectionCombo, sectionText, null);
       }, this);
