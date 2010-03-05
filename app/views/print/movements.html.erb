@@ -1,16 +1,16 @@
-<center><h1>Entregas</h1></center>
+<center><h1><%=_("Delivery")%></h1></center>
 
-<b>Fecha: </b> <%= @fecha_desde -%> a <%= @fecha_hasta -%> 
+<b><%=_("Date:")%> </b> <%= @fecha_desde -%> a <%= @fecha_hasta -%> 
 
 <table>
 <tr>
-   <td><b>Nro</b></td>
-   <td><b>Fecha</b></td>
-   <td><b>Art</b></td>
-   <td><b>#</b></td>
-   <td><b>De</b></td>
-   <td><b>Para</b></td>
-   <td><b>Motivo</b></td>
+   <td><b><%=_("#")%></b></td>
+   <td><b><%=_("Date")%></b></td>
+   <td><b><%=_("Article")%></b></td>
+   <td><b><%=_("Serial number")%></b></td>
+   <td><b><%=_("From")%></b></td>
+   <td><b><%=_("To")%></b></td>
+   <td><b><%=_("Reason")%></b></td>
 </tr>
 
 <% @movimientos.each { |m|  %>

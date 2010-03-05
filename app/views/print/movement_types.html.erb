@@ -1,25 +1,15 @@
-<center><h1>Totales de Tipos de Movimientos</h1></center>
+<center><h1><%=_("Movements per Type")%></h1></center>
 
-<b>Fecha: </b> <%= @fecha_desde -%> a <%= @fecha_hasta -%> 
+<b><%=_("Date")%>: </b> <%= @fecha_desde -%> <%=_("to")%> <%= @fecha_hasta -%> 
 
 <table>
 
 <tr>
-   <td><b>Tipo de Movimiento</b></td>
+   <td><b><%=_("Type")%></b></td>
 
    <% if @partOpts.include? "laptop" %>
-   <td><b>Total Laptops</b></td>
+   <td><b><%=_("Amount")%></b></td>
    <% end %>
-
-   <% if @partOpts.include? "battery" %>
-   <td><b>Total Baterias</b></td>
-   <% end %>
-
-   <% if @partOpts.include? "charger" %>
-   <td><b>Total Cargadores</b></td>
-   <% end %>
-
-   <td><b>Total General</b></td>
 </tr>
 
 

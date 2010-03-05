@@ -2,14 +2,14 @@
 <B><U><%= @title %></B></U><br>
 <br>
 <% @data.each { |h| %>
-  <B>Numero de movimiento:</B> <%= h[:id] %> <br>
-  <B>Partes:</B> <br>
+  <B><%=_("Movement:")%></B> <%= h[:id] %> <br>
+  <B><%=_("Parts")%></B> <br>
   <% h[:parts].each { |part| %>
     <B><%= part[:part] %>:</B> <%= part[:serial] %><br>
   <% } %>
-  <B>Entregado a:</B>  <%= h[:person] %> <br>
+  <B><%=_("Delivered to:")%></B>  <%= h[:person] %> <br>
   <br>
-  <B>Firma:</B> _______________________________ <br>
+  <B><%=_("Signature:")%></B> _______________________________ <br>
   <br>
   <br>
 <% } %>
