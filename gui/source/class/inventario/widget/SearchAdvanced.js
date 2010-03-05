@@ -77,12 +77,12 @@ qx.Class.define("inventario.widget.SearchAdvanced",
         var tf = this._setComponent(param[i]);
 
         var options = new qx.ui.form.SelectBox();
-        options.add(new qx.ui.form.ListItem('Contiene', '', 'regexp'));
-        options.add(new qx.ui.form.ListItem('No contiene', '', 'not regexp'));
-        options.add(new qx.ui.form.ListItem('Igual', '', '='));
-        options.add(new qx.ui.form.ListItem('Menor', '', '<'));
-        options.add(new qx.ui.form.ListItem('Mayor', '', '>'));
-        options.add(new qx.ui.form.ListItem('Distinto', '', '!='));
+        options.add(new qx.ui.form.ListItem(qx.locale.Manager.tr("Contains"), '', 'regexp'));
+        options.add(new qx.ui.form.ListItem(qx.locale.Manager.tr("It contains"), '', 'not regexp'));
+        options.add(new qx.ui.form.ListItem(qx.locale.Manager.tr("Same"), '', '='));
+        options.add(new qx.ui.form.ListItem(qx.locale.Manager.tr("Minor"), '', '<'));
+        options.add(new qx.ui.form.ListItem(qx.locale.Manager.tr("Major"), '', '>'));
+        options.add(new qx.ui.form.ListItem(qx.locale.Manager.tr("Unlike"), '', '!='));
 
 
         var addButton = new qx.ui.form.Button("+", "icon/16/add.png");
@@ -143,7 +143,7 @@ qx.Class.define("inventario.widget.SearchAdvanced",
     vbox.add(humanQuery.widget);
     this.setHumanQuery(humanQuery);
 
-    var bSave = new qx.ui.form.Button("Buscar", "icon/16/search.png");
+    var bSave = new qx.ui.form.Button(qx.locale.Manager.tr("Search"), "icon/16/search.png");
     bSave.addListener("execute", this.search, this);
     vbox.add(bSave);
 
@@ -322,7 +322,7 @@ qx.Class.define("inventario.widget.SearchAdvanced",
      */
     fixDate : function(dateStr)
     {
-      dateArr = dateStr.split("-");
+      var dateArr = dateStr.split("-");
       return dateArr[2] + "-" + dateArr[1] + "-" + dateArr[0];
     },
 
@@ -456,26 +456,19 @@ qx.Class.define("inventario.widget.SearchAdvanced",
       var humanQuery = this.getHumanQuery();
       var queryComponents = this.getQueryComponents();
 
-      // alert(qx.util.Json.stringify(queryComponents));
       var queryArr = [];
 
-      for (key in queryComponents)
-      {
-        // alert(key);
+      for (var key in queryComponents) {
         var oprLen = queryComponents[key].operators.length;
         var valLen = queryComponents[key].values.length;
 
-        // alert(oprLen.toString() + " " + valLen.toString());
         var operators = queryComponents[key].operators;
         var values = queryComponents[key].values.slice().reverse();
 
         var opArr = [];
         var times = (valLen / oprLen);
 
-        // alert(times.toString());
-        for (var i=0; i<times; i++)
-        {
-          // alert(i.toString());
+        for (var i=0; i<times; i++) {
           var subOpArr = [];
 
           for (var j=0; j<oprLen; j++) {

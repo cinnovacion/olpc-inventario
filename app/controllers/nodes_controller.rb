@@ -80,6 +80,7 @@ class NodesController < SearchController
   end
 
   def new
+    @output["window_width"] = 650
 
     if params[:id]
       node = Node.find(params[:id])

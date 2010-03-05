@@ -1,3 +1,20 @@
+//     Copyright Paraguay Educa 2009
+//
+//     This program is free software: you can redistribute it and/or modify
+//     it under the terms of the GNU General Public License as published by
+//     the Free Software Foundation, either version 3 of the License, or
+//     (at your option) any later version.
+//
+//     This program is distributed in the hope that it will be useful,
+//     but WITHOUT ANY WARRANTY; without even the implied warranty of
+//     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//     GNU General Public License for more details.
+//
+//     You should have received a copy of the GNU General Public License
+//     along with this program.  If not, see <http://www.gnu.org/licenses/>
+//
+//
+
 
 qx.Class.define("inventario.window.Abm2SetScope",
 {
@@ -39,10 +56,6 @@ qx.Class.define("inventario.window.Abm2SetScope",
             var o = new Array();
             this.setToolBarButtons(o);
 
-            /* Manejo de abreviaciones de teclado */
-            var o = new inventario.util.ObjectManager();
-            this.setCommandsManager(o);
-
             var v = new Array();
             this.setAceleradores(v);
 
@@ -52,7 +65,7 @@ qx.Class.define("inventario.window.Abm2SetScope",
             this.setUsePopup(true);
             if (typeof (title) != "undefined") this.setTitle(title);
 
-            get_selected = function (q) {
+            var get_selected = function (q) {
                 var selected_element = this.getSelection()[0];
                 var pwindow  = this.getUserData("pwindow");
                 if (typeof selected_element != "undefined") {

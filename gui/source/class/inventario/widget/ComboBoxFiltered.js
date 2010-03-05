@@ -45,7 +45,7 @@ qx.Class.define("inventario.widget.ComboBoxFiltered",
       });
 
       // Combos boxes
-      var filterCb = new inventario.widget.ComboboxSelector("Filtro  ", cbs_options.filter, width);
+      var filterCb = new inventario.widget.ComboboxSelector(qx.locale.Manager.tr("Filter  "), cbs_options.filter, width);
 
       gl.add(filterCb,
       {
@@ -53,7 +53,7 @@ qx.Class.define("inventario.widget.ComboBoxFiltered",
         column : 0
       });
 
-      var dataCb = new inventario.widget.ComboboxSelector("Datos", cbs_options.data, width);
+      var dataCb = new inventario.widget.ComboboxSelector(qx.locale.Manager.tr("Details"), cbs_options.data, width);
 
       gl.add(dataCb,
       {
@@ -111,8 +111,7 @@ qx.Class.define("inventario.widget.ComboBoxFiltered",
      */
     _loadDataComboBox : function()
     {
-      refValue = this.getFilterComboBox().getSelectedValue();
-
+      var refValue = this.getFilterComboBox().getSelectedValue();
       var hopts = {};
       hopts["url"] = this.getDataRequestUrl();
       hopts["parametros"] = null;

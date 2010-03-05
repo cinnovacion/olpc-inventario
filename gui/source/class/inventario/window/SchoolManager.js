@@ -98,7 +98,7 @@ qx.Class.define("inventario.window.SchoolManager",
       tabView.setWidth(500);
 
       // General Information Tab
-      var infoPage = new qx.ui.tabview.Page("Informacion General", "icon/16/apps/utilities-help.png");
+      var infoPage = new qx.ui.tabview.Page(qx.locale.Manager.tr("General Information"), "icon/16/apps/utilities-help.png");
       infoPage.setLayout(new qx.ui.layout.VBox());
       var infoAbm = new inventario.widget.SchoolInfo(null, this.getPlaceId().toString());
       infoAbm.setPage(infoPage);
@@ -106,7 +106,7 @@ qx.Class.define("inventario.window.SchoolManager",
       tabView.add(infoPage);
 
       // Section's Tab
-      var sectionsPage = new qx.ui.tabview.Page("Grados", "icon/16/apps/utilities-terminal.png");
+      var sectionsPage = new qx.ui.tabview.Page(qx.locale.Manager.tr("Grades"), "icon/16/apps/utilities-terminal.png");
       sectionsPage.setLayout(new qx.ui.layout.VBox());
       var sectionsAbm = new inventario.window.Abm2(null, inventario.widget.Url.getUrl("localidades"));
       sectionsAbm.setVista(this.getPlaceId().toString());
@@ -115,7 +115,7 @@ qx.Class.define("inventario.window.SchoolManager",
       tabView.add(sectionsPage);
 
       // Teacher's tab
-      var teachersPage = new qx.ui.tabview.Page("Maestros", "icon/16/apps/utilities-notes.png");
+      var teachersPage = new qx.ui.tabview.Page(qx.locale.Manager.tr("Teachers"), "icon/16/apps/utilities-notes.png");
       teachersPage.setLayout(new qx.ui.layout.VBox());
       var teachersAbm = new inventario.window.Abm2(null, inventario.widget.Url.getUrl("personas"));
       teachersAbm.setVista("teacher_" + this.getPlaceId().toString());
@@ -124,7 +124,7 @@ qx.Class.define("inventario.window.SchoolManager",
       tabView.add(teachersPage);
 
       // Student's Tab
-      var studentsPage = new qx.ui.tabview.Page("Alumnos", "icon/16/apps/utilities-notes.png");
+      var studentsPage = new qx.ui.tabview.Page(qx.locale.Manager.tr("Students"), "icon/16/apps/utilities-notes.png");
       studentsPage.setLayout(new qx.ui.layout.VBox());
       var studentsAbm = new inventario.window.Abm2(null, inventario.widget.Url.getUrl("personas"));
       studentsAbm.setVista("student_" + this.getPlaceId().toString());
@@ -133,7 +133,7 @@ qx.Class.define("inventario.window.SchoolManager",
       tabView.add(studentsPage);
 
       // School Servers Tab
-      var serversPage = new qx.ui.tabview.Page("Servidores", "icon/16/apps/utilities-notes.png");
+      var serversPage = new qx.ui.tabview.Page(qx.locale.Manager.tr("Servers"), "icon/16/apps/utilities-notes.png");
       serversPage.setLayout(new qx.ui.layout.VBox());
       var serversAbm = new inventario.window.Abm2(null, inventario.widget.Url.getUrl("school_infos"));
       serversAbm.setVista("place_" + this.getPlaceId().toString());
@@ -142,7 +142,7 @@ qx.Class.define("inventario.window.SchoolManager",
       tabView.add(serversPage);
 
       // Google Maps Tab
-      var mapPage = new qx.ui.tabview.Page("Mapa", "icon/16/apps/utilities-help.png");
+      var mapPage = new qx.ui.tabview.Page(qx.locale.Manager.tr("Map"), "icon/16/apps/utilities-help.png");
       mapPage.setLayout(new qx.ui.layout.VBox());
       var mapAbm = new inventario.widget.MapLocator(null, Number(this.getPlaceId()), true, 600, 500, false);
       mapAbm.setPage(mapPage);

@@ -1,4 +1,3 @@
-
 //     Copyright Paraguay Educa 2009
 //
 //     This program is free software: you can redistribute it and/or modify
@@ -15,36 +14,17 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 //
 //
+
+
 qx.Class.define("inventario.transport.Transport",
 {
   extend : qx.core.Object,
 
-
-
-
-  /*
-    *****************************************************************************
-       CONSTRUCTOR
-    *****************************************************************************
-    */
-
   construct : function(page) {},
-
-  // llamar al constructor del padre
-  /*
-    *****************************************************************************
-       STATICS
-    *****************************************************************************
-    */
 
   statics :
   {
-    /**
-         * Timeout de una llamada remota
-         *
-         */
     TRANSPORT_TIMEOUT : 20000,
-
 
     /**
      * TODOC
@@ -66,7 +46,6 @@ qx.Class.define("inventario.transport.Transport",
       }
     },
 
-
     /**
      * TODOC
      *
@@ -78,12 +57,10 @@ qx.Class.define("inventario.transport.Transport",
      * @param self {var} TODOC
      * @return {void} void
      */
-    doCallRemoteIframe : function(params, self)
-    {
+    doCallRemoteIframe : function(params, self) {
       var form = params.file_upload_form;
 
-      if (params.data)
-      {
+      if (params.data) {
         for (var k in params.data) {
           form.setParameter(k, params.data[k]);
         }
@@ -102,7 +79,6 @@ qx.Class.define("inventario.transport.Transport",
       }
     },
 
-
     /**
      * TODOC
      *
@@ -113,8 +89,7 @@ qx.Class.define("inventario.transport.Transport",
      * @param self {Object} referencia al objeto llamante
      * @return {void} void
      */
-    doCallRemote : function(params, self)
-    {
+    doCallRemote : function(params, self) {
       params.data = params.data == null ? {} : params.data;
       var http_method = (qx.lang.Object.isEmpty(params.data) ? "GET" : "POST");
       var req = new qx.io.remote.Request(params.url, http_method);
@@ -126,8 +101,7 @@ qx.Class.define("inventario.transport.Transport",
 
       req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
-      if (params.data)
-      {
+      if (params.data) {
         for (var k in params.data) {
           req.setFormField(k, params.data[k]);
         }
@@ -140,29 +114,29 @@ qx.Class.define("inventario.transport.Transport",
       };
 
       req.addListener("sending", function(e) {
-        statusWin.getUserData("message_text").setLabel("Enviando solicitud...");
+        statusWin.getUserData("message_text").setLabel(qx.locale.Manager.tr("Sending request..."));
       });
 
       req.addListener("receiving", function(e) {
-        statusWin.getUserData("message_text").setLabel("Recibiendo datos...");
+        statusWin.getUserData("message_text").setLabel(qx.locale.Manager.tr("Receiving data..."));
       });
 
       req.addListener("aborted", function(e)
       {
-        statusWin.getUserData("message_text").setLabel("Abortada su solicitud...");
+        statusWin.getUserData("message_text").setLabel(qx.locale.Manager.tr("Aborted your order..."));
 
         setTimeout(_finish_cb, 2000);
       });
 
       req.addListener("timeout", function(e)
       {
-        statusWin.getUserData("message_text").setLabel("Tiempo de espera agotado, intente de nuevo...");
+        statusWin.getUserData("message_text").setLabel(qx.locale.Manager.tr("Timed out, try again..."));
         setTimeout(_finish_cb, 2000);
       });
 
       req.addListener("failed", function(e)
       {
-        statusWin.getUserData("message_text").setLabel("Fallo en su solicitud...");
+        statusWin.getUserData("message_text").setLabel(qx.locale.Manager.tr("Failure on your order..."));
         setTimeout(_finish_cb, 2000);
       });
 
@@ -179,7 +153,6 @@ qx.Class.define("inventario.transport.Transport",
       }
     },
 
-
     /**
      * TODOC
      *
@@ -191,7 +164,6 @@ qx.Class.define("inventario.transport.Transport",
      */
     _callRemoteResp : function(e, f_callback, f_params, self)
     {
-      //try {
         var c;
 
         if (typeof (e) == "object") {
@@ -204,77 +176,13 @@ qx.Class.define("inventario.transport.Transport",
 
         if (datos["result"] == "ok") {
           f_callback.call(self, datos, f_params);
-        }
-        else
-        {
+        } else {
           var tipoDeMsg = (datos["tipoDeMsg"] ? datos["tipoDeMsg"] : "critical");
           var debuggingMsg = (datos["codigo"] ? datos["codigo"] : null);
 
           inventario.window.Mensaje.mensaje(datos["msg"], null, null, datos["result"], datos["result"], tipoDeMsg, debuggingMsg);
         }
-      //} catch(e) {
-        // inventario.window.Mensaje.mensaje("Fallo de Sistema",null,null,
-        //			    "Fallo de Sistema","Fallo de Sistema","critical",e.toString());
-        //alert("callRemoteResp: " + e.toString());
-      //}
     },
-
-
-    /**
-     * TODOC
-     *
-     * @param url {var} TODOC
-     * @param comboBoxes {var} TODOC
-     * @param params {var} TODOC
-     * @param obj {Object} TODOC
-     * @return {void} 
-     */
-    cargarComboBoxes : function(url, comboBoxes, params, obj)
-    {
-      try
-      {
-        var f = inventario.transport.Transport.cargarComboBoxesResp;
-
-        inventario.transport.Transport.callRemote(
-        {
-          url        : url,
-          data       : params,
-          handle     : f,
-          parametros : comboBoxes
-        },
-        obj);
-      }
-      catch(e)
-      {
-        inventario.window.Mensaje.mensaje("cargarComboBoxes:" + e);
-      }
-    },
-
-
-    /**
-     * TODOC
-     *
-     * @param remoteData {var} TODOC
-     * @param params {var} TODOC
-     * @return {void} 
-     */
-    cargarComboBoxesResp : function(remoteData, params)
-    {
-      try
-      {
-        var cb = remoteData["combo_boxes"];
-        var len = cb.length;
-
-        for (var i=0; i<len; i++) {
-          inventario.widget.Form.loadComboBox(params[i], cb[i], true);
-        }
-      }
-      catch(e)
-      {
-        alert("cargarComboBoxesResp:" + e.toStrng());
-      }
-    },
-
 
     /**
      * buildParamStr
@@ -283,12 +191,10 @@ qx.Class.define("inventario.transport.Transport",
      * @param codificar {var} TODOC
      * @return {String} de la forma "?key1=val1&key2=val2"
      */
-    buildParamStr : function(params, codificar)
-    {
+    buildParamStr : function(params, codificar) {
       var ret = "?";
 
-      for (var i in params)
-      {
+      for (var i in params) {
         var p = (codificar ? encodeURIComponent(params[i]) : params[i]);
         ret += i + "=" + p + "&";
       }
@@ -296,32 +202,13 @@ qx.Class.define("inventario.transport.Transport",
       return ret;
     },
 
-    imagenProcesando : null,
-
-
     /**
      * TODOC
      *
      * @return {var} TODOC
      */
-    getImagenProcesando : function()
-    {
-      if (!inventario.transport.Transport.imagenProcesando) {
-        inventario.transport.Transport.imagenProcesando = new qx.ui.basic.Image("aisa/image/wait.gif");
-      }
-
-      return inventario.transport.Transport.imagenProcesando;
-    },
-
-
-    /**
-     * TODOC
-     *
-     * @return {var} TODOC
-     */
-    getStatusWin : function()
-    {
-      var messageText = new qx.ui.basic.Atom("Procesando su solicitud...");
+    getStatusWin : function() {
+      var messageText = new qx.ui.basic.Atom(qx.locale.Manager.tr("Processing your request..."));
 
       var winParams =
       {
@@ -348,15 +235,13 @@ qx.Class.define("inventario.transport.Transport",
 
     processingImage : null,
 
-
     /**
      * getProcessingImage
      *
      * @return {qx.ui.basic.Image} TODOC
      */
-    getProcessingImage : function()
-    {
-      if (!inventario.transport.Transport.imagenProcesando) {
+    getProcessingImage : function() {
+      if (!inventario.transport.Transport.processingImage) {
         inventario.transport.Transport.processingImage = new qx.ui.basic.Image("inventario/22/wait.gif");
       }
 

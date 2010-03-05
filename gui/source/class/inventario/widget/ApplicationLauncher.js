@@ -100,17 +100,10 @@ qx.Class.define("inventario.widget.ApplicationLauncher",
       this.removeAll();
       var menu = new qx.ui.menu.Menu;
 
-      for (i in remoteData.elements)
-      {
-        // var node = remoteData.elements[i];
-        // var menu = new qx.ui.menu.Menu;
-        // for (j in node.elements) {
-        // menu.add(this._loadGuiContentRespRec(node.elements[j]));
-        // }
+      for (var i in remoteData.elements) {
         menu.add(this._loadGuiContentRespRec(remoteData.elements[i]));
       }
 
-      // this.add(new qx.ui.form.MenuButton(node.label, node.image, menu));
       this.add(new qx.ui.form.MenuButton(remoteData.label, remoteData.image, menu));
     },
 
@@ -132,7 +125,7 @@ qx.Class.define("inventario.widget.ApplicationLauncher",
         case "option":
           menu = new qx.ui.menu.Menu;
 
-          for (i in node.elements) {
+          for (var i in node.elements) {
             menu.add(this._loadGuiContentRespRec(node.elements[i]));
           }
 

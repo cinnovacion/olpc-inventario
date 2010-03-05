@@ -46,7 +46,7 @@ qx.Class.define("inventario.widget.Select",
     {
       qx.ui.container.Composite.call(this, new qx.ui.layout.HBox(20));
 
-      var tituloVentana = "Buscador";
+      var tituloVentana = qx.locale.Manager.tr("Search");
       this.setUrl(param);
 
       var input;

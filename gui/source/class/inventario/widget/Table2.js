@@ -181,7 +181,7 @@ qx.Class.define("inventario.widget.Table2",
     addButtonLabel :
     {
       check : "String",
-      init  : "Agregar"
+      init  : qx.locale.Manager.tr("Add")
     },
 
     addButtonIcon :
@@ -193,13 +193,13 @@ qx.Class.define("inventario.widget.Table2",
     addButtonTooltipLabel :
     {
       check : "String",
-      init  : "Agregarfila"
+      init  : qx.locale.Manager.tr("Add row")
     },
 
     deleteButtonLabel :
     {
       check : "String",
-      init  : "Eliminar"
+      init  : qx.locale.Manager.tr("Remove")
     },
 
     deleteButtonIcon :
@@ -211,7 +211,7 @@ qx.Class.define("inventario.widget.Table2",
     deleteButtonTooltipLabel :
     {
       check : "String",
-      init  : "EliminarFilas"
+      init  : qx.locale.Manager.tr("Remove row")
     },
 
     /* contenedor & grilla */
@@ -426,9 +426,6 @@ qx.Class.define("inventario.widget.Table2",
      */
     _createInputs : function()
     {
-
-      /* Tabla */
-
       var tableModel = new qx.ui.table.model.Simple();
       tableModel.setColumns(this.getTitles());
 
@@ -461,26 +458,21 @@ qx.Class.define("inventario.widget.Table2",
         table.setWidth(width);
       }
 
-      with (table)
-      {
-        setStatusBarVisible(false);
-        getSelectionModel().setSelectionMode(qx.ui.table.selection.Model.MULTIPLE_INTERVAL_SELECTION);
+      table.setStatusBarVisible(false);
+      table.getSelectionModel().setSelectionMode(qx.ui.table.selection.Model.MULTIPLE_INTERVAL_SELECTION);
 
-        // Obtain the behavior object to manipulate
-        var anchos = this.getWidths();
+      // Obtain the behavior object to manipulate
+      var anchos = this.getWidths();
 
-        if (anchos)
-        {
-          var resizeBehavior = table.getTableColumnModel().getBehavior();
+      if (anchos) {
+	var resizeBehavior = table.getTableColumnModel().getBehavior();
 
-          for (var i=0; i<anchos.length; i++) {
-            resizeBehavior.set(i, { width : anchos[i] });
-          }
-        }
+	for (var i=0; i<anchos.length; i++) {
+	  resizeBehavior.set(i, { width : anchos[i] });
+	}
       }
 
-      if (this.getColumnasVisibles())
-      {
+      if (this.getColumnasVisibles()) {
         var len = this.getColumnasVisibles().length;
 
         for (var i=0; i<len; i++)
@@ -530,13 +522,13 @@ qx.Class.define("inventario.widget.Table2",
 
         if (this.getShowSelectButton())
         {
-          var but = new qx.ui.form.Button("Selecionar Todo", "icon/16/actions/view-pane-text.png");
+          var but = new qx.ui.form.Button(qx.locale.Manager.tr("Select All"), "icon/16/actions/view-pane-text.png");
           this.setSelectButton(but);
         }
 
         if (this.getShowModifyButton())
         {
-          var but = new qx.ui.form.Button("Modficar", "icon/16/apps/accessories-text-editor.png");
+          var but = new qx.ui.form.Button(qx.locale.Manager.tr("Edit"), "icon/16/apps/accessories-text-editor.png");
           this.setModifyButton(but);
         }
       }
@@ -580,10 +572,7 @@ qx.Class.define("inventario.widget.Table2",
         }
       }
 
-      /* Parsing de Formulas y actualizacion de totales,etc */
-
       var v = new Array();
-      v.push(this._reCalcular);
       this.setGridHandlers(v);
       this.getGrid().getTableModel().addListener("dataChanged", this._dataChangedHandler, this);
     },
@@ -635,7 +624,7 @@ qx.Class.define("inventario.widget.Table2",
         {
           var totalizadorHbox = new qx.ui.container.Composite(new qx.ui.layout.HBox(20));
           var align = this.getButtonsAlignment();
-          totalLabel = this.getTotalizadorLabel();
+          var totalLabel = this.getTotalizadorLabel();
           totalizadorHbox.add(new qx.ui.basic.Atom(totalLabel));
           totalizadorHbox.add(this.getTotalizadorInput());
           buttonsContenedorHbox.add(totalizadorHbox);
@@ -708,73 +697,6 @@ qx.Class.define("inventario.widget.Table2",
       }
 
       tm.addListener("dataChanged", this._dataChangedHandler, this);  // fin de contencion
-    },
-
-
-    /**
-     * _reCalcular(): recalcula ciertas columnas
-     *
-     * @return {void} void
-     */
-    _reCalcular : function()
-    {
-      var formula_table = this.getFormulaTable();
-
-      if (formula_table)
-      {
-        var table = this.getGrid();
-        var tm = table.getTableModel();
-        var t = tm.getData();
-        var context = this.getFormulaContext();  /* El contexto en el que tienen que interpretarse las formulas */
-
-        try
-        {
-          var resultHash = inventario.parser.GridFormulaParser.parseGrid(t, formula_table, context);
-
-          if (resultHash.changed_data > 0)
-          {
-            tm.setData(resultHash.table);
-            var v = resultHash.calcedFields;
-            var len = v.length;
-
-            /* actualizar valores fuera de grilla en sus respectivos inputs */
-
-            for (var i=0; i<len; i++)
-            {
-              var output_prop = v[i].property;
-              var num = v[i].number;
-              var input;
-
-              if (output_prop.match(/\[/))
-              {
-                /* Estamos en AbmForm
-                                                 * ATENCION: leer las sgtes. 3 lineas de codigo puede causar danho mental permanente :D
-                                                 */
-
-                var str = output_prop.split("[")[0];
-                var vectorInputs = eval("context.get" + str + "()");
-                var indice = parseInt(output_prop.split("[")[1].split("]")[0]);
-                input = vectorInputs[indice];
-
-                /* marcar que el input tiene un numero con formato */
-
-                input.setUserData("number_with_format", true);
-              }
-              else
-              {
-                input = eval("context.get" + output_prop + "Input()");
-                input.setUserData("number_with_format", false);
-              }
-
-              inventario.widget.Form.setWithNumberFormat(input, num);
-            }
-          }
-        }
-        catch(e)
-        {
-          inventario.window.Mensaje.mensaje("Table2.reCalcular(): " + e);
-        }
-      }
     },
 
 
@@ -1063,7 +985,7 @@ qx.Class.define("inventario.widget.Table2",
       }
       else
       {
-        alert("getHashedData: tableObj.getHashKeys() no recibio igual numero de parametros q columnas");
+        alert("getHashedData: tableObj.getHashKeys()"+ qx.locale.Manager.tr(" no recibio igual numero de parametros q columnas"));
       }
 
       return ret;

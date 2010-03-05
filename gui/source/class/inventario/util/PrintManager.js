@@ -216,7 +216,7 @@ qx.Class.define("inventario.util.PrintManager",
                                                                                 break;
 
                                                                               default:
-                                                                                throw new Error("El documento " + documento + " no esta configurado para impresion aun");
+                                                                                throw new Error(qx.locale.Manager.tr("The document ") + documento + qx.locale.Manager.tr(" not set to print even"));
                                                                             }
 
                                                                             return url;

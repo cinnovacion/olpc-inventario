@@ -45,9 +45,9 @@ qx.Class.define("inventario.widget.MultipleHierarchySelection",
 
       list.setScrollbarX("on");
 
-      var addButton = new qx.ui.form.Button("Agregar");
+      var addButton = new qx.ui.form.Button(qx.locale.Manager.tr("Add"));
       addButton.addListener("execute", this._addItem, this);
-      var removeButton = new qx.ui.form.Button("Quitar");
+      var removeButton = new qx.ui.form.Button(qx.locale.Manager.tr("Remove"));
       removeButton.addListener("execute", this._removeItem, this);
 
       // var testButton = new qx.ui.form.Button("test");

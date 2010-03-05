@@ -47,7 +47,7 @@ qx.Class.define("inventario.widget.PlaceCreationToolBox",
     {
       var PCToolBox = new inventario.widget.PlaceCreationToolBox(null);
       PCToolBox.setPage(page);
-      PCToolBox.setWindowTitle("Localidades Tool Box");
+      PCToolBox.setWindowTitle(qx.locale.Manager.tr("Locations ToolBox"));
       PCToolBox.setUsePopup(true);
       PCToolBox.show();
     }
@@ -235,7 +235,7 @@ qx.Class.define("inventario.widget.PlaceCreationToolBox",
         }
         else
         {
-          alert("El elemento seleccionado no es una Localidad.");
+          alert(qx.locale.Manager.tr("The selected item is not a location."));
         }
       }
       catch(e)
@@ -262,7 +262,7 @@ qx.Class.define("inventario.widget.PlaceCreationToolBox",
       }
       else
       {
-        alert("El elemento seleccionado no es una Localidad.");
+        alert(qx.locale.Manager.tr("The selected item is not a City."));
       }
     },
 
@@ -278,38 +278,37 @@ qx.Class.define("inventario.widget.PlaceCreationToolBox",
 
       /* School creation form */
 
-      var schoolLabel = new qx.ui.basic.Label("Escuela Numero: ");
+      var schoolLabel = new qx.ui.basic.Label(qx.locale.Manager.tr("School Number: "));
       var schoolText = new qx.ui.form.TextField();
-      var addSchoolButton = new qx.ui.form.Button("Agregar Escuela");
+      var addSchoolButton = new qx.ui.form.Button(qx.locale.Manager.tr("Add School"));
 
       addSchoolButton.addListener("execute", function(e) {
         this._addPlaceCB(null, schoolText, "school");
       }, this);
 
       /* Shift Creation form */
-
-      var shiftLabel = new qx.ui.basic.Label("Turno: ");
+      var shiftLabel = new qx.ui.basic.Label(qx.locale.Manager.tr("Shift: "));
       var shiftCombo = new qx.ui.form.SelectBox;
 
       var shiftData = [
       {
-        text     : "Turno Mañana",
+        text     : qx.locale.Manager.tr("Morning Shift"),
         value    : "shift",
         selected : true
       },
       {
-        text     : "Turno Tarde",
+        text     : qx.locale.Manager.tr("Afternoon Shift"),
         value    : "shift",
         selected : false
       },
       {
-        text     : "Turno Completo",
+        text     : qx.locale.Manager.tr("Full Time"),
         value    : "shift",
         selected : false
       } ];
 
       inventario.widget.Form.loadComboBox(shiftCombo, shiftData, false);
-      var addShiftButton = new qx.ui.form.Button("Agregar Turno");
+      var addShiftButton = new qx.ui.form.Button(qx.locale.Manager.tr("Add Time"));
 
       addShiftButton.addListener("execute", function(e) {
         this._addPlaceCB(shiftCombo, null, null);
@@ -322,43 +321,43 @@ qx.Class.define("inventario.widget.PlaceCreationToolBox",
 
       var gradeData = [
       {
-        text     : "Primer Grado",
+        text     : qx.locale.Manager.tr("First Grade"),
         value    : "first_grade",
         selected : true
       },
       {
-        text     : "Segundo Grado",
+        text     : qx.locale.Manager.tr("Second Grade"),
         value    : "second_grade",
         selected : false
       },
       {
-        text     : "Tercer Grado",
+        text     : qx.locale.Manager.tr("Third Grade"),
         value    : "third_grade",
         selected : false
       },
       {
-        text     : "Cuarto Grado",
+        text     : qx.locale.Manager.tr("Fourth Grade"),
         value    : "fourth_grade",
         selected : false
       },
       {
-        text     : "Quinto Grado",
+        text     : qx.locale.Manager.tr("Fifth Grade"),
         value    : "fifth_grade",
         selected : false
       },
       {
-        text     : "Sexto Grado",
+        text     : qx.locale.Manager.tr("Sixth Grade"),
         value    : "sixth_grade",
         selected : false
       },
       {
-        text     : "Educacion Especial",
+        text     : qx.locale.Manager.tr("Special Education"),
         value    : "special",
         selected : false
       } ];
 
       inventario.widget.Form.loadComboBox(gradeCombo, gradeData, false);
-      var addGradeButton = new qx.ui.form.Button("Agregar Grado");
+      var addGradeButton = new qx.ui.form.Button(qx.locale.Manager.tr("Add Grade"));
 
       addGradeButton.addListener("execute", function(e) {
         this._addPlaceCB(gradeCombo, null, null);
@@ -366,35 +365,35 @@ qx.Class.define("inventario.widget.PlaceCreationToolBox",
 
       /* Section Creation form */
 
-      var sectionLabel = new qx.ui.basic.Label("Seccion: ");
+      var sectionLabel = new qx.ui.basic.Label(qx.locale.Manager.tr("Section: "));
       var sectionCombo = new qx.ui.form.SelectBox;
 
       var sectionData = [
       {
-        text     : "Seccion A",
+        text     : qx.locale.Manager.tr("Section: A"),
         value    : "section",
         selected : true
       },
       {
-        text     : "Seccion B",
+        text     : qx.locale.Manager.tr("Section: B"),
         value    : "section",
         selected : false
       },
       {
-        text     : "Seccion C",
+        text     : qx.locale.Manager.tr("Section: C"),
         value    : "section",
         selected : false
       } ];
 
       inventario.widget.Form.loadComboBox(sectionCombo, sectionData, false);
       var sectionText = new qx.ui.form.TextField();
-      var addSectionButton = new qx.ui.form.Button("Agregar Seccion");
+      var addSectionButton = new qx.ui.form.Button(qx.locale.Manager.tr("Add Section:"));
 
       addSectionButton.addListener("execute", function(e) {
         this._addPlaceCB(sectionCombo, sectionText, null);
       }, this);
 
-      var deleteButton = new qx.ui.form.Button("Eliminar Localidad");
+      var deleteButton = new qx.ui.form.Button(qx.locale.Manager.tr("Remove Location"));
       deleteButton.addListener("execute", this._deletePlaceCB, this);
 
       /* Finally, lets put everything inside the container */
@@ -513,7 +512,7 @@ qx.Class.define("inventario.widget.PlaceCreationToolBox",
       }
       else
       {
-        alert("El elemento seleccionado no es una localidad.");
+        alert(qx.locale.Manager.tr("The selected item is not a location."));
       }
     },
 
@@ -535,7 +534,7 @@ qx.Class.define("inventario.widget.PlaceCreationToolBox",
       }
       else
       {
-        alert("El elemento seleccionado no es una Persona.");
+        alert(qx.locale.Manager.tr("The selected item is not a Person."));
       }
     },
 
@@ -559,11 +558,11 @@ qx.Class.define("inventario.widget.PlaceCreationToolBox",
         var new_lastname = lastNameText.getValue();
         var new_idDoc = idDocText.getValue();
 
-        var msg = "Actualizar a " + element_data.text;
-        msg += " con el nombre " + "\"" + new_name + "\"";
-        msg += ", el apellido " + "\"" + new_lastname + "\"";
-        msg += " y documento numero " + "\"" + new_idDoc + "\"?";
-        msg += " Los campos vacios no sean actualizados.";
+        var msg = qx.locale.Manager.tr("Upgrade to ") + element_data.text;
+        msg += qx.locale.Manager.tr(" with the name ") + "\"" + new_name + "\"";
+        msg += qx.locale.Manager.tr(", surname ") + "\"" + new_lastname + "\"";
+        msg += qx.locale.Manager.tr(" and document number ") + "\"" + new_idDoc + "\"?";
+        msg += qx.locale.Manager.tr(" Empty fields are not updated.");
 
         if (confirm(msg))
         {
@@ -577,7 +576,7 @@ qx.Class.define("inventario.widget.PlaceCreationToolBox",
       }
       else
       {
-        alert("El elemento seleccionado no es una Persona.");
+        alert(qx.locale.Manager.tr("The selected item is a Person."));
       }
     },
 
@@ -614,43 +613,43 @@ qx.Class.define("inventario.widget.PlaceCreationToolBox",
     {
       var container = new qx.ui.container.Composite(new qx.ui.layout.Grid());
 
-      var nameLabel = new qx.ui.basic.Label("Nombre: ");
+      var nameLabel = new qx.ui.basic.Label(qx.locale.Manager.tr("Name: "));
       var nameText = new qx.ui.form.TextField();
 
-      var lastNameLabel = new qx.ui.basic.Label("Apellido: ");
+      var lastNameLabel = new qx.ui.basic.Label(qx.locale.Manager.tr("Last name: "));
       var lastNameText = new qx.ui.form.TextField();
 
-      var idDocLabel = new qx.ui.basic.Label("Cedula Numero: ");
+      var idDocLabel = new qx.ui.basic.Label(qx.locale.Manager.tr("National ID "));
       var idDocText = new qx.ui.form.TextField();
 
-      var addStudentButton = new qx.ui.form.Button("Agregar Alumno");
+      var addStudentButton = new qx.ui.form.Button(qx.locale.Manager.tr("Add Student"));
 
       addStudentButton.addListener("execute", function() {
         this._addPersonCB(nameText, lastNameText, idDocText, "student");
       }, this);
 
-      var addTeacherButton = new qx.ui.form.Button("Agregar Maestro");
+      var addTeacherButton = new qx.ui.form.Button(qx.locale.Manager.tr("Add Teacher"));
 
       addTeacherButton.addListener("execute", function() {
         this._addPersonCB(nameText, lastNameText, idDocText, "teacher");
       }, this);
 
-      var deleteButton = new qx.ui.form.Button("Eliminar Persona");
+      var deleteButton = new qx.ui.form.Button(qx.locale.Manager.tr("Delete Person"));
       deleteButton.addListener("execute", this._deletePersonCB, this);
 
-      var updateButton = new qx.ui.form.Button("Actualizar Persona");
+      var updateButton = new qx.ui.form.Button(qx.locale.Manager.tr("Update Person"));
 
       updateButton.addListener("execute", function() {
         this._updatePersonCB(nameText, lastNameText, idDocText);
       }, this);
 
-      var teacherChecked = new qx.ui.form.CheckBox("Mostrar Maestros: ");
+      var teacherChecked = new qx.ui.form.CheckBox(qx.locale.Manager.tr("Show Teachers: "));
 
       teacherChecked.addListener("changeValue", function() {
         this._changeChecked(teacherChecked, "teacher");
       }, this);
 
-      var studentChecked = new qx.ui.form.CheckBox("Mostrar Alumnos : ");
+      var studentChecked = new qx.ui.form.CheckBox(qx.locale.Manager.tr("Show student : "));
 
       studentChecked.addListener("changeValue", function() {
         this._changeChecked(studentChecked, "student");

@@ -1,4 +1,3 @@
-
 //     Copyright Paraguay Educa 2009
 //
 //     This program is free software: you can redistribute it and/or modify
@@ -15,7 +14,8 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 //
 //
-/* Reemplazo de alert()
+
+/* alert() replacement
  *  rgs
  *  2007/10/08
  */
@@ -28,8 +28,6 @@ qx.Class.define("inventario.window.Mensaje",
   {
     inventario.window.AbstractWindow.call(this, page);
 
-    // this.setAbstractPopupWindowHeight(100);
-    // this.setAbstractPopupWindowWidth(400);
     this.setAskConfirmationOnClose(false);
     this.setUsePopup(true);
 
@@ -108,15 +106,6 @@ qx.Class.define("inventario.window.Mensaje",
     }
   },
 
-
-
-
-  /*
-      *****************************************************************************
-         STATICS
-      *****************************************************************************
-      */
-
   statics :
   {
     /**
@@ -192,10 +181,6 @@ qx.Class.define("inventario.window.Mensaje",
     {
       var vbox = new qx.ui.container.Composite(new qx.ui.layout.VBox(), { height : 400 });
 
-      /*
-                  * Titulo & Imagen de tipo de mensaje
-                  */
-
       var hbox = new qx.ui.container.Composite(new qx.ui.layout.HBox());
       var image = null;
 
@@ -233,11 +218,7 @@ qx.Class.define("inventario.window.Mensaje",
 
       vbox.add(hbox, { flex : 1 });
 
-      /*
-                   * Cuerpo del Mensaje
-                   */
-
-      scrollContainer = new qx.ui.container.Scroll();
+      var scrollContainer = new qx.ui.container.Scroll();
 
       scrollContainer.set(
       {
@@ -254,25 +235,20 @@ qx.Class.define("inventario.window.Mensaje",
 
       vbox.add(scrollContainer, { flex : 1 });
 
-      /*
-                   * Boton Aceptar & Ver Codigo
-                   */
-
       var hbox_abajo = new qx.ui.container.Composite(new qx.ui.layout.HBox(20));
 
       var caja_relleno_left = new qx.ui.container.Composite(new qx.ui.layout.HBox(20));
       hbox_abajo.add(caja_relleno_left, { flex : 2 });
 
       var button_hbox = new qx.ui.container.Composite(new qx.ui.layout.HBox(20));
-      var button = new qx.ui.form.Button("Aceptar", "inventario/16/button-ok.png");
+      var button = new qx.ui.form.Button(qx.locale.Manager.tr("OK"), "inventario/16/button-ok.png");
       button.addListener("execute", this._accept_cb, this);
       button_hbox.add(button);
 
       hbox_abajo.add(button_hbox, { flex : 1 });
 
-      if (this.getDebuggingMsg())
-      {
-        var ver_codigo_button = new qx.ui.form.Button("Mas info.", "inventario/16/comment.png");
+      if (this.getDebuggingMsg()) {
+        var ver_codigo_button = new qx.ui.form.Button(qx.locale.Manager.tr("More info."), "inventario/16/comment.png");
         ver_codigo_button.addListener("execute", this._more_info_cb, this);
         hbox_abajo.add(ver_codigo_button);
       }
@@ -296,8 +272,7 @@ qx.Class.define("inventario.window.Mensaje",
     {
       var f = this.getFuncCallback();
 
-      if (f)
-      {
+      if (f) {
         var ctxt = this.getFuncContext();
 
         if (!ctxt) {
@@ -309,7 +284,6 @@ qx.Class.define("inventario.window.Mensaje",
 
       this.getAbstractPopupWindow().getWindow().close();
     },
-
 
     /**
      * TODOC

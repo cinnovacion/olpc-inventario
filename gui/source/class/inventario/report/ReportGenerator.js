@@ -86,7 +86,7 @@ qx.Class.define("inventario.report.ReportGenerator",
     reportTitle :
     {
       check : "String",
-      init  : "Reporte"
+      init  : qx.locale.Manager.tr("Report")
     },
 
     printMethod :
@@ -138,7 +138,7 @@ qx.Class.define("inventario.report.ReportGenerator",
 
       if (this.getReportName() == "")
       {
-        alert("Necesito saber que reporte queres generar!");
+        alert(qx.locale.Manager.tr("I need to know what report to generate!"));
         return;
       }
 
@@ -167,7 +167,7 @@ qx.Class.define("inventario.report.ReportGenerator",
      */
     _createInputs : function()
     {
-      var b = new qx.ui.form.Button("Generar", "inventario/22/adobe-reader.png");
+      var b = new qx.ui.form.Button(qx.locale.Manager.tr("Generate"), "inventario/22/adobe-reader.png");
       this.setGenerateButton(b);
     },
 

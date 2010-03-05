@@ -197,8 +197,8 @@ qx.Class.define("inventario.widget.CheckboxSelector",
      */
     _setAllCheckedTo : function(state)
     {
-      cb_array = this.getCheckBoxArray();
-      cb_a_len = cb_array.length;
+      var cb_array = this.getCheckBoxArray();
+      var cb_a_len = cb_array.length;
 
       for (var i=0; i<cb_a_len; i++) {
         cb_array[i].setValue(state ? true : false);

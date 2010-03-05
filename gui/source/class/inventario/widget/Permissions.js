@@ -108,7 +108,7 @@ qx.Class.define("inventario.widget.Permissions",
       }
       else
       {
-        alert("El elemento seleccionado no es un controlador");
+        alert(qx.locale.Manager.tr("The selected item is not a driver"));
       }
     },
 
@@ -184,8 +184,7 @@ qx.Class.define("inventario.widget.Permissions",
 
       var mLen = subTree.length;
 
-      for (i=0; i<mLen; i++)
-      {
+      for (var i=0; i<mLen; i++) {
         var method = new qx.ui.tree.TreeFile(subTree[i].name);
 
         var checkbox = new qx.ui.form.CheckBox();
@@ -253,7 +252,7 @@ qx.Class.define("inventario.widget.Permissions",
         top  : 0
       });
 
-      root = new qx.ui.tree.TreeFolder("Controladores");
+      var root = new qx.ui.tree.TreeFolder("Controladores");
       root.setOpen(true);
       tree.setRoot(root);
 
@@ -261,28 +260,13 @@ qx.Class.define("inventario.widget.Permissions",
 
       var cLen = this.tree.length;
 
-      for (i=0; i<cLen; i++)
-      {
+      for (var i=0; i<cLen; i++) {
         var controller = new qx.ui.tree.TreeFolder(this.tree[i].name);
         controller.setUserData("subTree", this.tree[i].methods);
         controller.addListenerOnce("dblclick", this._loadSubTree_cb, this);
         root.add(controller);
       }
 
-      //         var mLen = this.tree[i].methods.length;
-      //
-      //         for (j=0;j<mLen;j++) {
-      //
-      //           var method = new qx.ui.tree.TreeFile(this.tree[i].methods[j].name);
-      //
-      //           var checkbox = new qx.ui.form.CheckBox();
-      //           checkbox.setFocusable(false);
-      //           checkbox.setValue(this.tree[i].methods[j].selected);
-      //           method.addWidget(checkbox);
-      //           method.setUserData("checkbox", checkbox);
-      //
-      //           controller.add(method);
-      //         }
       hbox.add(unChecksButton);
       hbox.add(checksButton);
       vbox.add(hbox);

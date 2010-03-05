@@ -63,7 +63,7 @@ qx.Class.define("inventario.widget.ColumnValueSelector",
       // testing
       if (this.getDebug())
       {
-        var but = new qx.ui.form.Button("Ver valores");
+        var but = new qx.ui.form.Button(qx.locale.Manager.tr("See values"));
         but.addListener("execute", this._show_values_cb, this);
         vbox.add(but);
       }

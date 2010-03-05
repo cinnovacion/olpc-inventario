@@ -11,6 +11,701 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: inventario/sistema/Login.js:127
-msgid "Bienvenido al sistema"
+#: inventario/report/ReportGenerator.js:89
+msgid "Report"
 msgstr ""
+
+#: inventario/report/ReportGenerator.js:141
+msgid "I need to know what report to generate!"
+msgstr ""
+
+#: inventario/report/ReportGenerator.js:170
+msgid "Generate"
+msgstr ""
+
+#: inventario/sistema/Login.js:144 inventario/sistema/Login.js:192
+msgid "Welcome to the system"
+msgstr ""
+
+#: inventario/sistema/Login.js:178
+msgid "Login to the system"
+msgstr ""
+
+#: inventario/sistema/Login.js:200
+msgid "Username"
+msgstr ""
+
+#: inventario/sistema/Login.js:206
+msgid "Password"
+msgstr ""
+
+#: inventario/sistema/Login.js:212
+msgid "Language"
+msgstr ""
+
+#: inventario/sistema/Login.js:227
+msgid "Login"
+msgstr ""
+
+#: inventario/sistema/Login.js:284
+msgid "Check password entry"
+msgstr ""
+
+#: inventario/sistema/Login.js:285
+msgid "Check username entry"
+msgstr ""
+
+#: inventario/sistema/Logout.js:43
+msgid "Logout"
+msgstr ""
+
+#: inventario/sistema/Logout.js:86
+msgid "Are you sure you want to exit the system?"
+msgstr ""
+
+#: inventario/test/WidgetsTest.js:70
+msgid "Charger:"
+msgstr ""
+
+#: inventario/test/WidgetsTest.js:76
+msgid "Battery:"
+msgstr ""
+
+#: inventario/test/WidgetsTest.js:82
+msgid "Either:"
+msgstr ""
+
+#: inventario/test/WidgetsTest.js:87
+msgid "Parties"
+msgstr ""
+
+#: inventario/transport/Transport.js:117
+msgid "Sending request..."
+msgstr ""
+
+#: inventario/transport/Transport.js:121
+msgid "Receiving data..."
+msgstr ""
+
+#: inventario/transport/Transport.js:126
+msgid "Aborted your order..."
+msgstr ""
+
+#: inventario/transport/Transport.js:133
+msgid "Timed out, try again..."
+msgstr ""
+
+#: inventario/transport/Transport.js:139
+msgid "Failure on your order..."
+msgstr ""
+
+#: inventario/transport/Transport.js:211
+msgid "Processing your request..."
+msgstr ""
+
+#: inventario/util/PrintManager.js:219
+msgid " not set to print even"
+msgstr ""
+
+#: inventario/util/PrintManager.js:219
+msgid "The document "
+msgstr ""
+
+#: inventario/widget/ColumnValueSelector.js:66
+msgid "See values"
+msgstr ""
+
+#: inventario/widget/ComboBoxFiltered.js:48
+msgid "Filter  "
+msgstr ""
+
+#: inventario/widget/ComboboxSelector.js:83
+msgid "View Selections "
+msgstr ""
+
+#: inventario/widget/CoordsTextField.js:41
+msgid "Decimals"
+msgstr ""
+
+#: inventario/widget/CoordsTextField.js:56
+msgid "Degrees"
+msgstr ""
+
+#: inventario/widget/CoordsTextField.js:70
+msgid "Minutes"
+msgstr ""
+
+#: inventario/widget/CoordsTextField.js:84
+msgid "Seconds"
+msgstr ""
+
+#: inventario/widget/DataImporter.js:110
+msgid "Data Importer"
+msgstr ""
+
+#: inventario/widget/DataImporter.js:151 inventario/window/AbmForm.js:787
+msgid "Browse"
+msgstr ""
+
+#: inventario/widget/DataImporter.js:161
+msgid "Import"
+msgstr ""
+
+#: inventario/widget/DataImporter.js:243
+msgid " Data successfully imported."
+msgstr ""
+
+#: inventario/widget/DateRange.js:45
+msgid " From: "
+msgstr ""
+
+#: inventario/widget/DateRange.js:47
+msgid " Until: "
+msgstr ""
+
+#: inventario/widget/DynTable.js:212
+msgid "do not know the datatype : "
+msgstr ""
+
+#: inventario/widget/DynamicDeliveryForm.js:175
+msgid "Only without laptops"
+msgstr ""
+
+#: inventario/widget/DynamicDeliveryForm.js:218
+msgid "#Person"
+msgstr ""
+
+#: inventario/widget/DynamicDeliveryForm.js:224
+msgid "#Laptop"
+msgstr ""
+
+#: inventario/widget/DynamicDeliveryForm.js:245
+msgid "Number of students: 0"
+msgstr ""
+
+#: inventario/widget/DynamicDeliveryForm.js:309
+msgid "Number of students: "
+msgstr ""
+
+#: inventario/widget/DynamicDeliveryForm.js:344
+msgid " registration is not valid, check."
+msgstr ""
+
+#: inventario/widget/Form.js:361
+msgid "I don't know the data type "
+msgstr ""
+
+#: inventario/widget/ListSelector.js:141
+#: inventario/widget/ComboboxSelector.js:151
+msgid "See: "
+msgstr ""
+
+#: inventario/widget/MapLocator.js:536
+msgid "Type:"
+msgstr ""
+
+#: inventario/widget/MapLocator.js:540
+msgid "Node:"
+msgstr ""
+
+#: inventario/widget/MapLocator.js:543
+msgid "Latitude:"
+msgstr ""
+
+#: inventario/widget/MapLocator.js:546
+msgid "Longitude"
+msgstr ""
+
+#: inventario/widget/MapLocator.js:549
+msgid "Height"
+msgstr ""
+
+#: inventario/widget/MapLocator.js:552
+msgid "Ip Address"
+msgstr ""
+
+#: inventario/widget/MapLocator.js:555
+msgid "Add Node"
+msgstr ""
+
+#: inventario/widget/MapLocator.js:568
+msgid "Delete Node"
+msgstr ""
+
+#: inventario/widget/MapLocator.js:578
+msgid "Update"
+msgstr ""
+
+#: inventario/widget/MapLocator.js:596
+msgid "Cannot upgrade a newly created node."
+msgstr ""
+
+#: inventario/widget/MapLocator.js:601
+msgid "Nothing to update."
+msgstr ""
+
+#: inventario/widget/MapLocator.js:790
+msgid " has been updated."
+msgstr ""
+
+#: inventario/widget/MapLocator.js:790
+msgid "The node "
+msgstr ""
+
+#: inventario/widget/MapLocator.js:814
+msgid "Auto-refresh requires read-only mode."
+msgstr ""
+
+#: inventario/widget/MapLocator.js:832
+msgid "The minimum update time of 10 seconds."
+msgstr ""
+
+#: inventario/widget/NodeTracker.js:194
+msgid "Location: "
+msgstr ""
+
+#: inventario/widget/NodeTracker.js:201
+msgid "Update on (Seconds): "
+msgstr ""
+
+#: inventario/widget/PageNavigatorAbstract.js:303
+msgid " is selected"
+msgstr ""
+
+#: inventario/widget/PageNavigatorAbstract.js:303
+msgid "Row "
+msgstr ""
+
+#: inventario/widget/Permissions.js:111
+msgid "The selected item is not a driver"
+msgstr ""
+
+#: inventario/widget/PlaceCreationToolBox.js:50
+msgid "Locations ToolBox"
+msgstr ""
+
+#: inventario/widget/PlaceCreationToolBox.js:238
+#: inventario/widget/PlaceCreationToolBox.js:515
+msgid "The selected item is not a location."
+msgstr ""
+
+#: inventario/widget/PlaceCreationToolBox.js:265
+msgid "The selected item is not a City."
+msgstr ""
+
+#: inventario/widget/PlaceCreationToolBox.js:281
+msgid "School Number: "
+msgstr ""
+
+#: inventario/widget/PlaceCreationToolBox.js:283
+msgid "Add School"
+msgstr ""
+
+#: inventario/widget/PlaceCreationToolBox.js:290
+msgid "Shift: "
+msgstr ""
+
+#: inventario/widget/PlaceCreationToolBox.js:295
+msgid "Morning Shift"
+msgstr ""
+
+#: inventario/widget/PlaceCreationToolBox.js:300
+msgid "Afternoon Shift"
+msgstr ""
+
+#: inventario/widget/PlaceCreationToolBox.js:305
+msgid "Full Time"
+msgstr ""
+
+#: inventario/widget/PlaceCreationToolBox.js:311
+msgid "Add Time"
+msgstr ""
+
+#: inventario/widget/PlaceCreationToolBox.js:324
+msgid "First Grade"
+msgstr ""
+
+#: inventario/widget/PlaceCreationToolBox.js:329
+msgid "Second Grade"
+msgstr ""
+
+#: inventario/widget/PlaceCreationToolBox.js:334
+msgid "Third Grade"
+msgstr ""
+
+#: inventario/widget/PlaceCreationToolBox.js:339
+msgid "Fourth Grade"
+msgstr ""
+
+#: inventario/widget/PlaceCreationToolBox.js:344
+msgid "Fifth Grade"
+msgstr ""
+
+#: inventario/widget/PlaceCreationToolBox.js:349
+msgid "Sixth Grade"
+msgstr ""
+
+#: inventario/widget/PlaceCreationToolBox.js:354
+msgid "Special Education"
+msgstr ""
+
+#: inventario/widget/PlaceCreationToolBox.js:360
+msgid "Add Grade"
+msgstr ""
+
+#: inventario/widget/PlaceCreationToolBox.js:368
+msgid "Section: "
+msgstr ""
+
+#: inventario/widget/PlaceCreationToolBox.js:373
+msgid "Section: A"
+msgstr ""
+
+#: inventario/widget/PlaceCreationToolBox.js:378
+msgid "Section: B"
+msgstr ""
+
+#: inventario/widget/PlaceCreationToolBox.js:383
+msgid "Section: C"
+msgstr ""
+
+#: inventario/widget/PlaceCreationToolBox.js:390
+msgid "Add Section:"
+msgstr ""
+
+#: inventario/widget/PlaceCreationToolBox.js:396
+msgid "Remove Location"
+msgstr ""
+
+#: inventario/widget/PlaceCreationToolBox.js:537
+msgid "The selected item is not a Person."
+msgstr ""
+
+#: inventario/widget/PlaceCreationToolBox.js:561
+msgid "Upgrade to "
+msgstr ""
+
+#: inventario/widget/PlaceCreationToolBox.js:562
+msgid " with the name "
+msgstr ""
+
+#: inventario/widget/PlaceCreationToolBox.js:563
+msgid ", surname "
+msgstr ""
+
+#: inventario/widget/PlaceCreationToolBox.js:564
+msgid " and document number "
+msgstr ""
+
+#: inventario/widget/PlaceCreationToolBox.js:565
+msgid " Empty fields are not updated."
+msgstr ""
+
+#: inventario/widget/PlaceCreationToolBox.js:579
+msgid "The selected item is a Person."
+msgstr ""
+
+#: inventario/widget/PlaceCreationToolBox.js:616
+msgid "Name: "
+msgstr ""
+
+#: inventario/widget/PlaceCreationToolBox.js:619
+msgid "Last name: "
+msgstr ""
+
+#: inventario/widget/PlaceCreationToolBox.js:622
+msgid "National ID "
+msgstr ""
+
+#: inventario/widget/PlaceCreationToolBox.js:625
+msgid "Add Student"
+msgstr ""
+
+#: inventario/widget/PlaceCreationToolBox.js:631
+msgid "Add Teacher"
+msgstr ""
+
+#: inventario/widget/PlaceCreationToolBox.js:637
+msgid "Delete Person"
+msgstr ""
+
+#: inventario/widget/PlaceCreationToolBox.js:640
+msgid "Update Person"
+msgstr ""
+
+#: inventario/widget/PlaceCreationToolBox.js:646
+msgid "Show Teachers: "
+msgstr ""
+
+#: inventario/widget/PlaceCreationToolBox.js:652
+msgid "Show student : "
+msgstr ""
+
+#: inventario/widget/ScriptRunner.js:48
+msgid "Run Script"
+msgstr ""
+
+#: inventario/widget/ScriptRunner.js:110
+msgid "Run"
+msgstr ""
+
+#: inventario/widget/SearchAdvanced.js:80
+msgid "Contains"
+msgstr ""
+
+#: inventario/widget/SearchAdvanced.js:81
+msgid "It contains"
+msgstr ""
+
+#: inventario/widget/SearchAdvanced.js:82
+msgid "Same"
+msgstr ""
+
+#: inventario/widget/SearchAdvanced.js:83
+msgid "Minor"
+msgstr ""
+
+#: inventario/widget/SearchAdvanced.js:84
+msgid "Major"
+msgstr ""
+
+#: inventario/widget/SearchAdvanced.js:85
+msgid "Unlike"
+msgstr ""
+
+#: inventario/widget/Select.js:49 inventario/widget/SearchAdvanced.js:146
+#: inventario/window/Abm2.js:142 inventario/window/Abm2.js:272
+msgid "Search"
+msgstr ""
+
+#: inventario/widget/Table2.js:184 inventario/window/AbmForm.js:320
+#: inventario/widget/MultipleHierarchySelection.js:48
+#: inventario/window/Abm2.js:425 inventario/window/Abm2.js:695
+msgid "Add"
+msgstr ""
+
+#: inventario/widget/Table2.js:196
+msgid "Add row"
+msgstr ""
+
+#: inventario/widget/Table2.js:202
+#: inventario/widget/MultipleHierarchySelection.js:50
+#: inventario/window/Abm2.js:876
+msgid "Remove"
+msgstr ""
+
+#: inventario/widget/Table2.js:214
+msgid "Remove row"
+msgstr ""
+
+#: inventario/widget/Table2.js:525
+msgid "Select All"
+msgstr ""
+
+#: inventario/widget/Table2.js:531 inventario/window/AbmForm.js:306
+#: inventario/window/Abm2.js:712
+msgid "Edit"
+msgstr ""
+
+#: inventario/widget/Table2.js:988
+msgid " no recibio igual numero de parametros q columnas"
+msgstr ""
+
+#: inventario/window/Abm2.js:304
+msgid "Choose"
+msgstr ""
+
+#: inventario/window/Abm2.js:489
+msgid "Listing"
+msgstr ""
+
+#: inventario/window/Abm2.js:634
+msgid "First Page "
+msgstr ""
+
+#: inventario/window/Abm2.js:641
+#: inventario/widget/PageNavigatorAbstract.js:199
+msgid "Previous"
+msgstr ""
+
+#: inventario/window/Abm2.js:648
+#: inventario/widget/PageNavigatorAbstract.js:223
+msgid "Next"
+msgstr ""
+
+#: inventario/window/Abm2.js:655
+msgid "Last Page"
+msgstr ""
+
+#: inventario/window/Abm2.js:672
+msgid "Export"
+msgstr ""
+
+#: inventario/window/Abm2.js:772 inventario/window/Abm2.js:829
+#: inventario/window/Abm2.js:1986
+msgid "You must select at least one row."
+msgstr ""
+
+#: inventario/window/Abm2.js:859
+msgid "Enter"
+msgstr ""
+
+#: inventario/window/Abm2.js:1047
+msgid "Search Criteria: "
+msgstr ""
+
+#: inventario/window/Abm2.js:1061
+msgid "Search string: "
+msgstr ""
+
+#: inventario/window/Abm2.js:1087
+msgid "Per page.:"
+msgstr ""
+
+#: inventario/window/Abm2.js:1433
+msgid " Added row "
+msgstr ""
+
+#: inventario/window/Abm2.js:1503
+msgid "Delete selected items"
+msgstr ""
+
+#: inventario/window/Abm2.js:1536
+msgid " Deleted row "
+msgstr ""
+
+#: inventario/window/Abm2.js:1576 inventario/window/Abm2.js:1594
+msgid "You must select a row"
+msgstr ""
+
+#: inventario/window/Abm2.js:1606
+msgid " of "
+msgstr ""
+
+#: inventario/window/Abm2.js:1606
+msgid "Displaying Results page: "
+msgstr ""
+
+#: inventario/window/Abm2.js:1607
+msgid "Number of results found: "
+msgstr ""
+
+#: inventario/window/Abm2.js:1956
+msgid "Contact the System Administrator: Configuration Error"
+msgstr ""
+
+#: inventario/window/Abm2.js:1961
+msgid "Abm2, Choose Button CreateInput in\n"
+msgstr ""
+
+#: inventario/window/Abm2.js:2032
+msgid "Export only visible columns?"
+msgstr ""
+
+#: inventario/window/AbmForm.js:49 inventario/window/Abm2.js:97
+msgid "Missing parameter in urls hash! "
+msgstr ""
+
+#: inventario/window/AbmForm.js:299 inventario/widget/ComboBoxFiltered.js:56
+#: inventario/window/Abm2.js:729
+msgid "Details"
+msgstr ""
+
+#: inventario/window/AbmForm.js:345
+msgid "Main"
+msgstr ""
+
+#: inventario/window/AbmForm.js:389
+msgid " type "
+msgstr ""
+
+#: inventario/window/AbmForm.js:389
+msgid "Problem to add the item num "
+msgstr ""
+
+#: inventario/window/AbmForm.js:390
+msgid " with label "
+msgstr ""
+
+#: inventario/window/AbmForm.js:390
+msgid ". EXCEPTION: "
+msgstr ""
+
+#: inventario/window/AbmForm.js:453
+msgid "Save"
+msgstr ""
+
+#: inventario/window/AbmForm.js:453
+msgid "Save Changes"
+msgstr ""
+
+#: inventario/window/AbmForm.js:461 inventario/window/Abm2.js:902
+msgid "Close"
+msgstr ""
+
+#: inventario/window/AbmForm.js:918
+msgid "You must check at least one field"
+msgstr ""
+
+#: inventario/window/AbmForm.js:929
+msgid "These changes will be applied to these "
+msgstr ""
+
+#: inventario/window/AbmForm.js:930
+msgid " records. Are you sure?"
+msgstr ""
+
+#: inventario/window/AbmForm.js:933
+msgid "Save changes?"
+msgstr ""
+
+#: inventario/window/AbmForm.js:936
+msgid "Create?"
+msgstr ""
+
+#: inventario/window/AbmForm.js:1103
+msgid "Config error. in getDataFromForm"
+msgstr ""
+
+#: inventario/window/AbstractWindow.js:596
+msgid "Close window?"
+msgstr ""
+
+#: inventario/window/Mensaje.js:244
+msgid "OK"
+msgstr ""
+
+#: inventario/window/Mensaje.js:251
+msgid "More info."
+msgstr ""
+
+#: inventario/window/SchoolManager.js:101
+msgid "General Information"
+msgstr ""
+
+#: inventario/window/SchoolManager.js:109
+msgid "Grades"
+msgstr ""
+
+#: inventario/window/SchoolManager.js:118
+msgid "Teachers"
+msgstr ""
+
+#: inventario/window/SchoolManager.js:127
+msgid "Students"
+msgstr ""
+
+#: inventario/window/SchoolManager.js:136
+msgid "Servers"
+msgstr ""
+
+#: inventario/window/SchoolManager.js:145
+msgid "Map"
+msgstr ""
+
+#: inventario/window/WelcomeInfo.js:170
+msgid "Quick access"
+msgstr ""
+
+#~ msgid "Bienvenido al sistema"
+#~ msgstr ""

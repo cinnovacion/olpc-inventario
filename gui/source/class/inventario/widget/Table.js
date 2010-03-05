@@ -21,23 +21,7 @@ qx.Class.define("inventario.widget.Table",
 {
   extend : qx.core.Object,
 
-
-
-
-  /*
-    *****************************************************************************
-       CONSTRUCTOR
-    *****************************************************************************
-    */
-
   construct : function(page) {},
-
-  // llamar al constructor del padre
-  /*
-    *****************************************************************************
-       STATICS
-    *****************************************************************************
-    */
 
   statics :
   {
@@ -54,8 +38,7 @@ qx.Class.define("inventario.widget.Table",
       var lenc = (lenf > 0) ? data[0].length : 0;
       var data2 = new Array();
 
-      for (var i=0; i<lenf; i++)
-      {
+      for (var i=0; i<lenf; i++) {
         var fila = new Array();
 
         for (var j=0; j<lenc; j++) {
@@ -67,7 +50,6 @@ qx.Class.define("inventario.widget.Table",
 
       return data2;
     },
-
 
     /**
      * TODOC
@@ -87,15 +69,15 @@ qx.Class.define("inventario.widget.Table",
       return ret;
     },
 
-    //  createTable() : crea una tabla, con todos sus parametros
-    //  params:  @vdata : vector de hash{titulo,clase,width,editable} de cada columna
     /**
-     * TODOC
+     * createTable() : creates a table, with all its parameters
      *
      * @param vdata {var} TODOC
      * @param width {var} TODOC
      * @param height {var} TODOC
      * @return {var} TODOC
+     *
+     * FIXME: horrible piece of code! Needs indentation and reorganization!
      */
     createTable : function(vdata, width, height)
     {
@@ -114,19 +96,15 @@ qx.Class.define("inventario.widget.Table",
         table.setHeight(height);
       }
 
-      with (table)
-      {
-        setStatusBarVisible(false);
+      table.setStatusBarVisible(false);
 
-        for (var i=0; i<vdata.length; i++)
-        {
-          setColumnWidth(i, vdata[i]["width"]);
-          if (vdata[i]["renderer"]) getTableColumnModel().setDataCellRenderer(i, new vdata[i]["renderer"]);
-          if (vdata[i]["factory"]) getTableColumnModel().setCellEditorFactory(i, new vdata[i]["factory"]);
-        }
-
-        getSelectionModel().setSelectionMode(qx.ui.table.selection.Model.MULTIPLE_INTERVAL_SELECTION);
+      for (var i=0; i<vdata.length; i++) {
+	table.setColumnWidth(i, vdata[i]["width"]);
+	if (vdata[i]["renderer"]) table.getTableColumnModel().setDataCellRenderer(i, new vdata[i]["renderer"]);
+	if (vdata[i]["factory"]) table.getTableColumnModel().setCellEditorFactory(i, new vdata[i]["factory"]);
       }
+
+      table.getSelectionModel().setSelectionMode(qx.ui.table.selection.Model.MULTIPLE_INTERVAL_SELECTION);
 
       return table;
     },
@@ -149,12 +127,10 @@ qx.Class.define("inventario.widget.Table",
       var col_count = tm.getColumnCount();
       var tcm = table.getTableColumnModel();
 
-      for (var i=0; i<row_count; i++)
-      {
+      for (var i=0; i<row_count; i++) {
         var row = new Array();
 
-        for (var j=0; j<col_count; j++)
-        {
+        for (var j=0; j<col_count; j++) {
           if (tcm.isColumnVisible(j)) {
             row.push(allData[i][j]);
           }
@@ -182,8 +158,7 @@ qx.Class.define("inventario.widget.Table",
       var col_count = tm.getColumnCount();
       var tcm = table.getTableColumnModel();
 
-      for (var i=0; i<col_count; i++)
-      {
+      for (var i=0; i<col_count; i++) {
         if (tcm.isColumnVisible(i)) {
           col_names.push(tm.getColumnName(i));
         }
@@ -220,131 +195,8 @@ qx.Class.define("inventario.widget.Table",
 
       var width = options["width"] ? options["width"] : "100%";
       var height = options["height"] ? options["height"] : "50%";
-      table = inventario.widget.Table.createTable(h, width, height);
+      var table = inventario.widget.Table.createTable(h, width, height);
       return table;
-    },
-
-
-    /**
-     * TODOC
-     *
-     * @param vdata {hash} para el seteo de las columnas
-     * @param width {var} TODOC
-     * @param height {var} TODOC
-     * @return {hash} el contenedor que es un layout y otra la tabla
-     */
-    createTableConBotones : function(vdata, width, height)
-    {
-      var vLay = inventario.widget.Form.createLayout(
-      {
-        clase  : qx.ui.layout.VerticalBoxLayout,
-        width  : width,
-        height : height
-      });
-
-      var tabla = inventario.widget.Table.createTable(vdata, "auto", "80%");
-
-      var hLay = inventario.widget.Form.createLayout(
-      {
-        clase  : qx.ui.layout.HorizontalBoxLayout,
-        width  : "auto",
-        height : "20%"
-      });
-
-      var bQuitar = new qx.ui.form.Button("Quitar", "icon/16/actions/dialog-cancel.png");
-      bQuitar.setDimension("auto", "auto");
-
-      bQuitar.addListener("execute", function(e)
-      {
-        var sm = tabla.getSelectionModel();
-        var len = tabla.getTableModel().getRowCount();
-
-        for (var i=len-1; i>=0; i--)
-        {
-          if (sm.isSelectedIndex(i)) inventario.widget.Table.removeRow(tabla, i);
-        }
-      },
-      this);
-
-      bQuitar.setToolTip(new qx.ui.popup.ToolTip("Se eliminan las filas que estan seleccionadas"));
-
-      var bSeleccionar = new qx.ui.form.Button("Selecionar Todo", "icon/16/actions/view-pane-text.png");
-      bSeleccionar.setDimension("auto", "auto");
-
-      bSeleccionar.addListener("execute", function(e)
-      {
-        var sm = tabla.getSelectionModel();
-        var len = tabla.getTableModel().getRowCount();
-        sm.setSelectionInterval(0, len - 1);
-      },
-      this);
-
-      bSeleccionar.setToolTip(new qx.ui.popup.ToolTip("Selecciona toda las filas"));
-
-      /* Boton de edicion: lo retornamos en el hash y corre por cuenta del caller manejar el vento. RGS */
-
-      var bEdit = new qx.ui.form.Button("Modficar", "icon/16/apps/accessories-text-editor.png");
-      bEdit.setDimension("auto", "auto");
-      bEdit.setToolTip(new qx.ui.popup.ToolTip("Modificar fila"));
-
-      hLay.add(bQuitar, bEdit, bSeleccionar);
-      vLay.add(tabla, hLay);
-
-      return {
-        widget      : vLay,
-        table       : tabla,
-        editButton  : bEdit,
-        hBoxButtons : hLay
-      };
-    },
-
-
-    /**
-     * EN DESUSO: porque es limitado su uso.. intenta ser inteligente y retornarte el value en vez del hash
-     * 
-     * Retorna los datos de las filas seleccionas, con todas las columnas o toda la columna
-     *
-     * @param tabla {var} TODOC
-     * @param col {Array} un vector de interos dondes especificamos que columnas queremos obtener
-     * @return {Array} es una matriz de la tablas
-     */
-    getSelected : function(tabla, col)
-    {
-      var ret = new Array();
-      var sm = tabla.getSelectionModel();
-      var tm = tabla.getTableModel();
-      var len = tm.getRowCount();
-
-      for (var i=0; i<len; i++) if (sm.isSelectedIndex(i))
-      {
-        if (!col) ret.push(tm.getRowData(i));
-        else
-        {
-          var lenCol = col.length;
-
-          if (lenCol > 1)
-          {
-            var tmp = [];
-
-            for (var j in col)
-            {
-              var v = tm.getValue(j, i);
-              v = typeof (v) == "object" ? v.value : v;
-              tmp.push(v);
-            }
-
-            ret.push(tmp);
-          }
-          else
-          {
-            var v = tm.getValue(col[0], i);
-            v = typeof (v) == "object" ? v.value : v;
-            ret.push(v);
-          }
-        }
-      }
-
-      return ret;
     },
 
 
@@ -358,42 +210,37 @@ qx.Class.define("inventario.widget.Table",
      * @param allRows {Boolean} todas las filas?
      * @return {Array} es una matriz de la tablas
      */
-    getSelected2 : function(tabla, col, allRows)
-    {
+    getSelected2 : function(tabla, col, allRows) {
       var ret = new Array();
       var sm = tabla.getSelectionModel();
       var tm = tabla.getTableModel();
       var len = tm.getRowCount();
       var lenCol = col ? col.length : 0;
 
-      for (var i=0; i<len; i++) if (sm.isSelectedIndex(i))
-      {
-        if (!col) ret.push(tm.getRowData(i));
-        else
-        {
-          if (lenCol > 1)
-          {
-            var tmp = [];
+      for (var i=0; i<len; i++) 
+	if (sm.isSelectedIndex(i)) {
+	  if (!col) 
+	    ret.push(tm.getRowData(i));
+	  else {
+	    if (lenCol > 1) {
+	      var tmp = [];
 
-            for (var j in col)
-            {
-              var v = tm.getValue(j, i);
-              tmp.push(v);
-            }
+	      for (var j in col) {
+		var v = tm.getValue(j, i);
+		tmp.push(v);
+	      }
 
-            ret.push(tmp);
-          }
-          else
-          {
-            var v = tm.getValue(col[0], i);
-            ret.push(v);
-          }
-        }
+	      ret.push(tmp);
+	    } else {
+	      var v = tm.getValue(col[0], i);
+	      ret.push(v);
+	    }
+	  }
 
-        if (!allRows) {
-          break;
-        }
-      }
+	  if (!allRows) {
+	    break;
+	  }
+	}
 
       return ret;
     },
@@ -414,23 +261,18 @@ qx.Class.define("inventario.widget.Table",
       var len = ids.length;
       var len2 = mappingArray.length;
 
-      for (var i=0; i<len; i++)
-      {
+      for (var i=0; i<len; i++) {
         var val = false;
 
-        for (var j=0; j<len2; j++)
-        {
-          if (ids[i] == mappingArray[j]["id_visible"])
-          {
+        for (var j=0; j<len2; j++) {
+          if (ids[i] == mappingArray[j]["id_visible"]) {
             val = mappingArray[j]["id_real"];
             break;
           }
         }
 
-        if (val)
-        {
+        if (val) {
           ret.push(val);
-
           if (!allRows) {
             break;
           }

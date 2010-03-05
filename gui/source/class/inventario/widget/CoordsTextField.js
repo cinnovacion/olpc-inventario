@@ -38,7 +38,7 @@ qx.Class.define("inventario.widget.CoordsTextField",
       this.add(gl);
 
       // Labels and TextFields
-      gl.add(new qx.ui.basic.Label("Decimals"),
+      gl.add(new qx.ui.basic.Label(qx.locale.Manager.tr("Decimals")),
       {
         row    : 0,
         column : 0
@@ -53,7 +53,7 @@ qx.Class.define("inventario.widget.CoordsTextField",
         column : 1
       });
 
-      gl.add(new qx.ui.basic.Label("Degrees"),
+      gl.add(new qx.ui.basic.Label(qx.locale.Manager.tr("Degrees")),
       {
         row    : 1,
         column : 0
@@ -67,7 +67,7 @@ qx.Class.define("inventario.widget.CoordsTextField",
         column : 1
       });
 
-      gl.add(new qx.ui.basic.Label("Minutes"),
+      gl.add(new qx.ui.basic.Label(qx.locale.Manager.tr("Minutes")),
       {
         row    : 1,
         column : 2
@@ -81,7 +81,7 @@ qx.Class.define("inventario.widget.CoordsTextField",
         column : 3
       });
 
-      gl.add(new qx.ui.basic.Label("Seconds"),
+      gl.add(new qx.ui.basic.Label(qx.locale.Manager.tr("Seconds")),
       {
         row    : 1,
         column : 4

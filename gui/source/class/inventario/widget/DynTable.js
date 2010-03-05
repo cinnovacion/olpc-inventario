@@ -209,7 +209,7 @@ qx.Class.define("inventario.widget.DynTable",
           break;
 
         default:
-          alert("no conozco el datatype : " + col.datatype);
+          alert(qx.locale.Manager.tr("do not know the datatype : ") + col.datatype);
       }
 
       return retInput;

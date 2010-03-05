@@ -1,4 +1,3 @@
-
 //     Copyright Paraguay Educa 2009
 //
 //     This program is free software: you can redistribute it and/or modify
@@ -15,132 +14,35 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 //
 //
+
+
+/**********************************************************************************
+  #ignore(hex_sha1)
+************************************************************************************/
+
 qx.Class.define("inventario.widget.Form",
 {
   extend : qx.core.Object,
 
-
-
-
-  /*
-    *****************************************************************************
-       CONSTRUCTOR
-    *****************************************************************************
-    */
-
   construct : function() {},
-
-  // llamar al constructor del padre
-  /*
-    *****************************************************************************
-       STATICS
-    *****************************************************************************
-    */
 
   statics :
   {
-    /* mediante esta funcion podemos crear un groupBox
-                datos => un array de array[3]  que tiene nombre del label,clase de form(text,comboBox,textarea),y su longitud vertical)
-                titulo => es el titulo del comboBox que se muestra arriba, es un string
-        */
-
     /**
-     * TODOC
-     *
-     * @param datos {var} TODOC
-     * @param titulo {var} TODOC
-     * @return {var} TODOC
+     * loadComboBox(): cargar un combo box y setea el que esta seleccionado
+     * @param cb {qx.ui.form.SelectBox}
+     * @param vdata {Array}  vector de hashes {text,value,selected,attribs} donde attribs es hash de atributos
+     * @param sel {Boolean} marcar alguno como seleccionado (si no se seleccino otro)
+     * @return void
      */
-    createGroupBox : function(datos, titulo)
-    {
-      var fs1 = new qx.ui.groupbox.GroupBox(titulo);
-
-      with (fs1)
-      {
-        setTop(0);
-        setLeft(0);
-        setDimension("auto", "auto");
-      }
-
-      var gl = new qx.ui.layout.GridLayout;
-
-      gl.setLocation(0, 0);
-      gl.setDimension("auto", "auto");
-
-      // gl.setBorder("outset");
-      gl.setPadding(0);
-      gl.setColumnCount(2);
-      gl.setRowCount(datos.length);
-
-      gl.setColumnWidth(0, 100);
-      gl.setColumnWidth(1, 180);
-
-      gl.setColumnHorizontalAlignment(0, "right");
-      gl.setColumnVerticalAlignment(0, "middle");
-
-      gl.setCellPaddingTop(0);
-      gl.setCellPaddingRight(0);
-      gl.setCellPaddingBottom(0);
-      gl.setCellPaddingLeft(0);
-
-      var label = [];
-      var input = [];
-
-      try
-      {
-        for (var i=0; i<datos.length; i++)
-        {
-          label[i] = new qx.ui.basic.Label(datos[i][0]);
-          input[i] = new datos[i][1];
-          gl.setRowHeight(i, datos[i][2]);
-          gl.add(label[i], 0, i);
-          gl.add(input[i], 1, i);
-        }
-      }
-      catch(e)
-      {
-        inventario.window.Mensaje.mensaje(e);
-      }
-
-      fs1.add(gl);
-
-      var params =
-      {
-        groupBox   : fs1,
-        gridLayout : gl,
-        inputs     : input
-      };
-
-      return params;
-    },
-
-
-    /**
-     * ***********************************************************************************************
-     * Combo Box
-     * ************************************************************************************************
-     *
-     * @param cb {var} TODOC
-     * @param vdata {var} TODOC
-     * @param sel {var} TODOC
-     * @return {void} 
-     */
-    /**
-         * loadComboBox(): cargar un combo box y setea el que esta seleccionado
-         * @param cb {qx.ui.form.SelectBox}
-         * @param vdata {Array}  vector de hashes {text,value,selected,attribs} donde attribs es hash de atributos
-         * @param sel {Boolean} marcar alguno como seleccionado (si no se seleccino otro)
-         * @return void
-         */
-    loadComboBox : function(cb, vdata, sel)
-    {
-      inventario.widget.Form.clearComboBox(cb);  /* vaciar antes de empezar */
+    loadComboBox : function(cb, vdata, sel) {
       var len = (vdata) ? vdata.length : 0;
-
       var hasSelected = false;
 
-      for (var i=0; i<len; i++)
-      {
+      /* clear the comboBox before starting */
+      inventario.widget.Form.clearComboBox(cb);  
+
+      for (var i=0; i<len; i++) {
         var t = vdata[i].text;
         var v = vdata[i].value.toString();
         var attribs = (vdata[i].attribs ? vdata[i].attribs : {});
@@ -150,13 +52,11 @@ qx.Class.define("inventario.widget.Form",
         cb.add(li);
 
         if (s) {
-          //cb.getChildrenContainer().select(li);
           hasSelected = true;
           cb.setSelection([li]);
         }
 
-        /* guardar atributos de la opcion */
-
+        /* save the attribs of the option */
         for (var j in attribs) {
           li.setUserData(j, attribs[j]);
         }
@@ -169,10 +69,6 @@ qx.Class.define("inventario.widget.Form",
          }
       }
     },
-
-    /*
-            retorna un hash de text y value
-        */
 
     /**
      * TODOC
@@ -187,7 +83,6 @@ qx.Class.define("inventario.widget.Form",
         value : inventario.widget.Form.getInputValue(cb)
       };
     },
-
 
     /**
      * TODOC
@@ -207,7 +102,6 @@ qx.Class.define("inventario.widget.Form",
       return false;
     },
 
-
     /**
      * TODOC
      *
@@ -221,18 +115,15 @@ qx.Class.define("inventario.widget.Form",
       var lista = cb.getList().getChildren();
       var len = (lista ? lista.length : 0);
 
-      for (var i=0; i<len; i++)
-      {
+      for (var i=0; i<len; i++) {
         var s = lista[i].getUserData(userData);
 
-        if (s == value)
-        {
+        if (s == value) {
           cb.setSelected(lista[i]);
           break;
         }
       }
     },
-
 
     /**
      * TODOC
@@ -246,7 +137,6 @@ qx.Class.define("inventario.widget.Form",
       cb.setSelection([]);
     },
 
-
     /**
      * setWithNumberFormat(): carga en un textfield un numero
      *
@@ -258,8 +148,7 @@ qx.Class.define("inventario.widget.Form",
     {
       var cant_decimales = 0;
 
-      try
-      {
+      try {
         cant_decimales = input.getUserData("cant_decimales");
 
         if (parseInt(cant_decimales)) {
@@ -267,9 +156,7 @@ qx.Class.define("inventario.widget.Form",
         } else {
           cant_decimales = 0;
         }
-      }
-      catch(e)
-      {
+      } catch(e) {
         cant_decimales = 0;
       }
 
@@ -295,7 +182,6 @@ qx.Class.define("inventario.widget.Form",
       return parseFloat(y);
     },
 
-
     /**
      * formatNumberToString(): devuelve un string formateado de numero
      *
@@ -309,7 +195,6 @@ qx.Class.define("inventario.widget.Form",
       f.set({ maximumFractionDigits : cant_decimales });
       return f.format(num).toString();
     },
-
 
     /**
      * parseStringToNumber(): devuelve un string formateado de numero
@@ -331,22 +216,17 @@ qx.Class.define("inventario.widget.Form",
       return f.parse(num);
     },
 
-    // getInputValue() :  obtiene el valor del Input
-    // params:   @pInput => ref al input
-    // returns: valor
     /**
-     * FIXME: esto se puede simplificar _si_ todos los widgets cumplen con una interfaz (i.e.: getValue())
+     * FIXME: this should be simplified by making widget comply with an interface (i.e.: getValue()
      *
      * @param pInput {var} TODOC
      * @param rich_output {var} TODOC
      * @return {var} TODOC
      */
-    getInputValue : function(pInput, rich_output)
-    {
+    getInputValue : function(pInput, rich_output) {
       var v = "";
 
-      if (pInput instanceof qx.ui.form.PasswordField)
-      {
+      if (pInput instanceof qx.ui.form.PasswordField) {
         var string = pInput.getValue().toString();
 
         if (string != "") {
@@ -455,37 +335,17 @@ qx.Class.define("inventario.widget.Form",
           h.value = v;
           v = h;
         }
-      }
-      else if (pInput instanceof inventario.widget.Permissions)
-      {
+      } else if (pInput instanceof inventario.widget.Permissions) {
         v = pInput.getTreeValues();
-      }
-      else if (pInput instanceof inventario.widget.MapLocator)
-      {
+      } else if (pInput instanceof inventario.widget.MapLocator) {
         v = pInput.getValues();
-      }
-      else if (pInput instanceof inventario.widget.DynamicDeliveryForm)
-      {
+      } else if (pInput instanceof inventario.widget.DynamicDeliveryForm) {
         v = pInput.getValues();
-      }
-      else if (pInput instanceof inventario.widget.CoordsTextField)
-      {
+      } else if (pInput instanceof inventario.widget.CoordsTextField) {
         v = pInput.getInputValue();
-      }
-      else if (pInput instanceof inventario.widget.ComboBoxFiltered)
-      {
+      } else if (pInput instanceof inventario.widget.ComboBoxFiltered) {
         v = pInput.getSelectedValue();
-      }
-      else if (pInput instanceof inventario.widget.MultipleChoiceFormMaker)
-      {
-        v = pInput.getValues();
-      }
-      else if (pInput instanceof inventario.widget.QuestionForm)
-      {
-        v = pInput.getValues();
-      }
-      else if (pInput instanceof inventario.widget.HierarchyOnDemand)
-      {
+      } else if (pInput instanceof inventario.widget.HierarchyOnDemand) {
         v = pInput.getValue();
 
         if (rich_output)
@@ -495,14 +355,10 @@ qx.Class.define("inventario.widget.Form",
           h.value = v;
           v = h;
         }
-      }
-      else if (pInput instanceof inventario.widget.MultipleHierarchySelection)
-      {
+      } else if (pInput instanceof inventario.widget.MultipleHierarchySelection) {
         v = pInput.getValues();
-      }
-      else
-      {
-        alert("No conozco el tipo de dato " + typeof (pInput));
+      } else {
+        alert(qx.locale.Manager.tr("I don't know the data type ") + typeof (pInput));
       }
 
       return v;
@@ -510,26 +366,7 @@ qx.Class.define("inventario.widget.Form",
 
 
     /**
-     * getInputValueValidated(): obtiene el valor y valida
-     *
-     * @param pInput {var} TODOC
-     * @param exMsg {var} TODOC
-     * @param inputType {var} TODOC
-     * @param re {var} TODOC
-     * @return {var} void
-     */
-    getInputValueValidated : function(pInput, exMsg, inputType, re)
-    {
-      var val = inventario.widget.Form.getInputValue(pInput);
-      inventario.widget.Validation.validate(val, exMsg, inputType, re);
-      return val;
-    },
-
-    // resetInputs() :  cerar inputs
-    // params:   @arrayInputs
-    // returns: void
-    /**
-     * TODOC
+     * resetInputs() :  set inputs to inital state
      *
      * @param arrayInputs {var} TODOC
      * @return {void} 
@@ -538,241 +375,48 @@ qx.Class.define("inventario.widget.Form",
     {
       var len = arrayInputs.length;
 
-      for (var i=0; i<len; i++)
-      {
+      for (var i=0; i<len; i++) {
         var pInput = arrayInputs[i];
 
         if (pInput instanceof qx.ui.form.TextField) {
           pInput.setValue("");
-        }
-        else if (pInput instanceof qx.ui.form.SelectBox)
-        {
-          try
-          {
+        } else if (pInput instanceof qx.ui.form.SelectBox) {
+
+          try {
             var child = pInput.getList().getFirstChild();
             pInput.setSelected(child);
-          }
-          catch(e)
-          {
+          } catch(e) {
             pInput.setSelected(null);
           }
-        }
-        else if (pInput instanceof qx.ui.form.Spinner)
-        {
+
+        } else if (pInput instanceof qx.ui.form.Spinner) {
           pInput.setValue(0);
-        }
-        else if (pInput instanceof qx.ui.form.CheckBox)
-        {
+        } else if (pInput instanceof qx.ui.form.CheckBox) {
           pInput.setValue(false);
-        }
-        else if (pInput instanceof qx.ui.form.TextArea)
-        {
+        } else if (pInput instanceof qx.ui.form.TextArea) {
           pInput.setValue("");
-        } else {}
+        }
       }
     },
 
-    //  descomentar para debuggear
-    //  inventario.window.Mensaje.mensaje("No conozco el tipo de dato en la fila " + i);
     /**
-     * ****************************************************************************
-     * 
-     * ******************************************************************************
+     * createLayout
      *
-     * @param vdata {var} TODOC
+     * @param vdata {var} hash{clase,width,height} de cada columna
      * @return {var} TODOC
      */
-    //  createTable() : crea una tabla, con todos sus parametros
-    //  params:  @vdata :  hash{clase,width,height} de cada columna
     createLayout : function(vdata)
     {
       var lay = new vdata["clase"];
 
-      with (lay)
-      {
-        setLeft(0);
-        setTop(0);
-
-        // setBorder("outset");
-        setDimension(vdata["width"], vdata["height"]);
-        setSpacing(2);
-        setPadding(0);
-      }
+      lay.setLeft(0);
+      lay.setTop(0);
+      lay.setDimension(vdata["width"], vdata["height"]);
+      lay.setSpacing(2);
+      lay.setPadding(0);
 
       return lay;
-    },
-
-
-    /**
-     * ******************************************************************************************************************
-     * List View
-     * *******************************************************************************************************************
-     *
-     * @param dato {var} TODOC
-     * @param formato {var} TODOC
-     * @param opcion {var} TODOC
-     * @return {Map} TODOC
-     */
-    createListView : function(dato, formato, opcion)
-    {
-      try
-      {
-        var view = new qx.ui.listview.ListView(dato, formato);
-
-        with (view)
-        {
-          setBorder("dark-shadow");
-          setBackgroundColor("white");
-
-          // debug(opcion["width"]);
-          // setWidth(opcion.width);
-          // setHeight(opcion.height);
-          setDimension(opcion["width"], opcion["height"]);
-          getPane().getManager().setDragSelection(false);
-        }
-      }
-      catch(e)
-      {
-        inventario.window.Mensaje.mensaje(e);
-      }
-
-      return {
-        tabla : view,
-        data  : dato,
-        colms : formato
-      };
-    },
-
-
-    /**
-     * TODOC
-     *
-     * @param datos {var} TODOC
-     * @param list {var} TODOC
-     * @return {void} 
-     */
-    addDataInListView : function(datos, list)
-    {
-      try
-      {
-        var len = datos.length;
-
-        for (var i=0; i<len; i++)
-        {
-          var tmp = {};
-          var j = 0;
-
-          for (var x in list.colms)
-          {
-            var dato = datos[i][j];
-
-            if (typeof (dato) == "string") tmp[x] = { text : dato };
-            else if (typeof (dato) == "number")
-            {
-              // inventario.window.Mensaje.mensaje(dato);
-              tmp[x] = { text : inventario.widget.Form.formatNumberToString(dato) };
-            }
-
-            // inventario.window.Mensaje.mensaje(tmp[x].text);
-            else
-            {
-              tmp[x] = { text : dato.toString() };
-            }
-
-            j++;
-          }
-
-          list.data.push(tmp);
-        }
-
-        list.tabla.setData(list.data);
-      }
-      catch(e)
-      {
-        inventario.window.Mensaje.mensaje(e);
-      }
-    },
-
-
-    /**
-     * TODOC
-     *
-     * @param list {var} TODOC
-     * @return {void} 
-     */
-    removeListView : function(list)
-    {
-      qx.lang.Array.removeAll(list.getData());
-      list.updateSort();
-      list.update();
-    },
-
-
-    /**
-     * TODOC
-     *
-     * @param e {Event} TODOC
-     * @return {void} 
-     */
-    handleDrag : function(e)
-    {
-      e.addData("qx.ui.listview.ListViewEntries", qx.lang.Array.copy(e.getCurrentTarget().getManager().getSelectedItems()));
-      e.addAction("move");
-      e.startDrag();
-    },
-
-
-    /**
-     * TODOC
-     *
-     * @param e {Event} TODOC
-     * @param source {var} TODOC
-     * @param dest {var} TODOC
-     * @return {void} 
-     */
-    handleDrop : function(e, source, dest)
-    {
-      var type = e.getDropDataTypes()[0];
-      var data = e.getData(type);
-
-      // e.debug(e.getCurrentTarget());
-      switch(e.getAction())
-      {
-        case "move":
-          source.getPane().getManager().setSelectedItems([]);
-          source.getPane().getManager().setAnchorItem(null);
-          source.getPane().getManager().setLeadItem(null);
-
-          dData = dest.getData();
-
-          for (var i=0, l=data.length; i<l; i++)
-          {
-            var ban = true;
-
-            for (var j=0; j<dData.length; j++)
-            {
-              if (dData[j][0] == data[i][0])
-              {
-                ban = false;
-                break;
-              }
-            }
-
-            if (ban)
-            {
-              qx.lang.Array.remove(source.getData(), data[i]);
-              dest.getData().push(data[i]);
-            }
-          }
-
-          dest.getPane().getManager().setSelectedItems(data);
-
-          source.updateSort();
-          dest.updateSort();
-
-          source.update();
-          dest.update();
-      }
     }
+
   }
 });

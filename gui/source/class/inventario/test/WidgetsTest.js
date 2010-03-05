@@ -67,24 +67,24 @@ qx.Class.define("inventario.test.WidgetsTest",
 
       v.push(
       {
-        label   : "Cargador:",
+        label   : qx.locale.Manager.tr("Charger:"),
         cb_name : "charger"
       });
 
       v.push(
       {
-        label   : "Bateria:",
+        label   : qx.locale.Manager.tr("Battery:"),
         cb_name : "battery"
       });
 
       v.push(
       {
-        label   : "Cualquiera:",
+        label   : qx.locale.Manager.tr("Either:"),
         cb_name : "any"
       });
 
       // FIXME: invenario.* namespace not being loaded..
-      var widget = new inventario.widget.CheckboxSelector("Partes", v);
+      var widget = new inventario.widget.CheckboxSelector(qx.locale.Manager.tr("Parties"), v);
 
       this.getRoot().add(widget);
     },

@@ -171,8 +171,7 @@ qx.Class.define("inventario.widget.TaskBar",
     {
       var part = this.getPart();
       var widgets = part.getChildren();
-
-      widget_index = widgets.indexOf(widget);
+      var widget_index = widgets.indexOf(widget);
 
       if (widget_index != -1) {
         part.removeAt(widget_index);
@@ -198,7 +197,7 @@ qx.Class.define("inventario.widget.TaskBar",
 
         var part = this.getPart();
         var icons = part.getChildren();
-        icon_index = icons.indexOf(button);
+        var icon_index = icons.indexOf(button);
         part.removeAt(icon_index);
       },
       this);

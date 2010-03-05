@@ -283,13 +283,13 @@ qx.Class.define("inventario.widget.HierarchyOnDemand",
     {
       selected_element.removeAll();
 
-      new_elements = remoteData.elements;
+      var new_elements = remoteData.elements;
 
       for (var i in new_elements) {
         selected_element.add(this._newElement(new_elements[i], this._requestElements, false));
       }
 
-      new_sub_elements = remoteData.sub_elements;
+      var new_sub_elements = remoteData.sub_elements;
 
       for (var i in new_sub_elements) {
         selected_element.add(this._newElement(new_sub_elements[i], null, true, "qx/icon/Tango/16/status/dialog-information.png"));

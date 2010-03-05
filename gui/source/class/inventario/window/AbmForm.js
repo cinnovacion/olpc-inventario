@@ -1,4 +1,3 @@
-
 //     Copyright Paraguay Educa 2009
 //
 //     This program is free software: you can redistribute it and/or modify
@@ -15,52 +14,30 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 //
 //
-// AbmForm.js
-// fecha: 2007-05-18
-// autor: Raul Gutierrez S.
 //
 //
-// TODO: calcular el tamanho del popup
-/**
- * Esta clase utiliza 2 metodos:
- *
- * 1) initialDataUrl: de aca obtenemos la info de como armar el formulario
- * 2) saveUrl: guardar datos del formulario (en RoR seria crear un nuevo objeto)
- *
- * @param page {}  Puede ser null
- * @param oMethods {Hash}  hash de configuracion {searchUrl,initialDataUrl,...}
- * @return void
- */
+
+/***************************************************
+ AbmForm.js
+ date: 2007-05-18
+ author: Raul Gutierrez S.
+ ******************************************************/
+
+
 qx.Class.define("inventario.window.AbmForm",
 {
   extend : inventario.window.AbstractWindow,
 
-
-
-
-  /*
-      *****************************************************************************
-         CONSTRUCTOR
-      *****************************************************************************
-      */
-
-  construct : function(page, oMethods)
-  {
+  construct : function(page, oMethods) {
     inventario.window.AbstractWindow.call(this, page);
-    this.prepared = false;
 
-    /* tamanho por default */
+    this.prepared = false;
 
     this.setUsePopup(true);
 
-    // this.setAbstractPopupWindowHeight(450);
-    // this.setAbstractPopupWindowWidth(400);
     this.setEditIds(new Array());
 
-    /* Cargar parametros sinhe quae non */
-
-    try
-    {
+    try {
       if (oMethods.initialDataUrl) {
         this.setInitialDataUrl(oMethods.initialDataUrl);
       }
@@ -68,26 +45,12 @@ qx.Class.define("inventario.window.AbmForm",
       if (oMethods.saveUrl) {
         this.setSaveUrl(oMethods.saveUrl);
       }
-    }
-    catch(e)
-    {
-      alert("Falta un parametro en el hash de urls! " + e);
+    } catch(e) {
+      alert(qx.locale.Manager.tr("Missing parameter in urls hash! ") + e);
     }
   },
 
-
-
-
-  /*
-      *****************************************************************************
-         PROPERTIES
-      *****************************************************************************
-      */
-
-  properties :
-  {
-
-    /* Parametros funcionales */
+  properties : {
 
     showSaveButton :
     {
@@ -139,10 +102,6 @@ qx.Class.define("inventario.window.AbmForm",
       init  : ""
     },
 
-    /*
-             *  RPC
-             */
-
     initialDataUrl :
     {
       check : "String",
@@ -154,10 +113,6 @@ qx.Class.define("inventario.window.AbmForm",
       check : "String",
       init  : ""
     },
-
-    /*
-             * Callbacks
-             */
 
     saveCallback :
     {
@@ -173,10 +128,6 @@ qx.Class.define("inventario.window.AbmForm",
       nullable : true
     },
 
-    /*
-             * Widgets & icons
-             */
-
     windowIcon :
     {
       check : "String",
@@ -189,10 +140,6 @@ qx.Class.define("inventario.window.AbmForm",
       init     : null,
       nullable : true
     },
-
-    /*
-             *  Objs. auxiliares
-             */
 
     dataInputObjects :
     {
@@ -247,17 +194,7 @@ qx.Class.define("inventario.window.AbmForm",
     }
   },
 
-
-
-
-  /*
-      *****************************************************************************
-         MEMBERS
-      *****************************************************************************
-      */
-
-  members :
-  {
+  members : {
     /**
      * show():
      *
@@ -272,18 +209,15 @@ qx.Class.define("inventario.window.AbmForm",
       }
     },
 
-
     /**
      * _doShow()
      *
      * @return {void} void
      */
-    _doShow : function()
-    {
+    _doShow : function() {
       var vbox = this.getVbox();
       this._doShow2(vbox);
     },
-
 
     /**
      * TODOC
@@ -299,13 +233,10 @@ qx.Class.define("inventario.window.AbmForm",
       var ids = this.getEditIds();
       var vista = this.getVista();
 
-      if (editRow > 0)
-      {
+      if (editRow > 0) {
         data["id"] = editRow;
         if (details) viewDetails = true;
-      }
-      else if (ids.length > 0)
-      {
+      } else if (ids.length > 0) {
         data["ids"] = qx.util.Json.stringify(ids);
       }
 
@@ -365,14 +296,14 @@ qx.Class.define("inventario.window.AbmForm",
       }
 
       if (this.getDetails()) {
-        this.setWindowTitle("Detalles");
+        this.setWindowTitle(qx.locale.Manager.tr("Details"));
       }
 
       if (remoteData["id"])
       {
         this._editingFlag = true;
         this._remote_id = remoteData["id"];
-        if (this.getWindowTitle() == "") this.setWindowTitle("Editar");
+        if (this.getWindowTitle() == "") this.setWindowTitle(qx.locale.Manager.tr("Edit"));
       }
       else if (remoteData["ids"])
       {
@@ -386,7 +317,7 @@ qx.Class.define("inventario.window.AbmForm",
       else
       {
         remoteData["id"];
-        if (this.getWindowTitle() == "") this.setWindowTitle("Agregar");
+        if (this.getWindowTitle() == "") this.setWindowTitle(qx.locale.Manager.tr("Add"));
       }
 
       if (remoteData["window_title"]) {
@@ -394,53 +325,42 @@ qx.Class.define("inventario.window.AbmForm",
       }
 
       /*
-                   * Si venimos de otro AbmForm tal vez tenga una manera especial de pasar los datos
-                   */
-
+       * Si venimos de otro AbmForm tal vez tenga una manera especial de pasar los datos
+       */
       if (remoteData["save_cols_mapping"]) {
         this.setSaveColsMapping(remoteData["save_cols_mapping"]);
       }
 
-      /* HACK: hasta que podamos calcular el tamanho de la ventana automaticamente... */
-
-      if (remoteData["window_width"])
-      {
+      /* HACK: until we learn to calc the size of the window automagically */
+      if (remoteData["window_width"]) {
         var w = parseInt(remoteData["window_width"]);
         this.setAbstractPopupWindowWidth(w);
       }
 
-      if (remoteData["window_height"])
-      {
+      if (remoteData["window_height"]) {
         var h = parseInt(remoteData["window_height"]);
         this.setAbstractPopupWindowHeight(h);
       }
 
-      var tab_page_title = remoteData.first_tab_title ? remoteData.first_tab_title : "Principal";
-      gl = this._buildTabPageWithGrid(tab_page_title);
+      var tab_page_title = remoteData.first_tab_title ? remoteData.first_tab_title : qx.locale.Manager.tr("Main");
+      var gl = this._buildTabPageWithGrid(tab_page_title);
 
       var row_count = 0;
 
-      for (var i=0; i<len; i++)
-      {
+      for (var i=0; i<len; i++) {
         if (datos[i].datatype == "tab_break") {
           gl = this._buildTabPageWithGrid(datos[i].title, datos[i].icon);
-        }
-        else
-        {
-          try
-          {
+        } else {
+          try {
             var field_data = this._buildField(datos[i], handleParams);
 
-            if (field_data.drill_down_vbox)
-            {
+            if (field_data.drill_down_vbox) {
               gl.add(field_data.drill_down_vbox,
               {
                 row    : row_count,
                 column : 0
               });
-            }
-            else
-            {
+            } else {
               gl.add(field_data.label,
               {
                 row    : row_count,
@@ -453,24 +373,21 @@ qx.Class.define("inventario.window.AbmForm",
                 column : 1
               });
 
-              if (remoteData["needs_update"])
-              {
+              if (remoteData["needs_update"]) {
                 var update_cb = new qx.ui.form.CheckBox();
 
                 gl.add(update_cb,
                 {
-                  row    : rowIndex,
+                  row    : row_count,
                   column : 2
                 });
 
                 this._update_checkboxes.push(update_cb);
               }
             }
-          }
-          catch(e)
-          {
-            var str = "Problema al agregar el elemento num " + i + " de tipo " + datos[i].datatype;
-            str += " con label " + datos[i].label + ". Excecpion: " + e;
+          } catch(e) {
+            var str = qx.locale.Manager.tr("Problem to add the item num ") + i + qx.locale.Manager.tr(" type ") + datos[i].datatype;
+            str += qx.locale.Manager.tr(" with label ") + datos[i].label + qx.locale.Manager.tr(". EXCEPTION: ") + e;
             alert(str);
           }
 
@@ -478,8 +395,7 @@ qx.Class.define("inventario.window.AbmForm",
         }
       }
 
-      if (!handleParams)
-      {
+      if (!handleParams) {
         if (this.getShowSaveButton() || this.getShowCloseButton())
         {
           var hbox = this._buildButtonsHbox();
@@ -491,9 +407,6 @@ qx.Class.define("inventario.window.AbmForm",
       this._doShow();
     },
 
-    /*
-             * Metodo publico para guardar datos.
-             */
 
     /**
      * TODOC
@@ -536,18 +449,16 @@ qx.Class.define("inventario.window.AbmForm",
 
       hbox.add(spacer, { flex : 1 });
 
-      if (this.getShowSaveButton())
-      {
-        var saveButStr = (this._remote_id != 0 || this._remote_ids.length > 0 ? "Guardar Cambios" : "Guardar");
+      if (this.getShowSaveButton()) {
+        var saveButStr = (this._remote_id != 0 || this._remote_ids.length > 0 ? qx.locale.Manager.tr("Save Changes") : qx.locale.Manager.tr("Save"));
         var bSave = new qx.ui.form.Button(saveButStr, "inventario/16/floppy2.png");
         bSave.addListener("execute", this._save_cb, this);
         this._addAccelerator("Control+G", this._save_cb, this);
         hbox.add(bSave, { flex : 1 });
       }
 
-      if (this.getShowCloseButton())
-      {
-        var bCancel = new qx.ui.form.Button("Cerrar", "inventario/16/no.png");
+      if (this.getShowCloseButton()) {
+        var bCancel = new qx.ui.form.Button(qx.locale.Manager.tr("Close"), "inventario/16/no.png");
         bCancel.addListener("execute", this._cancel_cb, this);
         hbox.add(bCancel, { flex : 1 });
       }
@@ -566,8 +477,7 @@ qx.Class.define("inventario.window.AbmForm",
      * @param icon {var} TODOC
      * @return {var} TODOC
      */
-    _buildTabPageWithGrid : function(tabTitle, icon)
-    {
+    _buildTabPageWithGrid : function(tabTitle, icon) {
       if (!icon) icon = "icon/16/apps/utilities-terminal.png";
 
       var currentTab = new qx.ui.tabview.Page(tabTitle, icon);
@@ -581,12 +491,6 @@ qx.Class.define("inventario.window.AbmForm",
       return gl;
     },
 
-    /*
-             * TODO: validaciones
-             * fieldData.required;
-             * fieldData.validation;
-             */
-
     /**
      * TODOC
      *
@@ -594,19 +498,15 @@ qx.Class.define("inventario.window.AbmForm",
      * @param readOnly {var} TODOC
      * @return {var} TODOC
      */
-    _buildField : function(fieldData, readOnly)
-    {
+    _buildField : function(fieldData, readOnly) {
       var input;
       var drill_down_vbox = null;
       var rAccelKey = fieldData["accel_key"];  /* Cargo el acelerador de tecla si tiene */
 
-      if (rAccelKey)
-      {
+      if (rAccelKey) {
         var rLabel = fieldData.label;
         var label = new qx.ui.basic.Label(this._underlineLabel(rLabel, rAccelKey));
-      }
-      else
-      {
+      } else {
         var label = new qx.ui.basic.Label();
 
         label.set(
@@ -616,14 +516,12 @@ qx.Class.define("inventario.window.AbmForm",
         });
       }
 
-      switch(fieldData.datatype)
-      {
+      switch(fieldData.datatype) {
         case "date":
           input = new qx.ui.form.DateField();
 
-          if (fieldData.value)
-          {
-            // se presume formato dd-mm-yyyy
+          if (fieldData.value) {
+            // Expected format: dd-mm-yyyy
             var tmpV = fieldData.value.split("-");
             var _year = tmpV[2];
             var _month = Number(tmpV[1]) - 1;
@@ -668,7 +566,7 @@ qx.Class.define("inventario.window.AbmForm",
         case "permissions":
 
           input = new qx.ui.container.Composite(new qx.ui.layout.HBox(20));
-          permissionsObj = new inventario.widget.Permissions(null, fieldData.tree);
+          var permissionsObj = new inventario.widget.Permissions(null, fieldData.tree);
           permissionsObj.setPage(input);
           permissionsObj.show();
 
@@ -705,17 +603,10 @@ qx.Class.define("inventario.window.AbmForm",
 
           this._formFields.push(dynDelForm);
           this.getDataInputObjects().push(dynDelForm);
-
           break;
 
         case "coords_text_field":
-
           input = new inventario.widget.CoordsTextField(fieldData.value ? fieldData.value.toString() : "");
-          break;
-
-        case "multiple_choice_form_maker":
-
-          input = new inventario.widget.MultipleChoiceFormMaker(fieldData.questions);
           break;
 
         case "textarea":
@@ -747,11 +638,6 @@ qx.Class.define("inventario.window.AbmForm",
 
           // Pregunto si el boton que se presiono es detalles, entonces el campo solo ReadOnly
           if (readOnly) input.setReadOnly(true);
-          break;
-
-        case "question_form":
-          var questionary = fieldData.options;
-          input = new inventario.widget.QuestionForm(questionary);
           break;
 
         case "combobox":
@@ -807,12 +693,12 @@ qx.Class.define("inventario.window.AbmForm",
           if (fieldData.abm_form == "multi")
           {
             var configs = new Array();
-            can_tabs = fieldData.tabs.length;
+            var can_tabs = fieldData.tabs.length;
 
             for (var z=0; z<can_tabs; z++)
             {
-              url = fieldData.tabs[z].url;
-              titulo = fieldData.tabs[z].titulo;
+              var url = fieldData.tabs[z].url;
+              var titulo = fieldData.tabs[z].titulo;
               var res = inventario.widget.Url.getUrl(url);
 
               configs.push(
@@ -898,7 +784,7 @@ qx.Class.define("inventario.window.AbmForm",
           input = new uploadwidget.UploadForm('uploadFrm', this.getSaveUrl());
           input.setLayout(new qx.ui.layout.Basic);
 
-          var file = new uploadwidget.UploadField(fieldData.field_name, 'Examinar', 'icon/16/actions/document-save.png');
+          var file = new uploadwidget.UploadField(fieldData.field_name, qx.locale.Manager.tr("Browse"), 'icon/16/actions/document-save.png');
           input.add(file,
           {
             left : 0,
@@ -987,15 +873,17 @@ qx.Class.define("inventario.window.AbmForm",
           alert(fieldData.datatype);
       }
 
-      // esto se tendria que cambiar
-      if (fieldData.datatype != "select" && fieldData.datatype != "table" && fieldData.datatype != "uploadfield" && fieldData.datatype != "image" && fieldData.datatype != "dyntable" && fieldData.datatype != "permissions" && fieldData.datatype != "map_locator" && fieldData.datatype != "dynamic_delivery_form")
-      {
+      // FIXME: (please?)
+      if (fieldData.datatype != "select" && fieldData.datatype != "table" && 
+	  fieldData.datatype != "uploadfield" && fieldData.datatype != "image" && 
+	  fieldData.datatype != "dyntable" && fieldData.datatype != "permissions" && 
+	  fieldData.datatype != "map_locator" && fieldData.datatype != "dynamic_delivery_form") {
+
         this._formFields.push(input);
 
         /* Guardo tb. en una propiedad el input widget p/ poder acceder a el via el manejador de formulas de Table2.
-                	     * TODO: En realidad fields ya no haria falta pq se puede usar dataInputObjects
-                	     */
-
+	 * TODO: En realidad fields ya no haria falta pq se puede usar dataInputObjects
+	 */
         this.getDataInputObjects().push(input);
       }
 
@@ -1003,9 +891,7 @@ qx.Class.define("inventario.window.AbmForm",
 
       if (drill_down_vbox) {
         ret.drill_down_vbox = drill_down_vbox;
-      }
-      else
-      {
+      } else {
         ret.label = label;
         ret.input = input;
       }
@@ -1024,52 +910,41 @@ qx.Class.define("inventario.window.AbmForm",
      */
     _saveFormData : function(editing, fields, id)
     {
-      try
-      {
-        // data
+      try {
         var updated = this._getDataFromFields(fields);
 
         if (this._update_checkboxes.length > 0 && updated == false)
         {
-          alert("Debe marcar al menos un campo");
+          alert(qx.locale.Manager.tr("You must check at least one field"));
           return;
         }
 
         var msgConfirmacion;
 
-        if (editing)
-        {
-          if (typeof (id) == "object")
-          {
+        if (editing) {
+          if (typeof (id) == "object") {
             // batch edit
             this.data["ids"] = id;
             this.setEditIds(new Array());
-            msgConfirmacion = "Estos cambios seran aplicados a estos " + id.length.toString() + " registros. Esta seguro?";
-          }
-          else
-          {
+            msgConfirmacion = qx.locale.Manager.tr("These changes will be applied to these ");
+	    msgConfirmacion += id.length.toString() + qx.locale.Manager.tr(" records. Are you sure?");
+          } else {
             this.data["id"] = id;
-            msgConfirmacion = "Guardar cambios?";
+            msgConfirmacion = qx.locale.Manager.tr("Save changes?");
           }
-        }
-        else
-        {
-          msgConfirmacion = "Crear?";
+        } else {
+          msgConfirmacion = qx.locale.Manager.tr("Create?");
         }
 
         if (this._verify_msg != "") {
           msgConfirmacion += "\n\n" + this._verify_msg;
         }
 
-        if (this.getAskSaveConfirmation() == false || confirm(msgConfirmacion))
-        {
+        if (this.getAskSaveConfirmation() == false || confirm(msgConfirmacion)) {
           var url = this.getSaveUrl();
 
-          if (url == "" || url == null)
-          {
-
-            /* vamos a insertarnos dentro de una tabla */
-
+          if (url == "" || url == null) {
+            /* Lets insert ourselve inside a table */
             var table = this.getUserData("table_obj");
             this.setSaveCallback(this._addRow2Table);
             this.setSaveCallbackObj(this);
@@ -1115,9 +990,7 @@ qx.Class.define("inventario.window.AbmForm",
             inventario.transport.Transport.callRemote(opts, this);
           }
         }
-      }
-      catch(e)
-      {
+      } catch(e) {
         alert(e.toString());
       }
     },
@@ -1155,8 +1028,6 @@ qx.Class.define("inventario.window.AbmForm",
       inventario.widget.Form.resetInputs(this._formFields);
     },
 
-    /* remoteData podria ser Null si no hubo RPC y solo se esta yendo a una tabla */
-
     /**
      * TODOC
      *
@@ -1169,8 +1040,7 @@ qx.Class.define("inventario.window.AbmForm",
       var f = this.getSaveCallback();
       var obj = this.getSaveCallbackObj();
 
-      if (f)
-      {
+      if (f) {
         obj = (obj ? obj : this);
         f.call(obj, newData, remoteData);
       }
@@ -1189,13 +1059,6 @@ qx.Class.define("inventario.window.AbmForm",
       var tableObj = this.getUserData("table_obj");
       tableObj.addRows([ newRow ], -1);
     },
-
-    /*
-             * _getDataFromForm()
-             * @param remoteData
-             * @param handleParams
-             * @return  void
-             */
 
     /**
      * TODOC
@@ -1237,7 +1100,7 @@ qx.Class.define("inventario.window.AbmForm",
           }
           else
           {
-            alert("Error de config. en getDataFromForm");
+            alert(qx.locale.Manager.tr("Config error. in getDataFromForm"));
           }
         }
 
@@ -1257,20 +1120,18 @@ qx.Class.define("inventario.window.AbmForm",
      */
     _doAddHandlerTable : function(datos, tableObj)
     {
-      if (datos.add_form_url)
-      {
+      if (datos.add_form_url) {
         /*
-                	 * La tabla se cargar a partir de un nuevo formulario
-                	 */
-
+	 * La tabla se cargar a partir de un nuevo formulario
+	 */
         this.setUserData("add_form_url", datos.add_form_url);
         this.setUserData("tableObje", tableObj);
 
         /*
-                	 * WARNING
-                	 *  Dentro de este handler se hacen referencias a tableObj, tableObj habria que pasar como una propiedad
-                	 *  definida por usuario de getAddButton() y recuperar por ahi para no tener problemas con el scope dinamico
-                	 */
+	 * WARNING
+	 *  Dentro de este handler se hacen referencias a tableObj, tableObj habria que pasar como una propiedad
+	 *  definida por usuario de getAddButton() y recuperar por ahi para no tener problemas con el scope dinamico
+	 */
 
         tableObj.getAddButton().addListener("execute", function(e)
         {
@@ -1278,22 +1139,21 @@ qx.Class.define("inventario.window.AbmForm",
           add_form.setAskConfirmationOnClose(false);
 
           /* No establezco el callback...
-                    	     * Lo delego (al asociar una tabla al nuevo AbmForm) p/ el momento de obtener los datos */
+	   * Lo delego (al asociar una tabla al nuevo AbmForm) p/ el momento de obtener los datos */
 
           add_form.setUserData("table_obj", this.getUserData("tableObje"));
           add_form.setSaveColsMapping();
           var url = this.getUserData("add_form_url");
           add_form.setInitialDataUrl(url);
           add_form.show();
-        },
-        this);
-      }
-      else
-      {
-        /*
-                	 * La tabla se cargar a partir de un Abm2
-                	 */
+        }, this);
 
+      } else {
+
+        /*
+	 * La tabla se cargar a partir de un Abm2
+	 */
+	
         tableObj.setUserData("abm_option", datos.option);
 
         if (datos.vista) {
@@ -1317,10 +1177,7 @@ qx.Class.define("inventario.window.AbmForm",
     {
       this._verify_msg = "";
 
-      /* Should we ask the server to verify the data? */
-
-      if (this.getVerifySave())
-      {
+      if (this.getVerifySave()) {
         var updated = this._getDataFromFields(this._formFields);
         var payload = qx.util.Json.stringify(this.data);
         var data = { payload : payload };
@@ -1336,8 +1193,7 @@ qx.Class.define("inventario.window.AbmForm",
 
         inventario.transport.Transport.callRemote(opts, this);
       }
-      else
-      {
+      else {
         this._do_save_cb();
       }
     },
@@ -1367,8 +1223,6 @@ qx.Class.define("inventario.window.AbmForm",
       var pId = (this._remote_ids.length > 0 ? this._remote_ids : this._remote_id);
       this._saveFormData(this._editingFlag, this._formFields, pId);
     },
-
-    /* FIXME: esto esta roto.. */
 
     /**
      * TODOC

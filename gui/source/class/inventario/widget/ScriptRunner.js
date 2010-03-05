@@ -45,7 +45,7 @@ qx.Class.define("inventario.widget.ScriptRunner",
     {
       var scriptRunner = new inventario.widget.ScriptRunner(null);
       scriptRunner.setPage(page);
-      scriptRunner.setWindowTitle("Ejecutar Script");
+      scriptRunner.setWindowTitle(qx.locale.Manager.tr("Run Script"));
       scriptRunner.setUsePopup(true);
       scriptRunner.show();
     }
@@ -107,7 +107,7 @@ qx.Class.define("inventario.widget.ScriptRunner",
     {
       var layout = new qx.ui.container.Composite(new qx.ui.layout.VBox(5));
       var cbWidget = new qx.ui.form.SelectBox;
-      var runButton = new qx.ui.form.Button("Ejecutar", "inventario/16/no.png");
+      var runButton = new qx.ui.form.Button(qx.locale.Manager.tr("Run"), "inventario/16/no.png");
 
       inventario.widget.Form.loadComboBox(cbWidget, options, true);
       runButton.addListener("execute", this._runScript, this);

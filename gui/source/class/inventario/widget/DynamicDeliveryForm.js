@@ -172,7 +172,7 @@ qx.Class.define("inventario.widget.DynamicDeliveryForm",
      */
     _addFilterCheckBox : function()
     {
-      var filterCheckeBox = new qx.ui.form.CheckBox("Solo sin laptops");
+      var filterCheckeBox = new qx.ui.form.CheckBox(qx.locale.Manager.tr("Only without laptops"));
       filterCheckeBox.addListener("changeValue", this._loadForm, this);
       this._filterCheck = filterCheckeBox;
       return filterCheckeBox;
@@ -215,13 +215,13 @@ qx.Class.define("inventario.widget.DynamicDeliveryForm",
 
       var grid = new qx.ui.container.Composite(new qx.ui.layout.Grid(50, 50));
 
-      grid.add(new qx.ui.basic.Label("#Persona"),
+      grid.add(new qx.ui.basic.Label(qx.locale.Manager.tr("#Person")),
       {
         row    : 0,
         column : 0
       });
 
-      grid.add(new qx.ui.basic.Label("#Laptop"),
+      grid.add(new qx.ui.basic.Label(qx.locale.Manager.tr("#Laptop")),
       {
         row    : 0,
         column : 1
@@ -242,7 +242,7 @@ qx.Class.define("inventario.widget.DynamicDeliveryForm",
       var fields = new qx.ui.container.Composite(new qx.ui.layout.VBox());
       scrollContainer.add(fields);
 
-      var amountLabel = new qx.ui.basic.Label("Numero de alumnos: 0");
+      var amountLabel = new qx.ui.basic.Label(qx.locale.Manager.tr("Number of students: 0"));
       subMainVbox.add(amountLabel);
 
       this._fields = fields;
@@ -306,7 +306,7 @@ qx.Class.define("inventario.widget.DynamicDeliveryForm",
       }
 
       this._fields.add(grid);
-      this._amountLabel.set({ value : "Numero de alumnos: " + amount.toString() });
+      this._amountLabel.set({ value : qx.locale.Manager.tr("Number of students: ") + amount.toString() });
       this._amount = amount;
     },
 
@@ -341,7 +341,7 @@ qx.Class.define("inventario.widget.DynamicDeliveryForm",
         var text = textField.getValue();
 
         if (text.match(expresion) == null) {
-          alert(text + " no es un registro valido, verifiquelo.");
+          alert(text + qx.locale.Manager.tr(" registration is not valid, check."));
         }
       },
       this);

@@ -40,7 +40,7 @@ qx.Class.define("inventario.sistema.Logout",
       var mainHbox = new qx.ui.container.Composite(new qx.ui.layout.HBox(20));
       this.add(mainHbox);
 
-      var logoutButton = new qx.ui.form.Button("Logout", "qx/icon/Tango/22/actions/application-exit.png");
+      var logoutButton = new qx.ui.form.Button(qx.locale.Manager.tr("Logout"), "qx/icon/Tango/22/actions/application-exit.png");
       logoutButton.addListener("execute", this._doLogout, this);
       mainHbox.add(logoutButton);
       this.setLogoutButton(logoutButton);
@@ -83,7 +83,7 @@ qx.Class.define("inventario.sistema.Logout",
      */
     _doLogout : function()
     {
-      if (confirm("Desea salir del sistema?"))
+      if (confirm(qx.locale.Manager.tr("Are you sure you want to exit the system?")))
       {
         var hopts = {};
         hopts["url"] = this.getLogoutRequestUrl();

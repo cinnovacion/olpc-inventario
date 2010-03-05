@@ -15,9 +15,15 @@
 // 
 //                                                                          
 
-// TODO: esto deberia ser un Singleton (nose como se implmenta :( )
-//       Si esto es un singleton despues podemos acceder al desde todo el sistema
-//       y obtener info acerca del usuario autenticado
+/**********************************************************************************
+  TODO: esto deberia ser un Singleton (nose como se implmenta :( )
+        Si esto es un singleton despues podemos acceder al desde todo el sistema
+        y obtener info acerca del usuario autenticado
+ 
+  #ignore(hex_sha1)
+************************************************************************************/
+
+
 qx.Class.define("inventario.sistema.Login",
 {
   extend : qx.core.Object,
@@ -135,7 +141,7 @@ qx.Class.define("inventario.sistema.Login",
 
       //var revision_num = remoteData.info.app_revision;
       //var msg = "Bienvenido al Sistema (revision " + revision_num.toString() +  ")";
-      var msg = this.tr("Bienvenido al sistema");
+      var msg = qx.locale.Manager.tr("Welcome to the system");
 
       this.loginWindow(msg, lang_list);
     },
@@ -169,24 +175,21 @@ qx.Class.define("inventario.sistema.Login",
      */
     loginWindow : function(msg, lang_list)
     {
-      var win = new qx.ui.window.Window("Ingresar al Sistema", "qx/icon/Tango/16/status/dialog-password.png");
+      var win = new qx.ui.window.Window(qx.locale.Manager.tr("Login to the system"), "qx/icon/Tango/16/status/dialog-password.png");
       win.addListener("appear", function(e){ win.center();});
 
       win.setLayout(new qx.ui.layout.VBox(10));
       this.setWindow(win);
 
-      with (win)
-      {
-        setModal(true);
-        setShowClose(false);
-        setShowMaximize(false);
-        setShowMinimize(false);
-      }
+      win.setModal(true);
+      win.setShowClose(false);
+      win.setShowMaximize(false);
+      win.setShowMinimize(false);
 
       var vbox = new qx.ui.container.Composite(new qx.ui.layout.VBox(20));
 
       /* motivo de autenticacion */
-      var l = new qx.ui.basic.Label((msg && msg != "") ? msg : "Bienvenido al Sistema");
+      var l = new qx.ui.basic.Label((msg && msg != "") ? msg : qx.locale.Manager.tr("Welcome to the system"));
       vbox.add(l);
 
       /* grid */
@@ -194,19 +197,19 @@ qx.Class.define("inventario.sistema.Login",
       var container = new qx.ui.container.Composite(gl);
 
       /* datos p/ ingresar */
-      var userLabel = new qx.ui.basic.Label("Usuario");
+      var userLabel = new qx.ui.basic.Label(qx.locale.Manager.tr("Username"));
       container.add(userLabel, {row: 0, column: 0});
       var userName = new qx.ui.form.TextField;
       this.setNameField(userName);
       container.add(userName, {row: 0, column: 1});
 
-      var passwdLabel = new qx.ui.basic.Label("Password");
+      var passwdLabel = new qx.ui.basic.Label(qx.locale.Manager.tr("Password"));
       container.add(passwdLabel, {row: 1, column: 0});
       var passwdInput = new qx.ui.form.PasswordField;
       this.setPasswordField(passwdInput);
       container.add(passwdInput, {row: 1, column: 1});
 
-      var langLabel = new qx.ui.basic.Label("Idioma");
+      var langLabel = new qx.ui.basic.Label(qx.locale.Manager.tr("Language"));
       container.add(langLabel, {row: 2, column: 0});
       var langCombo = new qx.ui.form.SelectBox;
       inventario.widget.Form.loadComboBox(langCombo, lang_list, true);
@@ -221,7 +224,7 @@ qx.Class.define("inventario.sistema.Login",
       var spacer = new qx.ui.core.Spacer(30, 40);
       hbox.add(spacer, { flex : 1 });
 
-      var bLogin = new qx.ui.form.Button("Ingresar");
+      var bLogin = new qx.ui.form.Button(qx.locale.Manager.tr("Login"));
       bLogin.addListener("execute", this._login_cb, this);
       hbox.add(bLogin, { flex : 2 });
 
@@ -278,8 +281,8 @@ qx.Class.define("inventario.sistema.Login",
 	if (passwd && passwd.toString().length > 0) {
 	  /* todo bien */
 	  errorMsg = "";
-	} else { errorMsg = "Ingrese correctamente su Password";  }
-      } else { errorMsg = "Ingrese correctamente su Usuario"; }
+	} else { errorMsg = qx.locale.Manager.tr("Check password entry");  }
+      } else { errorMsg = qx.locale.Manager.tr("Check username entry"); }
 
       if (errorMsg && errorMsg != "") {
 	var f = function() {};
@@ -288,12 +291,11 @@ qx.Class.define("inventario.sistema.Login",
       }
 
       this.setUserName(userName);
-      var data =
-	{
-	  username : userName,
-	  password : hex_sha1(passwd.toString()),
-    lang : lang
-	};
+      var data = {
+	username : userName,
+	password : hex_sha1(passwd.toString()),
+	lang : lang
+      };
 
       var url = this.getLoginUrl();
 

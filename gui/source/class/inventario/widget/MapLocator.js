@@ -14,10 +14,35 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 //
-// MapLocator.js
-// Implementation of Google Map API.
-// Author: Martin Abente (tincho_02@hotmail.com | mabente@paraguayeduca.org)
-// Paraguay Educa 2009
+
+
+
+
+/**********************************************************************************
+  MapLocator.js
+  Implementation of Google Map API.
+  Author: Martin Abente (tincho_02@hotmail.com | mabente@paraguayeduca.org)
+  Paraguay Educa 2009
+
+  #ignore(google)
+  #ignore(GBrowserIsCompatible)
+  #ignore(GSize)
+  #ignore(GMapUIOptions)
+  #ignore(GMap2)
+  #ignore(GLatLng)
+  #ignore(G_HYBRID_MAP)
+  #ignore(GEvent)
+  #ignore(GMarker)
+  #ignore(GIcon)
+  #ignore(GPoint)
+  #ignore(GBrowserIsCompatible)
+************************************************************************************/
+
+
+
+
+
+
 qx.Class.define("inventario.widget.MapLocator",
 {
   extend : inventario.window.AbstractWindow,
@@ -350,8 +375,7 @@ qx.Class.define("inventario.widget.MapLocator",
 
       map_embed.addListenerOnce("appear", function(e)
       {
-        if (GBrowserIsCompatible())
-        {
+        if (GBrowserIsCompatible()) {
           var dom_element = map_embed.getContentElement().getDomElement();
           var size = new GSize(width, height);
           var uiOptions = new GMapUIOptions(size);
@@ -361,7 +385,7 @@ qx.Class.define("inventario.widget.MapLocator",
           map.setMapType(G_HYBRID_MAP);
           this._map = map;
 
-          nLen = mapDesc.nodes.length;
+          var nLen = mapDesc.nodes.length;
 
           for (var i=0; i<nLen; i++) {
             map.addOverlay(this._createMarker(mapDesc.nodes[i]));
@@ -509,26 +533,26 @@ qx.Class.define("inventario.widget.MapLocator",
     {
       var container = new qx.ui.container.Composite(new qx.ui.layout.Grid());
 
-      var typeLabel = new qx.ui.basic.Label("Tipo:");
+      var typeLabel = new qx.ui.basic.Label(qx.locale.Manager.tr("Type:"));
       var typeCombo = new qx.ui.form.SelectBox;
       inventario.widget.Form.loadComboBox(typeCombo, nodeTypes, true);
 
-      var nodeLabel = new qx.ui.basic.Label("Nodo:");
+      var nodeLabel = new qx.ui.basic.Label(qx.locale.Manager.tr("Node:"));
       var nodeText = new qx.ui.form.TextField();
 
-      var latLabel = new qx.ui.basic.Label("Latitud:");
+      var latLabel = new qx.ui.basic.Label(qx.locale.Manager.tr("Latitude:"));
       var latText = new qx.ui.form.TextField();
 
-      var lngLabel = new qx.ui.basic.Label("Longitud");
+      var lngLabel = new qx.ui.basic.Label(qx.locale.Manager.tr("Longitude"));
       var lngText = new qx.ui.form.TextField();
 
-      var heightLabel = new qx.ui.basic.Label("Altura");
+      var heightLabel = new qx.ui.basic.Label(qx.locale.Manager.tr("Height"));
       var heightText = new qx.ui.form.TextField();
 
-      var ipLabel = new qx.ui.basic.Label("Direccion Ip");
+      var ipLabel = new qx.ui.basic.Label(qx.locale.Manager.tr("Ip Address"));
       var ipText = new qx.ui.form.TextField();
 
-      var addButton = new qx.ui.form.Button("Agregar Nodo");
+      var addButton = new qx.ui.form.Button(qx.locale.Manager.tr("Add Node"));
 
       addButton.addListener("execute", function(e)
       {
@@ -541,7 +565,7 @@ qx.Class.define("inventario.widget.MapLocator",
       },
       this);
 
-      var delButton = new qx.ui.form.Button("Borrar Nodo");
+      var delButton = new qx.ui.form.Button(qx.locale.Manager.tr("Delete Node"));
 
       delButton.addListener("execute", function(e)
       {
@@ -551,7 +575,7 @@ qx.Class.define("inventario.widget.MapLocator",
       },
       this);
 
-      var updateButton = new qx.ui.form.Button("Actualizar");
+      var updateButton = new qx.ui.form.Button(qx.locale.Manager.tr("Update"));
 
       updateButton.addListener("execute", function(e)
       {
@@ -569,12 +593,12 @@ qx.Class.define("inventario.widget.MapLocator",
           }
           else
           {
-            alert("No puede actualizar un nodo recien creado.");
+            alert(qx.locale.Manager.tr("Cannot upgrade a newly created node."));
           }
         }
         else
         {
-          alert("Nada que actualizar.");
+          alert(qx.locale.Manager.tr("Nothing to update."));
         }
       },
       this);
@@ -763,7 +787,7 @@ qx.Class.define("inventario.widget.MapLocator",
     {
       var node = remoteData.node;
       this._map.addOverlay(this._createMarker(node));
-      alert("El nodo " + node.name + " ha sido actualizado.");
+      alert(qx.locale.Manager.tr("The node ") + node.name + qx.locale.Manager.tr(" has been updated."));
     },
 
     // These functions are necesary for auto-refresh mode.
@@ -787,7 +811,7 @@ qx.Class.define("inventario.widget.MapLocator",
       }
       else
       {
-        alert("Auto-refresh requires read-only mode.");
+        alert(qx.locale.Manager.tr("Auto-refresh requires read-only mode."));
       }
     },
 
@@ -805,7 +829,7 @@ qx.Class.define("inventario.widget.MapLocator",
         if (time >= 10000) {
           this._timer.restartWith(time);
         } else {
-          alert("El tiempo minimo de actualizacion de 10 segundos.");
+          alert(qx.locale.Manager.tr("The minimum update time of 10 seconds."));
         }
       }
     },

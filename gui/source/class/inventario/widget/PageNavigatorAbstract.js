@@ -196,7 +196,7 @@ qx.Class.define("inventario.widget.PageNavigatorAbstract",
             var hbox = new qx.ui.layout.HorizontalBoxLayout;
             hbox.setHorizontalChildrenAlign("left");
 
-            var bPrev = new qx.ui.form.Button("Anterior", "icon/16/actions/go-previous.png");
+            var bPrev = new qx.ui.form.Button(qx.locale.Manager.tr("Previous"), "icon/16/actions/go-previous.png");
 
             bPrev.addListener("execute", function(e)
             {
@@ -220,7 +220,7 @@ qx.Class.define("inventario.widget.PageNavigatorAbstract",
 
             hbox.add(bPrev);
 
-            var bNext = new qx.ui.form.Button("Siguiente", "icon/16/actions/go-next.png");
+            var bNext = new qx.ui.form.Button(qx.locale.Manager.tr("Next"), "icon/16/actions/go-next.png");
 
             bNext.addListener("execute", function(e)
             {
@@ -300,7 +300,7 @@ qx.Class.define("inventario.widget.PageNavigatorAbstract",
 
           /* debugging */
 
-          if (this.debug) inventario.window.Mensaje.mensaje("Fila " + i + " esta seleccionada");
+          if (this.debug) inventario.window.Mensaje.mensaje(qx.locale.Manager.tr("Row ") + i + qx.locale.Manager.tr(" is selected"));
 
           /*
                      * Warning: esto es una limitacion.. identificamos las filas por el valor de la primera columna, deberiamos

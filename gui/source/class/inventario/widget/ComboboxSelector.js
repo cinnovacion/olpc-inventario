@@ -80,7 +80,7 @@ qx.Class.define("inventario.widget.ComboboxSelector",
       // testing
       if (this.getDebug())
       {
-        var but = new qx.ui.form.Button("Ver seleccion");
+        var but = new qx.ui.form.Button(qx.locale.Manager.tr("View Selections "));
         but.addListener("execute", this._view_selection_cb, this);
 
         gl.add(but,
@@ -148,7 +148,7 @@ qx.Class.define("inventario.widget.ComboboxSelector",
     _view_selection_cb : function(e)
     {
       var v = this.getSelectedValue();
-      alert("Mira: " + v.toString());
+      alert(qx.locale.Manager.tr("See: ") + v.toString());
     }
   }
 });

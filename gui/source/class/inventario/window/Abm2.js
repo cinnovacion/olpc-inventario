@@ -94,7 +94,7 @@ qx.Class.define("inventario.window.Abm2",
     }
     catch(e)
     {
-      alert("Falta un parametro en el hash de urls! " + e.toString());
+      alert(qx.locale.Manager.tr("Missing parameter in urls hash! ") + e.toString());
     }
 
     if (typeof (title) != "undefined") this.setTitle(title);
@@ -139,7 +139,7 @@ qx.Class.define("inventario.window.Abm2",
     title :
     {
       check : "String",
-      init  : "Buscador"
+      init  : qx.locale.Manager.tr("Search")
     },
 
     selectionOptions :
@@ -269,7 +269,7 @@ qx.Class.define("inventario.window.Abm2",
     searchButtonText :
     {
       check : "String",
-      init  : "Buscar"
+      init  : qx.locale.Manager.tr("Search")
     },
 
     searchButton : { check : "Object" },
@@ -301,7 +301,7 @@ qx.Class.define("inventario.window.Abm2",
     chooseButtonText :
     {
       check : "String",
-      init  : "Elegir"
+      init  : qx.locale.Manager.tr("Choose")
     },
 
     chooseButtonIcon :
@@ -422,7 +422,7 @@ qx.Class.define("inventario.window.Abm2",
     arrayButtonText :
     {
       check : "Object",
-      init  : "Agregar"
+      init  : qx.locale.Manager.tr("Add")
     },
 
     arrayButtonIcon :
@@ -486,7 +486,7 @@ qx.Class.define("inventario.window.Abm2",
     title :
     {
       check : "String",
-      init  : "Listado"
+      init  : qx.locale.Manager.tr("Listing")
     },
 
     abmFormCloseAfterInsert :
@@ -515,38 +515,28 @@ qx.Class.define("inventario.window.Abm2",
      */
     show : function()
     {
-      if (this.prepared)
-      {
-
-        /* Habria que cerar widgets antes de empezar */
-
+      if (this.prepared) {
         this._doShow();
 
         if (this.getRefreshOnShow()) {
           this._navegar();
         }
-      }
-      else
-      {
-
-        /* traer datos y preparar widgets */
+      } else {
 
         this._createInputs();
         this._setHandlers();
         this._createLayout();
         this._loadInitialData();
-        /* {@crodas} {{{ */
-        /* Load default scope ID */
-        scope_id = inventario.window.Abm2SetScope.getInstance().getScope();
+    
+        var scope_id = inventario.window.Abm2SetScope.getInstance().getScope();
         if (scope_id > 0) {
-            /* If there is some scope, set it and get out of the function
-             * because the setVista function checker it's going to 
-             * load the initial data.
-             */
-            this.setVista("scope_" + scope_id);
-            return; 
+	  /* If there is some scope, set it and get out of the function
+	   * because the setVista function checker it's going to 
+	   * load the initial data.
+	   */
+	  this.setVista("scope_" + scope_id);
+	  return; 
         }
-        /* }}} */
       }
     },
 
@@ -641,28 +631,28 @@ qx.Class.define("inventario.window.Abm2",
                    * Botones de Navegacion
                    */
 
-      var bFirst = new qx.ui.form.Button("Primera Pagina", "qx/icon/Tango/16/actions/go-previous.png");
+      var bFirst = new qx.ui.form.Button(qx.locale.Manager.tr("First Page "), "qx/icon/Tango/16/actions/go-previous.png");
 
       /* Se deshabilita el boton << porque al comienzo estamos en la primera pagina */
 
       bFirst.setEnabled(false);
       this.setFirstButton(bFirst);
 
-      var bPrev = new qx.ui.form.Button("Anterior", "qx/icon/Tango/16/actions/go-previous.png");
+      var bPrev = new qx.ui.form.Button(qx.locale.Manager.tr("Previous"), "qx/icon/Tango/16/actions/go-previous.png");
 
       /* Se deshabilita el boton < porque al comienzo estamos en la primera pagina */
 
       bPrev.setEnabled(false);
       this.setPrevButton(bPrev);
 
-      var bNext = new qx.ui.form.Button("Siguiente", "qx/icon/Tango/16/actions/go-next.png");
+      var bNext = new qx.ui.form.Button(qx.locale.Manager.tr("Next"), "qx/icon/Tango/16/actions/go-next.png");
 
       /* Se deshabilita el boton >, despues e habilitara si el numero de paginas encontrados > 1 */
 
       bNext.setEnabled(false);
       this.setNextButton(bNext);
 
-      var bLast = new qx.ui.form.Button("Ultima Pagina", "qx/icon/Tango/16/actions/go-next.png");
+      var bLast = new qx.ui.form.Button(qx.locale.Manager.tr("Last Page"), "qx/icon/Tango/16/actions/go-next.png");
 
       /* Se deshabilita el boton >>, despues e habilitara si el numero de paginas encontrados > 1 */
 
@@ -679,7 +669,7 @@ qx.Class.define("inventario.window.Abm2",
         {
           type            : "button",
           icon            : "excel",
-          text            : "Exportar",
+          text            : qx.locale.Manager.tr("Export"),
           callBackFunc    : f,
           callBackContext : this
         };
@@ -702,7 +692,7 @@ qx.Class.define("inventario.window.Abm2",
         {
           type            : "button",
           icon            : "add",
-          text            : "Agregar",
+          text            : qx.locale.Manager.tr("Add"),
           tooltip         : "Ctrl+A",
           accel_keyboard  : "Control+A",
           callBackFunc    : f,
@@ -719,7 +709,7 @@ qx.Class.define("inventario.window.Abm2",
         {
           type            : "button",
           icon            : "edit_pen",
-          text            : "Modificar",
+          text            : qx.locale.Manager.tr("Edit"),
           tooltip         : "Ctrl+M",
           accel_keyboard  : "Control+M",
           callBackFunc    : this._modify,
@@ -736,7 +726,7 @@ qx.Class.define("inventario.window.Abm2",
         {
           type            : "button",
           icon            : "dictionary",
-          text            : "Detalles",
+          text            : qx.locale.Manager.tr("Details"),
           tooltip         : "Ctrl+D",
           accel_keyboard  : "Control+D",
           callBackFunc    : this._details,
@@ -779,7 +769,7 @@ qx.Class.define("inventario.window.Abm2",
               var necesita_seleccion = (len_seleccion == 0 || self.getArrayButtonUsesSelected()[i]);
 
               if (necesita_seleccion && filasSeleccionadas.length == 0) {
-                inventario.window.Mensaje.mensaje("Debe seleccionar una fila al menos.");
+                inventario.window.Mensaje.mensaje(qx.locale.Manager.tr("You must select at least one row."));
               }
               else
               {
@@ -836,7 +826,7 @@ qx.Class.define("inventario.window.Abm2",
             var necesita_seleccion = but.getUserData("uses_selected");
 
             if (necesita_seleccion && filasSeleccionadas.length == 0) {
-              inventario.window.Mensaje.mensaje("Debe seleccionar una fila al menos.");
+              inventario.window.Mensaje.mensaje(qx.locale.Manager.tr("You must select at least one row."));
             }
             else
             {
@@ -866,7 +856,7 @@ qx.Class.define("inventario.window.Abm2",
           icon            : this.getChooseButtonIcon(),
           text            : t,
           callBackFunc    : f,
-          tooltip         : "Enter",
+          tooltip         : qx.locale.Manager.tr("Enter"),
           callBackContext : this
         };
 
@@ -883,7 +873,7 @@ qx.Class.define("inventario.window.Abm2",
         {
           type            : "button",
           icon            : "delete2",
-          text            : "Eliminar",
+          text            : qx.locale.Manager.tr("Remove"),
           tooltip         : "Ctrl+E",
           accel_keyboard  : "Control+E",
           callBackFunc    : this._deleteRows,
@@ -909,7 +899,7 @@ qx.Class.define("inventario.window.Abm2",
         {
           type            : "button",
           icon            : "exit",
-          text            : "Cerrar",
+          text            : qx.locale.Manager.tr("Close"),
           callBackFunc    : f,
           callBackContext : this
         };
@@ -1054,7 +1044,7 @@ qx.Class.define("inventario.window.Abm2",
       var gl = new qx.ui.layout.Grid();
       var container = new qx.ui.container.Composite(gl);
 
-      var label = new qx.ui.basic.Label("Criterio de Busqueda: ");
+      var label = new qx.ui.basic.Label(qx.locale.Manager.tr("Search Criteria: "));
 
       container.add(label,
       {
@@ -1068,7 +1058,7 @@ qx.Class.define("inventario.window.Abm2",
         column : 1
       });
 
-      var label = new qx.ui.basic.Label("Cadena de Busqueda: ");
+      var label = new qx.ui.basic.Label(qx.locale.Manager.tr("Search string: "));
 
       container.add(label,
       {
@@ -1094,7 +1084,7 @@ qx.Class.define("inventario.window.Abm2",
         column : 5
       });
 
-      container.add(new qx.ui.basic.Label("Por pag.:"),
+      container.add(new qx.ui.basic.Label(qx.locale.Manager.tr("Per page.:")),
       {
         row    : 0,
         column : 6
@@ -1440,7 +1430,7 @@ qx.Class.define("inventario.window.Abm2",
      */
     _addRowHandler : function(filaAgregada, remoteData)
     {
-      var msg = (remoteData["msg"] ? remoteData["msg"] : " Fila agregada ");
+      var msg = (remoteData["msg"] ? remoteData["msg"] : qx.locale.Manager.tr(" Added row "));
       inventario.window.Mensaje.mensaje(msg);
 
       if (remoteData["id"])
@@ -1510,7 +1500,7 @@ qx.Class.define("inventario.window.Abm2",
       var table = this.getResultsGrid();
       var ids = inventario.widget.Table.getSelected2(table, [ 0 ], true);
 
-      if (ids.length > 0 && confirm("Eliminar elementos seleccionados"))
+      if (ids.length > 0 && confirm(qx.locale.Manager.tr("Delete selected items")))
       {
         var payload = qx.util.Json.stringify(ids);
         var data = { payload : payload };
@@ -1543,7 +1533,7 @@ qx.Class.define("inventario.window.Abm2",
      */
     _deleteRowsResp : function(remoteData, handleParams)
     {
-      var msg = (remoteData["msg"] ? remoteData["msg"] : " Fila borrada ");
+      var msg = (remoteData["msg"] ? remoteData["msg"] : qx.locale.Manager.tr(" Deleted row "));
       inventario.window.Mensaje.mensaje(msg);
       this._navegar();
     },
@@ -1583,7 +1573,7 @@ qx.Class.define("inventario.window.Abm2",
       if (ids.length > 0) {
         this._addRow(ids, false);
       } else {
-        inventario.window.Mensaje.mensaje("Debe seleccionar una fila");
+        inventario.window.Mensaje.mensaje(qx.locale.Manager.tr("You must select a row"));
       }
     },
 
@@ -1601,7 +1591,7 @@ qx.Class.define("inventario.window.Abm2",
       if (ids.length > 0) {
         this._addRow(ids[0], true);
       } else {
-        inventario.window.Mensaje.mensaje("Debe seleccionar una fila");
+        inventario.window.Mensaje.mensaje(qx.locale.Manager.tr("You must select a row"));
       }
     },
 
@@ -1613,8 +1603,8 @@ qx.Class.define("inventario.window.Abm2",
      */
     _showPageNumber : function()
     {
-      var cadena = "Visualizando pagina de resultados: " + this._pages + " de " + this._numPages;
-      var cadena2 = "Cantidad de resultados encontrados: " + this.getResults();
+      var cadena = qx.locale.Manager.tr("Displaying Results page: ") + this._pages + qx.locale.Manager.tr(" of ") + this._numPages;
+      var cadena2 = qx.locale.Manager.tr("Number of results found: ") + this.getResults();
       this.getBoxCurrentPage().removeAll();
       this.getBoxCurrentPage().add(new qx.ui.basic.Label(cadena2));
       this.getBoxCurrentPage().add(new qx.ui.basic.Label(cadena));
@@ -1963,12 +1953,12 @@ qx.Class.define("inventario.window.Abm2",
             }
             else
             {
-              inventario.window.Mensaje.mensaje("Contacte con el Administrador del Sistema :: Error de Configuracion");
+              inventario.window.Mensaje.mensaje(qx.locale.Manager.tr("Contact the System Administrator: Configuration Error"));
             }
           }
           catch(e)
           {
-            inventario.window.Mensaje.mensaje("Abm2, CreateInput en Choose Button\n" + e);
+            inventario.window.Mensaje.mensaje(qx.locale.Manager.tr("Abm2, Choose Button CreateInput in\n") + e);
           }
         }
         else
@@ -1993,7 +1983,7 @@ qx.Class.define("inventario.window.Abm2",
       }
       else
       {
-        inventario.window.Mensaje.mensaje("Debe seleccionar una fila al menos.");
+        inventario.window.Mensaje.mensaje(qx.locale.Manager.tr("You must select at least one row."));
       }
     },
 
@@ -2039,7 +2029,7 @@ qx.Class.define("inventario.window.Abm2",
       var titulos;
       var datos;
 
-      if (confirm("Exportar solo columnas visibles?"))
+      if (confirm(qx.locale.Manager.tr("Export only visible columns?")))
       {
         datos = inventario.widget.Table.getVisibleData(this.getResultsGrid());
         titulos = inventario.widget.Table.getVisibleColumnNames(this.getResultsGrid());

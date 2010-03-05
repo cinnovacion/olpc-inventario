@@ -107,7 +107,7 @@ qx.Class.define("inventario.widget.DataImporter",
     _doShow : function()
     {
       this._doShow2(this.getVerticalBox());
-      this.setWindowTitle("Data Importer");
+      this.setWindowTitle(qx.locale.Manager.tr("Data Importer"));
     },
 
 
@@ -148,7 +148,7 @@ qx.Class.define("inventario.widget.DataImporter",
       var uploadForm = new uploadwidget.UploadForm('uploadForm', this.getSaveUrl());  // ?????
       uploadForm.setLayout(new qx.ui.layout.Basic);
 
-      var file = new uploadwidget.UploadField('data', 'Examinar', 'icon/16/actions/document-save.png');
+      var file = new uploadwidget.UploadField('data', qx.locale.Manager.tr("Browse"), 'icon/16/actions/document-save.png');
 
       uploadForm.add(file,
       {
@@ -158,7 +158,7 @@ qx.Class.define("inventario.widget.DataImporter",
 
       this.setFileUploadWidget(uploadForm);
 
-      var button = new qx.ui.toolbar.Button("Importar", "inventario/22/adobe-reader.png");
+      var button = new qx.ui.toolbar.Button(qx.locale.Manager.tr("Import"), "inventario/22/adobe-reader.png");
       button.addListener("execute", this._import_cb, this);
 
       mainVBox.add(this._modelsCombo);
@@ -240,7 +240,7 @@ qx.Class.define("inventario.widget.DataImporter",
      */
     _import_cb_resp : function(remoteData, handleParams)
     {
-      var msg = (remoteData["msg"] ? remoteData["msg"] : " Datos importados correctamente. ");
+      var msg = (remoteData["msg"] ? remoteData["msg"] : qx.locale.Manager.tr(" Data successfully imported."));
       inventario.window.Mensaje.mensaje(msg);
     }
   }

@@ -191,14 +191,14 @@ qx.Class.define("inventario.widget.NodeTracker",
     {
       var hbox = new qx.ui.container.Composite(new qx.ui.layout.HBox(20));
 
-      var placesLabel = new qx.ui.basic.Label("Localidad: ");
+      var placesLabel = new qx.ui.basic.Label(qx.locale.Manager.tr("Location: "));
 
       var placesCombo = new qx.ui.form.SelectBox;
       inventario.widget.Form.loadComboBox(placesCombo, places, true);
       placesCombo.addListener("changeSelection", this._updatePlaceId, this);
 
       var default_time = 60 * 2;
-      var refreshLabel = new qx.ui.basic.Label("Actualizar en (Segundos): ");
+      var refreshLabel = new qx.ui.basic.Label(qx.locale.Manager.tr("Update on (Seconds): "));
       var refrehText = new qx.ui.form.TextField(default_time.toString());
 
       var resetButton = new qx.ui.form.Button("Reset");

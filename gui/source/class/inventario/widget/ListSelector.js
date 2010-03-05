@@ -138,7 +138,7 @@ qx.Class.define("inventario.widget.ListSelector",
     _view_selection_cb : function(e)
     {
       var v = this.getSelectedValue();
-      alert("Mira: " + v.toString());
+      alert(qx.locale.Manager.tr("See: ") + v.toString());
     }
   }
 });

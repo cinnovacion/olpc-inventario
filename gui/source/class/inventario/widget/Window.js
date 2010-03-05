@@ -1,4 +1,3 @@
-
 //     Copyright Paraguay Educa 2009
 //
 //     This program is free software: you can redistribute it and/or modify
@@ -16,22 +15,13 @@
 //
 //
 // Window.js
-// fecha: 2006-12-01
-// autor: Raul Gutierrez S. - rgs@fuzzylogic.com.py
+// author: Raul Gutierrez S. - rgs@paraguayeduca.org
 //
-// popups
+
 qx.Class.define("inventario.widget.Window",
 {
   extend : qx.core.Object,
 
-
-
-
-  /*
-      *****************************************************************************
-         CONSTRUCTOR
-      *****************************************************************************
-      */
 
   construct : function(param)
   {
@@ -71,26 +61,12 @@ qx.Class.define("inventario.widget.Window",
     win.setLayout(new qx.ui.layout.VBox(10));
     this.setWindow(win);
 
-    /*
-             * Al cerrar la ventana se vuelven a habilitar los accesos directos (Ctrl+F1, F1, etc.)
-             */
-
-    win.addListener("disappear", function(e)
-    {
-      var msg = new qx.event.message.Message("accesos_principales", true);
-      qx.event.message.Bus.dispatch(msg);
-    },
-    this);
-
-    with (win)
-    {
-      var width = this.getWidth();
-      var height = this.getHeight();
-      setMinWidth(width);
-      setMinHeight(height);
-      setShowClose(true);
-      setShowMaximize(false);
-    }
+    var width = this.getWidth();
+    var height = this.getHeight();
+    win.setMinWidth(width);
+    win.setMinHeight(height);
+    win.setShowClose(true);
+    win.setShowMaximize(false);
 
     var vbox = new qx.ui.container.Composite(new qx.ui.layout.VBox(20));
     this.setVbox(vbox);
@@ -100,19 +76,8 @@ qx.Class.define("inventario.widget.Window",
 
 
 
-
-  /*
-      *****************************************************************************
-         PROPERTIES
-      *****************************************************************************
-      */
-
   properties :
   {
-    /*
-             * Propiedades
-             */
-
     window :
     {
       check    : "Object",
@@ -139,9 +104,6 @@ qx.Class.define("inventario.widget.Window",
       init  : 200
     },
 
-    /* A traves de un objeto relacionado (con metodo show!) se permite usar clases de pantalla
-             * (tipo ABMs,navegadores,etc.) dentro de un popup */
-
     relatedObj :
     {
       check    : "Object",
@@ -161,10 +123,6 @@ qx.Class.define("inventario.widget.Window",
       init  : "icon/22/actions/document-new.png"
     },
 
-    /*
-             *  Callbacks
-             */
-
     onCloseCallBack :
     {
       check    : "Function",
@@ -181,14 +139,6 @@ qx.Class.define("inventario.widget.Window",
   },
 
 
-
-
-  /*
-      *****************************************************************************
-         MEMBERS
-      *****************************************************************************
-      */
-
   members :
   {
     /**
@@ -201,15 +151,6 @@ qx.Class.define("inventario.widget.Window",
     {
       var win = this.getWindow();
       if (title) win.setCaption(title);
-
-      // this.getRoot().add(win);
-      /*
-                   * asociar eventos
-                   */
-
-      /* Callback al cerrar la venta
-                   * - porque esto esta aca??
-                   */
 
       var func = this.getOnCloseCallBack();
 
@@ -227,29 +168,17 @@ qx.Class.define("inventario.widget.Window",
             huboCambios = obj.getSavedChanges();
           }
 
-          /* huboCambios es un boolean */
-
           func.call(contexto, huboCambios);
         };
 
         win.addListener("disappear", f, contexto);
       }
 
-      /* setear size */
-
-      with (win)
-      {
-        var width = this.getWidth();
-        var height = this.getHeight();
-        setMinWidth(width);
-        setMinHeight(height);
-        open();
-      }
-
-      /* Bloquear accesos directos */
-
-      var msg = new qx.event.message.Message("accesos_principales", false);
-      qx.event.message.Bus.dispatch(msg);
+      var width = this.getWidth();
+      var height = this.getHeight();
+      win.setMinWidth(width);
+      win.setMinHeight(height);
+      win.open();
     }
   }
 });

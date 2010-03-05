@@ -62,7 +62,7 @@ qx.Class.define("inventario.window.Abm2Extensions",
       abm2.setShowDeleteButton(options.destroy);
       abm2.setUsePopup(options.popup);
 
-      for (i in options.custom) {
+      for (var i in options.custom) {
         abm2.getToolBarButtons().push(inventario.window.Abm2Extensions.customAbmFormButton(options.custom[i], context));
       }
 

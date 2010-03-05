@@ -42,9 +42,9 @@ qx.Class.define("inventario.widget.DateRange",
       var desde = new qx.ui.form.DateField();
       var hasta = new qx.ui.form.DateField();
 
-      this.add(new qx.ui.basic.Label(" Desde: "));
+      this.add(new qx.ui.basic.Label(qx.locale.Manager.tr(" From: ")));
       this.add(desde);
-      this.add(new qx.ui.basic.Label(" Hasta: "));
+      this.add(new qx.ui.basic.Label(qx.locale.Manager.tr(" Until: ")));
       this.add(hasta);
 
       this.setHasta(hasta);
