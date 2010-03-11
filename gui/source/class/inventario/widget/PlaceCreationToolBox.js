@@ -203,17 +203,18 @@ qx.Class.define("inventario.widget.PlaceCreationToolBox",
 
           var place_name = "";
           if (customName != null){
-            var aux_name = customName.getValue();
-            if (aux_name != null){
-              place_name = aux_name.toString();
-            }
+            var aux_name  = customName.getValue();
+	    if (aux_name != null && aux_name != ""){
+	    	place_name = aux_name;
+	    }
           }
 
+	  //Not redundant!
           if (place_name.length == 0) {
-            place_name = comboBox.getSelection()[0].getLabel();
-          }
+              place_name = comboBox.getSelection()[0].getLabel();
+	  } 
 
-	  if (comboBox.getUserData("encoded_value")) {
+	  if (customType == null && comboBox.getUserData("encoded_value")) {
 	    data.place_type = data.place_type.split("_")[1];
 	  }
 
