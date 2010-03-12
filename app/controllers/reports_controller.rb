@@ -246,7 +246,7 @@ class ReportsController < SearchController
     @output["widgets"] = Array.new
     @output["widgets"].push(dateRange())
     @output["widgets"].push(hierarchy(_("Belong to")))
-    @output["widgets"].push(checkBoxSelector(_("Problems"), buildCheckHash(ProblemType,"getName"),1))
+    @output["widgets"].push(checkBoxSelector(_("Problems"), buildCheckHash(ProblemType,"getName"),2))
     @output["print_method"] = "problems_per_grade"
   end
 

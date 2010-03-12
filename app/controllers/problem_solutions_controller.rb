@@ -102,7 +102,7 @@ class ProblemSolutionsController < SearchController
     h = { "label" => _("Report"), "datatype" => "select", "options" => [], "option" => "problem_reports", "text_value" => true }
     @output["fields"].push(h)
 
-    h = { "label" => _("Serial \# of repair part"), "datatype" => "textfield" }
+    h = { "label" => _("Serial \# of replacement laptop"), "datatype" => "textfield" }
     @output["fields"].push(h)
 
     h = { "label" => _("Comments"), "datatype" => "textarea","width" => 250, "height" => 50 }

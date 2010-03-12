@@ -288,7 +288,6 @@ class SistemaController < ApplicationController
 
   def getMenuInventoryConfig
     menu_option = genOption(_("Configuration"))
-    menu_option[:elements].push(genElement(_("Import data"), "data_importer"))
     menu_option[:elements].push(getMenuListAndCreate("modelos", _("Laptop models")))
     menu_option[:elements].push(getMenuListAndCreate("movement_types", _("Movement types")))
     menu_option[:elements].push(getMenuListAndCreate("statuses", _("Status types")))
@@ -379,6 +378,7 @@ class SistemaController < ApplicationController
 
   def getMenuSystemConfig
     menu_option = genOption(_("Administrator's configuration"))
+    menu_option[:elements].push(genElement(_("Import data"), "data_importer"))
     menu_option[:elements].push(getMenuListAndCreate("notification_subscribers", _("Notification suscriptions")))
     menu_option[:elements].push(getMenuListAndCreate("users", _("Users")))
     menu_option

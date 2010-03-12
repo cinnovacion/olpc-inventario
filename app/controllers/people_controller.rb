@@ -104,10 +104,10 @@ class PeopleController < SearchController
       ]
     } if p
 
-    h = { "label" => "Place", "datatype" => "hierarchy_on_demand", "options" => { "width" => 360, "height" => 50 }}
+    h = { "label" => "Place", "datatype" => "hierarchy_on_demand", "options" => { "width" => 360, "height" => 50 }, :hash_data_tag => "place_id"}
     options.push(h)
 
-    h = { "label" => "Profile", "datatype" => "combobox", "options" => profiles }
+    h = { "label" => "Profile", "datatype" => "combobox", "options" => profiles, :hash_data_tag => "profile_id" }
     options.push(h)
 
     h = {"label" => "", "datatype" => "dyntable", :widths => [320,160], "options" => options}
@@ -145,7 +145,7 @@ class PeopleController < SearchController
     attribs[:phone] = data_fields.pop
     attribs[:cell_phone] = data_fields.pop
     attribs[:email] = data_fields.pop    
-    performs = data_fields.pop.map { |perform| perform.values }
+    performs = data_fields.pop.map { |perform| [ perform["place_id"], perform["profile_id"] ]  }
 
     if datos["id"]
       p = Person.find datos["id"]

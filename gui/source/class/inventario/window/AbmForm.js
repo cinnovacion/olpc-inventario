@@ -822,11 +822,13 @@ qx.Class.define("inventario.window.AbmForm",
           table_data.widths = new Array();
           table_data.hashed_data = new Array();
 
-          for (var j=0; j<optsLen; j++)
-          {
+          for (var j=0; j<optsLen; j++) {
             table_data.col_titles.push(fieldData.options[j].label);
             table_data.widths.push(fieldData.widths[j]);
-            table_data.hashed_data.push(fieldData.options[j].label);
+	    if (fieldData.options[j].hash_data_tag) 
+	      table_data.hashed_data.push(fieldData.options[j].hash_data_tag);
+	    else
+	      table_data.hashed_data.push(fieldData.options[j].label);
           }
 
           dynTableObj.setTableDef(table_data);
