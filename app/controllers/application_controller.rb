@@ -139,7 +139,7 @@ class ApplicationController < ActionController::Base
 
     ret = verify_permission(params[:controller].camelize, params[:action] , current_user)
     if !ret
-      msg = _("No tiene autorizacion para esta seccion")
+      msg = _("You don't have authorization for this section.")
       case request.format()
         when "application/xml"
           rest_access_response(msg)
