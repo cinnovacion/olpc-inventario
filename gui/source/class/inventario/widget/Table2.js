@@ -982,10 +982,9 @@ qx.Class.define("inventario.widget.Table2",
             ret.push(h);
           }
         }
-      }
-      else
-      {
-        alert("getHashedData: tableObj.getHashKeys()"+ qx.locale.Manager.tr(" no recibio igual numero de parametros q columnas"));
+      } else {
+	var error_str = qx.locale.Manager.tr("Didn't receive the correct number of parameters.");
+        alert("getHashedData: tableObj.getHashKeys(): "+ error_str);
       }
 
       return ret;

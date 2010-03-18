@@ -16,13 +16,12 @@
 //
 //
 // Abm2.js
-// fecha: 2007-01-03
-// autor: Raul Gutierrez S.
+// date: 2007-01-03
+// author: Raul Gutierrez S.
 //
-//
-// Un Abm que soporta busqueda & listado completo
-//
-//
+// TODO: unify style of comments & indentation. 
+
+
 /**
  * Esta clase utiliza 6 metodos:
  *
@@ -64,15 +63,6 @@ qx.Class.define("inventario.window.Abm2",
 {
   extend : inventario.window.AbstractWindow,
 
-
-
-
-  /*
-      *****************************************************************************
-         CONSTRUCTOR
-      *****************************************************************************
-      */
-
   construct : function(page, oMethods, title)
   {
     this.base(arguments, page);
@@ -80,10 +70,7 @@ qx.Class.define("inventario.window.Abm2",
 
     this._searchMode = false;
 
-    /* Cargar parametros sinhe quae non */
-
-    try
-    {
+    try {
       this.setSearchUrl(oMethods.searchUrl);
       this.setInitialDataUrl(oMethods.initialDataUrl);
 
@@ -91,39 +78,19 @@ qx.Class.define("inventario.window.Abm2",
       if (oMethods.addUrl) this.setAddUrl(oMethods.addUrl);
       if (oMethods.saveUrl) this.setSaveUrl(oMethods.saveUrl);
       if (oMethods.deleteUrl) this.setDeleteUrl(oMethods.deleteUrl);
-    }
-    catch(e)
-    {
+    } catch(e) {
       alert(qx.locale.Manager.tr("Missing parameter in urls hash! ") + e.toString());
     }
 
     if (typeof (title) != "undefined") this.setTitle(title);
 
-    /*
-             * Iniciar algunas ayudadores
-             */
-
     this.setExtraButtons(new Array());
 
-    // Tch says: new advanced search system
     this.setQueryComponents({});
-
   },
-
-
-
-
-  /*
-      *****************************************************************************
-         PROPERTIES
-      *****************************************************************************
-      */
 
   properties :
   {
-
-    /* Parametros funcionales */
-
     paginated :
     {
       check : "Boolean",
@@ -156,8 +123,6 @@ qx.Class.define("inventario.window.Abm2",
       nullable : true
     },
 
-    /* KU 2007-04-04 */
-
     closeAfterChoose :
     {
       check : "Boolean",
@@ -171,8 +136,6 @@ qx.Class.define("inventario.window.Abm2",
       nullable : true
     },
 
-    /* Para guardar la referencia a los popus que abre ABM2 */
-
     maxRowPerPage :
     {
       check : "Number",
@@ -184,12 +147,6 @@ qx.Class.define("inventario.window.Abm2",
       check : "Number",
       init  : 200
     },
-
-    /*
-             *  RPC
-             */
-
-    /* busqueda */
 
     searchUrl :
     {
@@ -204,15 +161,10 @@ qx.Class.define("inventario.window.Abm2",
     },
 
     /* CRUD */
-
     listUrl : { check : "String" },
     addUrl : { check : "String" },
     saveUrl : { check : "String" },
     deleteUrl : { check : "String" },
-
-    /*
-             * params: Vista y filtros de busqueda
-             */
 
     vista :
     {
@@ -236,10 +188,6 @@ qx.Class.define("inventario.window.Abm2",
       nullable : true
     },
 
-    /*
-             * Widgets & Containers
-             */
-
     resultsGrid :
     {
       check    : "Object",
@@ -255,10 +203,6 @@ qx.Class.define("inventario.window.Abm2",
     bottomAreaBox : { check : "Object" },
     navAreaBox : { check : "Object" },
     crudAreaBox : { check : "Object" },
-
-    /*
-             * Inputs & Buttons
-             */
 
     searchAdvancedButton : { check : "Object" },
     searchAdvancedData : { check : "Object" },
@@ -282,7 +226,6 @@ qx.Class.define("inventario.window.Abm2",
     addButton : { check : "Object" },
     detailsButton : { check : "Object" },
 
-    // KU: voy a incluir spinner para la cantida de fila
     filasSpinner : { check : "Object" },
 
     withChooseButton :
@@ -309,8 +252,6 @@ qx.Class.define("inventario.window.Abm2",
       check : "String",
       init  : "check"
     },
-
-    /* si usamos un callback (probablemente quieran insertar a una tabla lo seleccionado.. */
 
     chooseButtonCallBack :
     {
@@ -340,16 +281,12 @@ qx.Class.define("inventario.window.Abm2",
       nullable : true
     },
 
-    /* si directamente se quiere insertar a un combobox */
-
     chooseComboBox :
     {
       check    : "Object",
       init     : null,
       nullable : true
     },
-
-    /* Las columnas de las cuales quitar el value y el text p/ insertar al ComboBox */
 
     chooseComboBoxId :
     {
@@ -389,9 +326,8 @@ qx.Class.define("inventario.window.Abm2",
     },
 
     /* KU 2007-03-26 nuevo, properties
-             *  DEPREACTED: usar getExtraButtons()
-             */
-
+     *  DEPREACTED: usar getExtraButtons()
+     */
     withArrayButton :
     {
       check : "Boolean",
@@ -446,7 +382,6 @@ qx.Class.define("inventario.window.Abm2",
     },
 
     /* Guardar el box donde tengo que colocar el laberl referente al numero de pagina que se esta viendo */
-
     boxCurrentPage :
     {
       check    : "Object",
@@ -455,7 +390,6 @@ qx.Class.define("inventario.window.Abm2",
     },
 
     /* Guardo el numero de registros encontrados */
-
     results :
     {
       check : "Number",
@@ -463,7 +397,6 @@ qx.Class.define("inventario.window.Abm2",
     },
 
     /* Vector de hashes con configuraciones de botones */
-
     extraButtons :
     {
       check    : "Object",
@@ -497,19 +430,10 @@ qx.Class.define("inventario.window.Abm2",
   },
 
 
-
-
-  /*
-      *****************************************************************************
-         MEMBERS
-      *****************************************************************************
-      */
-
   members :
   {
     /**
-     * show(): vemos si ya esta todo preparado o aun no se armo la ventana. De esta forma se demora el RPC hasta el primer evento
-     *         que nos llama y tambien queda todo (objetos y datos venidos del servidor) cacheados p/ la proximas veces.
+     * show(): 
      *
      * @return {void} void
      */
@@ -884,12 +808,8 @@ qx.Class.define("inventario.window.Abm2",
         this.getToolBarButtons().push({ type : "separator" });
       }
 
-      /* Si estoy en un popup agrego a la barra el boton cerrar */
-
       if (this.getUsePopup())
       {
-
-        /* boton de salir */
 
         var f = function(e) {
           this.getAbstractPopupWindow().getWindow().close();
@@ -919,10 +839,6 @@ qx.Class.define("inventario.window.Abm2",
      */
     _setHandlers : function()
     {
-      /*
-                   * Asociar el enter al boton de busqueda a la pagina y al textfield
-                   */
-
       this.getSearchTextField().addListener("keydown", function(e)
       {
         if (e.getKeyIdentifier() == 'Enter')
@@ -932,10 +848,6 @@ qx.Class.define("inventario.window.Abm2",
         }
       },
       this);
-
-      /*
-                   * Elementos del Buscador
-                   */
 
       var b = this.getSearchButton();
 
@@ -959,45 +871,30 @@ qx.Class.define("inventario.window.Abm2",
         this._advancedSearch();
       }, this);
 
-      /*
-                   * Botones de Navegacion
-                   */
-
       this.getPrevButton().addListener("execute", this._navegarPaginaAnterior, this);
       this.getNextButton().addListener("execute", this._navegarPaginaSiguiente, this);
       this.getFirstButton().addListener("execute", this._navegarPrimeraPagina, this);
       this.getLastButton().addListener("execute", this._navegarUltimaPagina, this);
 
-      /*
-                   * Abreviaciones de Teclado
-                   */
-
       /* Abreviacion para boton de pagina anterior */
-
       this._addAccelerator("Control+Left", this._navegarPaginaAnterior, this);
 
       /* Abreviacion para boton de pagina siguiente */
-
       this._addAccelerator("Control+Right", this._navegarPaginaSiguiente, this);
 
       /* Abreviacion para boton de primera pagina */
-
       this._addAccelerator("Control+Up", this._navegarPrimeraPagina, this);
 
       /* Abreviacion para boton de ultima pagina */
-
       this._addAccelerator("Control+Down", this._navegarUltimaPagina, this);
 
       /* Abreviacion para el combobox de criterio de busqueda */
-
       this._addAccelerator("Control+T", this._searchOptionsFocus, this);
 
       /* Abreviacion para el textfield de cadena de busqueda */
-
       this._addAccelerator("Control+N", this._searchTextFieldFocus, this);
 
       /* Abreviacion para el boton de busqueda avanzada */
-
       this._addAccelerator("Control+S", this._advancedSearch, this);
     },
 
@@ -1020,10 +917,6 @@ qx.Class.define("inventario.window.Abm2",
     _searchOptionsFocus : function() {
       this.getSearchOptions().focus();
     },
-
-    /*
-             * Botones de ABM
-             */
 
     /**
      * createLayout(): metodo abstracto
@@ -1099,16 +992,12 @@ qx.Class.define("inventario.window.Abm2",
       hbox.add(container);
       vbox.add(hbox, { flex : 1 });
 
-      /* la tabla de resultados se demora ya que las columnas vienen del servidor */
-
+      // we delay adding the table with the data since columns come from the server
       var hbox = new qx.ui.container.Composite(new qx.ui.layout.HBox());
       this.setGridAreaBox(hbox);
       vbox.add(hbox, { flex : 5 });
 
-      /*
-                   * Area inferior: navegacion y ABM buttons
-                   */
-
+      // lower area: navigation commands
       var inferiorBox = new qx.ui.container.Composite(new qx.ui.layout.VBox());
 
       var navhbox = new qx.ui.container.Composite(new qx.ui.layout.HBox(5));
@@ -1119,8 +1008,7 @@ qx.Class.define("inventario.window.Abm2",
       navhbox.add(this.getLastButton());
       inferiorBox.add(navhbox);
 
-      /* Etiqueta de cantidad de resultados */
-
+      // label to display number of results
       var labelBox = new qx.ui.container.Composite(new qx.ui.layout.HBox(30));
       this.setBoxCurrentPage(labelBox);
       inferiorBox.add(labelBox);
@@ -1184,17 +1072,9 @@ qx.Class.define("inventario.window.Abm2",
         this.setFechaActual(remoteData["fecha"]);
       }
 
-      /*
-                   * Opciones de busqueda
-                   */
-
       var cb = this.getSearchOptions();
       inventario.widget.Form.loadComboBox(cb, remoteData["criterios"], true);
       this.setSearchAdvancedData(remoteData["criterios"]);
-
-      /*
-                   * Crear tabla
-                   */
 
       var listColumns = remoteData["cols_titles"];  // titulos para el listado
       var h = new Array();
@@ -1233,10 +1113,8 @@ qx.Class.define("inventario.window.Abm2",
       this.getGridAreaBox().add(table, { flex : 1 });
       this.setResultsGrid(table);
 
-      /*
-                   * Capturamos el Enter para eligir una fila
-                   */
-
+      // listen to 'Enter' to select a row
+      // FIXME: is this working?
       if (this.getWithChooseButton())
       {
         table.addListener("keydown", function(e)
@@ -1248,14 +1126,10 @@ qx.Class.define("inventario.window.Abm2",
         this);
       }
 
-      /*
-                   * Cargar datos
-                   */
-
+      // load the data
       this._actualizarPantalla(remoteData);
 
       /* Datos para saber que columnas utilizar para cargar un combobox */
-
       if (remoteData["elegir_data"])
       {
         var col_desc = remoteData["elegir_data"]["desc_col"];
@@ -1264,27 +1138,23 @@ qx.Class.define("inventario.window.Abm2",
         this.setChooseComboBoxId(col_id);
 
         /* Condiciones para filas seleccionables */
-
         if (remoteData["elegir_data"]["selection_options"]) {
           this.setSelectionOptions(remoteData["elegir_data"]["selection_options"]);
         }
       }
 
       /* activamos los botones > y >> si es que la cantida de paginas encontradas es > 1 */
-
       if (this._numPages > 1)
       {
         this.getNextButton().setEnabled(true);
         this.getLastButton().setEnabled(true);
       }
 
-      /* estamos listos p/ mostrarnos */
-
+      // show time
       this.prepared = true;
 
       this._doShow();
     },
-
 
     /**
      * validateData(): metodo abstracto
@@ -1298,11 +1168,9 @@ qx.Class.define("inventario.window.Abm2",
       // Tch says: New Advanced Search system
       var value = this.getSearchTextField().getValue();
 
-      // this.queryStr = this.getSearchTextField().getValue();
       var cb = this.getSearchOptions();
       var key = inventario.widget.Form.getInputValue(cb);
 
-      // this.queryOption = inventario.widget.Form.getInputValue(cb);
       if (value == null || value == "") {
           this.setQueryComponents({});
       } else {
@@ -1317,7 +1185,6 @@ qx.Class.define("inventario.window.Abm2",
         this.setQueryComponents(components);
       }
     },
-
 
     /**
      * saveData(): enviar busqueda al servidor
@@ -1343,7 +1210,6 @@ qx.Class.define("inventario.window.Abm2",
       this);
     },
 
-
     /**
      * saveDataResp(): Carga Resultados de la Busqueda
      * 
@@ -1368,13 +1234,11 @@ qx.Class.define("inventario.window.Abm2",
 
       this._actualizarPantalla(remoteData);
 
-      /* Seleccionar primera */
-
+      // Select first row
       if (remoteData["rows"] && remoteData["rows"].length > 0) {
         this.getResultsGrid().getSelectionModel().setSelectionInterval(0, 0);
       }
     },
-
 
     /**
      * _addRow(): agregar un nuevo elemento
@@ -1420,7 +1284,6 @@ qx.Class.define("inventario.window.Abm2",
       add_form.show();
     },
 
-
     /**
      * TODOC
      *
@@ -1446,7 +1309,6 @@ qx.Class.define("inventario.window.Abm2",
       this._navegar();
     },
 
-
     /**
      * _cargarFilas():  cargar datos en la grilla
      *
@@ -1457,10 +1319,7 @@ qx.Class.define("inventario.window.Abm2",
     {
       var table = this.getResultsGrid();
 
-      /*
-                   * FIXME: Esto habria que hacer una unica vez..
-                   */
-
+      // FIXME: this should be done only once. 
       if (filas.length > 0)
       {
         var len = filas[0].length;
@@ -1475,11 +1334,6 @@ qx.Class.define("inventario.window.Abm2",
           {
             tcm.setDataCellRenderer(i, new qx.ui.table.cellrenderer.Boolean());
 
-            // tcm.setCellEditorFactory(i, new qx.ui.table.celleditor.CheckBox());
-            /*
-                        		 * Handler p/ activar CheckBox
-                        		 */
-
             table.removeListener("cellClick", this._seleccionarCheckBox, this);
             table.addListener("cellClick", this._seleccionarCheckBox, this);
           }
@@ -1488,7 +1342,6 @@ qx.Class.define("inventario.window.Abm2",
 
       table.getTableModel().setData(filas);
     },
-
 
     /**
      * TODOC
@@ -1523,7 +1376,6 @@ qx.Class.define("inventario.window.Abm2",
       }
     },
 
-
     /**
      * TODOC
      *
@@ -1537,7 +1389,6 @@ qx.Class.define("inventario.window.Abm2",
       inventario.window.Mensaje.mensaje(msg);
       this._navegar();
     },
-
 
     /**
      * _navegar():  desplazarse a traves del result set
@@ -1559,7 +1410,6 @@ qx.Class.define("inventario.window.Abm2",
       this._saveData(false);
     },
 
-
     /**
      * TODOC
      *
@@ -1576,7 +1426,6 @@ qx.Class.define("inventario.window.Abm2",
         inventario.window.Mensaje.mensaje(qx.locale.Manager.tr("You must select a row"));
       }
     },
-
 
     /**
      * TODOC
@@ -1610,10 +1459,6 @@ qx.Class.define("inventario.window.Abm2",
       this.getBoxCurrentPage().add(new qx.ui.basic.Label(cadena));
     },
 
-    /*
-             *  Prepara los parametros p/ search_controller
-             */
-
     /**
      * TODOC
      *
@@ -1621,40 +1466,6 @@ qx.Class.define("inventario.window.Abm2",
      */
     getDataHashQuery : function()
     {
-      // Tch says: Deprecated
-      /* var conds = this.getSearchConditions();
-            
-                  if (conds) {
-            
-            	      var vQuery = conds["values"].concat();
-            	      var vColumns = conds["columns"].concat();
-            
-            	      if (this.queryStr && this.queryOption) {
-            	        if (typeof (this.queryStr) == "object") {
-            
-            		        vQuery.concat(this.queryStr);
-            		        vColumns.concat(this.queryOption);
-            	        } else {
-            
-            		        vQuery.push(this.queryStr);
-            		        vColumns.push(this.queryOption);
-            	        }
-            	      }
-            
-            	      var datos = {
-            
-            	        query        : vQuery,
-            	        query_option : vColumns
-            	      };
-                } else {
-            
-            	      var datos = {
-            
-            	        query        : this.queryStr,
-            	        query_option : this.queryOption
-            	      };
-            	  } */
-
       var datos = this.getQueryComponents();
 
       var cant_fila = this.getFilasSpinner().getValue();
@@ -1675,12 +1486,6 @@ qx.Class.define("inventario.window.Abm2",
 
       return dhash;
     },
-
-    /* _actualizarPantalla()
-             * - Carga las filas
-             * - Actualiza contadores (de paginas,filas)
-             * - Actualiza labels de resultados
-             */
 
     /**
      * TODOC
@@ -1707,9 +1512,7 @@ qx.Class.define("inventario.window.Abm2",
     {
       if (this._pages == this._numPages)
       {
-
         /* Habilitar los botones >> y > porque acabo de pasar de la primera pagina */
-
         this.getLastButton().setEnabled(true);
         this.getNextButton().setEnabled(true);
       }
@@ -1723,9 +1526,7 @@ qx.Class.define("inventario.window.Abm2",
 
       if (this._pages == 1)
       {
-
         /* Deshabilitar los botones << y < porque llegue a la primera pagina */
-
         this.getPrevButton().setEnabled(false);
         this.getFirstButton().setEnabled(false);
       }
@@ -1742,9 +1543,7 @@ qx.Class.define("inventario.window.Abm2",
     {
       if (this._pages == 1)
       {
-
         /* Habilitar los botones << y < porque acabo de pasar de la primera pagina */
-
         this.getPrevButton().setEnabled(true);
         this.getFirstButton().setEnabled(true);
       }
@@ -1758,14 +1557,11 @@ qx.Class.define("inventario.window.Abm2",
 
       if (this._pages == this._numPages)
       {
-
         /* Deshabilitar los botones de > y >> porque llegue a la ultima pagina */
-
         this.getLastButton().setEnabled(false);
         this.getNextButton().setEnabled(false);
       }
     },
-
 
     /**
      * TODOC
@@ -1775,16 +1571,12 @@ qx.Class.define("inventario.window.Abm2",
      */
     _navegarPrimeraPagina : function(e)
     {
-      if (this._pages != 1)
-      {
-
+      if (this._pages != 1) {
         /* Deshabilitar los botones de << y < porque estoy en la primera pagina */
-
         this.getPrevButton().setEnabled(false);
         this.getFirstButton().setEnabled(false);
 
         /* Habilitar los botones de >> y > */
-
         this.getNextButton().setEnabled(true);
         this.getLastButton().setEnabled(true);
 
@@ -1803,16 +1595,12 @@ qx.Class.define("inventario.window.Abm2",
      */
     _navegarUltimaPagina : function(e)
     {
-      if (this._numPages > 1)
-      {
-
+      if (this._numPages > 1) {
         /* Deshabilitar los botones de >> y > porque estoy en la ultima pagina */
-
         this.getNextButton().setEnabled(false);
         this.getLastButton().setEnabled(false);
 
         /* Habilitar los botones de << y < */
-
         this.getPrevButton().setEnabled(true);
         this.getFirstButton().setEnabled(true);
 
@@ -1832,14 +1620,6 @@ qx.Class.define("inventario.window.Abm2",
     {
       try
       {
-        // Tch says: Deprecated
-        /* var f = function(str, option)
-                          {
-                            this.queryStr = str;
-                            this.queryOption = option;
-                            this._saveData(true);
-                          }; */
-
         var f = function(components)
         {
           this.setQueryComponents(components);
@@ -1875,121 +1655,99 @@ qx.Class.define("inventario.window.Abm2",
     {
       var filasSeleccionadas = inventario.widget.Table.getSelected2(this.getResultsGrid(), null, true);
 
-      if (filasSeleccionadas.length > 0)
-      {
-        var cb = this.getChooseComboBox();
+      if (filasSeleccionadas.length > 0) {
+	this._doSelectRow(filasSeleccionadas);
+      } else {
+	var error_str = qx.locale.Manager.tr("You must select at least one row.");
+        inventario.window.Mensaje.mensaje(error_str);
+      }
+    },
 
-        if (cb)
-        {
-          try
-          {
+    /**
+     * TODOC
+     *
+     * @param filasSeleccionadas {Array} selected rows
+     * @return {void} 
+     *
+     * FIXME: the try/catch in the the branch of the IF seems unnecessary. 
+     *
+     */
+   _doSelectRow : function(filasSeleccionadas) { 
+      var cb = this.getChooseComboBox();
 
-            /* Cargar a un combobox los datos de la primera fila seleccionada */
+      if (cb) {
 
-            var col_desc = this.getChooseComboBoxDesc();
-            var col_id = this.getChooseComboBoxId();
+	try {
+	  var col_desc = this.getChooseComboBoxDesc();
+	  var col_id = this.getChooseComboBoxId();
 
-            if (parseInt(col_id) >= 0)
-            {  /* me cubro la espalda contra lo que aun no se implemento en el servidor */
-              var agregarFila = true;
-              var agregarFilaMsgError = "";
+	  if (parseInt(col_id) >= 0) {
+	    var agregarFila = true;
+	    var agregarFilaMsgError = "";
 
-              if (this.getSelectionOptions())
-              {
-                /*
-                                		   * La idea es asegurar que una Columna tenga cierto valor seteado
-                                		   */
+	    if (this.getSelectionOptions()) {
+	      var agregarFilaCol = this.getSelectionOptions()["col_id"];
+	      agregarFilaMsgError = this.getSelectionOptions()["msg_error"];
+	      agregarFilaCol = parseInt(agregarFilaCol);
+	      var agregarFilaValorHabilita = this.getSelectionOptions()["expected_value"];
+	      
+	      if (filasSeleccionadas[0][agregarFilaCol] != agregarFilaValorHabilita) {
+		var agregarFila = false;
+	      }
+	    }
 
-                var agregarFilaCol = this.getSelectionOptions()["col_id"];
-                agregarFilaMsgError = this.getSelectionOptions()["msg_error"];
-                agregarFilaCol = parseInt(agregarFilaCol);
-                var agregarFilaValorHabilita = this.getSelectionOptions()["expected_value"];
-
-                if (filasSeleccionadas[0][agregarFilaCol] != agregarFilaValorHabilita) {
-                  var agregarFila = false;
-                }
-              }
-
-              if (agregarFila)
-              {
+	    if (agregarFila) {
                 var tmp = new Array();
                 var len = col_desc.columnas.length;
 
-                for (var i=0; i<len; i++)
-                {
-                  var tmpStr = filasSeleccionadas[0][col_desc.columnas[i]];
+                for (var i=0; i<len; i++) {
+		  var tmpStr = filasSeleccionadas[0][col_desc.columnas[i]];
 
-                  if (tmpStr && !tmpStr.match(/^ *$/)) {
-                    tmp.push(tmpStr);
-                  }
-                }
+		  if (tmpStr && !tmpStr.match(/^ *$/)) {
+		    tmp.push(tmpStr);
+		  }
+		}
+
+                // We save the row in the CB (in case the user needs more info) 
+                cb.setUserData("filaSeleccionada", filasSeleccionadas[0]);
 
                 var text = tmp.join(col_desc.separator);
                 var val = filasSeleccionadas[0][col_id];
-
-                var v = [
-                {
-                  text     : text,
-                  value    : val,
-                  selected : true
-                } ];
-
-                /*  Ademas le guardamos en el combobox la fila..
-                                		     *  Entonces si el usuario necesita algun dato de mas puede obtenerlo dp ;)
-                                		     */
-
-                cb.setUserData("filaSeleccionada", filasSeleccionadas[0]);
-
+                var v = [ { text : text, value : val, selected : true } ];
                 inventario.widget.Form.loadComboBox(cb, v, true);
 
                 if (this.getCloseAfterChoose()) {
                   this.getAbstractPopupWindow().getWindow().close();
                 }
-              }
-              else
-              {
-                inventario.window.Mensaje.mensaje(agregarFilaMsgError);
-              }
-            }
-            else
-            {
-              inventario.window.Mensaje.mensaje(qx.locale.Manager.tr("Contact the System Administrator: Configuration Error"));
-            }
-          }
-          catch(e)
-          {
-            inventario.window.Mensaje.mensaje(qx.locale.Manager.tr("Abm2, Choose Button CreateInput in\n") + e);
-          }
-        }
-        else
-        {
+	    } else { 
+	      inventario.window.Mensaje.mensaje(agregarFilaMsgError);
+	    }
+	  } else {
+	    var error_str = qx.locale.Manager.tr("Contact the System Administrator: Configuration Error");
+	    inventario.window.Mensaje.mensaje(error_str);
+	  }
+	} catch(e) {
+	  var error_str = qx.locale.Manager.tr("Abm2: problem inserting selected row in ComboBox:\n");
+	  inventario.window.Mensaje.mensaje(error_str + e);
+	}
 
-          /* Vamos a llamar al callBack... */
+      } else {
 
-          var f = this.getChooseButtonCallBack();
+	var f = this.getChooseButtonCallBack();
 
-          /* tambien le pasamos todas las filas  seleccionadas via el input asociado */
+	if (this.getChooseButtonCallBackInputField()) {
+	  this.getChooseButtonCallBackInputField().setUserData("filasSeleccionadas", filasSeleccionadas);
+	}
 
-          if (this.getChooseButtonCallBackInputField()) {
-            this.getChooseButtonCallBackInputField().setUserData("filasSeleccionadas", filasSeleccionadas);
-          }
+	f.call(this.getChooseButtonCallBackContext(), filasSeleccionadas, 
+	       this.getChooseButtonCallBackInputField(), this.getChooseButtonCallBackParams());
 
-          f.call(this.getChooseButtonCallBackContext(), filasSeleccionadas, this.getChooseButtonCallBackInputField(), this.getChooseButtonCallBackParams());
+	if (this.getCloseAfterChoose()) {
+	  this.getAbstractPopupWindow().getWindow().close();
+	}
 
-          if (this.getCloseAfterChoose()) {
-            this.getAbstractPopupWindow().getWindow().close();
-          }
-        }
       }
-      else
-      {
-        inventario.window.Mensaje.mensaje(qx.locale.Manager.tr("You must select at least one row."));
-      }
-    },
-
-    /* _seleccionarCheckBox():
-             *   actualizar el estado de un checkbox
-             */
+    }, 
 
     /**
      * TODOC
@@ -2012,11 +1770,6 @@ qx.Class.define("inventario.window.Abm2",
         tableModel.setData(datos);
       }
     },
-
-    /*
-             * De momento quitamos todo lo que hay.. seria interesante tener una configuracion en algun lado donde
-             * se diga si se exportan todas las filas o solamente las seleccionadas
-             */
 
     /**
      * TODOC

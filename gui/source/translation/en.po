@@ -76,7 +76,7 @@ msgid "Either:"
 msgstr ""
 
 #: inventario/test/WidgetsTest.js:87
-msgid "Parties"
+msgid "Parts"
 msgstr ""
 
 #: inventario/transport/Transport.js:117
@@ -280,164 +280,168 @@ msgstr ""
 msgid "The selected item is not a driver"
 msgstr ""
 
-#: inventario/widget/PlaceCreationToolBox.js:50
+#: inventario/widget/PlaceCreationToolBox.js:42
 msgid "Locations ToolBox"
 msgstr ""
 
-#: inventario/widget/PlaceCreationToolBox.js:238
-#: inventario/widget/PlaceCreationToolBox.js:515
+#: inventario/widget/PlaceCreationToolBox.js:226
+#: inventario/widget/PlaceCreationToolBox.js:503
 msgid "The selected item is not a location."
 msgstr ""
 
-#: inventario/widget/PlaceCreationToolBox.js:265
+#: inventario/widget/PlaceCreationToolBox.js:251
 msgid "The selected item is not a City."
 msgstr ""
 
-#: inventario/widget/PlaceCreationToolBox.js:281
+#: inventario/widget/PlaceCreationToolBox.js:267
 msgid "School Number: "
 msgstr ""
 
-#: inventario/widget/PlaceCreationToolBox.js:283
+#: inventario/widget/PlaceCreationToolBox.js:269
 msgid "Add School"
 msgstr ""
 
-#: inventario/widget/PlaceCreationToolBox.js:290
+#: inventario/widget/PlaceCreationToolBox.js:276
 msgid "Shift: "
 msgstr ""
 
-#: inventario/widget/PlaceCreationToolBox.js:295
+#: inventario/widget/PlaceCreationToolBox.js:281
 msgid "Morning Shift"
 msgstr ""
 
-#: inventario/widget/PlaceCreationToolBox.js:300
+#: inventario/widget/PlaceCreationToolBox.js:286
 msgid "Afternoon Shift"
 msgstr ""
 
-#: inventario/widget/PlaceCreationToolBox.js:305
+#: inventario/widget/PlaceCreationToolBox.js:291
 msgid "Full Time"
 msgstr ""
 
-#: inventario/widget/PlaceCreationToolBox.js:311
+#: inventario/widget/PlaceCreationToolBox.js:297
 msgid "Add Time"
 msgstr ""
 
-#: inventario/widget/PlaceCreationToolBox.js:324
+#: inventario/widget/PlaceCreationToolBox.js:306
+msgid "Grade: "
+msgstr ""
+
+#: inventario/widget/PlaceCreationToolBox.js:311
 msgid "First Grade"
 msgstr ""
 
-#: inventario/widget/PlaceCreationToolBox.js:329
+#: inventario/widget/PlaceCreationToolBox.js:316
 msgid "Second Grade"
 msgstr ""
 
-#: inventario/widget/PlaceCreationToolBox.js:334
+#: inventario/widget/PlaceCreationToolBox.js:321
 msgid "Third Grade"
 msgstr ""
 
-#: inventario/widget/PlaceCreationToolBox.js:339
+#: inventario/widget/PlaceCreationToolBox.js:326
 msgid "Fourth Grade"
 msgstr ""
 
-#: inventario/widget/PlaceCreationToolBox.js:344
+#: inventario/widget/PlaceCreationToolBox.js:331
 msgid "Fifth Grade"
 msgstr ""
 
-#: inventario/widget/PlaceCreationToolBox.js:349
+#: inventario/widget/PlaceCreationToolBox.js:336
 msgid "Sixth Grade"
 msgstr ""
 
-#: inventario/widget/PlaceCreationToolBox.js:354
+#: inventario/widget/PlaceCreationToolBox.js:341
 msgid "Special Education"
 msgstr ""
 
-#: inventario/widget/PlaceCreationToolBox.js:360
+#: inventario/widget/PlaceCreationToolBox.js:347
 msgid "Add Grade"
 msgstr ""
 
-#: inventario/widget/PlaceCreationToolBox.js:368
+#: inventario/widget/PlaceCreationToolBox.js:355
 msgid "Section: "
 msgstr ""
 
-#: inventario/widget/PlaceCreationToolBox.js:373
+#: inventario/widget/PlaceCreationToolBox.js:360
 msgid "Section: A"
 msgstr ""
 
-#: inventario/widget/PlaceCreationToolBox.js:378
+#: inventario/widget/PlaceCreationToolBox.js:365
 msgid "Section: B"
 msgstr ""
 
-#: inventario/widget/PlaceCreationToolBox.js:383
+#: inventario/widget/PlaceCreationToolBox.js:370
 msgid "Section: C"
 msgstr ""
 
-#: inventario/widget/PlaceCreationToolBox.js:390
+#: inventario/widget/PlaceCreationToolBox.js:377
 msgid "Add Section:"
 msgstr ""
 
-#: inventario/widget/PlaceCreationToolBox.js:396
+#: inventario/widget/PlaceCreationToolBox.js:384
 msgid "Remove Location"
 msgstr ""
 
-#: inventario/widget/PlaceCreationToolBox.js:537
+#: inventario/widget/PlaceCreationToolBox.js:525
 msgid "The selected item is not a Person."
 msgstr ""
 
-#: inventario/widget/PlaceCreationToolBox.js:561
+#: inventario/widget/PlaceCreationToolBox.js:549
 msgid "Upgrade to "
 msgstr ""
 
-#: inventario/widget/PlaceCreationToolBox.js:562
+#: inventario/widget/PlaceCreationToolBox.js:550
 msgid " with the name "
 msgstr ""
 
-#: inventario/widget/PlaceCreationToolBox.js:563
+#: inventario/widget/PlaceCreationToolBox.js:551
 msgid ", surname "
 msgstr ""
 
-#: inventario/widget/PlaceCreationToolBox.js:564
+#: inventario/widget/PlaceCreationToolBox.js:552
 msgid " and document number "
 msgstr ""
 
-#: inventario/widget/PlaceCreationToolBox.js:565
+#: inventario/widget/PlaceCreationToolBox.js:553
 msgid " Empty fields are not updated."
 msgstr ""
 
-#: inventario/widget/PlaceCreationToolBox.js:579
+#: inventario/widget/PlaceCreationToolBox.js:567
 msgid "The selected item is a Person."
 msgstr ""
 
-#: inventario/widget/PlaceCreationToolBox.js:616
+#: inventario/widget/PlaceCreationToolBox.js:604
 msgid "Name: "
 msgstr ""
 
-#: inventario/widget/PlaceCreationToolBox.js:619
+#: inventario/widget/PlaceCreationToolBox.js:607
 msgid "Last name: "
 msgstr ""
 
-#: inventario/widget/PlaceCreationToolBox.js:622
+#: inventario/widget/PlaceCreationToolBox.js:610
 msgid "National ID "
 msgstr ""
 
-#: inventario/widget/PlaceCreationToolBox.js:625
+#: inventario/widget/PlaceCreationToolBox.js:613
 msgid "Add Student"
 msgstr ""
 
-#: inventario/widget/PlaceCreationToolBox.js:631
+#: inventario/widget/PlaceCreationToolBox.js:619
 msgid "Add Teacher"
 msgstr ""
 
-#: inventario/widget/PlaceCreationToolBox.js:637
+#: inventario/widget/PlaceCreationToolBox.js:625
 msgid "Delete Person"
 msgstr ""
 
-#: inventario/widget/PlaceCreationToolBox.js:640
+#: inventario/widget/PlaceCreationToolBox.js:628
 msgid "Update Person"
 msgstr ""
 
-#: inventario/widget/PlaceCreationToolBox.js:646
+#: inventario/widget/PlaceCreationToolBox.js:634
 msgid "Show Teachers: "
 msgstr ""
 
-#: inventario/widget/PlaceCreationToolBox.js:652
+#: inventario/widget/PlaceCreationToolBox.js:640
 msgid "Show student : "
 msgstr ""
 
@@ -474,13 +478,13 @@ msgid "Unlike"
 msgstr ""
 
 #: inventario/widget/Select.js:49 inventario/widget/SearchAdvanced.js:146
-#: inventario/window/Abm2.js:142 inventario/window/Abm2.js:272
+#: inventario/window/Abm2.js:109 inventario/window/Abm2.js:216
 msgid "Search"
 msgstr ""
 
 #: inventario/widget/Table2.js:184 inventario/window/AbmForm.js:320
 #: inventario/widget/MultipleHierarchySelection.js:48
-#: inventario/window/Abm2.js:425 inventario/window/Abm2.js:695
+#: inventario/window/Abm2.js:361 inventario/window/Abm2.js:619
 msgid "Add"
 msgstr ""
 
@@ -490,7 +494,7 @@ msgstr ""
 
 #: inventario/widget/Table2.js:202
 #: inventario/widget/MultipleHierarchySelection.js:50
-#: inventario/window/Abm2.js:876
+#: inventario/window/Abm2.js:800
 msgid "Remove"
 msgstr ""
 
@@ -503,111 +507,111 @@ msgid "Select All"
 msgstr ""
 
 #: inventario/widget/Table2.js:531 inventario/window/AbmForm.js:306
-#: inventario/window/Abm2.js:712
+#: inventario/window/Abm2.js:636
 msgid "Edit"
 msgstr ""
 
-#: inventario/widget/Table2.js:988
-msgid " no recibio igual numero de parametros q columnas"
+#: inventario/widget/Table2.js:986
+msgid "Didn't receive the correct number of parameters."
 msgstr ""
 
-#: inventario/window/Abm2.js:304
+#: inventario/window/Abm2.js:247
 msgid "Choose"
 msgstr ""
 
-#: inventario/window/Abm2.js:489
+#: inventario/window/Abm2.js:422
 msgid "Listing"
 msgstr ""
 
-#: inventario/window/Abm2.js:634
+#: inventario/window/Abm2.js:558
 msgid "First Page "
 msgstr ""
 
-#: inventario/window/Abm2.js:641
+#: inventario/window/Abm2.js:565
 #: inventario/widget/PageNavigatorAbstract.js:199
 msgid "Previous"
 msgstr ""
 
-#: inventario/window/Abm2.js:648
+#: inventario/window/Abm2.js:572
 #: inventario/widget/PageNavigatorAbstract.js:223
 msgid "Next"
 msgstr ""
 
-#: inventario/window/Abm2.js:655
+#: inventario/window/Abm2.js:579
 msgid "Last Page"
 msgstr ""
 
-#: inventario/window/Abm2.js:672
+#: inventario/window/Abm2.js:596
 msgid "Export"
 msgstr ""
 
-#: inventario/window/Abm2.js:772 inventario/window/Abm2.js:829
-#: inventario/window/Abm2.js:1986
+#: inventario/window/Abm2.js:696 inventario/window/Abm2.js:753
+#: inventario/window/Abm2.js:1661
 msgid "You must select at least one row."
 msgstr ""
 
-#: inventario/window/Abm2.js:859
+#: inventario/window/Abm2.js:783
 msgid "Enter"
 msgstr ""
 
-#: inventario/window/Abm2.js:1047
+#: inventario/window/Abm2.js:940
 msgid "Search Criteria: "
 msgstr ""
 
-#: inventario/window/Abm2.js:1061
+#: inventario/window/Abm2.js:954
 msgid "Search string: "
 msgstr ""
 
-#: inventario/window/Abm2.js:1087
+#: inventario/window/Abm2.js:980
 msgid "Per page.:"
 msgstr ""
 
-#: inventario/window/Abm2.js:1433
+#: inventario/window/Abm2.js:1296
 msgid " Added row "
 msgstr ""
 
-#: inventario/window/Abm2.js:1503
+#: inventario/window/Abm2.js:1356
 msgid "Delete selected items"
 msgstr ""
 
-#: inventario/window/Abm2.js:1536
+#: inventario/window/Abm2.js:1388
 msgid " Deleted row "
 msgstr ""
 
-#: inventario/window/Abm2.js:1576 inventario/window/Abm2.js:1594
+#: inventario/window/Abm2.js:1426 inventario/window/Abm2.js:1443
 msgid "You must select a row"
 msgstr ""
 
-#: inventario/window/Abm2.js:1606
+#: inventario/window/Abm2.js:1455
 msgid " of "
 msgstr ""
 
-#: inventario/window/Abm2.js:1606
+#: inventario/window/Abm2.js:1455
 msgid "Displaying Results page: "
 msgstr ""
 
-#: inventario/window/Abm2.js:1607
+#: inventario/window/Abm2.js:1456
 msgid "Number of results found: "
 msgstr ""
 
-#: inventario/window/Abm2.js:1956
+#: inventario/window/Abm2.js:1726
 msgid "Contact the System Administrator: Configuration Error"
 msgstr ""
 
-#: inventario/window/Abm2.js:1961
-msgid "Abm2, Choose Button CreateInput in\n"
+#: inventario/window/Abm2.js:1730
+msgid "Abm2: problem inserting selected row in ComboBox:\n"
 msgstr ""
 
-#: inventario/window/Abm2.js:2032
+#: inventario/window/Abm2.js:1785
 msgid "Export only visible columns?"
 msgstr ""
 
-#: inventario/window/AbmForm.js:49 inventario/window/Abm2.js:97
+#: inventario/window/AbmForm.js:49 inventario/window/Abm2.js:82
 msgid "Missing parameter in urls hash! "
 msgstr ""
 
 #: inventario/window/AbmForm.js:299 inventario/widget/ComboBoxFiltered.js:56
-#: inventario/window/Abm2.js:729
+#: inventario/window/Abm2.js:653
 msgid "Details"
 msgstr ""
 
@@ -639,31 +643,31 @@ msgstr ""
 msgid "Save Changes"
 msgstr ""
 
-#: inventario/window/AbmForm.js:461 inventario/window/Abm2.js:902
+#: inventario/window/AbmForm.js:461 inventario/window/Abm2.js:822
 msgid "Close"
 msgstr ""
 
-#: inventario/window/AbmForm.js:918
+#: inventario/window/AbmForm.js:920
 msgid "You must check at least one field"
 msgstr ""
 
-#: inventario/window/AbmForm.js:929
+#: inventario/window/AbmForm.js:931
 msgid "These changes will be applied to these "
 msgstr ""
 
-#: inventario/window/AbmForm.js:930
+#: inventario/window/AbmForm.js:932
 msgid " records. Are you sure?"
 msgstr ""
 
-#: inventario/window/AbmForm.js:933
+#: inventario/window/AbmForm.js:935
 msgid "Save changes?"
 msgstr ""
 
-#: inventario/window/AbmForm.js:936
+#: inventario/window/AbmForm.js:938
 msgid "Create?"
 msgstr ""
 
-#: inventario/window/AbmForm.js:1103
+#: inventario/window/AbmForm.js:1105
 msgid "Config error. in getDataFromForm"
 msgstr ""
 
@@ -707,5 +711,35 @@ msgstr ""
 msgid "Quick access"
 msgstr ""
 
+#~ msgid " no recibio igual numero de parametros q columnas"
+#~ msgstr ""
+
+#~ msgid "Abm2, Choose Button CreateInput in\n"
+#~ msgstr ""
+
+#~ msgid "Abm2, Choose Button CreateInput in\n"
+#~ msgstr ""
+
+#~ msgid "Abm2, Choose Button CreateInput in\n"
+#~ msgstr ""
+
+#~ msgid "Abm2, Choose Button CreateInput in\n"
+#~ msgstr ""
+
+#~ msgid "Abm2: problem inserting selected row in ComboBox:\n"
+#~ msgstr ""
+
+#~ msgid "Abm2: problem inserting selected row in ComboBox:\n"
+#~ msgstr ""
+
+#~ msgid "Abm2: problem inserting selected row in ComboBox:\n"
+#~ msgstr ""
+
+#~ msgid "Abm2: problem inserting selected row in ComboBox:\n"
+#~ msgstr ""
+
 #~ msgid "Bienvenido al sistema"
 #~ msgstr "Welcome to the system"
+
+#~ msgid "Parties"
+#~ msgstr ""

@@ -130,7 +130,8 @@ class MovementsController < SearchController
         raise _("Can't find laptop with serial number") + attribs[:serial_number_laptop].to_s
       end
       owner = lapObj.owner ? lapObj.owner.getFullName() : "nadie"
-      str += _("Serial Number") +  attribs[:serial_number_laptop].to_s + " (" + _("Owned by ") + owner + "\n"
+      str += _("Serial Number") +  attribs[:serial_number_laptop].to_s 
+      str += " (" + _("Owned by ") + owner + ")\n"
     end
 
     if strNotEmpty(attribs[:return_date])

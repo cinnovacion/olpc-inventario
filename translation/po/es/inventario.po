@@ -1710,7 +1710,7 @@ msgstr "No se encuentra la laptop con numero de serial"
 
 #: app/controllers/movements_controller.rb:133
 msgid "Owned by "
-msgstr "Propiedad de"
+msgstr "Propiedad de "
 
 #: app/controllers/movements_controller.rb:137
 #: app/controllers/movements_controller.rb:226

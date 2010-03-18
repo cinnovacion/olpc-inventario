@@ -84,7 +84,7 @@ qx.Class.define("inventario.test.WidgetsTest",
       });
 
       // FIXME: invenario.* namespace not being loaded..
-      var widget = new inventario.widget.CheckboxSelector(qx.locale.Manager.tr("Parties"), v);
+      var widget = new inventario.widget.CheckboxSelector(qx.locale.Manager.tr("Parts"), v);
 
       this.getRoot().add(widget);
     },
