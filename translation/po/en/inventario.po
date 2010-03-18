@@ -125,7 +125,7 @@ msgstr ""
 #: app/controllers/print_controller.rb:920
 #: app/controllers/print_controller.rb:1093
 msgid "Location"
-msgstr "Laptop added."
+msgstr ""
 
 #: app/models/shipment.rb:38
 msgid "Arrival Date"
@@ -152,7 +152,7 @@ msgstr ""
 
 #: app/models/notifications_pool.rb:34
 msgid "The notification %s does not exist"
-msgstr "Laptop added."
+msgstr ""
 
 #: app/models/notifications_pool.rb:56
 msgid "No one subscribed to the notification %s"
@@ -168,7 +168,7 @@ msgstr ""
 
 #: app/models/movement_detail.rb:46
 msgid "Movement Reason"
-msgstr "Laptop added."
+msgstr ""
 
 #: app/models/movement_detail.rb:48
 msgid "Delivery Nbr."
@@ -259,7 +259,7 @@ msgstr ""
 #: app/controllers/print_controller.rb:853
 #: app/controllers/print_controller.rb:1193
 msgid "Laptop"
-msgstr "Laptop added."
+msgstr ""
 
 #: app/models/problem_report.rb:44 app/models/school_info.rb:38
 #: app/controllers/nodes_controller.rb:112
@@ -293,7 +293,7 @@ msgstr ""
 
 #: app/models/problem_report.rb:75
 msgid "Location:"
-msgstr "Laptop added."
+msgstr ""
 
 #: app/models/problem_report.rb:76
 msgid "Reported by:"
@@ -344,7 +344,7 @@ msgstr ""
 
 #: app/models/movement.rb:111
 msgid "Invalid type of movement"
-msgstr "Laptop added."
+msgstr ""
 
 #: app/models/movement.rb:134
 msgid "Could not find the person with Document ID %s"
@@ -455,7 +455,7 @@ msgstr ""
 
 #: app/models/bank_deposit.rb:12
 msgid "Deposited at"
-msgstr "Laptop added."
+msgstr ""
 
 #: app/models/bank_deposit.rb:13
 #: app/controllers/bank_deposits_controller.rb:66
@@ -483,11 +483,11 @@ msgstr ""
 
 #: app/models/event.rb:34
 msgid "Information"
-msgstr "Laptop added."
+msgstr ""
 
 #: app/models/event.rb:35
 msgid "Location associated"
-msgstr "Laptop added."
+msgstr ""
 
 #: app/models/status.rb:48 app/controllers/statuses_controller.rb:47
 msgid "Abbreviation"
@@ -512,7 +512,7 @@ msgstr ""
 
 #: app/models/place_type.rb:34
 msgid "Location type"
-msgstr "Laptop added."
+msgstr ""
 
 #: app/models/place_type.rb:74
 msgid "This script can be run only once a year"
@@ -653,7 +653,7 @@ msgstr ""
 
 #: app/models/laptop.rb:63
 msgid "Last activation"
-msgstr "Laptop added."
+msgstr ""
 
 #: app/models/laptop.rb:159 app/controllers/reports_controller.rb:231
 #: app/controllers/reports_controller.rb:306
@@ -737,7 +737,7 @@ msgstr ""
 #: app/controllers/print_controller.rb:1582
 #: app/controllers/print_controller.rb:1617
 msgid "Person"
-msgstr "Laptop added."
+msgstr ""
 
 #: app/models/perform.rb:40
 msgid "Profile"
@@ -794,7 +794,7 @@ msgstr ""
 
 #: app/models/node.rb:53
 msgid "Parents Location"
-msgstr "Laptop added."
+msgstr ""
 
 #: app/models/node.rb:55
 msgid "Updated"
@@ -819,7 +819,7 @@ msgstr ""
 
 #: app/models/status_change.rb:50
 msgid "New State"
-msgstr "Laptop added."
+msgstr ""
 
 #: app/models/status_change.rb:62
 msgid "Battery"
@@ -835,7 +835,7 @@ msgstr ""
 
 #: app/models/school_info.rb:39
 msgid "Duration"
-msgstr "Laptop added."
+msgstr ""
 
 #: app/models/school_info.rb:40 app/controllers/school_infos_controller.rb:63
 msgid "Hostname"
@@ -855,7 +855,7 @@ msgstr ""
 
 #: app/models/part_movement.rb:30
 msgid "Movement"
-msgstr "Laptop added."
+msgstr ""
 
 #: app/models/part_movement.rb:31 app/controllers/print_controller.rb:77
 #: app/controllers/print_controller.rb:383
@@ -879,7 +879,7 @@ msgstr ""
 #: app/controllers/solution_types_controller.rb:35
 #: app/controllers/sistema_controller.rb:348
 msgid "Solution types"
-msgstr "Laptop added."
+msgstr ""
 
 #: app/controllers/solution_types_controller.rb:52
 #: app/controllers/problem_types_controller.rb:52
@@ -916,7 +916,7 @@ msgstr ""
 
 #: app/controllers/solution_types_controller.rb:92
 msgid "Solution type added."
-msgstr "Laptop added."
+msgstr ""
 
 #: app/controllers/solution_types_controller.rb:98
 #: app/controllers/statuses_controller.rb:65
@@ -946,7 +946,7 @@ msgstr ""
 
 #: app/controllers/statuses_controller.rb:59
 msgid "New status added."
-msgstr "Laptop added."
+msgstr ""
 
 #: app/controllers/problem_reports_controller.rb:43
 #: app/controllers/sistema_controller.rb:307
@@ -997,11 +997,11 @@ msgstr ""
 
 #: app/controllers/bank_deposits_controller.rb:90
 msgid "Deposit added."
-msgstr "Laptop added."
+msgstr ""
 
 #: app/controllers/laptops_controller.rb:100
 msgid "Laptop added."
-msgstr "Laptop added."
+msgstr ""
 
 #: app/controllers/laptops_controller.rb:160
 #: app/controllers/movements_controller.rb:101
@@ -1037,7 +1037,7 @@ msgstr ""
 
 #: app/controllers/places_controller.rb:111
 msgid "Location added."
-msgstr "Laptop added."
+msgstr ""
 
 #: app/controllers/problem_solutions_controller.rb:42
 msgid "Soluciones Simples"
@@ -1070,11 +1070,11 @@ msgstr ""
 
 #: app/controllers/problem_solutions_controller.rb:84
 msgid "Solution saved."
-msgstr "Laptop added."
+msgstr ""
 
 #: app/controllers/problem_solutions_controller.rb:96
 msgid "Laptop exchange"
-msgstr "Laptop added."
+msgstr ""
 
 #: app/controllers/problem_solutions_controller.rb:105
 msgid "Serial # of replacement laptop"
@@ -1113,7 +1113,7 @@ msgstr ""
 
 #: app/controllers/sistema_controller.rb:82
 msgid "Applications"
-msgstr "Laptop added."
+msgstr ""
 
 #: app/controllers/sistema_controller.rb:189
 msgid "Schools info"
@@ -1133,7 +1133,7 @@ msgstr ""
 
 #: app/controllers/sistema_controller.rb:214
 msgid "Notification types"
-msgstr "Laptop added."
+msgstr ""
 
 #: app/controllers/sistema_controller.rb:215
 msgid "Images"
@@ -1168,7 +1168,7 @@ msgstr ""
 #: app/controllers/print_controller.rb:316
 #: app/controllers/print_controller.rb:1481
 msgid "Laptops"
-msgstr "Laptop added."
+msgstr ""
 
 #: app/controllers/sistema_controller.rb:247
 msgid "Handouts"
@@ -1197,7 +1197,7 @@ msgstr ""
 
 #: app/controllers/sistema_controller.rb:259
 msgid "Lots"
-msgstr "Laptop added."
+msgstr ""
 
 #: app/controllers/sistema_controller.rb:266
 #: app/controllers/sistema_controller.rb:325
@@ -1215,7 +1215,7 @@ msgstr ""
 
 #: app/controllers/sistema_controller.rb:269
 msgid "Movements"
-msgstr "Laptop added."
+msgstr ""
 
 #: app/controllers/sistema_controller.rb:270
 msgid "Movements grouped by type"
@@ -1223,7 +1223,7 @@ msgstr ""
 
 #: app/controllers/sistema_controller.rb:273
 msgid "Laptops per location"
-msgstr "Laptop added."
+msgstr ""
 
 #: app/controllers/sistema_controller.rb:277
 #: app/controllers/print_controller.rb:1660
@@ -1266,7 +1266,7 @@ msgstr ""
 
 #: app/controllers/sistema_controller.rb:291
 msgid "Laptop models"
-msgstr "Laptop added."
+msgstr ""
 
 #: app/controllers/sistema_controller.rb:292
 msgid "Movement types"
@@ -1302,7 +1302,7 @@ msgstr ""
 
 #: app/controllers/sistema_controller.rb:305
 msgid "Part movements"
-msgstr "Laptop added."
+msgstr ""
 
 #: app/controllers/sistema_controller.rb:310
 #: app/controllers/sistema_controller.rb:312
@@ -1327,11 +1327,11 @@ msgstr ""
 
 #: app/controllers/sistema_controller.rb:327
 msgid "Problem time response"
-msgstr "Laptop added."
+msgstr ""
 
 #: app/controllers/sistema_controller.rb:328
 msgid "Problems by type"
-msgstr "Laptop added."
+msgstr ""
 
 #: app/controllers/sistema_controller.rb:329
 msgid "Problems by school"
@@ -1378,11 +1378,11 @@ msgstr ""
 
 #: app/controllers/sistema_controller.rb:347
 msgid "Problem types"
-msgstr "Laptop added."
+msgstr ""
 
 #: app/controllers/sistema_controller.rb:349
 msgid "Node types"
-msgstr "Laptop added."
+msgstr ""
 
 #: app/controllers/sistema_controller.rb:350
 msgid "Nodes"
@@ -1394,7 +1394,7 @@ msgstr ""
 
 #: app/controllers/sistema_controller.rb:352
 msgid "Part movement types"
-msgstr "Laptop added."
+msgstr ""
 
 #: app/controllers/sistema_controller.rb:357
 msgid "People & locations"
@@ -1403,15 +1403,15 @@ msgstr ""
 #: app/controllers/sistema_controller.rb:358
 #: app/controllers/reports_controller.rb:157
 msgid "Locations"
-msgstr "Laptop added."
+msgstr ""
 
 #: app/controllers/sistema_controller.rb:359
 msgid "Tool Box"
 msgstr ""
 
 #: app/controllers/sistema_controller.rb:360
-msgid "Personas"
-msgstr "Laptop added."
+msgid "People"
+msgstr ""
 
 #: app/controllers/sistema_controller.rb:369
 msgid "Students & document ids"
@@ -1419,7 +1419,7 @@ msgstr ""
 
 #: app/controllers/sistema_controller.rb:375
 msgid "Location types"
-msgstr "Laptop added."
+msgstr ""
 
 #: app/controllers/sistema_controller.rb:380
 msgid "Administrator's configuration"
@@ -1449,7 +1449,7 @@ msgstr ""
 
 #: app/controllers/reports_controller.rb:58
 msgid "Reasons"
-msgstr "Laptop added."
+msgstr ""
 
 #: app/controllers/reports_controller.rb:86
 #: app/controllers/print_controller.rb:1125
@@ -1763,7 +1763,7 @@ msgstr ""
 
 #: app/controllers/nodes_controller.rb:154
 msgid "Node added."
-msgstr "Laptop added."
+msgstr ""
 
 #: app/controllers/nodes_controller.rb:160
 #: app/controllers/notifications_controller.rb:82
@@ -1772,7 +1772,7 @@ msgstr ""
 
 #: app/controllers/place_types_controller.rb:67
 msgid "Location type added."
-msgstr "Laptop added."
+msgstr ""
 
 #: app/controllers/images_controller.rb:60
 msgid "Load image"
@@ -1801,7 +1801,7 @@ msgstr ""
 
 #: app/controllers/users_controller.rb:85
 msgid "User added."
-msgstr "Laptop added."
+msgstr ""
 
 #: app/controllers/shipments_controller.rb:49
 msgid "Arrival date"
@@ -1809,7 +1809,7 @@ msgstr ""
 
 #: app/controllers/shipments_controller.rb:71
 msgid "Shipment added."
-msgstr "Laptop added."
+msgstr ""
 
 #: app/controllers/problem_types_controller.rb:35
 msgid "Configuration of problem types"
@@ -1821,11 +1821,11 @@ msgstr ""
 
 #: app/controllers/problem_types_controller.rb:83
 msgid "Problem type created."
-msgstr "Laptop added."
+msgstr ""
 
 #: app/controllers/notifications_controller.rb:76
 msgid "Notification added."
-msgstr "Laptop added."
+msgstr ""
 
 #: app/controllers/application_controller.rb:142
 msgid "You don't have authorization for this section."
@@ -1881,7 +1881,7 @@ msgstr ""
 
 #: app/controllers/school_infos_controller.rb:96
 msgid "Information added."
-msgstr "Laptop added."
+msgstr ""
 
 #: app/controllers/people_controller.rb:64
 msgid "Lastname"
@@ -1913,11 +1913,11 @@ msgstr ""
 
 #: app/controllers/people_controller.rb:157
 msgid "Person added."
-msgstr "Laptop added."
+msgstr ""
 
 #: app/controllers/node_types_controller.rb:92
 msgid "Node type added."
-msgstr "Laptop added."
+msgstr ""
 
 #: app/controllers/schools_controller.rb:34
 msgid "General info of the school"
@@ -1937,7 +1937,7 @@ msgstr ""
 
 #: app/controllers/schools_controller.rb:83
 msgid "Place added."
-msgstr "Laptop added."
+msgstr ""
 
 #: app/controllers/schools_controller.rb:85
 #: app/controllers/schools_controller.rb:123
@@ -1950,7 +1950,7 @@ msgstr ""
 
 #: app/controllers/schools_controller.rb:121
 msgid "Person registered."
-msgstr "Laptop added."
+msgstr ""
 
 #: app/controllers/schools_controller.rb:127
 msgid "Couldn't great the person."
@@ -2286,7 +2286,7 @@ msgstr ""
 
 #: app/controllers/print_controller.rb:1429
 msgid "Laptop movements"
-msgstr "Laptop added."
+msgstr ""
 
 #: app/controllers/print_controller.rb:1432
 msgid "Mov #"
@@ -2370,7 +2370,7 @@ msgstr ""
 
 #: app/controllers/profiles_controller.rb:54
 msgid "Permissions"
-msgstr "Laptop added."
+msgstr ""
 
 #: app/controllers/profiles_controller.rb:57
 msgid "Access level"
