@@ -357,7 +357,7 @@ class SistemaController < ApplicationController
     menu_option = genOption(_("People & locations"))
     menu_option[:elements].push(getMenuListAndCreate("localidades", _("Locations")))
     menu_option[:elements].push(genElement(_("Tool Box"), "place_tool_box"))
-    menu_option[:elements].push(getMenuListAndCreate("personas", _("Personas")))
+    menu_option[:elements].push(getMenuListAndCreate("personas", _("People")))
     menu_option[:elements].push(getMenuDeploymentInform)
     menu_option[:elements].push(getMenuDeploymentConfig)
     #menu_option[:elements].push(genSchoolManagerOption)

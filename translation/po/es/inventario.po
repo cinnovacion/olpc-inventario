@@ -1427,7 +1427,7 @@ msgid "Tool Box"
 msgstr "Tool Box"
 
 #: app/controllers/sistema_controller.rb:360
-msgid "Personas"
+msgid "People"
 msgstr "Personas"
 
 #: app/controllers/sistema_controller.rb:369
