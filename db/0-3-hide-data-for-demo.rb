@@ -5,6 +5,9 @@ def confuse_people
     person.name = "nombre_#{rand(999999999)}"
     person.lastname = "apellido_#{rand(999999999)}"
     person.id_document = (person.id_document.match("^[0-9]+$")) ? rand(999999999).to_s : "ID_#{rand(999999999)}"
+    person.phone = rand(9999999999).to_s
+    person.cell_phone = rand(9999999999).to_s
+    person.email = "#{rand(9999999999)}@tch.org"
     person.save
   }
 
