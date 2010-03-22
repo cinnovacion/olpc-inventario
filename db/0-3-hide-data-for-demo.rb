@@ -58,6 +58,18 @@ def confuse_laptops
   true
 end
 
+def confuse_nodes
+
+  Node.all.each { |node|
+
+    node.username = "user_#{rand(9999999999)}"
+    node.password = rand(9999999999).to_s
+    node.save
+  }
+
+end
+
+confuse_nodes
 confuse_people
 confuse_users
 confuse_deposits
