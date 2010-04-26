@@ -78,7 +78,6 @@ end
 
 ActionMailer::Base.smtp_settings = {
   :address  => "mail.paraguayeduca.org",
-#  :address  => "127.0.0.1",
-  :port  => 587, 
+  :port  => 25, 
   :domain  => "paraguayeduca.org"
 } 
