@@ -313,7 +313,7 @@ class PrintController < ApplicationController
         ventana = _("Year")
     end
 
-    @columnas = [_("Problem"), ventana, _("Quantity"), _("Average"), _("Acumulated"), _("%(Total)"), _("Laptops")]
+    @columnas = [_("Problem"), ventana, _("Quantity"), _("Average"), _("Acumulated"), _("%(Total)"), _("Laptops"), _("Frequency"), _("Avg Frequency")]
     @datos = []
     graph_labels = Hash.new
     graph_data = Array.new
@@ -335,17 +335,26 @@ class PrintController < ApplicationController
       average = 0
       aux_average = 0
       weights = 0
+      frequency = 0
+      acumulated_frequency = 0
+      avg_frequency = 0
+
       results[problem_type].keys.sort { |a,b| a < b ? -1 : 1 }.each_with_index { |time_window, index| 
 
         indice = results[problem_type][time_window]
 
+        laptops_in_window = tabla_tornasol[index].to_f
         sub_total += indice
-        weights += tabla_tornasol[index].to_f
-        aux_average += (indice.to_f * tabla_tornasol[index].to_f)
+        weights += laptops_in_window
+        aux_average += (indice.to_f * laptops_in_window)
         average = "%4.1f" % (aux_average / weights)
-        indice_tornasol = "%4.1f" % ((sub_total.to_f / tabla_tornasol[index].to_f) * 100.to_f)
+        indice_tornasol = "%4.1f" % ((sub_total.to_f / laptops_in_window) * 100.to_f)
+        frequency = (laptops_in_window > 0) ? (indice / laptops_in_window) : 0
+        acumulated_frequency += frequency
+        avg_frequency = "%4.7f" % (acumulated_frequency.to_f / (index + 1).to_f)
+        printable_frequency = "%4.7f" % frequency
 
-        @datos.push(["", time_window.to_s, indice, average, sub_total,indice_tornasol, tabla_tornasol[index] ])
+        @datos.push(["", time_window.to_s, indice, average, sub_total,indice_tornasol, tabla_tornasol[index], printable_frequency, avg_frequency])
         values.push(average.to_f)
         graph_labels[index] = time_window.to_s
       }
