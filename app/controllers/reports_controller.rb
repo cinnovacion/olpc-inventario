@@ -340,6 +340,10 @@ class ReportsController < SearchController
     @output["widgets"] = Array.new
     @output["widgets"].push(dateRange)
     @output["widgets"].push(hierarchy(""))
+    cb_options = Array.new
+    cb_options.push( { :label => _("Yes"), :cb_name => true,:checked => true } )
+    cb_options.push( { :label => _("No"), :cb_name => false,:checked => true } )
+    @output["widgets"].push(checkBoxSelector(_("Solved"),cb_options))
     @output["print_method"] = "is_hardware_dist"
   end 
 

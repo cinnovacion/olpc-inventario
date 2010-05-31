@@ -224,6 +224,10 @@ class PrintController < ApplicationController
       buildComboBoxQuery(cond, places_ids, "problem_reports.place_id")     
     end
 
+		solved = print_params.pop
+		cond[0] += " and problem_reports.solved in (?)"
+		cond.push(solved)
+
     results = { true => 0, false => 0 }
     ProblemReport.find(:all, :conditions => cond, :include => inc).each { |report|
 
