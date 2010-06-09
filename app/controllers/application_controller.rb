@@ -279,7 +279,7 @@ class ApplicationController < ActionController::Base
   end
 
   def buildSelectHashSingle(pClassName, pSelectedId, pText)
-    hash = { :text => "", :value => -1, :selected => true }
+    hash = { :text => "", :value => "", :selected => true }
     if pSelectedId != -1
       hash[:value] = pSelectedId
       hash[:text] = eval("pClassName.find_by_id(pSelectedId)." + pText.to_s)
