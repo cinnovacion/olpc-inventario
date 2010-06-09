@@ -104,7 +104,7 @@ class PeopleController < SearchController
       ]
     } if p
 
-    h = { "label" => "Place", "datatype" => "hierarchy_on_demand", "options" => { "width" => 360, "height" => 50 }, :hash_data_tag => "place_id"}
+    h = { "label" => "Place", "datatype" => "hierarchy_on_demand", "options" => { "width" => 360, "height" => 120 }, :hash_data_tag => "place_id"}
     options.push(h)
 
     h = { "label" => "Profile", "datatype" => "combobox", "options" => profiles, :hash_data_tag => "profile_id" }
