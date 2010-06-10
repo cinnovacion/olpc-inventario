@@ -67,10 +67,11 @@ class LaptopsController < SearchController
       dataHash = Hash.new
       dataHash[:arrived_at] = Time.now
       dataHash[:owner_id] = datos["fields"][4]
+      dataHash[:assignee_id] = datos["fields"][5]
       dataHash[:place_id] = current_user.person.place.id
       dataHash[:build_version] = datos["fields"][1]
       dataHash[:model_id] = datos["fields"][2]
-      dataHash[:status_id] = datos["fields"][5]
+      dataHash[:status_id] = datos["fields"][6]
       ReadFile.laptopsFromFile(path, 0, dataHash)
     else
       if datos["ids"]
@@ -85,6 +86,7 @@ class LaptopsController < SearchController
         attribs[:model_id] = getAbmFormValue(data_fields.pop)
         attribs[:shipment_arrival_id] = getAbmFormValue(data_fields.pop)
         attribs[:owner_id] = getAbmFormValue(data_fields.pop)
+        attribs[:assignee_id] = getAbmFormValue(data_fields.pop)
         #attribs[:box_serial_number] = getAbmFormValue(data_fields.pop)
         attribs[:status_id] = getAbmFormValue(data_fields.pop)
         attribs[:uuid] = getAbmFormValue(data_fields.pop)
@@ -176,7 +178,13 @@ class LaptopsController < SearchController
     id = p ? p.owner_id : -1
     #people = buildSelectHash2(Person,id,"getFullName()",false,[])
     people = buildSelectHashSingle(Person, id, "getFullName()")
-    h = { "label" => _("Owned by"),"datatype" => "select","options" => people, :option => "personas" }
+    h = { "label" => _("In hands of"),"datatype" => "select","options" => people, :option => "personas" }
+    @output["fields"].push(h)
+
+    id = p && p.assignee_id ? p.assignee_id : -1
+    #people = buildSelectHash2(Person,id,"getFullName()",false,[])
+    people = buildSelectHashSingle(Person, id, "getFullName()")
+    h = { "label" => _("Assigned to (final recipient)"),"datatype" => "select","options" => people, :option => "personas" }
     @output["fields"].push(h)
 
     #h = { "label" => "Id Caja","datatype" => "textfield" }.merge( p ? {"value" => p.box_serial_number } : {} )

@@ -35,6 +35,7 @@ class Laptop < ActiveRecord::Base
   has_many :problem_reports
   belongs_to :shipment, :class_name => "Shipment", :foreign_key => :shipment_arrival_id
   belongs_to :owner, :class_name => "Person", :foreign_key => :owner_id
+  belongs_to :assignee, :class_name => "Person", :foreign_key => :assignee_id
   belongs_to :model
   belongs_to :status
 
@@ -53,6 +54,8 @@ class Laptop < ActiveRecord::Base
                       {:name => _("In hands of"),:key => "people.name",:related_attribute => "getOwner()", :width => 210},
                       {:name => _("Owners Doc Id"),:key => "people.id_document",:related_attribute => "getOwnerIdDoc()", :width => 80},
                       {:name => _("Code Bar Owner"), :key => "people.barcode", :related_attribute => "getOwnerBarCode()", :width => 80},
+                      {:name => _("Assigned to"),:key => "people.name",:related_attribute => "getAssignee()", :width => 210},
+                      {:name => _("Assignee Doc Id"),:key => "people.id_document",:related_attribute => "getAssigneeIdDoc()", :width => 210},
                       {:name => _("Build Version"),:key => "laptops.build_version",:related_attribute => "getBuildVersion()", :width => 120},
                       {:name => _("Shipment"),:key => "shipments.comment",:related_attribute => "getShipmentComment()", :width => 120},
                       {:name => _("Model"),:key => "models.name",:related_attribute => "getModelDescription()", :width => 120},
@@ -62,7 +65,7 @@ class Laptop < ActiveRecord::Base
                       {:name => _("Registered"), :key => "laptops.registered", :related_attribute => "getRegistered", :width => 50},
                       {:name => _("Last activation"), :key => "laptops.last_activation_date", :related_attribute => "getLastActivation", :width => 100}
                      ]
-    ret[:columnas_visibles] = [false, false, true, true, true, false, false, false, false, true, false, false, false]
+    ret[:columnas_visibles] = [false, false, true, true, true, false, true, true, false, false, false, true, false, false, false]
     ret 
   end
 
@@ -131,6 +134,14 @@ class Laptop < ActiveRecord::Base
     self.owner.getFullName()
   end
 
+  def getAssignee()
+    self.assignee ? self.assignee.getFullName() :  ""
+  end
+
+  def getAssigneeIdDoc()
+    self.assignee ? self.assignee.getIdDoc() :  ""
+  end
+ 
   def getBuildVersion()
     self.build_version ? self.build_version : ""
   end

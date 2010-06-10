@@ -75,6 +75,7 @@ module ReadFile
         attribs[:model_id] = dataHash[:model_id]
         attribs[:shipment_arrival_id] = shipment.id
         attribs[:owner_id] = dataHash[:owner_id]
+        attribs[:assignee_id] = dataHash[:assignee_id]
         attribs[:status_id] = dataHash[:status_id]
         #attribs[:box_serial_number] = dataArray[_box_serial]
         #attribs[:box_id] = box.id
