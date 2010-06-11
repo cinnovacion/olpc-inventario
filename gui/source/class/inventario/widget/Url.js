@@ -85,6 +85,10 @@ qx.Class.define("inventario.widget.Url",
           ret = inventario.widget.Url.MOVIMIENTOS;
           break;
 
+        case "assignments":
+          ret = inventario.widget.Url.ASSIGNMENTS;
+          break;
+
         case "activaciones":
           ret = inventario.widget.Url.ACTIVACIONES;
           break;
@@ -262,6 +266,16 @@ qx.Class.define("inventario.widget.Url",
       deleteUrl      : "/movements/delete",
       searchUrl      : "/movements/search",
       initialDataUrl : "/movements/search_options"
+    },
+
+    ASSIGNMENTS :
+    {
+      listUrl        : "/assignments/search",
+      addUrl         : "/assignments/new",
+      saveUrl        : "/assignments/save",
+      deleteUrl      : "/assignments/delete",
+      searchUrl      : "/assignments/search",
+      initialDataUrl : "/assignments/search_options"
     },
 
     ACTIVACIONES :

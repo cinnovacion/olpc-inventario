@@ -33,6 +33,7 @@ class Person < ActiveRecord::Base
 
   belongs_to :image
   has_many :laptops, :class_name => "Laptop", :foreign_key => :owner_id
+  has_many :laptops_assigned, :class_name => "Laptop", :foreign_key => :assignee_id
   has_many :responsible_movements, :class_name => "Movement", :foreign_key => :responsible_person_id
   has_many :source_movements, :class_name => "Movement", :foreign_key => :source_person_id
   has_many :destination_movements, :class_name => "Movement", :foreign_key => :destination_person_id
@@ -117,7 +118,7 @@ class Person < ActiveRecord::Base
     when ""
       ret["desc_col"] = {:columnas => [2,3],:separator => " "}
       ret["id_col"] = 0
-    when "movements"
+    when "movements", "assignments"
       ret["desc_col"] = 4
       ret["id_col"] = 0
     else

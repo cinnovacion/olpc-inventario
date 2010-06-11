@@ -245,8 +245,18 @@ class SistemaController < ApplicationController
     #menu_option[:elements].push(genElement("Cargadores", "abm2", genAbm2("cargadores")))
     #menu_option[:elements].push(genElement("Movimiento de Cajas", "abm2", genAbm2("box_movements")))
 
-    entregas = genOption(_("Movements"))
+    assignments = genOption(_("Assignments"))
 
+    cButton1 = genAbm2CustomButton(_("Done assignment"), "/assignments/single_mass_assignment/0",
+                                   "/assignments/save_single_mass_assignment", "add", _("Mass assignment"), true)
+
+    assignments[:elements].push(genElement(_("List assignments"), "abm2", 
+                                        genAbm2("assignments", true, true, false, false, false, [cButton1])))
+    assignments[:elements].push(genElement(_("New assignment"), "abmform", genAbm2("assignments")))
+    menu_option[:elements].push(assignments)
+
+    entregas = genOption(_("Movements"))
+ 
     cButton1 = genAbm2CustomButton(_("Movement recorded."), "/movements/single_mass_delivery/0",
                                    "/movements/save_single_mass_delivery", "add", _("Mass movement"), true)
     cButton2 = genAbm2CustomButton(_("Movement recorded."),"/movements/new_mass_delivery/0", 

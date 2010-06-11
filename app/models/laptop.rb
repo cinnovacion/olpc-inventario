@@ -32,6 +32,7 @@ class Laptop < ActiveRecord::Base
   acts_as_audited
 
   has_many :movement_details
+  has_many :assignments
   has_many :problem_reports
   belongs_to :shipment, :class_name => "Shipment", :foreign_key => :shipment_arrival_id
   belongs_to :owner, :class_name => "Person", :foreign_key => :owner_id
