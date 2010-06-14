@@ -67,7 +67,7 @@ class PlacesController < SearchController
 
     ###
     # Test for Hierarchy on Demand Widget.
-    h = { "label" => _("Parent location"), "datatype" => "hierarchy_on_demand", "options" => { "width" => 360, "height" => 50 }}
+    h = { "label" => _("Parent location"), "datatype" => "hierarchy_on_demand", "options" => { "width" => 360, "height" => 120 }}
     h.merge!( p && p.place ? {"dataHash" => p.place.getElementsHash } : {} )
     @output["fields"].push(h)
     #
