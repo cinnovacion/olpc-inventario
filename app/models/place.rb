@@ -337,16 +337,22 @@ class Place < ActiveRecord::Base
   ###
   #
   #
-  def getPartDistribution(part_sym = :laptops)
+  def getPartDistribution()
     ret = Hash.new
     ret[:place_name] = self.name
     cnt = 0
-    self.people.each { |p| cnt += p.send(part_sym).length }
+    cnt_assigned = 0
+    self.people.each { |p|
+      cnt += p.laptops.length
+      cnt_assigned += p.laptops_assigned.length
+    }
     ret[:count] = cnt
+    ret[:count_assigned] = cnt_assigned
     ret[:childs] = Array.new
     self.places.each { |p| 
-      cInfo = p.getPartDistribution(part_sym)
+      cInfo = p.getPartDistribution()
       ret[:count] += cInfo[:count]
+      ret[:count_assigned] += cInfo[:count_assigned]
       ret[:childs].push(cInfo)
     }
     ret 
@@ -365,10 +371,11 @@ class Place < ActiveRecord::Base
 
 
   def buildMatrix(node, matrix, label_column = 0, count_column = 9)
-    if node[:count] > 0
+    if node[:count] > 0 or node[:count_assigned] > 0:
       v = Array.new
       v[label_column] = node[:place_name] 
       v[count_column] = node[:count]
+      v[count_column + 1] = node[:count_assigned]
       matrix.push(v)
       node[:childs].each { |c| buildMatrix(c, matrix, label_column + 1, count_column) }
     end

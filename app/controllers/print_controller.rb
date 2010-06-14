@@ -1771,7 +1771,7 @@ class PrintController < ApplicationController
     place_id = print_params.pop
 
     p = Place.find_by_id(place_id)
-    root = p.getPartDistribution(:laptops)
+    root = p.getPartDistribution()
     @matrix = p.buildMatrix(root, Array.new, 0, p.getTreeDepth(root))
     @title = _("Number of laptops per location")
     @date = Fecha.getFecha()
