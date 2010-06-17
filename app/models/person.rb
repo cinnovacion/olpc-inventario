@@ -85,6 +85,7 @@ class Person < ActiveRecord::Base
                       {:name => _("Bar Code"), :key => "people.barcode", :related_attribute => "getBarcode()", :width => 250}
                      ]
 
+    ret[:columnas_visibles] = [true, true, true, true, true, false, false, false, false, false, true, false]
     ret
   end
 
