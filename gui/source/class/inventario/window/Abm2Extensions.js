@@ -63,7 +63,7 @@ qx.Class.define("inventario.window.Abm2Extensions",
       abm2.setUsePopup(options.popup);
 
       for (var i in options.custom) {
-        abm2.getToolBarButtons().push(inventario.window.Abm2Extensions.customAbmFormButton(options.custom[i], context));
+        abm2.getToolBarButtons().push(inventario.window.Abm2Extensions.customAbmFormButton(options.custom[i], context, abm2));
       }
 
       abm2.show();
@@ -96,9 +96,9 @@ qx.Class.define("inventario.window.Abm2Extensions",
      * @param context {var} TODOC
      * @return {var} TODOC
      */
-    customAbmFormButton : function(options, context)
+    customAbmFormButton : function(options, context, abm2)
     {
-	var f = inventario.window.Abm2Extensions.getAbmFormFunction(options, context);
+	var f = inventario.window.Abm2Extensions.getAbmFormFunction(options, context, abm2);
 
 	var button =
 	    {
@@ -113,7 +113,7 @@ qx.Class.define("inventario.window.Abm2Extensions",
     }, 
 
 
-   getAbmFormFunction : function(options, context) {
+   getAbmFormFunction : function(options, context, abm2) {
 
       var saveCallback = function(newData, remoteData)
       {
@@ -124,6 +124,10 @@ qx.Class.define("inventario.window.Abm2Extensions",
         }
 
         inventario.window.Mensaje.mensaje(msg);
+
+        if (options.refresh_abm) {
+          abm2._navegar();
+        }
       };
 
       var f = function()

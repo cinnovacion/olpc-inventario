@@ -166,13 +166,14 @@ class SistemaController < ApplicationController
     attribs
   end
 
-  def genAbm2CustomButton(message, initialDataurl, saveUrl, icon, text)
+  def genAbm2CustomButton(message, initialDataurl, saveUrl, icon, text, refresh_abm)
     attribs = Hash.new
     attribs[:msg] = message
     attribs[:initial_data_url] = initialDataurl
     attribs[:save_url] = saveUrl
     attribs[:icon] = icon
     attribs[:text] = text
+    attribs[:refresh_abm] = refresh_abm
 
     attribs[:addUrl] = initialDataurl
     attribs[:saveUrl] = saveUrl
@@ -245,10 +246,11 @@ class SistemaController < ApplicationController
     #menu_option[:elements].push(genElement("Movimiento de Cajas", "abm2", genAbm2("box_movements")))
 
     entregas = genOption(_("Handouts"))
+
     cButton1 = genAbm2CustomButton(_("Done handout"), "/movements/single_mass_delivery/0",
-                                   "/movements/save_single_mass_delivery", "add", _("Massive handout"))
+                                   "/movements/save_single_mass_delivery", "add", _("Massive handout"), true)
     cButton2 = genAbm2CustomButton(_("Done handout"),"/movements/new_mass_delivery/0", 
-                                   "/movements/save_mass_delivery", "add", _("Students lot"))
+                                   "/movements/save_mass_delivery", "add", _("Students lot"), true)
     entregas[:elements].push(genElement(_("List handouts"), "abm2", 
                                         genAbm2("movimientos", true, true, false, false, false, [cButton1,cButton2])))
     entregas[:elements].push(genElement(_("New handout"), "abmform", genAbm2("movimientos")))
@@ -301,16 +303,16 @@ class SistemaController < ApplicationController
     menu_option[:elements].push(genElement(_("Events"), "abm2", genAbm2("events")))
     menu_option[:elements].push(genElement(_("Network nodes tracking"), "node_tracker"))
 
-    cButton1 = genAbm2CustomButton(_("Transfers"), "/part_movements/new_transfer/0", "/part_movements/save_transfer","add","Transferencias")
+    cButton1 = genAbm2CustomButton(_("Transfers"), "/part_movements/new_transfer/0", "/part_movements/save_transfer","add","Transferencias", true)
     menu_option[:elements].push(genElement(_("Part movements"), "abm2", genAbm2("part_movements", true, true, true, false, true, [cButton1])))
 
     menu_option[:elements].push(genElement(_("Report a problem"), "abm2", genAbm2("problem_reports")))
 
     #cButton1 = genAbm2CustomButton("Solucion Registrada", "/problem_solutions/quick_solution/0", "/problem_solutions/save_quick_solution","add","Rapidas")
     cButton2 = genAbm2CustomButton(_("Register solution"), "/problem_solutions/change_solution/0", 
-                                   "/problem_solutions/save_change_solution","add",_("Replacement"))
+                                   "/problem_solutions/save_change_solution","add",_("Replacement"), true)
     cButton3 = genAbm2CustomButton(_("Register solution"), "/problem_solutions/simple_solution/0", 
-                                   "/problem_solutions/save_simple_solution","add", _("Simples"))
+                                   "/problem_solutions/save_simple_solution","add", _("Simples"), true)
     menu_option[:elements].push(genElement(_("Problem solutions"), "abm2", 
                                            genAbm2("problem_solutions", true, false, true, false, true, [cButton2, cButton3])))
 
