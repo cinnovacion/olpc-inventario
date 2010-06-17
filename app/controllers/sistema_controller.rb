@@ -250,7 +250,7 @@ class SistemaController < ApplicationController
     cButton2 = genAbm2CustomButton(_("Done handout"),"/movements/new_mass_delivery/0", 
                                    "/movements/save_mass_delivery", "add", _("Students lot"))
     entregas[:elements].push(genElement(_("List handouts"), "abm2", 
-                                        genAbm2("movimientos", true, true, true, true, true, [cButton1,cButton2])))
+                                        genAbm2("movimientos", true, true, false, false, false, [cButton1,cButton2])))
     entregas[:elements].push(genElement(_("New handout"), "abmform", genAbm2("movimientos")))
     menu_option[:elements].push(entregas)
 
