@@ -47,8 +47,9 @@ class Movement < ActiveRecord::Base
      {:name => _("Type"), :key => "movement_types.description", :related_attribute => "getMovementType()", :width => 150},
      {:name => _("Serial Nbr"), :key => "laptops.serial_number", :related_attribute => "getLaptopSerial()", :width => 150},
      {:name => _("Given by"),:key => "people.name",:related_attribute => "getSourcePerson()", :width => 180},
+     {:name => _("Given (Doc id)"),:key => "people.id_document",:related_attribute => "getSourcePersonIdDoc()", :width => 180},
      {:name => _("Received by"),:key => "destination_people_movements.name",:related_attribute => "getDestinationPerson()", :width => 180},
-     {:name => _("Received (Doc id)"),:key => "destination_people_movements.id_document",:related_attribute => "getDestinationPerson()", :width => 180},
+     {:name => _("Received (Doc id)"),:key => "destination_people_movements.id_document",:related_attribute => "getDestinationPersonIdDoc()", :width => 180},
      {:name => _("Comment"),:key => "movements.comment",:related_attribute => "getComment()", :width => 160}
     ]
   end
@@ -183,8 +184,16 @@ class Movement < ActiveRecord::Base
     self.source_person ? self.source_person.getFullName() : ""
   end
 
+  def getSourcePersonIdDoc()
+    self.source_person ? self.source_person.getIdDoc() : ""
+  end
+
   def getDestinationPerson()
     self.destination_person ? self.destination_person.getFullName() : ""
+  end
+
+  def getDestinationPersonIdDoc()
+    self.destination_person ? self.destination_person.getIdDoc() : ""
   end
 
   def getComment()
