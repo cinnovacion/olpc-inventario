@@ -245,15 +245,15 @@ class SistemaController < ApplicationController
     #menu_option[:elements].push(genElement("Cargadores", "abm2", genAbm2("cargadores")))
     #menu_option[:elements].push(genElement("Movimiento de Cajas", "abm2", genAbm2("box_movements")))
 
-    entregas = genOption(_("Handouts"))
+    entregas = genOption(_("Movements"))
 
-    cButton1 = genAbm2CustomButton(_("Done handout"), "/movements/single_mass_delivery/0",
-                                   "/movements/save_single_mass_delivery", "add", _("Massive handout"), true)
-    cButton2 = genAbm2CustomButton(_("Done handout"),"/movements/new_mass_delivery/0", 
+    cButton1 = genAbm2CustomButton(_("Movement recorded."), "/movements/single_mass_delivery/0",
+                                   "/movements/save_single_mass_delivery", "add", _("Mass movement"), true)
+    cButton2 = genAbm2CustomButton(_("Movement recorded."),"/movements/new_mass_delivery/0", 
                                    "/movements/save_mass_delivery", "add", _("Students lot"), true)
-    entregas[:elements].push(genElement(_("List handouts"), "abm2", 
+    entregas[:elements].push(genElement(_("List movements"), "abm2", 
                                         genAbm2("movimientos", true, true, false, false, false, [cButton1,cButton2])))
-    entregas[:elements].push(genElement(_("New handout"), "abmform", genAbm2("movimientos")))
+    entregas[:elements].push(genElement(_("New movement"), "abmform", genAbm2("movimientos")))
     menu_option[:elements].push(entregas)
 
     #menu_option[:elements].push(genElement("Entregas por detalle", "abm2", genAbm2("movement_details")))

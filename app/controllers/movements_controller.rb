@@ -75,7 +75,7 @@ class MovementsController < SearchController
 
   def new 
 
-    @output["window_title"] = _("Handout Laptop")
+    @output["window_title"] = _("Laptop movement")
 
     @output["fields"] = []
 
@@ -90,7 +90,7 @@ class MovementsController < SearchController
 
     id = MovementType.find_by_internal_tag("entrega_alumno").id
     movement_types = buildSelectHash2(MovementType,id,"description",false,[])
-    h = { "label" => _("Handoff reason"),"datatype" => "combobox","options" => movement_types }
+    h = { "label" => _("Movement reason"),"datatype" => "combobox","options" => movement_types }
     @output["fields"].push(h)
 
     people = []
@@ -121,7 +121,7 @@ class MovementsController < SearchController
     person_desc = personObj.getFullName()
 
     str = ""
-    str += _("Handoff reason") + " : " + mov_type_desc  + "\n"
+    str += _("Movement reason") + " : " + mov_type_desc  + "\n"
     str += _("Handed to") + " : " + person_desc + "\n"
 
     if strNotEmpty(attribs[:serial_number_laptop])
@@ -148,13 +148,13 @@ class MovementsController < SearchController
   def save
     attribs = getData()
     Movement.register(attribs)
-    @output["msg"] = _("The handoff has been registered.")
+    @output["msg"] = _("The movement has been registered.")
   end
 
   def delete
     ids = JSON.parse(params[:payload])
     Movement.cancel(ids)
-    @output["msg"] = ids.length == 1 ? _("The handoff has been cancelled") : _("The handoffs has been cancelled")
+    @output["msg"] = ids.length == 1 ? _("The movement has been cancelled") : _("The movements have been cancelled")
   end
 
 
@@ -170,7 +170,7 @@ class MovementsController < SearchController
 
   def new_mass_delivery
 
-    @output["window_title"] = _("Handoff by lot")
+    @output["window_title"] = _("Movement by lot")
     @output["fields"] = []
 
     id = MovementType.find_by_internal_tag("entrega_alumno").id
@@ -202,18 +202,18 @@ class MovementsController < SearchController
         attribs[:id_document] = person.getIdDoc()
         attribs[:movement_type_id] = movement_type_id
         attribs[:serial_number_laptop] = laptop.getSerialNumber()
-        attribs[:comment] = _("Laptops handed out with the massive delivery form.")
+        attribs[:comment] = _("Laptops moved out with the mass movement form.")
         Movement.register(attribs)
       }
     end
-    @output["msg"] = _("The handouts have been registered.")
+    @output["msg"] = _("The movements have been registered.")
   end
 
   ###
   # When it is needed to deliver a set of laptops to a single person
   #
   def single_mass_delivery
-    @output["window_title"] = _("Handing out a lot.")
+    @output["window_title"] = _("Movement by lot")
     @output["fields"] = []
 
     movement_types = buildSelectHash2(MovementType, -1, "description", false, [])
@@ -242,7 +242,7 @@ class MovementsController < SearchController
       attribs = Hash.new
       attribs[:id_document] = person.getIdDoc()
       attribs[:movement_type_id] = movement_type.id 
-      attribs[:comment] = _("Laptops handed out with the massive delivery form.")
+      attribs[:comment] = _("Laptops moved out with the mass movement form.")
       return_date = form_fields.pop
       attribs[:return_date] = return_date if return_date != "" && movement_type.internal_tag == "prestamo"
    
@@ -265,7 +265,7 @@ class MovementsController < SearchController
       raise _("Insufficient data given!")
     end
 
-    @output["msg"] = _("The handouts have been registered.")
+    @output["msg"] = _("The movements have been registered.")
     if not_recognised != []
       @output["msg"]+= "." + _("The following laptops weren't recognized ")
       @output["msg"]+= "("+not_recognised.join(',')+")"
