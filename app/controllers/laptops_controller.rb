@@ -158,6 +158,10 @@ class LaptopsController < SearchController
       p = nil
     end
     
+    if p != nil
+      h = { "datatype" => "label", "label" => _("Note"), "text" => _("Do not use this form to change the owner or assignee of a laptop.<br />Use the Movements/Assignments systems instead."), "max_column" => 1 }
+      @output["fields"].push(h)
+    end
 
     h = { "label" => _("Serial Number"),"datatype" => "textfield" }.merge( p ? {"value" => p.serial_number } : {} )
     @output["fields"].push(h)
