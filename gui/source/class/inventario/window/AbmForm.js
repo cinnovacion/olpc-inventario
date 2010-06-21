@@ -517,6 +517,10 @@ qx.Class.define("inventario.window.AbmForm",
       }
 
       switch(fieldData.datatype) {
+        case "label":
+          input = new qx.ui.basic.Label();
+          input.set({rich : true, value : fieldData.text})
+          break;
         case "date":
           input = new qx.ui.form.DateField();
 
@@ -879,7 +883,7 @@ qx.Class.define("inventario.window.AbmForm",
       if (fieldData.datatype != "select" && fieldData.datatype != "table" && 
 	  fieldData.datatype != "uploadfield" && fieldData.datatype != "image" && 
 	  fieldData.datatype != "dyntable" && fieldData.datatype != "permissions" && 
-	  fieldData.datatype != "map_locator" && fieldData.datatype != "dynamic_delivery_form") {
+	  fieldData.datatype != "map_locator" && fieldData.datatype != "dynamic_delivery_form" && fieldData.datatype != "label") {
 
         this._formFields.push(input);
 
