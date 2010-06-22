@@ -1109,6 +1109,11 @@ qx.Class.define("inventario.window.Abm2",
         }
       }
 
+      if ("sort_column" in remoteData && "sort_ascending" in remoteData)
+      {
+        table.getTableModel().sortByColumn(remoteData["sort_column"], remoteData["sort_ascending"]);
+      }
+
       table.getSelectionModel().setSelectionMode(qx.ui.table.selection.Model.MULTIPLE_INTERVAL_SELECTION);
       this.getGridAreaBox().add(table, { flex : 1 });
       this.setResultsGrid(table);
@@ -1340,7 +1345,14 @@ qx.Class.define("inventario.window.Abm2",
         }
       }
 
-      table.getTableModel().setData(filas);
+      /* load data while preserving sort column */
+      var model = table.getTableModel();
+      var sort_column = model.getSortColumnIndex();
+      var sort_ascending = model.isSortAscending();
+      model.setData(filas);
+      if (sort_column != -1) {
+        model.sortByColumn(sort_column, sort_ascending);
+      }
     },
 
     /**
@@ -1495,6 +1507,7 @@ qx.Class.define("inventario.window.Abm2",
      */
     _actualizarPantalla : function(remoteData)
     {
+      var table = this.getResultsGrid();
       this._cargarFilas(remoteData["rows"]);
       this._numPages = remoteData["page_count"];
       this.setResults(remoteData["results"]);

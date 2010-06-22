@@ -122,6 +122,9 @@ class SearchController < ApplicationController
 
     # in the Model you can set what columns should be displayed in the client-side listing. 
     @output["columnas_visibles"] = @model_config[:columnas_visibles] if @model_config[:columnas_visibles]
+    # and a default sort order
+    @output["sort_column"] = @model_config[:sort_column] if @model_config[:sort_column]
+    @output["sort_ascending"] = @model_config[:sort_ascending] ? @model_config[:sort_ascending] : true
   end
 
 
