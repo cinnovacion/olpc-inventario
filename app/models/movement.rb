@@ -40,7 +40,8 @@ class Movement < ActiveRecord::Base
 
 
   def self.getColumnas()
-    [ 
+    ret = Hash.new
+    ret[:columnas] = [ 
      {:name => _("Mov. Nbr"),:key => "movements.id",:related_attribute => "id", :width => 50},
      {:name => _("Mov. Date"),:key => "movements.date_moved_at",:related_attribute => "getMovementDate()", :width => 90},
      {:name => _("Mov. Time"),:key => "movements.time_moved_at",:related_attribute => "getMovementTime()", :width => 90},
@@ -52,6 +53,8 @@ class Movement < ActiveRecord::Base
      {:name => _("Received (Doc id)"),:key => "destination_people_movements.id_document",:related_attribute => "getDestinationPersonIdDoc()", :width => 180},
      {:name => _("Comment"),:key => "movements.comment",:related_attribute => "getComment()", :width => 160}
     ]
+    ret[:sort_column] = 0
+    ret
   end
 
   
