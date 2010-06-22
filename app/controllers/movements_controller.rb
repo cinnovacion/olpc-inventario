@@ -93,9 +93,8 @@ class MovementsController < SearchController
     h = { "label" => _("Movement reason"),"datatype" => "combobox","options" => movement_types }
     @output["fields"].push(h)
 
-    people = []
-    h = { "label" => _("Handed to (document id):"),"datatype" => "select","options" => people, "option" => "personas" }
-    h.merge!( { "text_value" => true, "vista" => "movements" } )
+    people = buildSelectHashSingle(Person, -1, "getFullName()")
+    h = { "label" => _("Handed to:"),"datatype" => "select","options" => people, "option" => "personas" }
     @output["fields"].push(h)
     
     h = { "label" => _("Serial Number"),"datatype" => "select","options" => [],"option" => "laptops" } 
@@ -220,8 +219,8 @@ class MovementsController < SearchController
     h = { "label" => _("Reason"), "datatype" => "combobox", "options" => movement_types }
     @output["fields"].push(h)
 
-    h = { "label" => _("Handed to (document id):"), "datatype" => "select", "options" => [], "option" => "personas" }
-    h.merge!( { "text_value" => true, "vista" => "movements" } )
+    people = buildSelectHashSingle(Person, -1, "getFullName()")
+    h = { "label" => _("Handed to:"), "datatype" => "select", "options" => people, "option" => "personas" }
     @output["fields"].push(h)
 
     h = { "label" => _("Return date:"),"datatype" => "date",  :value => ""  }
@@ -236,7 +235,7 @@ class MovementsController < SearchController
     form_fields = datos["fields"].reverse
 
     movement_type = MovementType.find_by_id(form_fields.pop)
-    person = Person.find_by_id_document(form_fields.pop)
+    person = Person.find_by_id(form_fields.pop)
 
     if movement_type && person
       attribs = Hash.new
@@ -283,7 +282,13 @@ class MovementsController < SearchController
 
     #movement_place = data_fields.pop #Dummy data
     attribs[:movement_type_id] = data_fields.pop
-    attribs[:id_document] = data_fields.pop
+
+    personObj = Person.find_by_id(data_fields.pop)
+    if !personObj
+      raise _("Can't find person")
+    end
+
+    attribs[:id_document] = personObj.id_document
     attribs[:serial_number_laptop] = data_fields.pop
     attribs[:return_date] = data_fields.pop
     attribs[:comment] = data_fields.pop
