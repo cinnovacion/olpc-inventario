@@ -113,12 +113,12 @@ class Movement < ActiveRecord::Base
       #Updating Laptop stats
       movement_type = MovementType.find_by_id(attribs[:movement_type_id])
       raise _("Invalid type of movement") if !movement_type
-      if movement_type.is_delivery?
+      if movement_type.is_repair?
+        device_status = Status.find_by_internal_tag("on_repair")
+      elsif movement_type.is_delivery?
         device_status = Status.find_by_internal_tag("activated")
-      else
-        if movement_type.is_return?
-          device_status = Status.find_by_internal_tag("deactivated")
-        end
+      elsif movement_type.is_return?
+        device_status = Status.find_by_internal_tag("deactivated")
       end
 
       m = Movement.new

@@ -69,6 +69,10 @@ class MovementType < ActiveRecord::Base
     !self.is_delivery && self.internal_tag != "transfer"
   end
 
+  def is_repair?
+    self.internal_tag == "reparacion"
+  end
+
   def self.check(last_movement_type, movement_type)
 
     if last_movement_type == nil
