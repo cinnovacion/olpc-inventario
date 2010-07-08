@@ -1345,6 +1345,8 @@ class PrintController < ApplicationController
 
     filters = print_params.pop
 
+    profiles_ids = print_params.pop
+
     @num_of_cols = 3
     @all_data = Array.new
     root_places.each { |root_place|
@@ -1357,7 +1359,7 @@ class PrintController < ApplicationController
       while(stack != [])
 
         current_place = stack.pop
-        if current_place.place_type.internal_tag == "section"
+        if current_place
 
           place_info = Hash.new
           place_info[:title] = current_place.getName
@@ -1370,7 +1372,7 @@ class PrintController < ApplicationController
 
           place_info[:students] = Array.new
 
-          cond_v = ["performs.place_id = ? and profiles.internal_tag = ?", current_place.id, "student"]
+          cond_v = ["performs.place_id = ? and profiles.id in (?)", current_place.id, profiles_ids]
           include_v = [{:person => :laptops}, :place, :profile]
 
           Perform.find(:all, :conditions => cond_v, :include => include_v).each { |perform|
@@ -1380,7 +1382,6 @@ class PrintController < ApplicationController
             if ( ( filters.include?("with") and laptops != [] ) or ( filters.include?("with_out") and laptops == [] ))
 
               student = Hash.new
-              #fixed_person_name = person.getFullName.chars.slice(0, 26).to_s + "..."
               fixed_person_name = person.getFullName.chars.enum_slice(26).to_a.first.to_s + "..."
 
               student[:name] = fixed_person_name

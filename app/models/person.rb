@@ -49,6 +49,7 @@ class Person < ActiveRecord::Base
   include DrillDown 
 
   SELECTION_VIEW = "selection"
+  BARCODE_UPPERBOUND = 9999999999
 
   ###
   # Listado
@@ -146,11 +147,6 @@ class Person < ActiveRecord::Base
           Perform.create!({:person_id => person.id, :place_id => perform[0].to_i, :profile_id => perform[1].to_i})
         }
 
-        #Incase the person created its an Student then we add his/her barcode.
-        if Profile.tagInList?(performs.map { |p| p[1].to_i }, "student")
-          person.generateBarCode
-        end
-
       end
     end
   end
@@ -179,10 +175,6 @@ class Person < ActiveRecord::Base
           end
         }
 
-        #If this person has be promoted to a student
-        if !self.barcode && Profile.tagInList?(performs.map { |p| p[1].to_i }, "student")
-          self.generateBarCode
-        end
       end
     end
 
@@ -223,6 +215,7 @@ class Person < ActiveRecord::Base
   def before_save
     old_self = Person.find_by_id(self.id)
     self.id_document_created_at = Date.today if (!old_self || (old_self && !old_self.hasValidIdDoc?)) && self.hasValidIdDoc?
+    self.generateBarCode if !self.barcode
   end
 
   def before_create
@@ -321,7 +314,7 @@ class Person < ActiveRecord::Base
   ##
   def generateBarCode
     while true
-      self.barcode = rand(9999999999).to_s.rjust(10,"0")
+      self.barcode = rand(BARCODE_UPPERBOUND).to_s.rjust(10,"0")
       break if !Person.find_by_barcode(self.barcode)
     end
     self.save!	

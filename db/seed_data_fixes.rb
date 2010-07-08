@@ -11,16 +11,8 @@
 # WARNING: all methods identifiers must start with "fix_"
 class SeedDataFixes
 
-  def fix_students_with_no_barcode
-
-    inc = [:performs => :profile]
-    cond = ["profiles.internal_tag = ? and people.barcode is NULL","student"]
-    Person.find(:all, :conditions => cond, :include => inc).each { |person|
-
-      person.generateBarCode
-      person.save 
-    }
-
+  def fix_barcode_for_everyone
+    Person.find(:all, :conditions => ["people.barcode is NULL"]).each { |person| person.save }
     true
   end
 

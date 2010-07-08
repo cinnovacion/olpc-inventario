@@ -177,6 +177,10 @@ class ReportsController < SearchController
     cb_options.push( { :label => _("Without laptops assigned"), :cb_name => "with_out",:checked => true } )
     @output["widgets"].push(checkBoxSelector("Filters", cb_options))
 
+    profiles = Profile.find(:all, :conditions => ["profiles.internal_tag in (?)", ["student", "teacher"]])
+    options = buildCheckHash(Profile, "getDescription", true, profiles, profiles.collect(&:id))
+    @output["widgets"].push(checkBoxSelector(_("Profiles"), options, 1))
+
     @output["print_method"] = "barcodes"
   end
 

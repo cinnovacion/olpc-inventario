@@ -338,9 +338,12 @@ class ApplicationController < ActionController::Base
   ###
   # Create an Array of Hashes for Checkboxes.
   #
-  def buildCheckHash(pClassName,method,check_included=false,included_list=[])
+  def buildCheckHash(pClassName,method,check_included=false,included_list=[], id_subset=nil)
     list = []
-    pClassName.find(:all, :order => "id").each  { |o|
+    find_options = {:order => "id"}
+    find_options[:conditions] = ["id in (?)", id_subset] if id_subset
+
+    pClassName.find(:all, find_options).each  { |o|
       h = Hash.new
       h[:label] =  o.send(method)
       h[:cb_name] = o.id
