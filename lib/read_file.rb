@@ -247,10 +247,7 @@ module ReadFile
        new_performs = [[school.id, teacher_profile_id]]
 
        teacher = Person.find_by_id_document(id_document)
-       if teacher
-         old_performs = teacher.performs.map { |p| [p.place_id, p.profile_id] }
-         teacher.register_update(attribs, new_performs + old_performs, "", register)
-       else
+       if !teacher
          Person.register(attribs, new_performs, "", register)
        end
      }
