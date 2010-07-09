@@ -191,18 +191,20 @@ class MovementsController < SearchController
     Movement.transaction do
       deliveries.each { |delivery|
 
-        person = Person.find_by_barcode(delivery["person"])
-        raise _("%s doesn't exist.") % delivery["person"].to_s if !person
+        if delivery["person"] and delivery["laptop"]
+          person = Person.find_by_barcode(delivery["person"])
+          raise _("%s doesn't exist.") % delivery["person"].to_s if !person
 
-        laptop = Laptop.find_by_serial_number(delivery["laptop"])
-        raise _("The laptop with serial number %s doesn't exist.") % delivery["laptop"] if !laptop
+          laptop = Laptop.find_by_serial_number(delivery["laptop"])
+          raise _("The laptop with serial number %s doesn't exist.") % delivery["laptop"] if !laptop
 
-        attribs = Hash.new
-        attribs[:id_document] = person.getIdDoc()
-        attribs[:movement_type_id] = movement_type_id
-        attribs[:serial_number_laptop] = laptop.getSerialNumber()
-        attribs[:comment] = _("Laptops moved out with the mass movement form.")
-        Movement.register(attribs)
+          attribs = Hash.new
+          attribs[:id_document] = person.getIdDoc()
+          attribs[:movement_type_id] = movement_type_id
+          attribs[:serial_number_laptop] = laptop.getSerialNumber()
+          attribs[:comment] = _("Laptops moved out with the mass movement form.")
+          Movement.register(attribs)
+        end
       }
     end
     @output["msg"] = _("The movements have been registered.")
