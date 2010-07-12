@@ -580,37 +580,35 @@ class Place < ActiveRecord::Base
       grade_type = PlaceType.find_by_internal_tag(gradeInfo)
       section_type_id = PlaceType.find_by_internal_tag("section").id
 
-      if schoolInfo != nil
-        school = Place.find_by_name_and_place_type_id_and_place_id(schoolInfo, school_type_id, city_id)
-        if !school
-          school = Place.new({:name => schoolInfo, :place_type_id => school_type_id, :place_id => city_id})
-          school.save!
-        end
-        ret = school
+      school = Place.find_by_name_and_place_type_id_and_place_id(schoolInfo, school_type_id, city_id)
+      if !school
+        school = Place.new({:name => schoolInfo, :place_type_id => school_type_id, :place_id => city_id})
+        school.save!
       end
+      ret = school
 
       if shiftInfo != nil
-        shift = Place.find_by_name_and_place_type_id_and_place_id(shiftInfo, shift_type_id, school.id)
+        shift = Place.find_by_name_and_place_type_id_and_place_id(shiftInfo, shift_type_id, ret.id)
         if !shift
-          shift = Place.new({ :name => shiftInfo, :place_type_id => shift_type_id, :place_id => school.id })
+          shift = Place.new({ :name => shiftInfo, :place_type_id => shift_type_id, :place_id => ret.id })
           shift.save!
         end
         ret = shift
       end
 
       if gradeInfo != nil
-        grade = Place.find_by_name_and_place_type_id_and_place_id(grade_type.name, grade_type.id, shift.id)
+        grade = Place.find_by_name_and_place_type_id_and_place_id(grade_type.name, grade_type.id, ret.id)
         if !grade
-          grade = Place.new({ :name => grade_type.name, :place_type_id => grade_type.id, :place_id => shift.id})
+          grade = Place.new({ :name => grade_type.name, :place_type_id => grade_type.id, :place_id => ret.id})
           grade.save!
         end
         ret = grade
       end
 
       if sectionInfo != nil
-        section = Place.find_by_name_and_place_type_id_and_place_id(sectionInfo, section_type_id, grade.id)
+        section = Place.find_by_name_and_place_type_id_and_place_id(sectionInfo, section_type_id, ret.id)
         if !section
-          section = Place.new({ :name => sectionInfo, :place_type_id => section_type_id, :place_id => grade.id})
+          section = Place.new({ :name => sectionInfo, :place_type_id => section_type_id, :place_id => ret.id})
           section.save!
         end
         ret = section

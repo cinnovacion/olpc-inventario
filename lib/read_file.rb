@@ -121,7 +121,7 @@ module ReadFile
     student_profile_id = Profile.find_by_internal_tag("student").id
     city = Place.find_by_id(place_id)
 
-    gradeHash = Hash.new("Dummy Grade")
+    gradeHash = Hash.new()
     gradeHash["1"] = "first_grade"
     gradeHash["2"] = "second_grade"
     gradeHash["3"] = "third_grade"
@@ -134,12 +134,12 @@ module ReadFile
     gradeHash["p"] = "kinder"
     gradeHash["Educ  Especial"] = "special"
 
-    shiftHash = Hash.new("Dummy shift")
+    shiftHash = Hash.new()
     shiftHash["m"] = "Turno Mañana"
     shiftHash["t"] = "Turno Tarde"
     shiftHash["c"] = "Turno Completo"
 
-    sectionHash = Hash.new("Dummy Section")
+    sectionHash = Hash.new()
     sectionHash["a"] = "Seccion A"
     sectionHash["b"] = "Seccion B"
     sectionHash["c"] = "Seccion C"
@@ -175,9 +175,9 @@ module ReadFile
       dataArray = row.map() { |c| c ? c.to_s('utf-8') : "" }
  
       schoolInfo = dataArray[_school].strip
-      shiftInfo = shiftHash[dataArray[_shift]].strip
-      gradeInfo = gradeHash[dataArray[_grade]].strip
-      sectionInfo = sectionHash[dataArray[_section]].strip
+      shiftInfo = shiftHash[dataArray[_shift]]
+      gradeInfo = gradeHash[dataArray[_grade]]
+      sectionInfo = sectionHash[dataArray[_section]]
 
       section = Place.theSwissArmyKnifeFuntion(city.id, schoolInfo, shiftInfo, gradeInfo, sectionInfo)
 
