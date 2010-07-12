@@ -191,7 +191,7 @@ module ReadFile
       if dataArray[_ci] != ""
         cedula = Person.cedulaCleaner!(dataArray[_ci])
       else
-        cedula = fullname.first+"_"+dataArray[_school]+"_"+rand(999999).to_s
+        cedula = name+"_"+dataArray[_school]+"_"+rand(999999).to_s
       end
       kidAttribs[:id_document] = cedula
 
