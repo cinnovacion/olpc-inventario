@@ -113,6 +113,16 @@ module ReadFile
     }
   end
 
+  def self.titleize(str)
+    # titleize doesn't handle multibyte chars well, so we provide our own
+    # version
+    #
+    # Remove this function when the solution to 
+    # https://rails.lighthouseapp.com/projects/8994-ruby-on-rails/tickets/2794
+    # is available in a required version of Ruby
+    str.mb_chars.downcase.to_s.gsub(/\b('?[\S])/u) { $1.mb_chars.upcase }
+  end
+
   #Reads from Teo's school kids file.
   # The Schools, shifts, grades and sections must be already added.
   def self.kidsFromFile(filename, worksheet, place_id, register)
@@ -184,8 +194,8 @@ module ReadFile
 
       kidAttribs = Hash.new
 
-      name = dataArray[_name].strip.titleize
-      lastname = dataArray[_lastname].strip.titleize
+      name = titleize(dataArray[_name].strip)
+      lastname = titleize(dataArray[_lastname].strip)
       kidAttribs[:name] = name
       kidAttribs[:lastname] = lastname
 
