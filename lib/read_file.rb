@@ -168,6 +168,7 @@ module ReadFile
     _grade = 4
     _shift = 5
     _section = 6
+    _laptop_sn = 7
 
     Person.transaction do
     #There we go!
@@ -199,6 +200,20 @@ module ReadFile
       performs = [[section.id, student_profile_id]]
 
       Person.register(kidAttribs, performs, "", register)
+
+      laptop_sn = dataArray[_laptop_sn]
+      if laptop_sn != ""
+        laptop = Laptop.find_by_serial_number(laptop_sn)
+        if laptop == nil
+           raise "Can't find laptop #{laptop_sn}"
+        end
+
+        assignment = Hash.new
+        assignment[:serial_number_laptop] = dataArray[_laptop_sn]
+        assignment[:id_document] = cedula
+        assignment[:comment] = "From students import"
+        Assignment.register(assignment)
+      end
 
     }
     end
