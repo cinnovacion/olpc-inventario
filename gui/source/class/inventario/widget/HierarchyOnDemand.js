@@ -80,7 +80,10 @@ qx.Class.define("inventario.widget.HierarchyOnDemand",
 
       if (typeof dataHash != "undefined" && dataHash != null) {
         this._recursiveLoad(root, dataHash);
+      } else {
+        this._requestElements();
       }
+      tree.setHideRoot(true);
     }
     catch(e)
     {
