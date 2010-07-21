@@ -482,8 +482,7 @@ qx.Class.define("inventario.window.AbmForm",
 
       var currentTab = new qx.ui.tabview.Page(tabTitle, icon);
       currentTab.setLayout(new qx.ui.layout.VBox());
-      var grid_lo = new qx.ui.layout.Grid();
-      grid_lo.setColumnFlex(0, 1);
+      var grid_lo = new qx.ui.layout.Grid(2, 0);
       grid_lo.setColumnFlex(1, 3);
       var gl = new qx.ui.container.Composite(grid_lo);
       currentTab.add(gl);
