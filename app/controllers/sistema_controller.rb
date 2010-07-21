@@ -261,8 +261,10 @@ class SistemaController < ApplicationController
                                    "/movements/save_single_mass_delivery", "add", _("Mass movement"), true)
     cButton2 = genAbm2CustomButton(_("Movement recorded."),"/movements/new_mass_delivery/0", 
                                    "/movements/save_mass_delivery", "add", _("Students lot"), true)
+    cButton3 = genAbm2CustomButton(_("Movements recorded."),"/movements/new_handout/0", 
+                                   "/movements/save_handout", "add", _("Register handout"), true)
     entregas[:elements].push(genElement(_("List movements"), "abm2", 
-                                        genAbm2("movimientos", true, true, false, false, false, [cButton1,cButton2])))
+                                        genAbm2("movimientos", true, true, false, false, false, [cButton1,cButton2,cButton3])))
     entregas[:elements].push(genElement(_("New movement"), "abmform", genAbm2("movimientos")))
     menu_option[:elements].push(entregas)
 

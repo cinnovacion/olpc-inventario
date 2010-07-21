@@ -210,6 +210,72 @@ class MovementsController < SearchController
     @output["msg"] = _("The movements have been registered.")
   end
 
+  def new_handout
+
+    @output["window_title"] = _("Register handout")
+    @output["fields"] = []
+
+    id = MovementType.find_by_internal_tag("entrega_alumno").id
+    movement_types = buildSelectHash2(MovementType, id, "description", false, [])
+    h = { "label" => "Note", "text" => _("Use this form to mark laptops as handed out. For each laptop, a movement will be created, from the current owner to the respective assignee."), "datatype" => "label" }
+    @output["fields"].push(h)
+
+    h = { "label" => _("Reason"), "datatype" => "combobox", "options" => movement_types }
+    @output["fields"].push(h)
+
+    h = { "label" => _("Laptops"), "datatype" => "textarea","width" => 250, "height" => 50 }
+    @output["fields"].push(h)
+
+    h = { "label" => _("Observation"),"datatype" => "textfield" }
+    @output["fields"].push(h)
+  end
+
+  def save_handout
+    datos = JSON.parse(params[:payload])
+    form_fields = datos["fields"].reverse
+    movement_type_id = form_fields.pop
+    laptops = form_fields.pop
+    observation = form_fields.pop.strip
+
+    if observation == ""
+      observation = _("Laptop handout")
+    end
+
+    attribs = Hash.new
+    attribs[:movement_type_id] = movement_type_id 
+    attribs[:comment] = observation
+   
+    not_recognised = []
+    laptops.split(" ").each { |serial|
+      serial.strip!
+      if serial == ""
+        next
+      end
+
+      serial.upcase!
+      laptop = Laptop.find_by_serial_number(serial)
+      if laptop
+        if !laptop.assignee
+          raise _("Laptop #{serial} is unassigned.")
+        end
+        next if laptop.owner == laptop.assignee
+
+        attribs[:id_document] = laptop.getAssigneeIdDoc()
+        attribs[:serial_number_laptop] = serial
+        Movement.register(attribs)
+      else
+        not_recognised.push(serial)
+      end
+    }
+
+    @output["msg"] = _("The movements have been registered.")
+    if not_recognised != []
+      @output["msg"]+= "." + _("The following laptops weren't recognized ")
+      @output["msg"]+= "("+not_recognised.join(',')+")"
+    end
+    true
+  end
+
   ###
   # When it is needed to deliver a set of laptops to a single person
   #
