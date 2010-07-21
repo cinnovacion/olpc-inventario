@@ -236,35 +236,37 @@ module ReadFile
 
     teacher_profile_id = Profile.find_by_internal_tag("teacher").id
 
-    gradeHash = Hash.new("Dummy Grade")
-    gradeHash["1"] = "first_grade"
-    gradeHash["2"] = "second_grade"
-    gradeHash["3"] = "third_grade"
-    gradeHash["4"] = "fourth_grade"
-    gradeHash["5"] = "fifth_grade"
-    gradeHash["6"] = "sixth_grade"
-    gradeHash["7"] = "seventh_grade"
-    gradeHash["8"] = "eighth_grade"
-    gradeHash["9"] = "ninth_grade"
-    gradeHash["p"] = "kinder"
-    gradeHash["Educ. Especial"] = "special"
-
     _name =  0
     _lastname = 1
     _id_document = 2
     _school_name = 3
+    _laptop_sn = 4
 
    Person.transaction do
      Spreadsheet::ParseExcel.parse(filename).worksheet(worksheet).each { |row|
        dataArray = row.map() { |c| c ? c.to_s('utf-8') : "" }
+       name = dataArray[_name]
+       lastname = dataArray[_lastname]
+       next if name == nil and lastname == nil
+       name = "" if not name
+       lastname = "" if not lastname
 
-       name  = dataArray[_name]
-       lastname  = dataArray[_lastname]
-       id_document = dataArray[_id_document].gsub(/,| /,'')
-       school_name = dataArray[_school_name]
+       name.strip!
+       lastname.strip!
+       next if name == "" and lastname == ""
+
+       name = titleize(name)
+       lastname = titleize(lastname)
+       school_name = dataArray[_school_name].strip
        raise "There is no #{school_name} school name" if school_name == "Dummy Grade"
        school = Place.find_by_name(school_name)
        raise "You can not access #{school_name} school data" if !school
+
+       if dataArray[_id_document] != nil and dataArray[_id_document] != ""
+         id_document = Person.cedulaCleaner!(dataArray[_id_document])
+       else
+         id_document = Person.identGenerator(name, school_name)
+       end
 
        attribs = Hash.new
        attribs[:name] = name
@@ -275,6 +277,22 @@ module ReadFile
        teacher = Person.find_by_id_document(id_document)
        if !teacher
          Person.register(attribs, new_performs, "", register)
+       end
+
+       laptop_sn = dataArray[_laptop_sn]
+       if laptop_sn and laptop_sn != ""
+         laptop_sn.strip!
+         laptop_sn.upcase!
+         laptop = Laptop.find_by_serial_number(laptop_sn)
+         if laptop == nil
+            raise "Can't find laptop #{laptop_sn} (for #{name} #{lastname})"
+         end
+
+         assignment = Hash.new
+         assignment[:serial_number_laptop] = laptop_sn
+         assignment[:id_document] = id_document
+         assignment[:comment] = "From teachers import"
+         Assignment.register(assignment)
        end
      }
    end
