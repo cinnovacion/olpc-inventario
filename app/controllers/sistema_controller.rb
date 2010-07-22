@@ -298,6 +298,7 @@ class SistemaController < ApplicationController
     menu_option[:elements].push(genElement(_("Receipts for individuals"), "report", genReport("printable_delivery")))
     menu_option[:elements].push(genElement(_("Registered laptops"), "report", genReport("registered_laptops")))
     menu_option[:elements].push(genElement(_("People and their laptops"), "report", genReport("people_laptops")))
+    menu_option[:elements].push(genElement(_("Laptops and UUIDs"), "report", genReport("laptops_uuids")))
     menu_option
   end
 

@@ -210,6 +210,12 @@ class ReportsController < SearchController
     @output["print_method"] = "people_laptops"
   end
 
+  def laptops_uuids
+    @output["widgets"] = Array.new
+    @output["widgets"].push(hierarchy(""))
+    @output["print_method"] = "laptops_uuids"
+  end
+
   def printable_delivery
     @output["widgets"] = Array.new
     mov_ids_fields = Array.new

@@ -1242,6 +1242,31 @@ class PrintController < ApplicationController
     imprimir("people_laptops", "print/" + "people_laptops")
   end
 
+  def laptops_uuids
+    print_params = JSON.parse(params[:print_params]).reverse
+
+    place_id = print_params.pop
+    root_place = Place.find_by_id(place_id)
+    buf = ""
+
+    stack = [root_place]
+    while(stack != [])
+      place = stack.pop
+      stack+= place.places.reverse
+
+      second_cond = ["performs.place_id = ?",place.id]
+      second_inc = [:person => { :laptops_assigned => :status } ]
+      performs = Perform.find(:all, :conditions => second_cond, :include => second_inc)
+      performs.each { |perform|
+        perform.person.laptops_assigned.each { |laptop|
+          next if ["dead", "stolen", "lost"].include?(laptop.status.internal_tag)
+          buf = buf + laptop.serial_number + "," + laptop.uuid + "\n"
+        }
+      }
+    end
+    send_data buf, :type => 'text/plain', :filename => 'laptops.txt'
+  end
+
   def possible_mistakes
     print_params = JSON.parse(params[:print_params]).reverse
 
