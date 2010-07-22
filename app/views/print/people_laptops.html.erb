@@ -1,0 +1,53 @@
+<% @datos.each { |place|  %>
+
+<h2><%= place[:name] %></h2>
+<table align="center">
+<tr>
+   <%@columnas.each { |t| %>
+   <td><b><CENTER><u><%=t%></u></CENTER></b></td>
+   <%}%>
+</tr>
+
+<% i = 0 %>
+<% person_nr = 1 %>
+<% place[:data].each { |m|  %>
+<% bg_attr = i%2 == 0 ? "bgcolor='#dedede'" : "" %> 
+
+<tr <%= bg_attr -%> >
+   <% if m[:type] == 'person' %>
+   <td align="center"><font size=1><%= person_nr %></font></td>
+   <td align="center"><font size=1><%= m[:name] %></font></td>
+   <td align="center"><font size=1><%= m[:doc_id] %></font></td>
+   <td align="center"><font size=1><%= m[:laptop_sn] %><%= (" (" + m[:status] + ")") if m[:status] %></font></td>
+   <td align="center"><font size=1><%= m[:delivered] ? _("Yes") : "<font color=red>" + _("No") + "</font>" %></font></td>
+   <% person_nr = person_nr + 1 %>
+   <% end %>
+
+   <% if m[:type] == 'multiple' %>
+   <td align="left"></td>
+   <td align="left" colspan="2"><font size=1 color=red><%= _("Person has multiple laptops!") %></b></td>
+   <td align="center"><font size=1><%= m[:laptop_sn] %><%= (" (" + m[:status] + ")") if m[:status] %></font></td>
+   <td align="center"><font size=1><%= m[:delivered] ? _("Yes") : "<font color=red>" + _("No") + "</font>" %></font></td>
+   <% end %>
+
+   <% if m[:type] == 'person_no_laptop' %>
+   <td align="center"><font size=1><%= person_nr %></font></td>
+   <td align="center"><font size=1><%= m[:name] %></font></td>
+   <td align="center"><font size=1><%= m[:doc_id] %></font></td>
+   <td align="center"><font size=1 color=red><%= _("None") %></font></td>
+   <td align="center"></td>
+   <% person_nr = person_nr + 1 %>
+   <% end %>
+
+</tr>
+
+<%
+  i += 1
+  } 
+
+%>
+
+</table> 
+<!-- PAGE BREAK -->
+<% } %>
+

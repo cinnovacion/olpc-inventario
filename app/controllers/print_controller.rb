@@ -1196,6 +1196,52 @@ class PrintController < ApplicationController
     imprimir("printable_delivery", "print/" + "printable_delivery")
   end
 
+  def people_laptops
+    print_params = JSON.parse(params[:print_params]).reverse
+
+    place_id = print_params.pop
+    root_place = Place.find_by_id(place_id)
+
+    @titulo = _("People of %s and their laptops") % root_place.getName
+    @columnas = ["#", _("Name"), _("Document id"), _("Laptop"), _("In hands")]
+    @datos = []
+
+    stack = [root_place]
+    while(stack != [])
+      place = stack.pop
+      stack+= place.places.reverse
+
+      second_cond = ["performs.place_id = ?",place.id]
+      second_inc = [ { :person => { :laptops_assigned => :status } } ]
+      performs = Perform.find(:all, :conditions => second_cond, :include => second_inc)
+      next if performs.length == 0
+
+      entries = []
+      performs.each { |perform|
+        person = perform.person
+        laptops = person.laptops_assigned
+        first = true
+        if laptops.length == 0
+          entries.push({:type => "person_no_laptop", :name => person.getFullName(), :doc_id => person.id_document})
+          next
+        end
+        laptops.each { |laptop|
+          delivered = laptop.assignee == laptop.owner
+          status = (laptop.status.internal_tag != "activated") ? laptop.getStatus : nil
+          if first:
+            entries.push({:type => "person", :name => person.getFullName(), :doc_id => person.id_document, :laptop_sn => laptop.serial_number, :status => status, :delivered => delivered})
+          else
+            entries.push({:type => "multiple", :laptop_sn => laptop.serial_number, :status => status, :delivered => delivered})
+          end
+          first = false
+        }
+      }
+
+      @datos.push({:name => place.getName, :data => entries})
+    end
+    imprimir("people_laptops", "print/" + "people_laptops")
+  end
+
   def possible_mistakes
     print_params = JSON.parse(params[:print_params]).reverse
 
