@@ -233,7 +233,7 @@ class PlacesController < SearchController
     else
       parent = Place.find_by_id(id)
       if parent.nil?
-        raise _("Could not find place #{id}")
+        raise _("Could not find place %d") % id
       end
 
       # sort certain place types alphabetically
