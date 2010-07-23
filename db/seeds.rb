@@ -44,6 +44,9 @@
 		create_if_not_exists(Model, {:name => "XO-1", :created_at => "2008-10-27", :id => "1", :description => "Estas son las primeras XOs, de material rugoso, verde y blanca"})
 		create_if_not_exists(Model, {:name => "XO-2", :created_at => "2008-11-10", :id => "2", :description => "Esta va a estar disponible en el 2009"})
 		create_if_not_exists(Model, {:name => "XO-1 (B2)", :created_at => "2009-09-23", :id => "3", :description => "Modelos de laptop lisa"})
+		create_if_not_exists(Model, {:name => "XO-1.5", :created_at => "2010-07-23", :id => "4", :description => "XO-1.5 laptop con VIA CPU"})
+		create_if_not_exists(Model, {:name => "XO-1.75", :created_at => "2010-07-23", :id => "5", :description => "XO-1.75 laptop con ARM CPU"})
+		create_if_not_exists(Model, {:name => "XO-3", :created_at => "2010-07-23", :id => "6", :description => "XO-3 tablet"})
 	end
 
 	MovementType.transaction do
