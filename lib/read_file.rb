@@ -184,7 +184,16 @@ module ReadFile
     #There we go!
     Spreadsheet::ParseExcel.parse(filename).worksheet(worksheet).each { |row|
       dataArray = row.map() { |c| c ? c.to_s('utf-8') : "" }
- 
+      name = dataArray[_name]
+      lastname = dataArray[_lastname]
+      next if name == nil and lastname == nil
+      name = "" if not name
+      lastname = "" if not lastname
+
+      name.strip!
+      lastname.strip!
+      next if name == "" and lastname == ""
+
       schoolInfo = dataArray[_school].strip
       shiftInfo = shiftHash[dataArray[_shift]]
       gradeInfo = gradeHash[dataArray[_grade]]
@@ -195,12 +204,12 @@ module ReadFile
 
       kidAttribs = Hash.new
 
-      name = titleize(dataArray[_name].strip)
-      lastname = titleize(dataArray[_lastname].strip)
+      name = titleize(name)
+      lastname = titleize(lastname)
       kidAttribs[:name] = name
       kidAttribs[:lastname] = lastname
 
-      if dataArray[_ci] != ""
+      if dataArray[_ci] != nil and dataArray[_ci] != ""
         cedula = Person.cedulaCleaner!(dataArray[_ci])
       else
         cedula = Person.identGenerator(name, schoolInfo)
@@ -214,13 +223,15 @@ module ReadFile
 
       laptop_sn = dataArray[_laptop_sn]
       if laptop_sn and laptop_sn != ""
+        laptop_sn.strip!
+        laptop_sn.upcase!
         laptop = Laptop.find_by_serial_number(laptop_sn)
         if laptop == nil
-           raise "Can't find laptop #{laptop_sn}"
+           raise "Can't find laptop #{laptop_sn} (of #{name} #{lastname})"
         end
 
         assignment = Hash.new
-        assignment[:serial_number_laptop] = dataArray[_laptop_sn]
+        assignment[:serial_number_laptop] = laptop_sn
         assignment[:id_document] = cedula
         assignment[:comment] = "From students import"
         Assignment.register(assignment)
