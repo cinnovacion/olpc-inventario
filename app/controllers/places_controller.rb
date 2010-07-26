@@ -228,7 +228,22 @@ class PlacesController < SearchController
     id = params[:id]
     subElementTags = JSON.parse(params[:subElementTags])
 
-    places = id.to_i != -1 ? Place.find_all_by_place_id(id) : Place.roots4(current_user)
+    if id.to_i == -1
+      places = Place.roots4(current_user)
+    else
+      parent = Place.find_by_id(id)
+      if parent.nil?
+        raise _("Could not find place #{id}")
+      end
+
+      # sort certain place types alphabetically
+      if ["country", "state", "city"].include?(parent.place_type.internal_tag)
+        order = "name"
+      else
+        order = nil
+      end
+      places = Place.find_all_by_place_id(id, :order => order)
+    end
 
     @output[:elements] = places.map { |place|
       { :id => place.id, :text => place.name }
