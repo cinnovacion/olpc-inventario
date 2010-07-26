@@ -55,7 +55,7 @@ class DataImportController < ApplicationController
         when "students"
           ReadFile.kidsFromFile(path, 0, place_id, register) if path && place_id && register
         when "teachers"
-          ReadFile.teachersFromFile(path, 0, register) if path && register
+          ReadFile.teachersFromFile(path, 0, place_id, register) if path && place_id && register
         when "uuids"
           ReadFile.uuidFromFile(path, " ")
       end

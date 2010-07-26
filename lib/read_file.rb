@@ -232,9 +232,10 @@ module ReadFile
     true
   end
 
-  def self.teachersFromFile(filename, worksheet, register)
+  def self.teachersFromFile(filename, worksheet, place_id, register)
 
     teacher_profile_id = Profile.find_by_internal_tag("teacher").id
+    city = Place.find_by_id(place_id)
 
     _name =  0
     _lastname = 1
@@ -257,10 +258,11 @@ module ReadFile
 
        name = titleize(name)
        lastname = titleize(lastname)
-       school_name = dataArray[_school_name].strip
-       raise "There is no #{school_name} school name" if school_name == "Dummy Grade"
-       school = Place.find_by_name(school_name)
-       raise "You can not access #{school_name} school data" if !school
+       school_name = dataArray[_school_name]
+
+       raise _("School name or number must be provided") if (!school_name or school_name == "")
+       school_name.strip!
+       school = Place.theSwissArmyKnifeFuntion(city.id, school_name, nil, nil, nil)
 
        if dataArray[_id_document] != nil and dataArray[_id_document] != ""
          id_document = Person.cedulaCleaner!(dataArray[_id_document])
