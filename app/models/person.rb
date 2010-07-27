@@ -309,6 +309,19 @@ class Person < ActiveRecord::Base
     return id_document+"_"+rand(999999).to_s
   end
 
+  def self.identGenerator(name, schoolInfo)
+    ident = ""
+    clean_place_name = schoolInfo.strip.gsub(" ", "")
+    clean_person_name = name.strip
+
+    begin
+      random_id = rand(9999999999)
+      ident = "#{clean_person_name.first}_#{clean_place_name}_#{random_id}"
+    end while (Person.find_by_id_document(ident))
+
+    ident
+  end
+
   ##
   # Generates a random barcode serial number.
   ##

@@ -190,6 +190,7 @@ module ReadFile
       gradeInfo = gradeHash[dataArray[_grade]]
       sectionInfo = sectionHash[dataArray[_section]]
 
+      raise "School name or number must be provided" if (!schoolInfo or schoolInfo == "")
       section = Place.theSwissArmyKnifeFuntion(city.id, schoolInfo, shiftInfo, gradeInfo, sectionInfo)
 
       kidAttribs = Hash.new
@@ -202,7 +203,7 @@ module ReadFile
       if dataArray[_ci] != ""
         cedula = Person.cedulaCleaner!(dataArray[_ci])
       else
-        cedula = name+"_"+dataArray[_school]+"_"+rand(999999).to_s
+        cedula = Person.identGenerator(name, schoolInfo)
       end
       kidAttribs[:id_document] = cedula
 
