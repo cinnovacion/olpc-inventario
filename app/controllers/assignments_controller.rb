@@ -231,12 +231,16 @@ class AssignmentsController < SearchController
 
     data_fields = datos["fields"].reverse
 
-    personObj = Person.find_by_id(data_fields.pop)
-    if !personObj
-      raise _("Can't find person")
+    person_id = data_fields.pop
+    if person_id and person_id != ""
+      personObj = Person.find_by_id(person_id)
+      if !personObj
+        raise _("Can't find person")
+      end
+
+      attribs[:id_document] = personObj.id_document
     end
 
-    attribs[:id_document] = personObj.id_document
     attribs[:serial_number_laptop] = data_fields.pop
     attribs[:comment] = data_fields.pop
 
