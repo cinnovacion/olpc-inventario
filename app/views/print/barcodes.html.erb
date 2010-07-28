@@ -48,7 +48,7 @@
      <table  align="center" style="page-break-inside: avoid;">
        <tr align="center"><td rowspan=3><img src="/images/hack.png" height=50 width=0></td><td  align="center"> <font size="1"> <%= student[:name] -%> </font> </td> </tr>
        <tr align="center"><td  align="center"> <font size="0"> <%= student[:place] -%> </font> </td> </tr>
-       <tr align="center"><td  align="center"> <%= barcode(student[:barcode], { :encoding_format => Gbarcode::BARCODE_128, :output_format => "jpg", :width => 200, :height => 50 } ) -%> </td></tr>
+       <tr align="center"><td  align="center"> <%= barcode(student[:barcode]) -%> </td></tr>
      </table>
    </td>
    <% if (i+1) % @num_of_cols == 0 %>

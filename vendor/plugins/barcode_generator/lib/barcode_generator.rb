@@ -10,11 +10,11 @@
 # supports.
 
 # Extending <tt>ActionView::Base</tt> to support rendering themes
-require 'imagemagick_wrapper'
+require 'gs_wrapper'
 module ActionView
   # Extending <tt>ActionView::Base</tt> to support rendering themes
   class Base
-    include ImageMagickWrapper
+    include GsWrapper
 
 
     VALID_BARCODE_OPTIONS = [:encoding_format, :output_format, :width, :height, :scaling_factor, :xoff, :yoff, :margin	]
@@ -22,6 +22,9 @@ module ActionView
     def barcode(id, options = {:encoding_format => DEFAULT_ENCODING })
 
       options.assert_valid_keys(VALID_BARCODE_OPTIONS)
+      options[:width] = DEFAULT_WIDTH unless options[:width]
+      options[:height] = DEFAULT_HEIGHT unless options[:height]
+
       output_format = options[:output_format] ? options[:output_format] : DEFAULT_FORMAT
 
       id.upcase!
@@ -33,8 +36,8 @@ module ActionView
         #generate the barcode object with all supplied options
         options[:encoding_format] = DEFAULT_ENCODING unless options[:encoding_format]
         bc = Gbarcode.barcode_create(id)
-        bc.width  = options[:width]          if options[:width]
-        bc.height = options[:height]         if options[:height]
+        bc.width  = options[:width]
+        bc.height = options[:height]
         bc.scalef = options[:scaling_factor] if options[:scaling_factor]
         bc.xoff   = options[:xoff]           if options[:xoff]
         bc.yoff   = options[:yoff]           if options[:yoff]
@@ -51,14 +54,15 @@ module ActionView
         File.open(eps,'wb') do |eps_img| 
           Gbarcode.barcode_print(bc, eps_img, print_options)
           eps_img.close
-          convert_to_png(eps, out)
+          gs_convert(output_format, eps, out)
         end
         
-        #delete the eps image, no need to accummulate cruft
+        # delete the eps image, no need to accummulate cruft
         File.delete(eps)
       end
       #send the html image tag
-      image_tag("barcodes/#{id}.#{output_format}")
+      puts "width #{options[:width]}"
+      image_tag("barcodes/#{id}.#{output_format}", :width => options[:width], :height => options[:height])
     end
     
   end
