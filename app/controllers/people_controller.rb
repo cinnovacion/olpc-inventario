@@ -86,6 +86,9 @@ class PeopleController < SearchController
       @output["fields"].push(h)
     end
 
+    h = { "label" => _("Notes"), "datatype" => "textarea" }.merge( p ? {"value" => p.notes } : {} )
+    @output["fields"].push(h)
+
     h = { "label" => _("Personal image"), "datatype" => "uploadfield", :field_name => :fotocarnet }
     @output["fields"].push(h)
 
@@ -145,6 +148,7 @@ class PeopleController < SearchController
     attribs[:phone] = data_fields.pop
     attribs[:cell_phone] = data_fields.pop
     attribs[:email] = data_fields.pop    
+    attribs[:notes] = data_fields.pop.strip
     performs = data_fields.pop.map { |perform| [ perform["place_id"], perform["profile_id"] ]  }
 
     if datos["id"]
