@@ -213,7 +213,7 @@ module ReadFile
       Person.register(kidAttribs, performs, "", register)
 
       laptop_sn = dataArray[_laptop_sn]
-      if laptop_sn != ""
+      if laptop_sn and laptop_sn != ""
         laptop = Laptop.find_by_serial_number(laptop_sn)
         if laptop == nil
            raise "Can't find laptop #{laptop_sn}"
