@@ -66,7 +66,7 @@ qx.Class.define("inventario.transport.Transport",
         }
       }
 
-      form.addListener('completed', function(e)
+      form.addListenerOnce('completed', function(e)
       {
         var response = this.getIframeHtmlContent();
         inventario.transport.Transport._callRemoteResp(response, params.handle, params.parametros, self);
