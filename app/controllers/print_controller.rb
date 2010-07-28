@@ -1398,6 +1398,9 @@ class PrintController < ApplicationController
   end
 
   def barcodes
+    max_place_length = 45
+    max_name_length = 26
+
     print_params = JSON.parse(params[:print_params]).reverse
 
     places_ids = print_params.pop
@@ -1434,12 +1437,12 @@ class PrintController < ApplicationController
 
           place_info = Hash.new
           place_info[:title] = current_place.getName
-
           fixed_place_name = place_info[:title]
-          name_length = fixed_place_name.length
-          #fixed_place_name = "..."+fixed_place_name.chars.slice(name_length - 45,name_length).to_s
-          fixed_place_name = "..." + fixed_place_name.reverse.chars.enum_slice(45).to_a.first.to_s.reverse
-          place_info[:title] = fixed_place_name
+
+          if fixed_place_name.length > max_place_length:
+            fixed_place_name = "..." + fixed_place_name.mb_chars[-max_place_length..-1].to_s
+            place_info[:title] = fixed_place_name
+          end
 
           place_info[:students] = Array.new
 
@@ -1453,7 +1456,10 @@ class PrintController < ApplicationController
             if ( ( filters.include?("with") and laptops != [] ) or ( filters.include?("with_out") and laptops == [] ))
 
               student = Hash.new
-              fixed_person_name = person.getFullName.chars.enum_slice(26).to_a.first.to_s + "..."
+              fixed_person_name = person.getFullName
+              if fixed_person_name.length > max_name_length:
+                fixed_person_name = fixed_person_name.mb_chars[0..max_name_length].to_s + "..."
+              end
 
               student[:name] = fixed_person_name
               student[:place] = fixed_place_name
