@@ -600,7 +600,7 @@ qx.Class.define("inventario.window.AbmForm",
 
         case "dynamic_delivery_form":
           input = new qx.ui.container.Composite(new qx.ui.layout.HBox(20));
-          var dynDelForm = new inventario.widget.DynamicDeliveryForm(null);
+          var dynDelForm = new inventario.widget.DynamicDeliveryForm(null, fieldData.mode);
           dynDelForm.setPage(input);
           dynDelForm.show();
 

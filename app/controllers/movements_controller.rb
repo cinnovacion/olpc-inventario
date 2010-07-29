@@ -172,12 +172,15 @@ class MovementsController < SearchController
     @output["window_title"] = _("Movement by lot")
     @output["fields"] = []
 
+    h = { "label" => _("Note"), "datatype" => "label", "text" => _("This form is for creating <b>movements</b> of laptops in mass. For each movement you wish to create, scan the barcode of the person and the barcode (serial number) of the laptop.") }
+    @output["fields"].push(h)
+
     id = MovementType.find_by_internal_tag("entrega_alumno").id
     movement_types = buildSelectHash2(MovementType, id, "description", false, [])
     h = { "label" => _("Reason"), "datatype" => "combobox", "options" => movement_types }
     @output["fields"].push(h)
 
-    h = { "label" => "", "datatype" => "dynamic_delivery_form" }
+    h = { "label" => "", "datatype" => "dynamic_delivery_form", "mode" => "movement" }
     @output["fields"].push(h)
   end
 

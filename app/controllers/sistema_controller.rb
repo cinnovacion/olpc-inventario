@@ -249,9 +249,11 @@ class SistemaController < ApplicationController
 
     cButton1 = genAbm2CustomButton(_("Done assignment"), "/assignments/single_mass_assignment/0",
                                    "/assignments/save_single_mass_assignment", "add", _("Mass assignment"), true)
+    cButton2 = genAbm2CustomButton(_("Assignments recorded."),"/assignments/new_mass_assignment/0", 
+                                   "/assignments/save_mass_assignment", "add", _("Students lot"), true)
 
     assignments[:elements].push(genElement(_("List assignments"), "abm2", 
-                                        genAbm2("assignments", true, true, false, false, false, [cButton1])))
+                                        genAbm2("assignments", true, true, false, false, false, [cButton1,cButton2])))
     assignments[:elements].push(genElement(_("New assignment"), "abmform", genAbm2("assignments")))
     menu_option[:elements].push(assignments)
 

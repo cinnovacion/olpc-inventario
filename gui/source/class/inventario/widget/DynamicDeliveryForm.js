@@ -27,9 +27,10 @@ qx.Class.define("inventario.widget.DynamicDeliveryForm",
        * CONSTRUCTOR
        */
 
-  construct : function(page)
+  construct : function(page, mode)
   {
     this.base(arguments, page);
+    this._mode = mode;
     this._fields = null;
     this._placesCombo = null;
     this._amountLabel = null;
@@ -172,7 +173,11 @@ qx.Class.define("inventario.widget.DynamicDeliveryForm",
      */
     _addFilterCheckBox : function()
     {
-      var filterCheckeBox = new qx.ui.form.CheckBox(qx.locale.Manager.tr("Only without laptops"));
+      var msg = qx.locale.Manager.tr("Only without laptops in hands");
+      if (this._mode == "assignation") {
+        msg = qx.locale.Manager.tr("Only without laptops assigned");
+      }
+      var filterCheckeBox = new qx.ui.form.CheckBox(msg);
       filterCheckeBox.addListener("changeValue", this._loadForm, this);
       this._filterCheck = filterCheckeBox;
       return filterCheckeBox;
@@ -268,7 +273,8 @@ qx.Class.define("inventario.widget.DynamicDeliveryForm",
       hopts["data"] =
       {
         place_id   : placeId,
-        withFilter : filterChecked
+        withFilter : filterChecked,
+        mode       : this._mode
       };
 
       inventario.transport.Transport.callRemote(hopts, this);

@@ -206,16 +206,26 @@ class PeopleController < SearchController
   def studentsAmount
     place_id = params[:place_id].to_i
     with_filter = (params[:withFilter] == "true")
+    assignation_mode = (params[:mode] == "assignation")
 
     student_profile_id = Profile.find_by_internal_tag("student").id
 
-    include_v = [:person => :laptops]
+    if assignation_mode
+      include_v = [:person => :laptops_assigned]
+    else
+      include_v = [:person => :laptops]
+    end
     cond_v = ["place_id = ? and profile_id = ?", place_id, student_profile_id]
 
     amount = 0
     Perform.find(:all, :conditions => cond_v, :include => include_v).each { |perform|
       person = perform.person
-      amount += 1 if (person.laptops == []) == with_filter or not with_filter
+      if assignation_mode
+        laptops = person.laptops_assigned
+      else
+        laptops = person.laptops
+      end
+      amount += 1 if (laptops == []) == with_filter or not with_filter
     }
     @output["amount"] = amount
 

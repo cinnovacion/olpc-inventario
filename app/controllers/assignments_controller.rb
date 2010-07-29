@@ -142,7 +142,10 @@ class AssignmentsController < SearchController
     @output["window_title"] = _("Mass assignment")
     @output["fields"] = []
 
-    h = { "label" => "", "datatype" => "dynamic_delivery_form" }
+    h = { "label" => _("Note"), "datatype" => "label", "text" => _("This form is for creating <b>assignments</b> of laptops in mass. For each assignment you wish to create, scan the barcode of the person and the barcode (serial number) of the laptop.") }
+    @output["fields"].push(h)
+
+    h = { "label" => "", "datatype" => "dynamic_delivery_form", "mode" => "assignation" }
     @output["fields"].push(h)
   end
 
