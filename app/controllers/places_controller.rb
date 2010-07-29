@@ -190,7 +190,7 @@ class PlacesController < SearchController
     end
 
     if params[:sections_only]
-      pruneCond = ["place_types.internal_tag = ?", "section"]
+      pruneCond = ["place_types.internal_tag = ? OR place_types.internal_tag LIKE '%_grade'", "section"]
       pruneInc = [:place_type]
       incBlank = true
     end
