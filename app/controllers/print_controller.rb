@@ -1453,8 +1453,12 @@ class PrintController < ApplicationController
 
             person = perform.person
             laptops = person.laptops
-            if ( ( filters.include?("with") and laptops != [] ) or ( filters.include?("with_out") and laptops == [] ))
-
+            laptops_assigned = person.laptops_assigned
+            print_barcode = ((filters.include?("with") and laptops != []) or
+                             (filters.include?("with_out") and laptops == []) or
+                             (filters.include?("with_assigned") and laptops_assigned != []) or
+                             (filters.include?("with_out_assigned") and laptops_assigned == []))
+            if print_barcode
               student = Hash.new
               fixed_person_name = person.getFullName
               if fixed_person_name.length > max_name_length:
