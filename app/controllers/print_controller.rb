@@ -835,9 +835,9 @@ class PrintController < ApplicationController
   def where_are_these_laptops
     print_params = JSON.parse(params[:print_params]).reverse
 
-    laptop_serials = print_params.pop.split("\n").map { |line| line.strip }
+    laptop_serials = print_params.pop.split("\n").map { |line| line.strip.upcase }
 
-    inc_v = [:owner]
+    inc_v = [:owner, :assignee]
     cond_v = ["laptops.serial_number in (?)", laptop_serials]
 
     @datos = []
@@ -845,12 +845,20 @@ class PrintController < ApplicationController
     Laptop.find(:all, :conditions => cond_v, :include => inc_v).each { |laptop|
 
       laptop_serial = laptop.getSerialNumber
+      location = ""
       owner = laptop.owner
-      owner_data = owner.getFullName+" (#{owner.getIdDoc})"
-      place_name = laptop.owner.place.getName
-      status_desc = laptop.getStatus()
+      assignee = laptop.assignee
+      if owner:
+        location += _("In hands of %s (%s), %s") % [owner.getFullName, owner.getIdDoc, owner.place.getName]
+        location += "<br>"
+      end
+      if assignee:
+        location += _("Assigned to %s (%s), %s") % [assignee.getFullName, assignee.getIdDoc, assignee.place.getName]
+        location += "<br>"
+      end
 
-      @datos.push([laptop_serial, owner_data, place_name, status_desc])
+      status_desc = laptop.getStatus()
+      @datos.push([laptop_serial, location, status_desc])
       found_laptops.push(laptop_serial)
 
     }
@@ -858,12 +866,12 @@ class PrintController < ApplicationController
     #We list all the laptops that where not found in the system
     laptops_not_found = laptop_serials - found_laptops
     laptops_not_found.each { |laptop_serial|
-      @datos.push([laptop_serial, "NITS", "NITS", "NITS"])
+      @datos.push([laptop_serial, "NITS", "NITS"])
     }
 
     @titulo = _("Where are the laptops?")
     @titulo += "<br><font size=\"1\">" + _("NITS (Not in the system)") + "</font>" if laptops_not_found != []
-    @columnas = [_("Laptop"), _("Person"), _("Location"), _("Status")]
+    @columnas = [_("Laptop"), _("Person and location"), _("Status")]
 
     imprimir("where_are_these_laptops", "print/" + "report")
   end
