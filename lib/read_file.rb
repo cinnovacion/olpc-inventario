@@ -210,16 +210,13 @@ module ReadFile
       kidAttribs[:lastname] = lastname
 
       if dataArray[_ci] != nil and dataArray[_ci] != ""
-        cedula = Person.cedulaCleaner!(dataArray[_ci])
-      else
-        cedula = Person.identGenerator(name, schoolInfo)
+        kidAttribs[:id_document] = Person.cedulaCleaner!(dataArray[_ci])
       end
-      kidAttribs[:id_document] = cedula
 
       profiles = [student_profile_id]
       performs = [[section.id, student_profile_id]]
 
-      Person.register(kidAttribs, performs, "", register)
+      person = Person.register(kidAttribs, performs, "", register, schoolInfo)
 
       laptop_sn = dataArray[_laptop_sn]
       if laptop_sn and laptop_sn != ""
@@ -232,7 +229,7 @@ module ReadFile
 
         assignment = Hash.new
         assignment[:serial_number_laptop] = laptop_sn
-        assignment[:id_document] = cedula
+        assignment[:id_document] = person.id_document
         assignment[:comment] = "From students import"
         Assignment.register(assignment)
       end
@@ -275,22 +272,22 @@ module ReadFile
        school_name.strip!
        school = Place.theSwissArmyKnifeFuntion(city.id, school_name, nil, nil, nil)
 
+       teacher = nil
        if dataArray[_id_document] != nil and dataArray[_id_document] != ""
          id_document = Person.cedulaCleaner!(dataArray[_id_document])
-       else
-         id_document = Person.identGenerator(name, school_name)
+         attribs[:id_document] = id_document
+         teacher = Person.find_by_id_document(id_document)
        end
 
        attribs = Hash.new
        attribs[:name] = name
        attribs[:lastname] = lastname
-       attribs[:id_document] = id_document
        new_performs = [[school.id, teacher_profile_id]]
 
-       teacher = Person.find_by_id_document(id_document)
        if !teacher
-         Person.register(attribs, new_performs, "", register)
+         teacher = Person.register(attribs, new_performs, "", register, school_name)
        end
+       id_document = teacher.id_document
 
        laptop_sn = dataArray[_laptop_sn]
        if laptop_sn and laptop_sn != ""

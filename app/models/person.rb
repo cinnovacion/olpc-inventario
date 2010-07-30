@@ -130,10 +130,15 @@ class Person < ActiveRecord::Base
     ret
   end
 
-  def self.register(attribs, performs = [], fotocarnet = "", register = nil)
+  def self.register(attribs, performs = [], fotocarnet = "", register = nil, doc_id_hint = nil)
 
     #Checking rules for performs
     raise _("Invalid Profile Configuration!") if !Perform.check(register, performs)
+    # invent doc ID if none was provided
+    if !attribs[:id_document] || attribs[:id_document] == ""
+      doc_id_hint = attribs[:lastname] unless doc_id_hint
+      attribs[:id_document] = Person.identGenerator(attribs[:name], doc_id_hint)
+    end
 
     Person.transaction do
 
@@ -148,6 +153,7 @@ class Person < ActiveRecord::Base
         }
 
       end
+      person
     end
   end
 

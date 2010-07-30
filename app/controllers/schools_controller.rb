@@ -116,7 +116,7 @@ class SchoolsController < ApplicationController
         attribs[:lastname] = lastname
         attribs[:id_document] = id_document
         performs = [[place.id, profile.id]]
-        Person.register(attribs, performs, "", current_user.person)
+        Person.register(attribs, performs, "", current_user.person, nil)
         
         @output["msg"] = _("Person registered.") 
       else

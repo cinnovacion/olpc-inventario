@@ -155,7 +155,7 @@ class PeopleController < SearchController
       p = Person.find datos["id"]
       p.register_update(attribs, performs, params[:fotocarnet], current_user.person)
     else
-      Person.register(attribs, performs, params[:fotocarnet], current_user.person)
+      Person.register(attribs, performs, params[:fotocarnet], current_user.person, nil)
     end
  
     @output["msg"] = datos["id"] ? _("Changes saved.") : _("Person added.")  
