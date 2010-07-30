@@ -340,12 +340,8 @@ class Place < ActiveRecord::Base
   def getPartDistribution()
     ret = Hash.new
     ret[:place_name] = self.name
-    cnt = 0
-    cnt_assigned = 0
-    self.people.each { |p|
-      cnt += p.laptops.length
-      cnt_assigned += p.laptops_assigned.length
-    }
+    cnt = Perform.count('laptops.id', :joins => 'LEFT JOIN laptops ON (performs.person_id = laptops.owner_id)', :conditions => "place_id = #{self.id}")
+    cnt_assigned = Perform.count('laptops.id', :joins => 'LEFT JOIN laptops ON (performs.person_id = laptops.assignee_id)', :conditions => "place_id = #{self.id}")
     ret[:count] = cnt
     ret[:count_assigned] = cnt_assigned
     ret[:childs] = Array.new
