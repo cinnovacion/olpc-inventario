@@ -202,6 +202,13 @@ module ReadFile
       raise "School name or number must be provided" if (!schoolInfo or schoolInfo == "")
       section = Place.theSwissArmyKnifeFuntion(city.id, schoolInfo, shiftInfo, gradeInfo, sectionInfo)
 
+      # try to detect user error in importing a spreadsheet of teacher info
+      # (we can only do this when the teacher spreadsheet includes assignments,
+      #  otherwise the only field we can look at is blank, which is valid here)
+      if !gradeInfo and dataArray[_grade] and dataArray[_grade] != ""
+        raise "Invalid grade %s (of %s %s)" % [dataArray[_grade], name, lastname]
+      end
+
       kidAttribs = Hash.new
 
       name = titleize(name)
