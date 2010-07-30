@@ -53,8 +53,11 @@ class Assignment < ActiveRecord::Base
       m.source_person_id = lapObj.assignee_id
       m.laptop_id = lapObj.id
 
-      personObj = Person.find_by_id_document(attribs[:id_document])
-      if personObj
+      if attribs[:id_document] and attribs[:id_document] != "":
+        personObj = Person.find_by_id_document(attribs[:id_document])
+        if !personObj
+          raise _("Couldn't find person with document ID %s") % attribs[:id_document]
+        end
         m.destination_person_id = personObj.id
       else
         m.destination_person_id = 0

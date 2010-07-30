@@ -193,30 +193,28 @@ class AssignmentsController < SearchController
     datos = JSON.parse(params[:payload])
     form_fields = datos["fields"].reverse
 
-    person = Person.find_by_id(form_fields.pop)
-    if person
-      attribs = Hash.new
-      attribs[:id_document] = person.getIdDoc()
-      attribs[:comment] = _("Laptops assigned in mass.")
-   
-      # Serials Processing
-      not_recognised = []
-      form_fields.pop.split("\n").each { |serial|
+    attribs = Hash.new
 
-        serial.strip!
-        if serial != ""
-          laptop = Laptop.find_by_serial_number(serial)
-          if laptop
-            attribs[:serial_number_laptop] = serial
-            Assignment.register(attribs)
-          else
-            not_recognised.push(serial)
-          end
-        end 
-      }
-    else
-      raise _("Insufficient data given!")
-    end
+    person = Person.find_by_id(form_fields.pop)
+    attribs[:id_document] = person.getIdDoc() if person
+
+    attribs[:comment] = _("Laptops assigned in mass.")
+   
+    # Serials Processing
+    not_recognised = []
+    form_fields.pop.split("\n").each { |serial|
+
+      serial.strip!
+      if serial != ""
+        laptop = Laptop.find_by_serial_number(serial)
+        if laptop
+          attribs[:serial_number_laptop] = serial
+          Assignment.register(attribs)
+        else
+          not_recognised.push(serial)
+        end
+      end 
+    }
 
     @output["msg"] = _("The assignments have been registered.")
     if not_recognised != []
