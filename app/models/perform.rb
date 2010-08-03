@@ -86,32 +86,31 @@ class Perform < ActiveRecord::Base
     places_ids = performs.map { |p| p[0].to_i }
     profiles_ids = performs.map { |p| p[1].to_i }
 
-    # FIRST RULE: Must be atleast 1 perform
-    if performs != []
+    # FIRST RULE: Must be exactly 1 perform
+    return false if performs.length != 1
 
-      # SECOND RULE: No performing can be created by a lower one.
-      highest_profile = Profile.highest(Profile.find_all_by_id(profiles_ids))
-      if register.profile.owns(highest_profile)
+    # SECOND RULE: No performing can be created by a lower one.
+    highest_profile = Profile.highest(Profile.find_all_by_id(profiles_ids))
+    if register.profile.owns(highest_profile)
 
-        #THIRD RULE: a) The highest profile must be at the highest place
-        #            b) For one user can only have subtree access
-        #            c) All created performed places must be descendants of the registers one
-        roots = Place.roots(Place.find_all_by_id(places_ids))
-        if roots.length == 1 && register.place.owns(roots.first)
+      #THIRD RULE: a) The highest profile must be at the highest place
+      #            b) For one user can only have subtree access
+      #            c) All created performed places must be descendants of the registers one
+      roots = Place.roots(Place.find_all_by_id(places_ids))
+      if roots.length == 1 && register.place.owns(roots.first)
 
-          highest_place = roots.first
-          allOk = false
-          performs.each { |p|
-            # theres has a to be one perform with the highest place and highest profile.
-            if p[0].to_i == highest_place.id && p[1].to_i == highest_profile.id
+        highest_place = roots.first
+        allOk = false
+        performs.each { |p|
+          # theres has a to be one perform with the highest place and highest profile.
+          if p[0].to_i == highest_place.id && p[1].to_i == highest_profile.id
 
-              allOk = true
-              break
-            end
-          }
-          #just to make it clear.
-          return true if allOk
-        end
+            allOk = true
+            break
+          end
+        }
+        #just to make it clear.
+        return true if allOk
       end
     end
 
