@@ -169,6 +169,7 @@ qx.Class.define("inventario.window.Mensaje",
 
       var vbox = this.getVbox();
       this._doShow2(vbox);
+      this._button.focus();
     },
 
 
@@ -241,9 +242,9 @@ qx.Class.define("inventario.window.Mensaje",
       hbox_abajo.add(caja_relleno_left, { flex : 2 });
 
       var button_hbox = new qx.ui.container.Composite(new qx.ui.layout.HBox(20));
-      var button = new qx.ui.form.Button(qx.locale.Manager.tr("OK"), "inventario/16/button-ok.png");
-      button.addListener("execute", this._accept_cb, this);
-      button_hbox.add(button);
+      this._button = new qx.ui.form.Button(qx.locale.Manager.tr("OK"), "inventario/16/button-ok.png");
+      this._button.addListener("execute", this._accept_cb, this);
+      button_hbox.add(this._button);
 
       hbox_abajo.add(button_hbox, { flex : 1 });
 
