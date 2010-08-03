@@ -286,7 +286,8 @@ class MovementsController < SearchController
     @output["window_title"] = _("Movement by lot")
     @output["fields"] = []
 
-    movement_types = buildSelectHash2(MovementType, -1, "description", false, [])
+    id = MovementType.find_by_internal_tag("entrega_alumno").id
+    movement_types = buildSelectHash2(MovementType, id, "description", false, [])
     h = { "label" => _("Reason"), "datatype" => "combobox", "options" => movement_types }
     @output["fields"].push(h)
 
