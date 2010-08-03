@@ -324,8 +324,10 @@ class MovementsController < SearchController
         if serial != ""
           laptop = Laptop.find_by_serial_number(serial)
           if laptop
-            attribs[:serial_number_laptop] = serial
-            Movement.register(attribs)
+            if laptop.owner_id != person.id
+              attribs[:serial_number_laptop] = serial
+              Movement.register(attribs)
+            end
           else
             not_recognised.push(serial)
           end
