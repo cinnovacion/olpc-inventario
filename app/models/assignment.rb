@@ -60,7 +60,7 @@ class Assignment < ActiveRecord::Base
         end
         m.destination_person_id = personObj.id
       else
-        m.destination_person_id = 0
+        m.destination_person_id = nil
       end
 
       m.comment = attribs[:comment]
