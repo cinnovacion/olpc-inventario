@@ -12,7 +12,7 @@ namespace :translations do
 
   task(:update_pofiles => :environment) do
     domain = "inventario"
-    files = Dir.glob("{app,lib}/**/*.{rb,rhtml}")
+    files = Dir.glob("{app,lib}/**/*.{rb,rhtml,erb}")
     app_version = "0.3" # we should parse this from the .spec
     opts = { :po_root => "translation/po" }
 
