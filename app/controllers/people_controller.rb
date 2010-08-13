@@ -232,4 +232,26 @@ class PeopleController < SearchController
   end #
   #####
 
+  # produce a list of (SN,name of person) for people in a specific place
+  # who have laptops assigned but not in their hands
+  # used by DynamicDeliveryForm
+  def laptopsNotInHands
+    place_id = params[:place_id].to_i
+    include_v = [{ :person => :laptops_assigned } , { :person => :laptops }]
+    cond_v = ["place_id = ?", place_id]
+    result = Array.new()
+
+    Perform.find(:all, :conditions => cond_v, :include => include_v, :order => "people.lastname").each { |perform|
+      person = perform.person
+      laptops_assigned = person.laptops_assigned.map { |l| l.serial_number }
+      laptops = person.laptops.map { |l| l.serial_number }
+      laptops_not_in_hands = laptops_assigned - laptops
+      laptops_not_in_hands.each { |laptop|
+        result.push([laptop, person.getFullName()])
+      }
+    }
+    @output["items"] = result
+    p result
+  end #
+
 end

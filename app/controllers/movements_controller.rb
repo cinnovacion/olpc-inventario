@@ -218,28 +218,44 @@ class MovementsController < SearchController
     @output["window_title"] = _("Register handout")
     @output["fields"] = []
 
+    h = { "label" => "Note", "text" => _("Entries with a tick will cause a movement to be created for each laptop, to the current assignee of the laptop (shown)."), "datatype" => "label" }
+    @output["fields"].push(h)
+
     id = MovementType.find_by_internal_tag("entrega_alumno").id
     movement_types = buildSelectHash2(MovementType, id, "description", false, [])
+    h = { "label" => _("Reason"), "datatype" => "combobox", "options" => movement_types }
+    @output["fields"].push(h)
+
+    h = { "label" => "Laptops", "datatype" => "dynamic_delivery_form" }
+    @output["fields"].push(h)
+
+    h = { "label" => _("Observation"),"datatype" => "textfield" }
+    @output["fields"].push(h)
+
+    h = { "datatype" => "tab_break", "title" => _("By serial") }
+    @output["fields"].push(h)
+
     h = { "label" => "Note", "text" => _("Use this form to mark laptops as handed out. For each laptop, a movement will be created, from the current owner to the respective assignee."), "datatype" => "label" }
     @output["fields"].push(h)
 
-    h = { "label" => _("Reason"), "datatype" => "combobox", "options" => movement_types }
+    h = { "label" => "Note", "text" => _("Fill in the \"Reason\" and \"Observation\" fields on the Main tab of this window."), "datatype" => "label" }
     @output["fields"].push(h)
 
     h = { "label" => _("Laptops"), "datatype" => "textarea","width" => 250, "height" => 50 }
     @output["fields"].push(h)
 
-    h = { "label" => _("Observation"),"datatype" => "textfield" }
-    @output["fields"].push(h)
   end
 
   def save_handout
     datos = JSON.parse(params[:payload])
     form_fields = datos["fields"].reverse
-    movement_type_id = form_fields.pop
-    laptops = form_fields.pop
-    observation = form_fields.pop.strip
+    laptops = []
+    not_recognised = []
 
+    movement_type_id = form_fields.pop
+    laptops_dyn = form_fields.pop
+    observation = form_fields.pop.strip
+    laptops_txt = form_fields.pop
     if observation == ""
       observation = _("Laptop handout")
     end
@@ -247,21 +263,24 @@ class MovementsController < SearchController
     attribs = Hash.new
     attribs[:movement_type_id] = movement_type_id 
     attribs[:comment] = observation
-   
-    not_recognised = []
-    laptops.split(" ").each { |serial|
-      serial.strip!
-      if serial == ""
-        next
-      end
 
-      serial.upcase!
-      laptop = Laptop.find_by_serial_number(serial)
+    if laptops_dyn
+      laptops += laptops_dyn
+    end
+
+    laptops_txt.split(" ").each { |serial|
+      serial.strip!
+      next if serial == ""
+      laptops.push(serial.upcase)
+    }
+
+    laptops.each { |serial|
+      laptop = Laptop.find_by_serial_number(serial, :include => :assignee)
       if laptop
-        if !laptop.assignee
+        if !laptop.assignee_id
           raise _("Laptop #{serial} is unassigned.")
         end
-        next if laptop.owner == laptop.assignee
+        next if laptop.owner_id == laptop.assignee_id
 
         attribs[:id_document] = laptop.getAssigneeIdDoc()
         attribs[:serial_number_laptop] = serial

@@ -608,6 +608,16 @@ qx.Class.define("inventario.window.AbmForm",
           this.getDataInputObjects().push(dynDelForm);
           break;
 
+        case "dynamic_delivery_form":
+          input = new qx.ui.container.Composite(new qx.ui.layout.HBox(20));
+          var dynDelForm = new inventario.widget.DynamicDeliveryForm(null, fieldData.mode);
+          dynDelForm.setPage(input);
+          dynDelForm.show();
+
+          this._formFields.push(dynDelForm);
+          this.getDataInputObjects().push(dynDelForm);
+          break;
+
         case "coords_text_field":
           input = new inventario.widget.CoordsTextField(fieldData.value ? fieldData.value.toString() : "");
           break;
@@ -882,7 +892,10 @@ qx.Class.define("inventario.window.AbmForm",
       if (fieldData.datatype != "select" && fieldData.datatype != "table" && 
 	  fieldData.datatype != "uploadfield" && fieldData.datatype != "image" && 
 	  fieldData.datatype != "dyntable" && fieldData.datatype != "permissions" && 
-	  fieldData.datatype != "map_locator" && fieldData.datatype != "dynamic_barcode_scan_form" && fieldData.datatype != "label") {
+	  fieldData.datatype != "map_locator" &&
+      fieldData.datatype != "dynamic_barcode_scan_form" &&
+      fieldData.datatype != "dynamic_delivery_form" &&
+      fieldData.datatype != "label") {
 
         this._formFields.push(input);
 
