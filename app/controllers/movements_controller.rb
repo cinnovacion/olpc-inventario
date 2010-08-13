@@ -180,7 +180,7 @@ class MovementsController < SearchController
     h = { "label" => _("Reason"), "datatype" => "combobox", "options" => movement_types }
     @output["fields"].push(h)
 
-    h = { "label" => "", "datatype" => "dynamic_delivery_form", "mode" => "movement" }
+    h = { "label" => "", "datatype" => "dynamic_barcode_scan_form", "mode" => "movement" }
     @output["fields"].push(h)
   end
 

@@ -15,11 +15,11 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 //
 //
-// DynamicDeliveryForm.js
+// DynamicBarcodeScanForm.js
 // A simple dynamic form for lots creation.
 // Author: Martin Abente (tincho_02@hotmail.com | mabente@paraguayeduca.org)
 // 2009
-qx.Class.define("inventario.widget.DynamicDeliveryForm",
+qx.Class.define("inventario.widget.DynamicBarcodeScanForm",
 {
   extend : inventario.window.AbstractWindow,
 

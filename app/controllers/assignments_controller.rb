@@ -145,7 +145,7 @@ class AssignmentsController < SearchController
     h = { "label" => _("Note"), "datatype" => "label", "text" => _("This form is for creating <b>assignments</b> of laptops in mass. For each assignment you wish to create, scan the barcode of the person and the barcode (serial number) of the laptop.") }
     @output["fields"].push(h)
 
-    h = { "label" => "", "datatype" => "dynamic_delivery_form", "mode" => "assignation" }
+    h = { "label" => "", "datatype" => "dynamic_barcode_scan_form", "mode" => "assignation" }
     @output["fields"].push(h)
   end
 

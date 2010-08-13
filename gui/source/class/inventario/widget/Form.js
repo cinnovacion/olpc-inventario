@@ -339,7 +339,7 @@ qx.Class.define("inventario.widget.Form",
         v = pInput.getTreeValues();
       } else if (pInput instanceof inventario.widget.MapLocator) {
         v = pInput.getValues();
-      } else if (pInput instanceof inventario.widget.DynamicDeliveryForm) {
+      } else if (pInput instanceof inventario.widget.DynamicBarcodeScanForm) {
         v = pInput.getValues();
       } else if (pInput instanceof inventario.widget.CoordsTextField) {
         v = pInput.getInputValue();

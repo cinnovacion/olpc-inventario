@@ -598,9 +598,9 @@ qx.Class.define("inventario.window.AbmForm",
 
           break;
 
-        case "dynamic_delivery_form":
+        case "dynamic_barcode_scan_form":
           input = new qx.ui.container.Composite(new qx.ui.layout.HBox(20));
-          var dynDelForm = new inventario.widget.DynamicDeliveryForm(null, fieldData.mode);
+          var dynDelForm = new inventario.widget.DynamicBarcodeScanForm(null, fieldData.mode);
           dynDelForm.setPage(input);
           dynDelForm.show();
 
@@ -882,7 +882,7 @@ qx.Class.define("inventario.window.AbmForm",
       if (fieldData.datatype != "select" && fieldData.datatype != "table" && 
 	  fieldData.datatype != "uploadfield" && fieldData.datatype != "image" && 
 	  fieldData.datatype != "dyntable" && fieldData.datatype != "permissions" && 
-	  fieldData.datatype != "map_locator" && fieldData.datatype != "dynamic_delivery_form" && fieldData.datatype != "label") {
+	  fieldData.datatype != "map_locator" && fieldData.datatype != "dynamic_barcode_scan_form" && fieldData.datatype != "label") {
 
         this._formFields.push(input);
 
