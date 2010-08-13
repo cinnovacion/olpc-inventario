@@ -1221,7 +1221,7 @@ class PrintController < ApplicationController
 
       second_cond = ["performs.place_id = ?",place.id]
       second_inc = [ { :person => { :laptops_assigned => :status } } ]
-      performs = Perform.find(:all, :conditions => second_cond, :include => second_inc)
+      performs = Perform.find(:all, :conditions => second_cond, :include => second_inc, :order => "people.lastname")
       next if performs.length == 0
 
       entries = []
