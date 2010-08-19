@@ -1042,6 +1042,9 @@ qx.Class.define("inventario.window.Abm2",
     {
       this._pages = 1;  // pagina actual
       this._numPages = 0;  // cantidad de paginas en el listado
+      this._sort_column = null;
+      this._sort = "asc";
+      this._internal_sort = false; // sort is happening, not triggered by user
     
       var url = this.getInitialDataUrl();
       var dhash = this.getDataHashQuery();
@@ -1116,6 +1119,17 @@ qx.Class.define("inventario.window.Abm2",
         table.getTableModel().sortByColumn(remoteData["sort_column"], remoteData["sort_ascending"]);
       }
 
+      table.getTableModel().addListener("sorted", function(e)
+        {
+          if (this._internal_sort)
+            return;
+          var data = e.getData();
+          this._sort = data.ascending ? "asc" : "desc";
+          this._sort_column = data.columnIndex;
+          this._saveData(false);
+        },
+        this);
+ 
       table.getSelectionModel().setSelectionMode(qx.ui.table.selection.Model.MULTIPLE_INTERVAL_SELECTION);
       this.getGridAreaBox().add(table, { flex : 1 });
       this.setResultsGrid(table);
@@ -1353,7 +1367,9 @@ qx.Class.define("inventario.window.Abm2",
       var sort_ascending = model.isSortAscending();
       model.setData(filas);
       if (sort_column != -1) {
+        this._internal_sort = true;
         model.sortByColumn(sort_column, sort_ascending);
+        this._internal_sort = false;
       }
     },
 
@@ -1489,7 +1505,9 @@ qx.Class.define("inventario.window.Abm2",
       {
         payload   : qx.util.Json.stringify(datos),
         page      : this._pages,
-        cant_fila : cant_fila
+        cant_fila : cant_fila,
+        sort      : this._sort,
+        sort_column : this._sort_column
       };
 
       var vista = this.getVista();

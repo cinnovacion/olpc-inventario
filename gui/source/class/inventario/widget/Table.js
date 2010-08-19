@@ -69,6 +69,12 @@ qx.Class.define("inventario.widget.Table",
       return ret;
     },
 
+    dummySort : function(row1, row2)
+    {
+      /* next item always comes after */
+      return -1;
+    },
+
     /**
      * createTable() : creates a table, with all its parameters
      *
@@ -102,6 +108,11 @@ qx.Class.define("inventario.widget.Table",
 	table.setColumnWidth(i, vdata[i]["width"]);
 	if (vdata[i]["renderer"]) table.getTableColumnModel().setDataCellRenderer(i, new vdata[i]["renderer"]);
 	if (vdata[i]["factory"]) table.getTableColumnModel().setCellEditorFactory(i, new vdata[i]["factory"]);
+
+	/* because we do sorting and data selection on the server, we want
+	 * to disable qooxdoo's sorting and instead pull in new data from the
+	 * server, while retaining qx's UI elements indicating sort column. */
+	tableModel.setSortMethods(i, {ascending: this.dummySort, descending: this.dummySort});
       }
 
       table.getSelectionModel().setSelectionMode(qx.ui.table.selection.Model.MULTIPLE_INTERVAL_SELECTION);

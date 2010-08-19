@@ -52,7 +52,7 @@ class SearchController < ApplicationController
   #
   def do_search(clazz_ref,options)
     @find_options = options ? options : {}
-    extract_client_options()
+    extract_client_options(clazz_ref)
     clients_conditions = extract_conditions()
 
     # merge the search conditions that come from the client request with those set
@@ -85,12 +85,29 @@ class SearchController < ApplicationController
   ####
   # Extract options sent by our HTTP client. 
   #
-  def extract_client_options()
+  def extract_client_options(clazz_ref)
+    model_config = @vista == "" ? clazz_ref.getColumnas() : clazz_ref.getColumnas(@vista)
+    column_config = model_config.is_a?(Array) ? model_config : model_config[:columnas]
+
     @client_payload = params[:payload] ? JSON.parse(params[:payload]) : {}
 
     # Some options for the listing of rows.  
     @find_options[:per_page] = params[:cant_fila] ? params[:cant_fila].to_i : 30
     @find_options[:page] = params[:page] || 1
+
+    if params[:sort_column] and params[:sort_column] != ""
+      # apply user-selected sort
+	  @find_options[:order] = column_config[params[:sort_column].to_i][:key]
+      if params[:sort] == "desc"
+	    @find_options[:order] += " DESC"
+      end
+    elsif model_config[:sort_column]
+      # model specifies default sort
+	  @find_options[:order] = column_config[model_config[:sort_column]][:key]
+      if model_config[:sort_ascending] == false
+	    @find_options[:order] += " DESC"
+      end
+    end
   end
 
 
