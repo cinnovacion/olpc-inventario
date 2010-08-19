@@ -257,8 +257,12 @@ class Movement < ActiveRecord::Base
   # Data Scope:
   # User with data scope can only access objects that are related to his
   # performing places and sub-places.
+  #
+  # In this context, we limit the user to viewing the history of the laptops
+  # that are physically within his places. (This matches the behaviour of
+  # the assignments model, where there is no other viable option)
   def self.setScope(places_ids)
-    find_include = [:destination_person => {:performs => {:place => :ancestor_dependencies}}]
+    find_include = [:movement_details => {:laptop => {:owner => {:performs => {:place => :ancestor_dependencies}}}}]
     find_conditions = ["place_dependencies.ancestor_id in (?)", places_ids]
 
     scope = { :find => {:conditions => find_conditions, :include => find_include } }

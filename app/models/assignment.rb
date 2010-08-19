@@ -121,8 +121,14 @@ class Assignment < ActiveRecord::Base
   # Data Scope:
   # User with data scope can only access objects that are related to his
   # performing places and sub-places.
+  #
+  # In this context, we limit the user to viewing the history of the laptops
+  # that are physically within his places. (The other option is to limit the
+  # user to viewing assignments that end up within his places, but remember
+  # that laptops can also be deassigned, meaning that nobody would be able to
+  # see those deassignments)
   def self.setScope(places_ids)
-    find_include = [:destination_person => {:performs => {:place => :ancestor_dependencies}}]
+    find_include = [:laptop => {:owner => {:performs => {:place => :ancestor_dependencies}}}]
     find_conditions = ["place_dependencies.ancestor_id in (?)", places_ids]
 
     scope = { :find => {:conditions => find_conditions, :include => find_include } }
