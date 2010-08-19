@@ -855,6 +855,8 @@ qx.Class.define("inventario.window.Abm2",
       {
         try
         {
+          /* New search; return to first page */
+          this._pages = 1;
           this._validateData();
           this._saveData(true);
         }
