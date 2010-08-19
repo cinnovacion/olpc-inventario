@@ -9,18 +9,17 @@
 </tr>
 
 <% i = 0 %>
-<% person_nr = 1 %>
 <% place[:data].each { |m|  %>
-<% bg_attr = i%2 == 0 ? "bgcolor='#dedede'" : "" %> 
+<% i += 1 if ['person', 'person_no_laptop'].include?(m[:type]) %>
+<% bg_attr = i%2 == 1 ? "bgcolor='#dedede'" : "" %>
 
 <tr <%= bg_attr -%> >
    <% if m[:type] == 'person' %>
-   <td align="center"><font size=1><%= person_nr %></font></td>
+   <td align="center"><font size=1><%= i %></font></td>
    <td align="center"><font size=1><%= m[:name] %></font></td>
    <td align="center"><font size=1><%= m[:doc_id] %></font></td>
    <td align="center"><font size=1><%= m[:laptop_sn] %><%= (" (" + m[:status] + ")") if m[:status] %></font></td>
    <td align="center"><font size=1><%= m[:delivered] ? _("Yes") : "<font color=red>" + _("No") + "</font>" %></font></td>
-   <% person_nr = person_nr + 1 %>
    <% end %>
 
    <% if m[:type] == 'multiple' %>
@@ -31,20 +30,22 @@
    <% end %>
 
    <% if m[:type] == 'person_no_laptop' %>
-   <td align="center"><font size=1><%= person_nr %></font></td>
+   <td align="center"><font size=1><%= i %></font></td>
    <td align="center"><font size=1><%= m[:name] %></font></td>
    <td align="center"><font size=1><%= m[:doc_id] %></font></td>
    <td align="center"><font size=1 color=red><%= _("None") %></font></td>
    <td align="center"></td>
-   <% person_nr = person_nr + 1 %>
+   <% end %>
+
+   <% if m[:type] == 'person_notes' %>
+   <td align="left"></td>
+   <td colspan=4><font size="0.5"><%= _("Notes: %s") % h(m[:notes]).gsub!(/\r?\n/, "<br />") %></font></td>
    <% end %>
 
 </tr>
 
 <%
-  i += 1
   } 
-
 %>
 
 </table> 

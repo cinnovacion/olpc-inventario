@@ -1231,7 +1231,6 @@ class PrintController < ApplicationController
         first = true
         if laptops.length == 0
           entries.push({:type => "person_no_laptop", :name => person.getFullName(), :doc_id => person.id_document})
-          next
         end
         laptops.each { |laptop|
           delivered = laptop.assignee == laptop.owner
@@ -1243,6 +1242,10 @@ class PrintController < ApplicationController
           end
           first = false
         }
+        if person.notes and person.notes != ''
+          entries.push({:type => "person_notes", :notes => person.notes})
+        end
+
       }
 
       @datos.push({:name => place.getName, :data => entries})
