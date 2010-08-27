@@ -546,25 +546,49 @@ qx.Class.define("inventario.widget.PlaceCreationToolBox",
         var new_lastname = lastNameText.getValue();
         var new_idDoc = idDocText.getValue();
 
-        var msg = qx.locale.Manager.tr("Upgrade to ") + element_data.text;
-        msg += qx.locale.Manager.tr(" with the name ") + "\"" + new_name + "\"";
-        msg += qx.locale.Manager.tr(", surname ") + "\"" + new_lastname + "\"";
-        msg += qx.locale.Manager.tr(" and document number ") + "\"" + new_idDoc + "\"?";
-        msg += qx.locale.Manager.tr(" Empty fields are not updated.");
+        var msg = element_data.text + "\n\n";
+        var updated = false;
 
-        if (confirm(msg))
+        var data = {};
+        data.id = hierarchy.getValue();
+
+        if (new_name != null && new_name != "")
         {
-          var data = {};
-          data.id = hierarchy.getValue();
+          msg += qx.locale.Manager.tr("Update name to: ") + "\"" + new_name + "\"?\n";
           data.name = new_name;
-          data.lastname = new_lastname;
-          data.id_document = new_idDoc;
-          this._sendToServer(data, this.getUpdatePersonUrl(), this._refreshAfterDelete);
+          updated = true;
         }
+
+        if (new_lastname != null && new_lastname != "")
+        {
+          msg += qx.locale.Manager.tr("Update lastname to: ") + "\"" + new_lastname + "\"?\n";
+          data.lastname = new_lastname;
+          updated = true;
+        }
+
+        if (new_idDoc != null && new_idDoc != "")
+        {
+          msg += qx.locale.Manager.tr("Update document number to: ") + "\"" + new_idDoc + "\"?\n";
+          data.id_document = new_idDoc;
+          updated = true;
+        }
+
+        if (!updated){
+          alert(qx.locale.Manager.tr("Nothing to be updated."));
+          return;
+        }
+        else
+        {
+          if (confirm(msg))
+          {
+            this._sendToServer(data, this.getUpdatePersonUrl(), this._refreshAfterDelete);
+          }
+        }
+
       }
       else
       {
-        alert(qx.locale.Manager.tr("The selected item is a Person."));
+        alert(qx.locale.Manager.tr("The selected item is not a Person."));
       }
     },
 

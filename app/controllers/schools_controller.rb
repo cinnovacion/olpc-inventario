@@ -142,11 +142,12 @@ class SchoolsController < ApplicationController
     lastname = params[:lastname]
     id_document = params[:id_document]
 
-    if person && name && lastname && id_document
-      attribs = Hash.new
-      attribs[:name] = name if name != ""
-      attribs[:lastname] = lastname if lastname != ""
-      attribs[:id_document] = id_document if id_document != ""
+    attribs = Hash.new
+    attribs[:name] = name if (name and name != "")
+    attribs[:lastname] = lastname if (lastname and lastname != "")
+    attribs[:id_document] = id_document if (id_document and id_document != "")
+
+    if attribs.keys.length > 0
       person.update_attributes(attribs)
     else
       raise _("Can't update this person.")
