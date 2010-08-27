@@ -103,11 +103,11 @@ msgstr ""
 msgid "Processing your request..."
 msgstr ""
 
-#: inventario/util/PrintManager.js:219
+#: inventario/util/PrintManager.js:221
 msgid " not set to print even"
 msgstr ""
 
-#: inventario/util/PrintManager.js:219
+#: inventario/util/PrintManager.js:221
 msgid "The document "
 msgstr ""
 
@@ -143,10 +143,6 @@ msgstr ""
 msgid "Data Importer"
 msgstr ""
 
-#: inventario/widget/DataImporter.js:151 inventario/window/AbmForm.js:787
-msgid "Browse"
-msgstr ""
-
 #: inventario/widget/DataImporter.js:161
 msgid "Import"
 msgstr ""
@@ -167,27 +163,31 @@ msgstr ""
 msgid "do not know the datatype : "
 msgstr ""
 
-#: inventario/widget/DynamicDeliveryForm.js:175
-msgid "Only without laptops"
+#: inventario/widget/DynamicDeliveryForm.js:176
+msgid "Only without laptops in hands"
 msgstr ""
 
-#: inventario/widget/DynamicDeliveryForm.js:218
+#: inventario/widget/DynamicDeliveryForm.js:178
+msgid "Only without laptops assigned"
+msgstr ""
+
+#: inventario/widget/DynamicDeliveryForm.js:223
 msgid "#Person"
 msgstr ""
 
-#: inventario/widget/DynamicDeliveryForm.js:224
+#: inventario/widget/DynamicDeliveryForm.js:229
 msgid "#Laptop"
 msgstr ""
 
-#: inventario/widget/DynamicDeliveryForm.js:245
+#: inventario/widget/DynamicDeliveryForm.js:250
 msgid "Number of students: 0"
 msgstr ""
 
-#: inventario/widget/DynamicDeliveryForm.js:309
+#: inventario/widget/DynamicDeliveryForm.js:315
 msgid "Number of students: "
 msgstr ""
 
-#: inventario/widget/DynamicDeliveryForm.js:344
+#: inventario/widget/DynamicDeliveryForm.js:350
 msgid " registration is not valid, check."
 msgstr ""
 
@@ -258,6 +258,11 @@ msgstr ""
 
 #: inventario/widget/MapLocator.js:832
 msgid "The minimum update time of 10 seconds."
+msgstr ""
+
+#: inventario/widget/MultipleHierarchySelection.js:50
+#: inventario/widget/Table2.js:202 inventario/window/Abm2.js:800
+msgid "Remove"
 msgstr ""
 
 #: inventario/widget/NodeTracker.js:194
@@ -382,66 +387,59 @@ msgid "Remove Location"
 msgstr ""
 
 #: inventario/widget/PlaceCreationToolBox.js:525
+#: inventario/widget/PlaceCreationToolBox.js:591
 msgid "The selected item is not a Person."
 msgstr ""
 
-#: inventario/widget/PlaceCreationToolBox.js:549
-msgid "Upgrade to "
+#: inventario/widget/PlaceCreationToolBox.js:557
+msgid "Update name to: "
 msgstr ""
 
-#: inventario/widget/PlaceCreationToolBox.js:550
-msgid " with the name "
+#: inventario/widget/PlaceCreationToolBox.js:564
+msgid "Update lastname to: "
 msgstr ""
 
-#: inventario/widget/PlaceCreationToolBox.js:551
-msgid ", surname "
+#: inventario/widget/PlaceCreationToolBox.js:571
+msgid "Update document number to: "
 msgstr ""
 
-#: inventario/widget/PlaceCreationToolBox.js:552
-msgid " and document number "
-msgstr ""
-
-#: inventario/widget/PlaceCreationToolBox.js:553
-msgid " Empty fields are not updated."
-msgstr ""
-
-#: inventario/widget/PlaceCreationToolBox.js:567
-msgid "The selected item is a Person."
-msgstr ""
-
-#: inventario/widget/PlaceCreationToolBox.js:604
-msgid "Name: "
-msgstr ""
-
-#: inventario/widget/PlaceCreationToolBox.js:607
-msgid "Last name: "
-msgstr ""
-
-#: inventario/widget/PlaceCreationToolBox.js:610
-msgid "National ID "
-msgstr ""
-
-#: inventario/widget/PlaceCreationToolBox.js:613
-msgid "Add Student"
-msgstr ""
-
-#: inventario/widget/PlaceCreationToolBox.js:619
-msgid "Add Teacher"
-msgstr ""
-
-#: inventario/widget/PlaceCreationToolBox.js:625
-msgid "Delete Person"
+#: inventario/widget/PlaceCreationToolBox.js:577
+msgid "Nothing to be updated."
 msgstr ""
 
 #: inventario/widget/PlaceCreationToolBox.js:628
-msgid "Update Person"
+msgid "Name: "
+msgstr ""
+
+#: inventario/widget/PlaceCreationToolBox.js:631
+msgid "Last name: "
 msgstr ""
 
 #: inventario/widget/PlaceCreationToolBox.js:634
+msgid "National ID "
+msgstr ""
+
+#: inventario/widget/PlaceCreationToolBox.js:637
+msgid "Add Student"
+msgstr ""
+
+#: inventario/widget/PlaceCreationToolBox.js:643
+msgid "Add Teacher"
+msgstr ""
+
+#: inventario/widget/PlaceCreationToolBox.js:649
+msgid "Delete Person"
+msgstr ""
+
+#: inventario/widget/PlaceCreationToolBox.js:652
+msgid "Update Person"
+msgstr ""
+
+#: inventario/widget/PlaceCreationToolBox.js:658
 msgid "Show Teachers: "
 msgstr ""
 
-#: inventario/widget/PlaceCreationToolBox.js:640
+#: inventario/widget/PlaceCreationToolBox.js:664
 msgid "Show student : "
 msgstr ""
 
@@ -482,20 +480,8 @@ msgstr ""
 msgid "Search"
 msgstr ""
 
-#: inventario/widget/Table2.js:184 inventario/window/AbmForm.js:320
-#: inventario/widget/MultipleHierarchySelection.js:48
-#: inventario/window/Abm2.js:361 inventario/window/Abm2.js:619
-msgid "Add"
-msgstr ""
-
 #: inventario/widget/Table2.js:196
 msgid "Add row"
-msgstr ""
-
-#: inventario/widget/Table2.js:202
-#: inventario/widget/MultipleHierarchySelection.js:50
-#: inventario/window/Abm2.js:800
-msgid "Remove"
 msgstr ""
 
 #: inventario/widget/Table2.js:214
@@ -504,11 +490,6 @@ msgstr ""
 
 #: inventario/widget/Table2.js:525
 msgid "Select All"
-msgstr ""
-
-#: inventario/widget/Table2.js:531 inventario/window/AbmForm.js:306
-#: inventario/window/Abm2.js:636
-msgid "Edit"
 msgstr ""
 
 #: inventario/widget/Table2.js:986
@@ -546,7 +527,7 @@ msgid "Export"
 msgstr ""
 
 #: inventario/window/Abm2.js:696 inventario/window/Abm2.js:753
-#: inventario/window/Abm2.js:1661
+#: inventario/window/Abm2.js:1674
 msgid "You must select at least one row."
 msgstr ""
 
@@ -566,43 +547,43 @@ msgstr ""
 msgid "Per page.:"
 msgstr ""
 
-#: inventario/window/Abm2.js:1296
+#: inventario/window/Abm2.js:1301
 msgid " Added row "
 msgstr ""
 
-#: inventario/window/Abm2.js:1356
+#: inventario/window/Abm2.js:1368
 msgid "Delete selected items"
 msgstr ""
 
-#: inventario/window/Abm2.js:1388
+#: inventario/window/Abm2.js:1400
 msgid " Deleted row "
 msgstr ""
 
-#: inventario/window/Abm2.js:1426 inventario/window/Abm2.js:1443
+#: inventario/window/Abm2.js:1438 inventario/window/Abm2.js:1455
 msgid "You must select a row"
 msgstr ""
 
-#: inventario/window/Abm2.js:1455
+#: inventario/window/Abm2.js:1467
 msgid " of "
 msgstr ""
 
-#: inventario/window/Abm2.js:1455
+#: inventario/window/Abm2.js:1467
 msgid "Displaying Results page: "
 msgstr ""
 
-#: inventario/window/Abm2.js:1456
+#: inventario/window/Abm2.js:1468
 msgid "Number of results found: "
 msgstr ""
 
-#: inventario/window/Abm2.js:1726
+#: inventario/window/Abm2.js:1739
 msgid "Contact the System Administrator: Configuration Error"
 msgstr ""
 
-#: inventario/window/Abm2.js:1730
+#: inventario/window/Abm2.js:1743
 msgid "Abm2: problem inserting selected row in ComboBox:\n"
 msgstr ""
 
-#: inventario/window/Abm2.js:1785
+#: inventario/window/Abm2.js:1798
 msgid "Export only visible columns?"
 msgstr ""
 
@@ -613,6 +594,18 @@ msgstr ""
 #: inventario/window/AbmForm.js:299 inventario/widget/ComboBoxFiltered.js:56
 #: inventario/window/Abm2.js:653
 msgid "Details"
+msgstr ""
+
+#: inventario/window/AbmForm.js:306 inventario/widget/Table2.js:531
+#: inventario/window/Abm2.js:636
+msgid "Edit"
+msgstr ""
+
+#: inventario/window/AbmForm.js:320
+#: inventario/widget/MultipleHierarchySelection.js:48
+#: inventario/widget/Table2.js:184 inventario/window/Abm2.js:361
+#: inventario/window/Abm2.js:619
+msgid "Add"
 msgstr ""
 
 #: inventario/window/AbmForm.js:345
@@ -647,27 +640,31 @@ msgstr ""
 msgid "Close"
 msgstr ""
 
-#: inventario/window/AbmForm.js:920
+#: inventario/window/AbmForm.js:790 inventario/widget/DataImporter.js:151
+msgid "Browse"
+msgstr ""
+
+#: inventario/window/AbmForm.js:923
 msgid "You must check at least one field"
 msgstr ""
 
-#: inventario/window/AbmForm.js:931
+#: inventario/window/AbmForm.js:934
 msgid "These changes will be applied to these "
 msgstr ""
 
-#: inventario/window/AbmForm.js:932
+#: inventario/window/AbmForm.js:935
 msgid " records. Are you sure?"
 msgstr ""
 
-#: inventario/window/AbmForm.js:935
+#: inventario/window/AbmForm.js:938
 msgid "Save changes?"
 msgstr ""
 
-#: inventario/window/AbmForm.js:938
+#: inventario/window/AbmForm.js:941
 msgid "Create?"
 msgstr ""
 
-#: inventario/window/AbmForm.js:1105
+#: inventario/window/AbmForm.js:1108
 msgid "Config error. in getDataFromForm"
 msgstr ""
 
@@ -675,11 +672,11 @@ msgstr ""
 msgid "Close window?"
 msgstr ""
 
-#: inventario/window/Mensaje.js:244
+#: inventario/window/Mensaje.js:245
 msgid "OK"
 msgstr ""
 
-#: inventario/window/Mensaje.js:251
+#: inventario/window/Mensaje.js:252
 msgid "More info."
 msgstr ""
 
@@ -711,6 +708,24 @@ msgstr ""
 msgid "Quick access"
 msgstr ""
 
+#~ msgid "Only without laptops"
+#~ msgstr ""
+
+#~ msgid "Upgrade to "
+#~ msgstr ""
+
+#~ msgid " with the name "
+#~ msgstr ""
+
+#~ msgid ", surname "
+#~ msgstr ""
+
+#~ msgid " and document number "
+#~ msgstr ""
+
+#~ msgid " Empty fields are not updated."
+#~ msgstr ""
+
 #~ msgid " no recibio igual numero de parametros q columnas"
 #~ msgstr ""
 
@@ -738,8 +753,14 @@ msgstr ""
 #~ msgid "Abm2: problem inserting selected row in ComboBox:\n"
 #~ msgstr ""
 
+#~ msgid "Abm2: problem inserting selected row in ComboBox:\n"
+#~ msgstr ""
+
 #~ msgid "Bienvenido al sistema"
 #~ msgstr "Welcome to the system"
 
 #~ msgid "Parties"
+#~ msgstr ""
+
+#~ msgid "The selected item is a Person."
 #~ msgstr ""

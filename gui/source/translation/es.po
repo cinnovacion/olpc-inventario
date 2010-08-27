@@ -103,11 +103,11 @@ msgstr "Fallo en su orden... "
 msgid "Processing your request..."
 msgstr "Procesando su petición..."
 
-#: inventario/util/PrintManager.js:219
+#: inventario/util/PrintManager.js:221
 msgid " not set to print even"
 msgstr "no puesto para imprimir"
 
-#: inventario/util/PrintManager.js:219
+#: inventario/util/PrintManager.js:221
 msgid "The document "
 msgstr "El documento"
 
@@ -143,10 +143,6 @@ msgstr "Secundos"
 msgid "Data Importer"
 msgstr "Importador de datos"
 
-#: inventario/widget/DataImporter.js:151 inventario/window/AbmForm.js:787
-msgid "Browse"
-msgstr "Examinar"
-
 #: inventario/widget/DataImporter.js:161
 msgid "Import"
 msgstr "Importar"
@@ -167,27 +163,31 @@ msgstr " Hasta:"
 msgid "do not know the datatype : "
 msgstr "no conozco el datatype:"
 
-#: inventario/widget/DynamicDeliveryForm.js:175
-msgid "Only without laptops"
-msgstr "Solamente sin laptops"
+#: inventario/widget/DynamicDeliveryForm.js:176
+msgid "Only without laptops in hands"
+msgstr "Solo sin laptops en mano"
 
-#: inventario/widget/DynamicDeliveryForm.js:218
+#: inventario/widget/DynamicDeliveryForm.js:178
+msgid "Only without laptops assigned"
+msgstr "Solo sin laptops asignadas"
+
+#: inventario/widget/DynamicDeliveryForm.js:223
 msgid "#Person"
 msgstr "#Persona"
 
-#: inventario/widget/DynamicDeliveryForm.js:224
+#: inventario/widget/DynamicDeliveryForm.js:229
 msgid "#Laptop"
 msgstr "#Laptop"
 
-#: inventario/widget/DynamicDeliveryForm.js:245
+#: inventario/widget/DynamicDeliveryForm.js:250
 msgid "Number of students: 0"
 msgstr "Numero de estudiantes: 0"
 
-#: inventario/widget/DynamicDeliveryForm.js:309
+#: inventario/widget/DynamicDeliveryForm.js:315
 msgid "Number of students: "
 msgstr "Numero de estudiantes: "
 
-#: inventario/widget/DynamicDeliveryForm.js:344
+#: inventario/widget/DynamicDeliveryForm.js:350
 msgid " registration is not valid, check."
 msgstr "el registro es inválido, controle."
 
@@ -259,6 +259,11 @@ msgstr "Auto-restaure requiere modo inalterable."
 #: inventario/widget/MapLocator.js:832
 msgid "The minimum update time of 10 seconds."
 msgstr "El tiempo mínimo de actualización es de 10 segundos."
+
+#: inventario/widget/MultipleHierarchySelection.js:50
+#: inventario/widget/Table2.js:202 inventario/window/Abm2.js:800
+msgid "Remove"
+msgstr "Eliminar"
 
 #: inventario/widget/NodeTracker.js:194
 msgid "Location: "
@@ -382,66 +387,59 @@ msgid "Remove Location"
 msgstr "Eliminar localidad"
 
 #: inventario/widget/PlaceCreationToolBox.js:525
+#: inventario/widget/PlaceCreationToolBox.js:591
 msgid "The selected item is not a Person."
 msgstr "El artículo seleccionado no es una persona."
 
-#: inventario/widget/PlaceCreationToolBox.js:549
-msgid "Upgrade to "
-msgstr "Actualizar a"
+#: inventario/widget/PlaceCreationToolBox.js:557
+msgid "Update name to: "
+msgstr "Actualizar nombre a: "
 
-#: inventario/widget/PlaceCreationToolBox.js:550
-msgid " with the name "
-msgstr "con el nombre"
+#: inventario/widget/PlaceCreationToolBox.js:564
+msgid "Update lastname to: "
+msgstr "Actualizar apellido a: "
 
-#: inventario/widget/PlaceCreationToolBox.js:551
-msgid ", surname "
-msgstr ", apellido "
+#: inventario/widget/PlaceCreationToolBox.js:571
+msgid "Update document number to: "
+msgstr "Actualizar numero de indentidad a: "
 
-#: inventario/widget/PlaceCreationToolBox.js:552
-msgid " and document number "
-msgstr "y el CI"
+#: inventario/widget/PlaceCreationToolBox.js:577
+msgid "Nothing to be updated."
+msgstr "Nada que actualizar."
 
-#: inventario/widget/PlaceCreationToolBox.js:553
-msgid " Empty fields are not updated."
-msgstr "Los campos vacíos no son actualizados."
-
-#: inventario/widget/PlaceCreationToolBox.js:567
-msgid "The selected item is a Person."
-msgstr "El artículo seleccionado es una persona."
-
-#: inventario/widget/PlaceCreationToolBox.js:604
+#: inventario/widget/PlaceCreationToolBox.js:628
 msgid "Name: "
 msgstr "Nombre: "
 
-#: inventario/widget/PlaceCreationToolBox.js:607
+#: inventario/widget/PlaceCreationToolBox.js:631
 msgid "Last name: "
 msgstr "Apellido: "
 
-#: inventario/widget/PlaceCreationToolBox.js:610
+#: inventario/widget/PlaceCreationToolBox.js:634
 msgid "National ID "
 msgstr "CI"
 
-#: inventario/widget/PlaceCreationToolBox.js:613
+#: inventario/widget/PlaceCreationToolBox.js:637
 msgid "Add Student"
 msgstr "Agregar alumno"
 
-#: inventario/widget/PlaceCreationToolBox.js:619
+#: inventario/widget/PlaceCreationToolBox.js:643
 msgid "Add Teacher"
 msgstr "Agregar profesor"
 
-#: inventario/widget/PlaceCreationToolBox.js:625
+#: inventario/widget/PlaceCreationToolBox.js:649
 msgid "Delete Person"
 msgstr "Eliminar persona"
 
-#: inventario/widget/PlaceCreationToolBox.js:628
+#: inventario/widget/PlaceCreationToolBox.js:652
 msgid "Update Person"
 msgstr "Actualizar persona"
 
-#: inventario/widget/PlaceCreationToolBox.js:634
+#: inventario/widget/PlaceCreationToolBox.js:658
 msgid "Show Teachers: "
 msgstr "Mostrar docentes:"
 
-#: inventario/widget/PlaceCreationToolBox.js:640
+#: inventario/widget/PlaceCreationToolBox.js:664
 msgid "Show student : "
 msgstr "Mostrar alumno:"
 
@@ -482,21 +480,9 @@ msgstr "Distinto"
 msgid "Search"
 msgstr "Busar"
 
-#: inventario/widget/Table2.js:184 inventario/window/AbmForm.js:320
-#: inventario/widget/MultipleHierarchySelection.js:48
-#: inventario/window/Abm2.js:361 inventario/window/Abm2.js:619
-msgid "Add"
-msgstr "Agregar"
-
 #: inventario/widget/Table2.js:196
 msgid "Add row"
 msgstr "Agregar fila"
-
-#: inventario/widget/Table2.js:202
-#: inventario/widget/MultipleHierarchySelection.js:50
-#: inventario/window/Abm2.js:800
-msgid "Remove"
-msgstr "Eliminar"
 
 #: inventario/widget/Table2.js:214
 msgid "Remove row"
@@ -505,11 +491,6 @@ msgstr "Eliminar fila"
 #: inventario/widget/Table2.js:525
 msgid "Select All"
 msgstr "Seleccionar todo"
-
-#: inventario/widget/Table2.js:531 inventario/window/AbmForm.js:306
-#: inventario/window/Abm2.js:636
-msgid "Edit"
-msgstr "Editar"
 
 #: inventario/widget/Table2.js:986
 msgid "Didn't receive the correct number of parameters."
@@ -546,7 +527,7 @@ msgid "Export"
 msgstr "Exportar"
 
 #: inventario/window/Abm2.js:696 inventario/window/Abm2.js:753
-#: inventario/window/Abm2.js:1661
+#: inventario/window/Abm2.js:1674
 msgid "You must select at least one row."
 msgstr "Enter"
 
@@ -566,43 +547,43 @@ msgstr "Cadena de búsqueda"
 msgid "Per page.:"
 msgstr "Por pagina: "
 
-#: inventario/window/Abm2.js:1296
+#: inventario/window/Abm2.js:1301
 msgid " Added row "
 msgstr "Fila agregada "
 
-#: inventario/window/Abm2.js:1356
+#: inventario/window/Abm2.js:1368
 msgid "Delete selected items"
 msgstr "Borrar elementos seleccionados "
 
-#: inventario/window/Abm2.js:1388
+#: inventario/window/Abm2.js:1400
 msgid " Deleted row "
 msgstr "Fila eliminada"
 
-#: inventario/window/Abm2.js:1426 inventario/window/Abm2.js:1443
+#: inventario/window/Abm2.js:1438 inventario/window/Abm2.js:1455
 msgid "You must select a row"
 msgstr "Usted debe seleccionar una fila"
 
-#: inventario/window/Abm2.js:1455
+#: inventario/window/Abm2.js:1467
 msgid " of "
 msgstr " de "
 
-#: inventario/window/Abm2.js:1455
+#: inventario/window/Abm2.js:1467
 msgid "Displaying Results page: "
 msgstr "Exhibición la página de resultados:"
 
-#: inventario/window/Abm2.js:1456
+#: inventario/window/Abm2.js:1468
 msgid "Number of results found: "
 msgstr "Número de resultados encontrados: "
 
-#: inventario/window/Abm2.js:1726
+#: inventario/window/Abm2.js:1739
 msgid "Contact the System Administrator: Configuration Error"
 msgstr "Contacte el administrador de sistema: Error de la configuración"
 
-#: inventario/window/Abm2.js:1730
+#: inventario/window/Abm2.js:1743
 msgid "Abm2: problem inserting selected row in ComboBox:\n"
 msgstr ""
 
-#: inventario/window/Abm2.js:1785
+#: inventario/window/Abm2.js:1798
 msgid "Export only visible columns?"
 msgstr "¿Exportar solamente columnas visibles?"
 
@@ -614,6 +595,18 @@ msgstr "!Faltan parámetros en urls hash!"
 #: inventario/window/Abm2.js:653
 msgid "Details"
 msgstr "Detalles"
+
+#: inventario/window/AbmForm.js:306 inventario/widget/Table2.js:531
+#: inventario/window/Abm2.js:636
+msgid "Edit"
+msgstr "Editar"
+
+#: inventario/window/AbmForm.js:320
+#: inventario/widget/MultipleHierarchySelection.js:48
+#: inventario/widget/Table2.js:184 inventario/window/Abm2.js:361
+#: inventario/window/Abm2.js:619
+msgid "Add"
+msgstr "Agregar"
 
 #: inventario/window/AbmForm.js:345
 msgid "Main"
@@ -647,27 +640,31 @@ msgstr "Guardar cambios "
 msgid "Close"
 msgstr "Cerrar"
 
-#: inventario/window/AbmForm.js:920
+#: inventario/window/AbmForm.js:790 inventario/widget/DataImporter.js:151
+msgid "Browse"
+msgstr "Examinar"
+
+#: inventario/window/AbmForm.js:923
 msgid "You must check at least one field"
 msgstr "Usted debe seleccionar por lo menos un campo"
 
-#: inventario/window/AbmForm.js:931
+#: inventario/window/AbmForm.js:934
 msgid "These changes will be applied to these "
 msgstr "Estos cambios serán aplicados a estos "
 
-#: inventario/window/AbmForm.js:932
+#: inventario/window/AbmForm.js:935
 msgid " records. Are you sure?"
 msgstr "registros. ¿Está usted seguro?"
 
-#: inventario/window/AbmForm.js:935
+#: inventario/window/AbmForm.js:938
 msgid "Save changes?"
 msgstr "¿Guardar cambios?"
 
-#: inventario/window/AbmForm.js:938
+#: inventario/window/AbmForm.js:941
 msgid "Create?"
 msgstr "Crear?"
 
-#: inventario/window/AbmForm.js:1105
+#: inventario/window/AbmForm.js:1108
 msgid "Config error. in getDataFromForm"
 msgstr "Error de los Config. en getDataFromForm"
 
@@ -675,11 +672,11 @@ msgstr "Error de los Config. en getDataFromForm"
 msgid "Close window?"
 msgstr "Cerrar ventana?"
 
-#: inventario/window/Mensaje.js:244
+#: inventario/window/Mensaje.js:245
 msgid "OK"
 msgstr "OK"
 
-#: inventario/window/Mensaje.js:251
+#: inventario/window/Mensaje.js:252
 msgid "More info."
 msgstr "Mas info."
 
@@ -710,6 +707,30 @@ msgstr "Mapa"
 #: inventario/window/WelcomeInfo.js:170
 msgid "Quick access"
 msgstr "Acceso rápido"
+
+#~ msgid "Abm2: problem inserting selected row in ComboBox:\n"
+#~ msgstr ""
+
+#~ msgid "Only without laptops"
+#~ msgstr "Solamente sin laptops"
+
+#~ msgid "Upgrade to "
+#~ msgstr "Actualizar a"
+
+#~ msgid " with the name "
+#~ msgstr "con el nombre"
+
+#~ msgid ", surname "
+#~ msgstr ", apellido "
+
+#~ msgid " and document number "
+#~ msgstr "y el CI"
+
+#~ msgid " Empty fields are not updated."
+#~ msgstr "Los campos vacíos no son actualizados."
+
+#~ msgid "The selected item is a Person."
+#~ msgstr "El artículo seleccionado es una persona."
 
 #~ msgid "Abm2: problem inserting selected row in ComboBox:\n"
 #~ msgstr ""
