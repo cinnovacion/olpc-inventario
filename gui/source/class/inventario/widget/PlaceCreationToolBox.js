@@ -516,9 +516,15 @@ qx.Class.define("inventario.widget.PlaceCreationToolBox",
 
       if (hierarchy.isSubElement())
       {
-        var data = {};
-        data.id = hierarchy.getValue();
-        this._sendToServer(data, this.getDeletePersonUrl(), this._refreshAfterDelete);
+        var element_data = hierarchy.getElementData();
+        var msg = qx.locale.Manager.tr("Are you sure you want to delete ") + "\"" + element_data.text + "\"?"
+
+        if (confirm(msg))
+        {
+          var data = {};
+          data.id = hierarchy.getValue();
+          this._sendToServer(data, this.getDeletePersonUrl(), this._refreshAfterDelete);
+        }
       }
       else
       {
