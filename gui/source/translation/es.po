@@ -386,60 +386,64 @@ msgstr "Agregue la Sección: "
 msgid "Remove Location"
 msgstr "Eliminar localidad"
 
-#: inventario/widget/PlaceCreationToolBox.js:525
-#: inventario/widget/PlaceCreationToolBox.js:591
+#: inventario/widget/PlaceCreationToolBox.js:520
+msgid "Are you sure you want to delete "
+msgstr "Esta seguro que desea borrar a "
+
+#: inventario/widget/PlaceCreationToolBox.js:531
+#: inventario/widget/PlaceCreationToolBox.js:597
 msgid "The selected item is not a Person."
 msgstr "El artículo seleccionado no es una persona."
 
-#: inventario/widget/PlaceCreationToolBox.js:557
+#: inventario/widget/PlaceCreationToolBox.js:563
 msgid "Update name to: "
 msgstr "Actualizar nombre a: "
 
-#: inventario/widget/PlaceCreationToolBox.js:564
+#: inventario/widget/PlaceCreationToolBox.js:570
 msgid "Update lastname to: "
 msgstr "Actualizar apellido a: "
 
-#: inventario/widget/PlaceCreationToolBox.js:571
+#: inventario/widget/PlaceCreationToolBox.js:577
 msgid "Update document number to: "
 msgstr "Actualizar numero de indentidad a: "
 
-#: inventario/widget/PlaceCreationToolBox.js:577
+#: inventario/widget/PlaceCreationToolBox.js:583
 msgid "Nothing to be updated."
 msgstr "Nada que actualizar."
 
-#: inventario/widget/PlaceCreationToolBox.js:628
+#: inventario/widget/PlaceCreationToolBox.js:634
 msgid "Name: "
 msgstr "Nombre: "
 
-#: inventario/widget/PlaceCreationToolBox.js:631
+#: inventario/widget/PlaceCreationToolBox.js:637
 msgid "Last name: "
 msgstr "Apellido: "
 
-#: inventario/widget/PlaceCreationToolBox.js:634
+#: inventario/widget/PlaceCreationToolBox.js:640
 msgid "National ID "
 msgstr "CI"
 
-#: inventario/widget/PlaceCreationToolBox.js:637
+#: inventario/widget/PlaceCreationToolBox.js:643
 msgid "Add Student"
 msgstr "Agregar alumno"
 
-#: inventario/widget/PlaceCreationToolBox.js:643
+#: inventario/widget/PlaceCreationToolBox.js:649
 msgid "Add Teacher"
 msgstr "Agregar profesor"
 
-#: inventario/widget/PlaceCreationToolBox.js:649
+#: inventario/widget/PlaceCreationToolBox.js:655
 msgid "Delete Person"
 msgstr "Eliminar persona"
 
-#: inventario/widget/PlaceCreationToolBox.js:652
+#: inventario/widget/PlaceCreationToolBox.js:658
 msgid "Update Person"
 msgstr "Actualizar persona"
 
-#: inventario/widget/PlaceCreationToolBox.js:658
+#: inventario/widget/PlaceCreationToolBox.js:664
 msgid "Show Teachers: "
 msgstr "Mostrar docentes:"
 
-#: inventario/widget/PlaceCreationToolBox.js:664
+#: inventario/widget/PlaceCreationToolBox.js:670
 msgid "Show student : "
 msgstr "Mostrar alumno:"
 
@@ -708,14 +712,11 @@ msgstr "Mapa"
 msgid "Quick access"
 msgstr "Acceso rápido"
 
-#~ msgid "Abm2: problem inserting selected row in ComboBox:\n"
-#~ msgstr ""
+#~ msgid " Empty fields are not updated."
+#~ msgstr "Los campos vacíos no son actualizados."
 
-#~ msgid "Only without laptops"
-#~ msgstr "Solamente sin laptops"
-
-#~ msgid "Upgrade to "
-#~ msgstr "Actualizar a"
+#~ msgid " and document number "
+#~ msgstr "y el CI"
 
 #~ msgid " with the name "
 #~ msgstr "con el nombre"
@@ -723,14 +724,20 @@ msgstr "Acceso rápido"
 #~ msgid ", surname "
 #~ msgstr ", apellido "
 
-#~ msgid " and document number "
-#~ msgstr "y el CI"
+#~ msgid "Abm2: problem inserting selected row in ComboBox:\n"
+#~ msgstr ""
 
-#~ msgid " Empty fields are not updated."
-#~ msgstr "Los campos vacíos no son actualizados."
+#~ msgid "Abm2: problem inserting selected row in ComboBox:\n"
+#~ msgstr ""
+
+#~ msgid "Abm2: problem inserting selected row in ComboBox:\n"
+#~ msgstr ""
+
+#~ msgid "Only without laptops"
+#~ msgstr "Solamente sin laptops"
 
 #~ msgid "The selected item is a Person."
 #~ msgstr "El artículo seleccionado es una persona."
 
-#~ msgid "Abm2: problem inserting selected row in ComboBox:\n"
-#~ msgstr ""
+#~ msgid "Upgrade to "
+#~ msgstr "Actualizar a"

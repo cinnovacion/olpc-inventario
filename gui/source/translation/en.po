@@ -386,60 +386,64 @@ msgstr ""
 msgid "Remove Location"
 msgstr ""
 
-#: inventario/widget/PlaceCreationToolBox.js:525
-#: inventario/widget/PlaceCreationToolBox.js:591
+#: inventario/widget/PlaceCreationToolBox.js:520
+msgid "Are you sure you want to delete "
+msgstr ""
+
+#: inventario/widget/PlaceCreationToolBox.js:531
+#: inventario/widget/PlaceCreationToolBox.js:597
 msgid "The selected item is not a Person."
 msgstr ""
 
-#: inventario/widget/PlaceCreationToolBox.js:557
+#: inventario/widget/PlaceCreationToolBox.js:563
 msgid "Update name to: "
 msgstr ""
 
-#: inventario/widget/PlaceCreationToolBox.js:564
+#: inventario/widget/PlaceCreationToolBox.js:570
 msgid "Update lastname to: "
 msgstr ""
 
-#: inventario/widget/PlaceCreationToolBox.js:571
+#: inventario/widget/PlaceCreationToolBox.js:577
 msgid "Update document number to: "
 msgstr ""
 
-#: inventario/widget/PlaceCreationToolBox.js:577
+#: inventario/widget/PlaceCreationToolBox.js:583
 msgid "Nothing to be updated."
 msgstr ""
 
-#: inventario/widget/PlaceCreationToolBox.js:628
+#: inventario/widget/PlaceCreationToolBox.js:634
 msgid "Name: "
 msgstr ""
 
-#: inventario/widget/PlaceCreationToolBox.js:631
+#: inventario/widget/PlaceCreationToolBox.js:637
 msgid "Last name: "
 msgstr ""
 
-#: inventario/widget/PlaceCreationToolBox.js:634
+#: inventario/widget/PlaceCreationToolBox.js:640
 msgid "National ID "
 msgstr ""
 
-#: inventario/widget/PlaceCreationToolBox.js:637
+#: inventario/widget/PlaceCreationToolBox.js:643
 msgid "Add Student"
 msgstr ""
 
-#: inventario/widget/PlaceCreationToolBox.js:643
+#: inventario/widget/PlaceCreationToolBox.js:649
 msgid "Add Teacher"
 msgstr ""
 
-#: inventario/widget/PlaceCreationToolBox.js:649
+#: inventario/widget/PlaceCreationToolBox.js:655
 msgid "Delete Person"
 msgstr ""
 
-#: inventario/widget/PlaceCreationToolBox.js:652
+#: inventario/widget/PlaceCreationToolBox.js:658
 msgid "Update Person"
 msgstr ""
 
-#: inventario/widget/PlaceCreationToolBox.js:658
+#: inventario/widget/PlaceCreationToolBox.js:664
 msgid "Show Teachers: "
 msgstr ""
 
-#: inventario/widget/PlaceCreationToolBox.js:664
+#: inventario/widget/PlaceCreationToolBox.js:670
 msgid "Show student : "
 msgstr ""
 
@@ -708,10 +712,13 @@ msgstr ""
 msgid "Quick access"
 msgstr ""
 
-#~ msgid "Only without laptops"
+#~ msgid " Empty fields are not updated."
 #~ msgstr ""
 
-#~ msgid "Upgrade to "
+#~ msgid " and document number "
+#~ msgstr ""
+
+#~ msgid " no recibio igual numero de parametros q columnas"
 #~ msgstr ""
 
 #~ msgid " with the name "
@@ -720,15 +727,6 @@ msgstr ""
 #~ msgid ", surname "
 #~ msgstr ""
 
-#~ msgid " and document number "
-#~ msgstr ""
-
-#~ msgid " Empty fields are not updated."
-#~ msgstr ""
-
-#~ msgid " no recibio igual numero de parametros q columnas"
-#~ msgstr ""
-
 #~ msgid "Abm2, Choose Button CreateInput in\n"
 #~ msgstr ""
 
@@ -739,6 +737,9 @@ msgstr ""
 #~ msgstr ""
 
 #~ msgid "Abm2, Choose Button CreateInput in\n"
+#~ msgstr ""
+
+#~ msgid "Abm2: problem inserting selected row in ComboBox:\n"
 #~ msgstr ""
 
 #~ msgid "Abm2: problem inserting selected row in ComboBox:\n"
@@ -759,8 +760,14 @@ msgstr ""
 #~ msgid "Bienvenido al sistema"
 #~ msgstr "Welcome to the system"
 
+#~ msgid "Only without laptops"
+#~ msgstr ""
+
 #~ msgid "Parties"
 #~ msgstr ""
 
 #~ msgid "The selected item is a Person."
+#~ msgstr ""
+
+#~ msgid "Upgrade to "
 #~ msgstr ""
