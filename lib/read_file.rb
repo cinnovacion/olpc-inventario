@@ -194,9 +194,15 @@ module ReadFile
       lastname.strip!
       next if name == "" and lastname == ""
 
+      # Spreadsheets exported from Excel often result in the grade numbers
+      # ending up as float (e.g. "1.0") even if you try hard to mark the
+      # field as a string. Handle that here.
+      grade = dataArray[_grade]
+      grade = grade[0..-3] if grade[-2..-1] == ".0"
+
       schoolInfo = dataArray[_school].strip
       shiftInfo = shiftHash[dataArray[_shift]]
-      gradeInfo = gradeHash[dataArray[_grade]]
+      gradeInfo = gradeHash[grade]
       sectionInfo = sectionHash[dataArray[_section]]
 
       raise "School name or number must be provided" if (!schoolInfo or schoolInfo == "")
