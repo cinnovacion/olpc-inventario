@@ -856,7 +856,7 @@ qx.Class.define("inventario.window.Abm2",
         try
         {
           /* New search; return to first page */
-          this._pages = 1;
+          this._resetNavigationOptions();
           this._validateData();
           this._saveData(true);
         }
@@ -1619,6 +1619,21 @@ qx.Class.define("inventario.window.Abm2",
       }
     },
 
+    /**
+     * TODOC
+     *
+     * @param {void}
+     * @return {void}
+     */
+    _resetNavigationOptions : function()
+    {
+      this.getPrevButton().setEnabled(false);
+      this.getFirstButton().setEnabled(false);
+      this.getNextButton().setEnabled(true);
+      this.getLastButton().setEnabled(true);
+      this._pages = 1;
+      this._showPageNumber();
+    },
 
     /**
      * TODOC
