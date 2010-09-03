@@ -51,7 +51,7 @@
 
 	MovementType.transaction do
 
-		create_if_not_exists(MovementType, {:internal_tag => "reparacion", :id => "6", :description => "Reparacion - Verificacion", :is_delivery => "false"})
+		create_if_not_exists(MovementType, {:internal_tag => "reparacion", :id => "6", :description => "Reparacion o Verificacion", :is_delivery => "false"})
 		create_if_not_exists(MovementType, {:internal_tag => "reparacion_finalizada", :id => "7", :description => "Reparacion Finalizada - Devolucion Propietario", :is_delivery => "false"})
 		create_if_not_exists(MovementType, {:internal_tag => "verificacion_finalizada", :id => "8", :description => "Verificacion Finalizada - Devolucion Propietario", :is_delivery => "false"})
 		create_if_not_exists(MovementType, {:internal_tag => "uso_desarrollador", :id => "9", :description => "Uso Desarrollador", :is_delivery => "true"})
