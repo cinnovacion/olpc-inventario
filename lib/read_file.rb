@@ -201,9 +201,9 @@ module ReadFile
       grade = grade[0..-3] if grade[-2..-1] == ".0"
 
       schoolInfo = dataArray[_school].strip
-      shiftInfo = shiftHash[dataArray[_shift]]
+      shiftInfo = shiftHash[dataArray[_shift].downcase]
       gradeInfo = gradeHash[grade]
-      sectionInfo = sectionHash[dataArray[_section]]
+      sectionInfo = sectionHash[dataArray[_section].downcase]
 
       raise "School name or number must be provided" if (!schoolInfo or schoolInfo == "")
       section = Place.theSwissArmyKnifeFuntion(city.id, schoolInfo, shiftInfo, gradeInfo, sectionInfo)
