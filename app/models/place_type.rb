@@ -78,7 +78,7 @@ class PlaceType < ActiveRecord::Base
     end
 
     inc = [:place_type]
-    cond = ["place_types.internal_tag in (?)", @@grades_list]
+    cond = ["place_types.internal_tag in (?)", @@grades_list[0..-2]]
 
     Place.transaction do
       Place.find(:all, :conditions => cond, :include => inc).each { |place|
