@@ -162,7 +162,7 @@ qx.Class.define("inventario.widget.ScriptRunner",
       var hopts = {};
       hopts["url"] = this.getRunScriptUrl();
       hopts["parametros"] = null;
-      hopts["handle"] = this._runScriptCB;
+      hopts["handle"] = this._runScriptCb;
       hopts["data"] = { script_key : script_key };
 
       inventario.transport.Transport.callRemote(hopts, this);
@@ -177,7 +177,7 @@ qx.Class.define("inventario.widget.ScriptRunner",
      * @return {void} 
      */
     _runScriptCb : function(remoteData, params) {
-      alert(remoteData.msg);
+      inventario.window.Mensaje.mensaje(remoteData["msg"]);
     }
   }
 });
