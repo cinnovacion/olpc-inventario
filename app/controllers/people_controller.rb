@@ -167,6 +167,55 @@ class PeopleController < SearchController
     @output["msg"] = _("Elements deleted.")
   end
 
+  def new_person_transfer
+    @output["window_title"] = _("Transfer people")
+    @output["fields"] = []
+
+    h = { "label" => _("Note"), "datatype" => "label", "text" => _("This form is for moving <b>all people</b> from one place to another.") }
+    @output["fields"].push(h)
+
+    h = { "label" => _("Move people from"), "datatype" => "hierarchy_on_demand", "options" => { "width" => 360, "height" => 120 }}
+    @output["fields"].push(h)
+
+    h = { "label" => _("Move people to"), "datatype" => "hierarchy_on_demand", "options" => { "width" => 360, "height" => 120 }}
+    @output["fields"].push(h)
+
+    h = { "label" => "", "datatype" => "checkbox", "text" => _("Add comment to person notes"), "value" => true}
+    @output["fields"].push(h)
+  end
+
+  def save_person_transfer
+    datos = JSON.parse(params[:payload])
+    data_fields = datos["fields"].reverse
+
+    from_place_id = data_fields.pop.to_i
+    to_place_id = data_fields.pop.to_i
+    add_comment = data_fields.pop
+
+    from_place = Place.find_by_id(from_place_id)
+
+    Perform.transaction do
+      Perform.find(:all, :conditions => ["place_id = ?", from_place_id], :include => :person).each { |perform|
+        if !Perform.alreadyExists?(perform.person_id, to_place_id, perform.profile_id)
+          Perform.create!({:person_id => perform.person_id, :place_id => to_place_id, :profile_id => perform.profile_id})
+        end
+        Perform.delete(perform.id)
+
+        if add_comment
+          person = perform.person
+          tstr = Time.now.strftime("%d/%m/%Y")
+          comment = tstr + ": " + _("Person was moved from %s") % from_place.getName()
+          if person.notes and person.notes != ""
+            comment = person.notes + "\n" + comment
+          end
+          person.notes = comment
+          person.save!
+        end
+      }
+    end
+
+  end
+
   ##
   # REST accessable methods.
   def show
