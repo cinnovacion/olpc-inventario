@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 0.3\n"
-"POT-Creation-Date: 2010-09-02 09:10-0600\n"
+"POT-Creation-Date: 2010-09-09 11:38-0600\n"
 "PO-Revision-Date: 2010-03-14 17:56-0400\n"
 "Last-Translator: Raúl Gutiérrez Segalés <rgs@paraguayeduca.org>\n"
 "Language-Team: PyEduca <soporte@paraguayeduca.org>\n"
@@ -185,6 +185,38 @@ msgstr "Roles"
 msgid "Person added."
 msgstr "Persona agregada."
 
+#: app/controllers/people_controller.rb:171
+#: app/controllers/sistema_controller.rb:381
+msgid "Transfer people"
+msgstr "Trasladar personas"
+
+#: app/controllers/people_controller.rb:174
+#: app/controllers/laptops_controller.rb:162
+#: app/controllers/assignments_controller.rb:145
+#: app/controllers/movements_controller.rb:175
+msgid "Note"
+msgstr "Observación"
+
+#: app/controllers/people_controller.rb:174
+msgid "This form is for moving <b>all people</b> from one place to another."
+msgstr "Este formulario es para trasladar a <b>todas las personas</b> de una localidad hasta otra."
+
+#: app/controllers/people_controller.rb:177
+msgid "Move people from"
+msgstr "Trasladar personas desde"
+
+#: app/controllers/people_controller.rb:180
+msgid "Move people to"
+msgstr "Trasladar personas hasta"
+
+#: app/controllers/people_controller.rb:183
+msgid "Add comment to person notes"
+msgstr "Agregar comentario en las observaciones de persona"
+
+#: app/controllers/people_controller.rb:207
+msgid "Person was moved from %s"
+msgstr "Persona fue trasladada desde %s"
+
 #: app/controllers/images_controller.rb:60
 msgid "Load image"
 msgstr "Cargar imagen"
@@ -208,12 +240,6 @@ msgstr "Nuevo estado agregó."
 #: app/controllers/laptops_controller.rb:102
 msgid "Laptop added."
 msgstr "Laptop agregada."
-
-#: app/controllers/laptops_controller.rb:162
-#: app/controllers/assignments_controller.rb:145
-#: app/controllers/movements_controller.rb:175
-msgid "Note"
-msgstr "Observación"
 
 #: app/controllers/laptops_controller.rb:162
 msgid ""
@@ -283,7 +309,7 @@ msgstr "Localidad  padre"
 #: app/controllers/nodes_controller.rb:117
 #: app/controllers/print_controller.rb:240
 #: app/controllers/print_controller.rb:1586
-#: app/controllers/print_controller.rb:1986 app/models/node.rb:54
+#: app/controllers/print_controller.rb:1987 app/models/node.rb:54
 #: app/models/problem_report.rb:42 app/models/place.rb:62
 #: app/models/movement.rb:48 app/views/print/movement_types.html.erb:8
 msgid "Type"
@@ -831,11 +857,11 @@ msgstr "Es altamente probable que este reporte sea repetido.  "
 msgid "Problem report created."
 msgstr "Reporte de problema creado."
 
-#: app/controllers/script_runner_controller.rb:40
+#: app/controllers/script_runner_controller.rb:41
 msgid "No such script %s"
 msgstr "No existe el script %s"
 
-#: app/controllers/script_runner_controller.rb:43
+#: app/controllers/script_runner_controller.rb:44
 msgid "Script run successfully. "
 msgstr "El script se ejecutó con éxito."
 
@@ -1178,7 +1204,7 @@ msgstr "Lotes"
 
 #: app/controllers/sistema_controller.rb:282
 #: app/controllers/sistema_controller.rb:343
-#: app/controllers/sistema_controller.rb:386
+#: app/controllers/sistema_controller.rb:393
 msgid "Reports"
 msgstr "Reportes"
 
@@ -1241,7 +1267,7 @@ msgstr "Laptops y UUIDs"
 
 #: app/controllers/sistema_controller.rb:308
 #: app/controllers/sistema_controller.rb:362
-#: app/controllers/sistema_controller.rb:392
+#: app/controllers/sistema_controller.rb:399
 msgid "Configuration"
 msgstr "Configuración"
 
@@ -1385,32 +1411,44 @@ msgstr "Personas & localidades"
 msgid "Tool Box"
 msgstr "Tool Box"
 
-#: app/controllers/sistema_controller.rb:378
+#: app/controllers/sistema_controller.rb:379
 #: app/controllers/print_controller.rb:1114
 msgid "People"
 msgstr "Personas"
 
-#: app/controllers/sistema_controller.rb:387
+#: app/controllers/sistema_controller.rb:380
+msgid "Transfer complete."
+msgstr "Traslado hecho."
+
+#: app/controllers/sistema_controller.rb:383
+msgid "List people"
+msgstr "Lista de personas"
+
+#: app/controllers/sistema_controller.rb:384
+msgid "Add people"
+msgstr "Agregar personas"
+
+#: app/controllers/sistema_controller.rb:394
 msgid "Students & document ids"
 msgstr "Estudiantes & CIs"
 
-#: app/controllers/sistema_controller.rb:393
+#: app/controllers/sistema_controller.rb:400
 msgid "Location types"
 msgstr "Tipo de localidades"
 
-#: app/controllers/sistema_controller.rb:398
+#: app/controllers/sistema_controller.rb:405
 msgid "Administrator's configuration"
 msgstr "Configuración del administrador"
 
-#: app/controllers/sistema_controller.rb:399
+#: app/controllers/sistema_controller.rb:406
 msgid "Import data"
 msgstr "Importar datos"
 
-#: app/controllers/sistema_controller.rb:400
+#: app/controllers/sistema_controller.rb:407
 msgid "Notification suscriptions"
 msgstr "Suscripciones a notificaciones"
 
-#: app/controllers/sistema_controller.rb:401
+#: app/controllers/sistema_controller.rb:408
 msgid "Users"
 msgstr "Usuarios"
 
@@ -1421,7 +1459,7 @@ msgstr "Estado del stock en %s"
 #: app/controllers/print_controller.rb:77
 #: app/controllers/print_controller.rb:396
 #: app/controllers/print_controller.rb:1769
-#: app/controllers/print_controller.rb:1932 app/models/part_movement.rb:31
+#: app/controllers/print_controller.rb:1933 app/models/part_movement.rb:31
 msgid "Part"
 msgstr "Parte"
 
@@ -1515,8 +1553,8 @@ msgstr "Tabla de recurrencia"
 #: app/controllers/print_controller.rb:1688
 #: app/controllers/print_controller.rb:1723
 #: app/controllers/print_controller.rb:1810
-#: app/controllers/print_controller.rb:1932
-#: app/controllers/print_controller.rb:1986
+#: app/controllers/print_controller.rb:1933
+#: app/controllers/print_controller.rb:1987
 #: app/controllers/part_movements_controller.rb:57
 #: app/controllers/part_movements_controller.rb:105
 msgid "Quantity"
@@ -1554,7 +1592,7 @@ msgstr "Software"
 
 #: app/controllers/print_controller.rb:254
 #: app/controllers/print_controller.rb:1056
-#: app/controllers/print_controller.rb:1999
+#: app/controllers/print_controller.rb:2000
 msgid "Distribution"
 msgstr "Distribucion"
 
@@ -1616,7 +1654,7 @@ msgid "Solution"
 msgstr "Solución"
 
 #: app/controllers/print_controller.rb:550
-#: app/controllers/print_controller.rb:1891
+#: app/controllers/print_controller.rb:1892
 msgid "Not allowed"
 msgstr "No permitido"
 
@@ -1901,15 +1939,25 @@ msgstr "Siguiente"
 msgid "Number of laptops per location"
 msgstr "Numero de laptops por localidad"
 
-#: app/controllers/print_controller.rb:1929
+#: app/controllers/print_controller.rb:1870
+msgid ""
+"The penultimate column shows the number of laptops physically in the place "
+"(or in a sub-place).<br>The final column shows the number of laptops "
+"assigned to that place (or a sub-place)."
+msgstr ""
+"La columna penúltima muestra el número de laptops fisicamente en la "
+"localidad (o en una sub-localidad).<br>La columna última muestra el número "
+"de laptpos asignadas a esa localidad (o una sub-localidad)."
+
+#: app/controllers/print_controller.rb:1930
 msgid "Used repair parts"
 msgstr "Partes de repuestos utilizadas"
 
-#: app/controllers/print_controller.rb:1963
+#: app/controllers/print_controller.rb:1964
 msgid "Timeline"
 msgstr "Linea de tiempo"
 
-#: app/controllers/print_controller.rb:1983
+#: app/controllers/print_controller.rb:1984
 msgid "Problems grouped by type"
 msgstr "Problemas agrupados por tipo"
 
@@ -2618,19 +2666,19 @@ msgstr "Entrega desde el módulo del CATS"
 msgid "Invalid type of movement"
 msgstr "Tipo inválido de movimiento"
 
-#: app/models/movement.rb:139
+#: app/models/movement.rb:138
 msgid "Could not find the person with Document ID %s"
 msgstr "No se pudo encontrar a la persona con CI %s"
 
-#: app/models/movement.rb:170
+#: app/models/movement.rb:169
 msgid "The loans require return date."
 msgstr "Los préstamos requieren fecha de devolución."
 
-#: app/models/movement.rb:171
+#: app/models/movement.rb:170
 msgid "Only loans require return date."
 msgstr "Solo préstamos requieren fecha de devolución"
 
-#: app/models/movement.rb:249
+#: app/models/movement.rb:248
 msgid ""
 "This is a reminder that you are in their possession the following devices, "
 "which must be returned: \n"
@@ -2638,7 +2686,7 @@ msgstr ""
 "Este es un recordatorio de que usted tienen en posición los siguientes "
 "dispositivos, que deben ser devueltos: \n"
 
-#: app/models/movement.rb:252
+#: app/models/movement.rb:251
 msgid "Please communicate with info@paraguayeduca.org"
 msgstr "Comuniquese por favor con info@paraguayeduca.org"
 
@@ -2757,4 +2805,3 @@ msgstr "a"
 #: lib/read_file.rb:284
 msgid "School name or number must be provided"
 msgstr "Se require el nombre o el número de la escuela"
-
