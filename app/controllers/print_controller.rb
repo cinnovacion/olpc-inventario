@@ -1867,6 +1867,7 @@ class PrintController < ApplicationController
     root = p.getPartDistribution()
     @matrix = p.buildMatrix(root, Array.new, 0, p.getTreeDepth(root))
     @title = _("Number of laptops per location")
+    @comment = _("The penultimate column shows the number of laptops physically in the place (or in a sub-place).<br>The final column shows the number of laptops assigned to that place (or a sub-place).")
     @date = Fecha.getFecha()
 
     imprimir("laptops_por_tipo_localidad", "print/" + "laptops_per_place_type")
