@@ -18,11 +18,12 @@
 class ScriptRunnerController < ApplicationController
   around_filter :rpc_block
 
-  CODE = 0
-  DESC = 1
+  CLASS = 0
+  METHOD = 1
+  DESC = 2
 
   @@scripts = {
-                "up_grade" => ["PlaceType.upGradeAll", "Realizar promocion de grados"] 
+                "up_grade" => [PlaceType, "upGradeAll", "Realizar promocion de grados"] 
               }
 
   def script_list
@@ -39,7 +40,7 @@ class ScriptRunnerController < ApplicationController
     if !script
       msg = _("No such script %s") % script
     else
-      eval(script[CODE])
+      script[CLASS].send(script[METHOD])
       msg = _("Script run successfully. ")
     end
 
