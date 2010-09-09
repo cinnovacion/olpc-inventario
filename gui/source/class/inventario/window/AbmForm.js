@@ -557,7 +557,7 @@ qx.Class.define("inventario.window.AbmForm",
           break;
 
         case "checkbox":
-          input = new qx.ui.form.CheckBox();
+          input = new qx.ui.form.CheckBox(fieldData.text ? fieldData.text : "");
           input.setValue(fieldData.value ? fieldData.value : false);
 
           break;

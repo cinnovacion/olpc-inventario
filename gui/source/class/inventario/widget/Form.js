@@ -293,7 +293,7 @@ qx.Class.define("inventario.widget.Form",
       }
       else if (pInput instanceof qx.ui.form.CheckBox)
       {
-        v = pInput.getChecked();
+        v = pInput.getValue();
       }
       else if (pInput instanceof inventario.widget.Table2)
       {
