@@ -101,11 +101,11 @@ class SearchController < ApplicationController
       if params[:sort] == "desc"
 	    @find_options[:order] += " DESC"
       end
-    elsif model_config[:sort_column]
+    elsif model_config.is_a?(Hash) and model_config[:sort_column]
       # model specifies default sort
-	  @find_options[:order] = column_config[model_config[:sort_column]][:key]
+      @find_options[:order] = column_config[model_config[:sort_column]][:key]
       if model_config[:sort_ascending] == false
-	    @find_options[:order] += " DESC"
+        @find_options[:order] += " DESC"
       end
     end
   end
