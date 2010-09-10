@@ -350,7 +350,8 @@ class ReportsController < SearchController
     to = Fecha.usDate(Date.today.to_s)
     @output["widgets"] += multipleDataRange(since, to)
     @output["widgets"].push(hierarchy(""))
-    @output["widgets"].push(checkBoxSelector(_("Problems"),buildCheckHash(ProblemType,"getName"),3))
+    @output["widgets"].push(checkBoxSelector(_("Problems"),buildCheckHash(ProblemType,"getName"),5))
+    @output["widgets"].push(checkBoxSelector(_("Laptop models"),buildCheckHash(Model,"getName"),6))
     @output["print_method"] = "problems_time_distribution"
   end
 

@@ -258,7 +258,7 @@ class PrintController < ApplicationController
   def problems_time_distribution
 
     print_params = JSON.parse(params[:print_params]).reverse    
-    inc = [:problem_type]
+    inc = [:problem_type, {:laptop => :model}]
     cond = [""]
 
     timeRange = print_params.pop
@@ -275,8 +275,12 @@ class PrintController < ApplicationController
     end
 
     problem_types_ids = print_params.pop
-    buildComboBoxQuery(cond, problem_types_ids, "problem_types.id") 
-   
+    buildComboBoxQuery(cond, problem_types_ids, "problem_types.id")
+
+    laptops_models_ids = print_params.pop
+    buildComboBoxQuery(cond, laptops_models_ids, "models.id")
+    laptops_models = Model.find(:all, :conditions => ["models.id in (?)", laptops_models_ids])
+
     results = Hash.new
 
     group_method = "beginning_of_#{window_size}"
@@ -304,6 +308,7 @@ class PrintController < ApplicationController
 
     @titulo = root_place.getName
     @titulo += "<br>"  + _("Distribucion en el tiempo de los problemas") + "</br>"
+    @titulo += "<br><small>(#{laptops_models.collect(&:name).join(',')})</small></br>"
 
     ventana = ""
     case window_size
@@ -322,8 +327,10 @@ class PrintController < ApplicationController
     graph_labels = Hash.new
     graph_data = Array.new
 
-    inc = [:owner => {:performs => :profile}]
-    cond = ["laptops.created_at <= ? and performs.place_id in (?) and profiles.internal_tag in (?)", nil, places_ids, ["student","teacher"]] 
+    inc = [{:owner => :performs}, :model]
+    cond = ["laptops.created_at <= ? and performs.place_id in (?) and models.id in (?)"]
+    cond += [nil, places_ids, laptops_models_ids]
+
     x_problem_type = results.keys.first
     tabla_tornasol = results[x_problem_type].keys.sort.map { |time_window| 
  
