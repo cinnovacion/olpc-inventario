@@ -286,21 +286,23 @@ module ReadFile
        school = Place.theSwissArmyKnifeFuntion(city.id, school_name, nil, nil, nil)
 
        teacher = nil
+       id_document = nil
+
        if dataArray[_id_document] != nil and dataArray[_id_document] != ""
+         dataArray[_id_document] = dataArray[_id_document][0..-3] if dataArray[_id_document][-2..-1] == ".0"
          id_document = Person.cedulaCleaner!(dataArray[_id_document])
-         attribs[:id_document] = id_document
          teacher = Person.find_by_id_document(id_document)
        end
 
-       attribs = Hash.new
-       attribs[:name] = name
-       attribs[:lastname] = lastname
-       new_performs = [[school.id, teacher_profile_id]]
-
        if !teacher
+         attribs = Hash.new
+         attribs[:name] = name
+         attribs[:lastname] = lastname
+         attribs[:id_document] = id_document
+         new_performs = [[school.id, teacher_profile_id]]
+
          teacher = Person.register(attribs, new_performs, "", register, school_name)
        end
-       id_document = teacher.id_document
 
        laptop_sn = dataArray[_laptop_sn]
        if laptop_sn and laptop_sn != ""
@@ -313,7 +315,7 @@ module ReadFile
 
          assignment = Hash.new
          assignment[:serial_number_laptop] = laptop_sn
-         assignment[:id_document] = id_document
+         assignment[:id_document] = teacher.id_document
          assignment[:comment] = "From teachers import"
          Assignment.register(assignment)
        end
