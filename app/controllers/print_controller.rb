@@ -1265,18 +1265,22 @@ class PrintController < ApplicationController
 
     place_id = print_params.pop
     root_place = Place.find_by_id(place_id)
-    buf = ""
 
+    relate = { "assignment" => :laptops_assigned, "physical" => :laptops }
+    criteria = print_params.pop
+    raise _("Invalid Criteria") if !relate[criteria]
+
+    buf = ""
     stack = [root_place]
     while(stack != [])
       place = stack.pop
       stack+= place.places.reverse
 
       second_cond = ["performs.place_id = ?",place.id]
-      second_inc = [:person => { :laptops_assigned => :status } ]
+      second_inc = [:person => { relate[criteria] => :status } ]
       performs = Perform.find(:all, :conditions => second_cond, :include => second_inc)
       performs.each { |perform|
-        perform.person.laptops_assigned.each { |laptop|
+        perform.person.send(relate[criteria]).each { |laptop|
           next if ["dead", "stolen", "lost"].include?(laptop.status.internal_tag)
           buf = buf + laptop.serial_number + "," + laptop.uuid + "\n"
         }

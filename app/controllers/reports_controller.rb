@@ -215,6 +215,12 @@ class ReportsController < SearchController
   def laptops_uuids
     @output["widgets"] = Array.new
     @output["widgets"].push(hierarchy(""))
+
+    cb_options = Array.new
+    cb_options.push({ :text => _("Assignment"), :value => "assignment" })
+    cb_options.push({ :text => _("Physical owner"), :value => "physical" })
+    @output["widgets"].push(comboBoxSelector(_("Generate by"), cb_options))
+
     @output["print_method"] = "laptops_uuids"
   end
 
