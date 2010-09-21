@@ -16,40 +16,52 @@ class SeedDataFixes
     true
   end
 
-  # FIXME: This script was generating updates problems, because of technicians miss usage
-  #        we are removing it until we find a better way to handle with repeated reports.
-  #def fix_repeated_problem_reports
-  #
-  #  ProblemReport.find(:all, :order => "problem_reports.id DESC").each { |problem_report|
-  #
-  #    id = problem_report.id
-  #    created_at = problem_report.created_at
-  #    laptop_serial = problem_report.laptop.serial_number
-  #    problem_type_tag = problem_report.problem_type.internal_tag
-  #
-  #    inc = [:laptop, :problem_type]
-  #    cond = [""]
-  #
-  #    #It can only delete older ones because, theres no way to know if the newest one
-  #    #are repeated entries or they are real new entries, in case the older one is solved.
-  #    cond[0] += "problem_reports.id < ? and "
-  #    cond[0] += "problem_reports.created_at <= ? and "
-  #    cond[0] += "laptops.serial_number = ? and "
-  #    cond[0] += "problem_types.internal_tag = ? and "
-  #    cond[0] += "problem_reports.solved = ?"
-  #
-  #    cond.push(id)
-  #    cond.push(created_at)
-  #    cond.push(laptop_serial)
-  #    cond.push(problem_type_tag)
-  #    cond.push(false)
-  #
-  #    repeated_not_solved = ProblemReport.find(:all, :conditions => cond, :include => inc).collect(&:id)
-  #    #puts "For #{id} deleting #{repeated_not_solved.join(',')}!" if repeated_not_solved != []
-  #    ProblemReport.destroy(repeated_not_solved)
-  #  }
-  #  true
-  #end
+
+  def fix_repeated_problem_reports
+
+    # First is going to fix all the problem reports that already has solutions
+    # but has been manually checked as unsolved.
+    pre_cond = ["problem_reports.solved = ?", false]
+    pre_include = [:problem_report]
+
+    ProblemSolution.find(:all, :conditions => pre_cond, :include => pre_include).each { |problem_solution|
+
+      inconsistant_report = problem_solution.problem_report
+      inconsistant_report.solved = true
+      inconsistant_report.save
+    }
+
+    # Secondly is going to detect all repeated problem reports and delete them
+    ProblemReport.find(:all, :order => "problem_reports.id DESC").each { |problem_report|
+
+      id = problem_report.id
+      created_at = problem_report.created_at
+      laptop_serial = problem_report.laptop.serial_number
+      problem_type_tag = problem_report.problem_type.internal_tag
+
+      inc = [:laptop, :problem_type]
+      cond = [""]
+
+      #It can only delete older ones because, theres no way to know if the newest one
+      #are repeated entries or they are real new entries, in case the older one is solved.
+      cond[0] += "problem_reports.id < ? and "
+      cond[0] += "problem_reports.created_at <= ? and "
+      cond[0] += "laptops.serial_number = ? and "
+      cond[0] += "problem_types.internal_tag = ? and "
+      cond[0] += "problem_reports.solved = ?"
+
+      cond.push(id)
+      cond.push(created_at)
+      cond.push(laptop_serial)
+      cond.push(problem_type_tag)
+      cond.push(false)
+
+      repeated_not_solved = ProblemReport.find(:all, :conditions => cond, :include => inc).collect(&:id)
+      #puts "For #{id} deleting #{repeated_not_solved.join(',')}!" if repeated_not_solved != []
+      ProblemReport.destroy(repeated_not_solved)
+    }
+    true
+  end
 
 end
 
