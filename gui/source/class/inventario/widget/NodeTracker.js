@@ -229,10 +229,9 @@ qx.Class.define("inventario.widget.NodeTracker",
       for (var i in node_types)
       {
         var filter_cb = new qx.ui.form.CheckBox(node_types[i].label);
-        //filter_cb.setValue(node_types[i].checked);
         filter_cb.setValue(node_types[i].checked);
         filter_cb.setUserData("type_id", Number(node_types[i].cb_name));
-        filter_cb.addListener("changeChecked", this._updateNodeTypeIds, this);
+        filter_cb.addListener("changeValue", this._updateNodeTypeIds, this);
 
         hbox.add(filter_cb);
       }
@@ -288,7 +287,7 @@ qx.Class.define("inventario.widget.NodeTracker",
       var type_ids = this._mapWidget.getNodeTypeIds();
       var index = type_ids.indexOf(type_id);
 
-      if (!filter_cb.getChecked())
+      if (!filter_cb.getValue())
       {
         if (index >= 0) {
           type_ids.splice(index, 1);
