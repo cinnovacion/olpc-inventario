@@ -405,6 +405,13 @@ class ReportsController < SearchController
     @output["print_method"] = "stock_status_report"
   end
 
+  def lot_information
+    @output["widgets"] = Array.new
+    cb_data = buildSelectHash2(Lot, -1, "getTitle", false, [])
+    @output["widgets"].push(comboBoxSelector(_("Lot"), cb_data))
+    @output["print_method"] = "lot_information"
+  end
+
   #
   # Helper methods. 
   # 

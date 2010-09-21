@@ -214,6 +214,8 @@ qx.Class.define("inventario.util.PrintManager",
                                                                                 case "stock_status_report":
                                                                                 case "people_laptops":
                                                                                 case "laptops_uuids":
+                                                                                case "lot_information":
+                                                                                //Please someone fix this horrible identation
                                                                                 url = print_controller + documento;
                                                                                 break;
 

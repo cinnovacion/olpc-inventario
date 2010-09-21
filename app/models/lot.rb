@@ -106,7 +106,7 @@ class Lot < ActiveRecord::Base
   end
 
   def getTitle
-    "Lote "+self.id.to_s
+    self.id.to_s
   end
 
   ###

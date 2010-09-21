@@ -49,6 +49,36 @@ class PrintController < ApplicationController
 
   end
 
+  def lot_information
+    print_params = JSON.parse(params[:print_params]).reverse
+
+    lot_id = print_params.pop
+    lot = Lot.find_by_id(lot_id)
+
+    @titulo = _("Lot information")
+    @titulo +=  "<br> #{_("Responsible")}: #{lot.person.getFullName} <br>"
+    @titulo += "<br> #{_("Delivered")}: #{lot.delivery_date} <br>" if lot.delivery_date
+    @columnas = [_("Location"), _("Laptops"), _("Owner"), _("Document ID"), _("Serial number")]
+    @datos = []
+
+    lot.section_details.each { |section_detail|
+
+      place = section_detail.place
+      size = section_detail.laptop_details.length
+
+      @datos.push([place.getName, size, "", "", ""])
+
+      section_detail.laptop_details.each { |laptop_detail|
+
+        owner = laptop_detail.person
+        laptop = laptop_detail.laptop
+        @datos.push(["", "", owner.getFullName, owner.getIdDoc, laptop.getSerialNumber])
+      }
+    }
+
+    imprimir("lot_information", "print/" + "report")
+  end
+
   def stock_status_report
     print_params = JSON.parse(params[:print_params]).reverse
     cond = [""]
