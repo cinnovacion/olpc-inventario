@@ -1290,6 +1290,57 @@ class PrintController < ApplicationController
     imprimir("people_laptops", "print/" + "people_laptops")
   end
 
+  def people_documents
+    print_params = JSON.parse(params[:print_params]).reverse
+
+    place_id = print_params.pop
+    place = Place.find_by_id(place_id)
+
+    document_filters = print_params.pop
+
+    @title = _("People by documents")
+    @hashes_array = Array.new
+    @columns = [_("Owner"), _("Description"), _("Document id")]
+
+    places = [place]
+    while(places != [])
+
+      place = places.pop
+      people = place.people
+      if people != []
+        people_hash = Hash.new
+        people_hash[:sub_array] = Array.new
+        people.each { |person|
+          person_name = person.getFullName
+          document_num = person.id_document
+          # Check if person has a fake document number
+          if document_num.include?("_") or document_num == "0"
+            if document_filters.include?("fake")
+              people_hash[:sub_array].push([person_name,
+                                            person.id_document,
+                                            person.profile.description])
+            end
+          else
+            # ..no it hasn't so should we add normal looking documents?
+            if document_filters.include?("normal")
+              people_hash[:sub_array].push([person_name,
+                                            person.id_document,
+                                            person.profile.description])
+            end
+          end
+        }
+        if !people_hash[:sub_array].empty?
+          people_hash[:sub_title] = place.getName
+        end
+        @hashes_array.push(people_hash)
+      end
+
+      places += place.places.reverse
+    end
+
+    imprimir("people_documents", "print/" + "hashes_array")
+  end
+
   def laptops_uuids
     print_params = JSON.parse(params[:print_params]).reverse
 
@@ -1543,7 +1594,6 @@ class PrintController < ApplicationController
 
     imprimir("codigos-usuarios", "print/" + "barcodes", {}, true)
   end
-
 
   ####
   # Movements.

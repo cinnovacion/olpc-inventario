@@ -393,6 +393,7 @@ class SistemaController < ApplicationController
   def getMenuDeploymentInform
     menu_option = genOption(_("Reports"))
     menu_option[:elements].push(genElement(_("Students & document ids"), "report", genReport("students_ids_distro")))
+    menu_option[:elements].push(genElement(_("Document IDs"), "report", genReport("people_documents")))
     menu_option
   end
 

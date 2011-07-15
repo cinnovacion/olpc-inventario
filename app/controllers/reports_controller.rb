@@ -212,6 +212,19 @@ class ReportsController < SearchController
     @output["print_method"] = "people_laptops"
   end
 
+  def people_documents
+    @output["widgets"] = Array.new
+
+    @output["widgets"].push(hierarchy(_("Location")))
+
+    cb_options = Array.new
+    cb_options.push({ :label => _("Normal Document ID"), :cb_name => "normal", :checked => true })
+    cb_options.push({ :label => _("Fake Document ID"), :cb_name => "fake", :checked => true })
+    @output["widgets"].push(checkBoxSelector(_("Document ID"), cb_options))
+
+    @output["print_method"] = "people_documents"
+  end
+
   def laptops_uuids
     @output["widgets"] = Array.new
     @output["widgets"].push(hierarchy(""))
