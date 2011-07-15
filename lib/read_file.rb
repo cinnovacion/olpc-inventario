@@ -215,6 +215,18 @@ module ReadFile
         raise "Invalid grade %s (of %s %s)" % [dataArray[_grade], name, lastname]
       end
 
+      # Assert that shift info is valid, if given
+      if !shiftInfo and dataArray[_shift] and dataArray[_shift] != ""
+        raise "Invalid shift %s (of %s %s)" % [dataArray[_shift], name, lastname]
+        # Would be cool to show the row number
+      end
+
+      # Assert that section info is valid, if given
+      if !sectionInfo and dataArray[_section] and dataArray[_section] != ""
+        raise "Invalid section %s (of %s %s)" % [dataArray[_section], name, lastname]
+        # Would be cool to show the row number
+      end
+
       kidAttribs = Hash.new
 
       name = titleize(name)
