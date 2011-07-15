@@ -197,13 +197,13 @@ module ReadFile
       # Spreadsheets exported from Excel often result in the grade numbers
       # ending up as float (e.g. "1.0") even if you try hard to mark the
       # field as a string. Handle that here.
-      grade = dataArray[_grade]
+      grade = dataArray[_grade].to_s
       grade = grade[0..-3] if grade[-2..-1] == ".0"
 
       schoolInfo = dataArray[_school].strip
-      shiftInfo = shiftHash[dataArray[_shift].downcase]
+      shiftInfo = shiftHash[dataArray[_shift].to_s.downcase]
       gradeInfo = gradeHash[grade]
-      sectionInfo = sectionHash[dataArray[_section].downcase]
+      sectionInfo = sectionHash[dataArray[_section].to_s.downcase]
 
       raise "School name or number must be provided" if (!schoolInfo or schoolInfo == "")
       section = Place.theSwissArmyKnifeFuntion(city.id, schoolInfo, shiftInfo, gradeInfo, sectionInfo)
