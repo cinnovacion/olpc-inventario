@@ -50,11 +50,9 @@ class SchoolInfosController < SearchController
     @output["fields"] = []
 
     id = schoolInfo && schoolInfo.place ? schoolInfo.place_id : -1
-    pruneCond = ["place_types.internal_tag = ?","school"]
-    pruneInc = [:place_type]
-    places = buildHierarchyHash(Place, "places", "places.place_id", "name", id, pruneCond, pruneInc, false)
 
-    h = { "label" => _("School"), "datatype" => "combobox", "options" => places }
+    h = { "label" => _("School"), "datatype" => "hierarchy_on_demand", "options" => { "width" => 380, "height" => 120 }}
+    h.merge!( schoolInfo && schoolInfo.place ? {"dataHash" => schoolInfo.place.getElementsHash } : {} )
     @output["fields"].push(h)
 
     h = { "label" => _("Lease duration"), "datatype" => "textfield" }.merge( schoolInfo ? {"value" => schoolInfo.getDuration.to_s } : {} )
