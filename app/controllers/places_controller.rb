@@ -237,7 +237,7 @@ class PlacesController < SearchController
       end
 
       # sort certain place types alphabetically
-      if ["country", "state", "city"].include?(parent.place_type.internal_tag)
+      if parent.place_type and ["country", "state", "city"].include?(parent.place_type.internal_tag)
         order = "name"
       else
         order = nil
