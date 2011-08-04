@@ -4,7 +4,7 @@
   #
   require "digest/sha1"
 
-  root_place = create_if_not_exists(Place, {:id => "1", :name => "Rootland", :description => "Root System Place"})
+  root_place = create_if_not_exists(Place, {:id => "1", :name => "Rootland", :description => "Root System Place", :place_type_id => "19"})
   create_if_not_exists(Node, { :id => "1", :name => "RootLand", :lat => "-25.289453059491", :lng => "-57.5725463032722", :node_type_id => "1", :place_id => "1", :zoom => 19 })
 
   root_person = create_if_not_exists(Person, {:id => "1", :name => "System", :lastname => "Root", :id_document => "0", :email => "sistema@paraguayeduca.org" })
