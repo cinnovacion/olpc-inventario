@@ -84,26 +84,29 @@ class Place < ActiveRecord::Base
 
 
   ###
-  # Returns list of serial_nums and uuids of all laptops in a school
+  # Returns list of serial_nums and uuids of all laptops in a place
   #
-  def self.getSerialsInfo(school_id)
+  def self.getSerialsInfo(place_id)
     ret = Array.new
-    school = Place.find(school_id)
-    leases_in_places_ids = school.getDescendantsIds + [school_id] + school.getAncestorsIds
-    cond_v = [ "performs.place_id in (?)", leases_in_places_ids]
-    include_v = [{:performs => [:place]}, {:laptops => [:status]}]
-    Person.find(:all, :conditions => cond_v, :include => include_v).each { |person|
-      # las laptops actualmente no tienen estado activadas
-      # tmp_cond_v = [ "statuses.internal_tag = ? and laptops.serial_number is not null and laptops.uuid is not null ", "activated" ]
-      #tmp_cond_v = [ "laptops.serial_number is not null and laptops.uuid is not null " ]
-      # person.laptops.find(:all, :include => tmp_inc_v,  :conditions => tmp_cond_v )
-      person.laptops.each { |laptop|
-        if laptop.serial_number && laptop.uuid && laptop.uuid.to_s != "" && laptop.status && laptop.status.internal_tag != "stolen"
-          h = { :serial_number => laptop.serial_number, :uuid => laptop.uuid }
-          ret.push(h)
-        end
-      }
+
+    place = Place.find_by_id(place_id)
+    places_ids = place.getDescendantsIds + [place_id] + place.getAncestorsIds
+
+    cond_v = ["place_id in (?)", places_ids]
+    people_ids = Perform.find(:all, :conditions => cond_v).collect(&:person_id)
+
+    cond_v = ["serial_number is not NULL"]
+    cond_v[0] += " and uuid is not NULL"
+    cond_v[0] += " and status_id is not NULL"
+    cond_v[0] += " and statuses.internal_tag = ?"
+    cond_v[0] += " and owner_id in (?)"
+    cond_v.push("activated")
+    cond_v.push(people_ids)
+
+    Laptop.find(:all, :conditions => cond_v, :include => [:status]).each { |laptop|
+      ret.push({ :serial_number => laptop.serial_number, :uuid => laptop.uuid })
     }
+
     ret
   end
   
