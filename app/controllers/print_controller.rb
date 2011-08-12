@@ -1346,28 +1346,30 @@ class PrintController < ApplicationController
 
     place_id = print_params.pop
     root_place = Place.find_by_id(place_id)
+    raise _("Invalid Place") if root_place.nil?
 
-    relate = { "assignment" => :laptops_assigned, "physical" => :laptops }
+    relate = { "assignment" => "assignee_id", "physical" => "owner_id" }
     criteria = print_params.pop
-    raise _("Invalid Criteria") if !relate[criteria]
+    raise _("Invalid Criteria") if relate[criteria].nil?
+    relation = relate[criteria]
 
-    buf = ""
-    stack = [root_place]
-    while(stack != [])
-      place = stack.pop
-      stack+= place.places.reverse
+    buffer = ""
 
-      second_cond = ["performs.place_id = ?",place.id]
-      second_inc = [:person => { relate[criteria] => :status } ]
-      performs = Perform.find(:all, :conditions => second_cond, :include => second_inc)
-      performs.each { |perform|
-        perform.person.send(relate[criteria]).each { |laptop|
-          next if ["dead", "stolen", "lost"].include?(laptop.status.internal_tag)
-          buf = buf + laptop.serial_number + "," + laptop.uuid + "\n"
-        }
-      }
-    end
-    send_data buf, :type => 'text/plain', :filename => 'laptops.txt'
+    places_ids = root_place.getDescendantsIds + [root_place.id]
+    cond_v = ["place_id in (?)", places_ids]
+    people_ids = Perform.find(:all, :conditions => cond_v).collect(&:person_id)
+
+    cond_v = ["serial_number is not NULL and serial_number != \"\""]
+    cond_v[0] += " and uuid is not NULL and uuid != \"\""
+    cond_v[0] += " and status_id is not NULL and statuses.internal_tag = \"activated\""
+    cond_v[0] += " and #{relation} in (?)"
+    cond_v.push(people_ids)
+
+    Laptop.find(:all, :conditions => cond_v, :include => [:status]).each { |laptop|
+      buffer +=  "#{laptop.serial_number.to_s},#{laptop.uuid.to_s}\n"
+    }
+
+    send_data buffer, :type => 'text/plain', :filename => 'laptops.txt'
   end
 
   def possible_mistakes
