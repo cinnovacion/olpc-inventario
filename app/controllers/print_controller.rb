@@ -1295,50 +1295,33 @@ class PrintController < ApplicationController
 
     place_id = print_params.pop
     place = Place.find_by_id(place_id)
+    raise _("Invalid Place") if not place
 
     document_filters = print_params.pop
+    filters = ""
+    filters += "id_document not REGEXP \"_\"" if not document_filters.include?('fake')
+    filters += " and " if document_filters.length == 0
+    filters += "id_document REGEXP \"_\"" if not document_filters.include?('normal')
+    filters += " and " if filters.length != 0
 
-    @title = _("People by documents")
-    @hashes_array = Array.new
-    @columns = [_("Owner"), _("Description"), _("Document id")]
+    columns = [_("Location"), _("Name"), _("Document id")]
+    rows = []
+    student_id = Profile.find_by_internal_tag('student').id
 
     places = [place]
     while(places != [])
-
-      place = places.pop
-      people = place.people
-      if people != []
-        people_hash = Hash.new
-        people_hash[:sub_array] = Array.new
-        people.each { |person|
-          person_name = person.getFullName
-          document_num = person.id_document
-          # Check if person has a fake document number
-          if document_num.include?("_") or document_num == "0"
-            if document_filters.include?("fake")
-              people_hash[:sub_array].push([person_name,
-                                            person.id_document,
-                                            person.profile.description])
-            end
-          else
-            # ..no it hasn't so should we add normal looking documents?
-            if document_filters.include?("normal")
-              people_hash[:sub_array].push([person_name,
-                                            person.id_document,
-                                            person.profile.description])
-            end
-          end
+        place = places.pop
+        location = place.getName()
+        cond_v = ["#{filters} performs.place_id = ? and performs.profile_id = ?", place.id, student_id]
+        Person.find(:all, :conditions => cond_v, :include => [:performs]).each { |person|
+            rows.push([location, person.getFullName, person.getIdDoc])
         }
-        if !people_hash[:sub_array].empty?
-          people_hash[:sub_title] = place.getName
-        end
-        @hashes_array.push(people_hash)
-      end
 
-      places += place.places.reverse
+        places += place.places.reverse
     end
 
-    imprimir("people_documents", "print/" + "hashes_array")
+    file_name = FormatManager.generarExcel2(rows,columns)
+    send_file(file_name,:filename => "id_documents.xls",:type => "application/vnd.ms-excel",:stream => false )
   end
 
   def laptops_uuids
