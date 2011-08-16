@@ -342,7 +342,7 @@ qx.Class.define("inventario.widget.HierarchyOnDemand",
       var new_element = this._newElement(hashData, this._requestElements, false);
       selectedElement.add(new_element);
 
-      this.getTreeWidget().setSelection(new_element);
+      this.getTreeWidget().setSelection([new_element]);
       var new_elements = hashData.elements;
 
       for (var i in new_elements) {
