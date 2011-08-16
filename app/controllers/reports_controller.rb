@@ -425,6 +425,11 @@ class ReportsController < SearchController
     @output["print_method"] = "lot_information"
   end
 
+  def laptops_check
+    @output["widgets"] = Array.new
+    @output["print_method"] = "laptops_check"
+  end
+
   #
   # Helper methods. 
   # 

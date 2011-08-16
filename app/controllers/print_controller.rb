@@ -2077,6 +2077,32 @@ class PrintController < ApplicationController
     imprimir("problemas_por_tipo", "print/" + "report")
   end
 
+  def laptops_check
+    xls_rows = []
+    xls_columns = [_("Serial Number"), _("Owner"), _("Document id"), _("Location")]
+    global_repeated = []
+
+    # super speed hack
+    results = ActiveRecord::Base.connection.execute("SELECT serial_number,
+                                                     COUNT(serial_number) AS repeated 
+                                                     FROM laptops
+                                                     GROUP BY serial_number
+                                                     HAVING repeated > 1;")
+    results.each { |row|
+      serial_number = row[0]
+      cond = ["serial_number = ?", row[0]]
+      inc = [:owner => {:performs => :place}]
+      Laptop.find(:all, :conditions => cond, :include => inc).each { |laptop|
+        owner = laptop.owner
+        location = owner.performs.first.place
+        xls_rows.push([serial_number, owner.getFullName, owner.getIdDoc, location.getName])
+      }
+    }
+
+    file_name = FormatManager.generarExcel2(xls_rows, xls_columns)
+    send_file(file_name,:filename => "laptops_check.xls",:type => "application/vnd.ms-excel",:stream => false )
+  end
+
   private
   
 
