@@ -49,8 +49,6 @@ class SchoolInfosController < SearchController
     
     @output["fields"] = []
 
-    id = schoolInfo && schoolInfo.place ? schoolInfo.place_id : -1
-
     h = { "label" => _("School"), "datatype" => "hierarchy_on_demand", "options" => { "width" => 380, "height" => 120 }}
     h.merge!( schoolInfo && schoolInfo.place ? {"dataHash" => schoolInfo.place.getElementsHash } : {} )
     @output["fields"].push(h)
