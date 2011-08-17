@@ -1,7 +1,7 @@
 # spec file for our tracking, monitoring and support web app
 Name: inventario		
 Version: 0.4
-Release: 12
+Release: 13
 Vendor: Paraguay Educa
 Summary: This (Ruby on Rails based) web app lets you track laptops given out, status of networks and support tickets.
 Group:	Applications/Internet
@@ -120,6 +120,9 @@ fi
 /var/%{name}/vendor
 
 %changelog
+* Wed Aug 17 2011 Martin Abente. <tch@paraguayeduca.org>
+- Fix movement and audit reports
+
 * Tue Aug 16 2011 Martin Abente. <tch@paraguayeduca.org>
 - Laptop data integrity check report
 - Fix HierarchyOnDemand selection
