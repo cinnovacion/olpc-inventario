@@ -2243,7 +2243,7 @@ class PrintController < ApplicationController
       theres_one = false
       cond_aux = " ( "
       for field in cvs_fields do
-        if field["value"] && fields["value"] != ""
+        if field["value"] && field["value"] != ""
           theres_one = true
           cond_aux += " or " if cond_aux != " ( "
           cond_aux += "#{field["col_name"].pluralize}.serial_number = ?"
