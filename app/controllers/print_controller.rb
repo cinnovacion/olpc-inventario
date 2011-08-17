@@ -133,15 +133,20 @@ class PrintController < ApplicationController
     @datos = []
 
     Audit.find(:all, :conditions => cond, :order => "audits.created_at ASC").each { |audit_row|
-      username = audit_row.user.usuario
+      username = audit_row.user ? audit_row.user.usuario : "System"
       date = audit_row.created_at.to_s
       id = audit_row.auditable_id
       changes = audit_row.changes
       @datos.push([date, username, id, "", "", ""])
-  
+
       changes.keys.each { |column|
-        old_value = changes[column][0]
-        new_value = changes[column][1]
+        if changes[column].is_a?(Array)
+          old_value = changes[column][0]
+          new_value = changes[column][1]
+        else
+          old_value = ""
+          new_value = changes[column]
+        end
         @datos.push(["", "", "", column, old_value, new_value])          
       }
     }
