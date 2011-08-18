@@ -20,7 +20,8 @@
 # E-mail Address: rgs@paraguayeduca.org
 # 2009
 # # #
-                                                                          
+                   
+require "iconv"                                                       
 require "spreadsheet/excel"
 include Spreadsheet
 
@@ -68,6 +69,8 @@ class FormatManager < ActiveRecord::Base
       if row[i].is_a?(FalseClass) || row[i].is_a?(TrueClass) 
         row[i] = row[i] ? trueStr : falseStr 
         row_was_cleaned = true
+      else
+        row[i] = Iconv.conv('latin1', 'utf-8', row[i]) if row[i].is_a?(String)
       end
     end
     
