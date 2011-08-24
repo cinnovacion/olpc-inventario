@@ -306,15 +306,6 @@ class Person < ActiveRecord::Base
     end
   end
 
-  ###
-  #  It gets rid of common typing error.
-  def self.cedulaCleaner!(id_document)
-    id_document.gsub!(/,| /,'')
-    person = Person.find_by_id_document(id_document)
-    return id_document if !person
-    return id_document+"_"+rand(999999).to_s
-  end
-
   def self.identGenerator(name, schoolInfo)
     ident = ""
     clean_place_name = schoolInfo.strip.gsub(" ", "")

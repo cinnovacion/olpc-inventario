@@ -123,6 +123,13 @@ module ReadFile
     str.mb_chars.downcase.to_s.gsub(/\b('?[\S])/u) { $1.mb_chars.upcase }
   end
 
+  # Spreadsheets exported from Excel often result in the grade numbers
+  # ending up as float (e.g. "1.0") even if you try hard to mark the
+  # field as a string. Handle that here.
+  def self.numberCleaner(string)
+    string.to_s.strip.gsub(/(\.\d+)|(\,\d+)/, "")
+  end
+
   #Reads from Teo's school kids file.
   # The Schools, shifts, grades and sections must be already added.
   def self.kidsFromFile(filename, worksheet, place_id, register)
@@ -184,29 +191,22 @@ module ReadFile
     #There we go!
     Spreadsheet::ParseExcel.parse(filename).worksheet(worksheet).each { |row|
       dataArray = row.map() { |c| c ? c.to_s('utf-8') : "" }
-      name = dataArray[_name]
-      lastname = dataArray[_lastname]
-      next if name == nil and lastname == nil
-      name = "" if not name
-      lastname = "" if not lastname
 
-      name.strip!
-      lastname.strip!
+      name = dataArray[_name].to_s.strip
+      lastname = dataArray[_lastname].to_s.strip
       next if name == "" and lastname == ""
 
-      # Spreadsheets exported from Excel often result in the grade numbers
-      # ending up as float (e.g. "1.0") even if you try hard to mark the
-      # field as a string. Handle that here.
-      grade = dataArray[_grade].to_s
-      grade = grade[0..-3] if grade[-2..-1] == ".0"
-
-      schoolInfo = dataArray[_school].strip
-      shiftInfo = shiftHash[dataArray[_shift].to_s.downcase]
+      grade = numberCleaner(dataArray[_grade])
       gradeInfo = gradeHash[grade]
-      sectionInfo = sectionHash[dataArray[_section].to_s.downcase]
 
-      raise "School name or number must be provided" if (!schoolInfo or schoolInfo == "")
-      section = Place.theSwissArmyKnifeFuntion(city.id, schoolInfo, shiftInfo, gradeInfo, sectionInfo)
+      schoolInfo = numberCleaner(dataArray[_school])
+      shiftInfo = shiftHash[dataArray[_shift].to_s.downcase.strip]
+      sectionInfo = sectionHash[dataArray[_section].to_s.downcase.strip]
+
+      # Make sure there is a school.
+      if schoolInfo == ""
+        raise "Invalid school (of %s %s)" % [name, lastname]
+      end
 
       # try to detect user error in importing a spreadsheet of teacher info
       # (we can only do this when the teacher spreadsheet includes assignments,
@@ -227,26 +227,26 @@ module ReadFile
         # Would be cool to show the row number
       end
 
-      kidAttribs = Hash.new
+      section = Place.theSwissArmyKnifeFuntion(city.id, schoolInfo, shiftInfo, gradeInfo, sectionInfo)
 
       name = titleize(name)
       lastname = titleize(lastname)
-      kidAttribs[:name] = name
-      kidAttribs[:lastname] = lastname
+      id_document = numberCleaner(dataArray[_ci])
 
-      if dataArray[_ci] != nil and dataArray[_ci] != ""
-        kidAttribs[:id_document] = Person.cedulaCleaner!(dataArray[_ci])
+      kid = Person.find_by_id_document(id_document)
+      if !kid
+        kidAttribs = Hash.new
+        kidAttribs[:name] = name
+        kidAttribs[:lastname] = lastname
+        kidAttribs[:id_document] = id_document
+
+        profiles = [student_profile_id]
+        performs = [[section.id, student_profile_id]]
+        kid = Person.register(kidAttribs, performs, "", register, schoolInfo)
       end
 
-      profiles = [student_profile_id]
-      performs = [[section.id, student_profile_id]]
-
-      person = Person.register(kidAttribs, performs, "", register, schoolInfo)
-
-      laptop_sn = dataArray[_laptop_sn]
-      if laptop_sn and laptop_sn != ""
-        laptop_sn.strip!
-        laptop_sn.upcase!
+      laptop_sn = dataArray[_laptop_sn].to_s.strip.upcase
+      if laptop_sn != ""
         laptop = Laptop.find_by_serial_number(laptop_sn)
         if laptop == nil
            raise "Can't find laptop #{laptop_sn} (of #{name} #{lastname})"
@@ -254,7 +254,7 @@ module ReadFile
 
         assignment = Hash.new
         assignment[:serial_number_laptop] = laptop_sn
-        assignment[:id_document] = person.id_document
+        assignment[:id_document] = kid.id_document
         assignment[:comment] = "From students import"
         Assignment.register(assignment)
       end
@@ -279,33 +279,20 @@ module ReadFile
    Person.transaction do
      Spreadsheet::ParseExcel.parse(filename).worksheet(worksheet).each { |row|
        dataArray = row.map() { |c| c ? c.to_s('utf-8') : "" }
-       name = dataArray[_name]
-       lastname = dataArray[_lastname]
-       next if name == nil and lastname == nil
-       name = "" if not name
-       lastname = "" if not lastname
 
-       name.strip!
-       lastname.strip!
+       name = dataArray[_name].to_s.strip
+       lastname = dataArray[_lastname].to_s.strip
+       school_name = numberCleaner(dataArray[_school_name])
+
        next if name == "" and lastname == ""
+       raise _("No school provided for #{name} #{lastname}") if school_name == ""
 
        name = titleize(name)
        lastname = titleize(lastname)
-       school_name = dataArray[_school_name]
-
-       raise _("School name or number must be provided") if (!school_name or school_name == "")
-       school_name.strip!
+       id_document = numberCleaner(dataArray[_id_document])
        school = Place.theSwissArmyKnifeFuntion(city.id, school_name, nil, nil, nil)
 
-       teacher = nil
-       id_document = nil
-
-       if dataArray[_id_document] != nil and dataArray[_id_document] != ""
-         dataArray[_id_document] = dataArray[_id_document][0..-3] if dataArray[_id_document][-2..-1] == ".0"
-         id_document = Person.cedulaCleaner!(dataArray[_id_document])
-         teacher = Person.find_by_id_document(id_document)
-       end
-
+       teacher = Person.find_by_id_document(id_document)
        if !teacher
          attribs = Hash.new
          attribs[:name] = name
@@ -316,10 +303,8 @@ module ReadFile
          teacher = Person.register(attribs, new_performs, "", register, school_name)
        end
 
-       laptop_sn = dataArray[_laptop_sn]
-       if laptop_sn and laptop_sn != ""
-         laptop_sn.strip!
-         laptop_sn.upcase!
+       laptop_sn = dataArray[_laptop_sn].to_s.strip.upcase
+       if laptop_sn != ""
          laptop = Laptop.find_by_serial_number(laptop_sn)
          if laptop == nil
             raise "Can't find laptop #{laptop_sn} (for #{name} #{lastname})"
