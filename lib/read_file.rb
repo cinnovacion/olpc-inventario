@@ -42,6 +42,7 @@ module ReadFile
 
     Laptop.transaction do
       Spreadsheet::ParseExcel.parse(filename).worksheet(worksheet).each { |row|
+        next if row == nil
         dataArray = row.map { |cell| cell ? cell.to_s('utf-8') : "" }
 
         #First we check if the shipment exists, else we created it.
@@ -87,6 +88,7 @@ module ReadFile
   #This going to frad from Daniel's uuids list and update uuid field.
   def self.uuidFromFile(filename, separator)
     File.open(filename).each { |row|
+      next if row == nil
       dataArray = row.split(separator).map { |column| column.strip }
       laptop = Laptop.find_by_serial_number(dataArray[0])
       if laptop
@@ -190,6 +192,7 @@ module ReadFile
     Person.transaction do
     #There we go!
     Spreadsheet::ParseExcel.parse(filename).worksheet(worksheet).each { |row|
+      next if row == nil
       dataArray = row.map() { |c| c ? c.to_s('utf-8') : "" }
 
       name = dataArray[_name].to_s.strip
@@ -278,6 +281,7 @@ module ReadFile
 
    Person.transaction do
      Spreadsheet::ParseExcel.parse(filename).worksheet(worksheet).each { |row|
+       next if row == nil
        dataArray = row.map() { |c| c ? c.to_s('utf-8') : "" }
 
        name = dataArray[_name].to_s.strip
