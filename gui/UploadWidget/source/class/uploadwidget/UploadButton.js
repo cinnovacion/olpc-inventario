@@ -134,7 +134,7 @@ qx.Class.define("uploadwidget.UploadButton",
       {
         if (!value || value == "")
         {
-          if (qx.core.Variant.isSet("qx.client", "mshtml"))
+          if (qx.core.Environment.get("engine.name") == "mshtml")
           {
             this._createInputFileTag(this.getContainerElement());
           }

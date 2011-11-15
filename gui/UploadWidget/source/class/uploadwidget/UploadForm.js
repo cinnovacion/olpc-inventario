@@ -195,7 +195,7 @@ qx.Class.define("uploadwidget.UploadForm",
     {
       var frameName = "frame_" + (new Date).valueOf();
 
-      if (qx.core.Variant.isSet("qx.client", "mshtml"))
+      if (qx.core.Environment.get("engine.name") == "mshtml")
       {
         this._iframeNode = document.createElement('<iframe name="' + frameName + '"></iframe>');
       }

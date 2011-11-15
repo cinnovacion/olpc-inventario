@@ -52,7 +52,7 @@ qx.Class.define("uploadwidget.Application",
       this.base(arguments);
       
       // Add log appenders
-      if (qx.core.Variant.isSet("qx.debug", "on"))
+      if (qx.core.Environment.get("qx.debug"))
       {
         qx.log.appender.Native;
         qx.log.appender.Console;

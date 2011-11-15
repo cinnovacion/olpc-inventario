@@ -181,7 +181,6 @@ qx.Class.define("inventario.sistema.Login",
       win.setLayout(new qx.ui.layout.VBox(10));
       this.setWindow(win);
 
-      win.setModal(true);
       win.setShowClose(false);
       win.setShowMaximize(false);
       win.setShowMinimize(false);

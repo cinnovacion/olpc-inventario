@@ -73,7 +73,7 @@ qx.Class.define("inventario.Application",
       inventario.widget.Layout.removeChilds(this.getRoot());
 
       // Enable logging in debug variant
-      if (qx.core.Variant.isSet("qx.debug", "on"))
+      if (qx.core.Environment.get("qx.debug"))
       {
         // support native logging capabilities, e.g. Firebug for Firefox
         qx.log.appender.Native;
