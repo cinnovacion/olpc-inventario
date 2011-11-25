@@ -8,7 +8,7 @@
 
 class ConstraintGenerator
 
-  DEFAULT_OUTPUT = "#{RAILS_ROOT.to_s}/constraints_#{Date.today.to_s}.rb"
+  DEFAULT_OUTPUT = Rails.root.join("constraints_#{Date.today.to_s}.rb")
 
   def self.generate(filepath)
 

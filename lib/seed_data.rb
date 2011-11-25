@@ -7,7 +7,7 @@
 
 module SeedData
 
-  DEFAULT_OUTPUT = "#{RAILS_ROOT.to_s}/init_data_#{Date.today.to_s}.rb"
+  DEFAULT_OUTPUT = Rails.root.join("init_data_#{Date.today.to_s}.rb")
 
   #####
   #  Generates an ruby script with all necesisary information for data seeding

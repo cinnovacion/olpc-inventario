@@ -34,7 +34,7 @@ require 'tempfile'
 
 module PyEducaGraph
 
-  Images_Path = "#{RAILS_ROOT}/public/images/"
+  Images_Path = Rails.root.join("public", "images") + "/"
   Image_Format = ".jpg"
   Url_Base_Path = "images/"
 

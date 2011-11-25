@@ -35,7 +35,7 @@ class FormatManager < ActiveRecord::Base
   def self.generarExcel2(datos, titulos = [])
 
     # jugando con fuego.. puede haber carrera...
-    file_name = RAILS_ROOT + "/tmp/" + Kernel.rand.to_s.split(".")[1] + ".xls"
+    file_name = Rails.root.join("/tmp/", Kernel.rand.to_s.split(".")[1] + ".xls").to_s
     workbook = Excel.new(file_name)
     worksheet = workbook.add_worksheet
 

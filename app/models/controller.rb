@@ -27,7 +27,7 @@ class Controller < ActiveRecord::Base
   def self.refreshMethodsTree()
 
     list = Array.new
-    controllers = Dir.new("#{RAILS_ROOT}/app/controllers").entries.sort
+    controllers = Dir.new(Rails.root.join("app", "controllers")).entries.sort
     methods_ancestors = Object.instance_methods + ApplicationController.instance_methods
     controllers.each { |controller|
       if controller =~ /_controller.rb\z/

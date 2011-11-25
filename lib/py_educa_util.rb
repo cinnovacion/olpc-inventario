@@ -47,7 +47,7 @@ module PyEducaUtil
 
   def self.getSvnOutput()
 
-    Dir::chdir RAILS_ROOT
+    Dir::chdir Rails.root
     cmd = "svn info"
     svn_output = []
     begin
@@ -57,7 +57,7 @@ module PyEducaUtil
       end
     rescue
 
-      RAILS_DEFAULT_LOGGER.error("\n WARNING: SVN not available \n")
+      Rails.logger.error("\n WARNING: SVN not available \n")
     end
     svn_output
   end

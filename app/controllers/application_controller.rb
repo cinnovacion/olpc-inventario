@@ -58,7 +58,7 @@ class ApplicationController < ActionController::Base
     end
   end
  
-  init_gettext("inventario", :locale_path => "#{RAILS_ROOT}/translation/locale")
+  init_gettext("inventario", :locale_path => Rails.root.join("translation", "locale"))
 
   ###
   # tch says: 
