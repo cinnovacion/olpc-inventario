@@ -251,7 +251,7 @@ class Movement < ActiveRecord::Base
       str = people[person].keys.map { |device_class| "#{device_class}: #{people[person][device_class]}\n" }
       msg += str.join()
       msg += _("Please communicate with info@paraguayeduca.org")
-      Notifier.deliver_lendings_reminder(person.email, msg)
+      Notifier.lendings_reminder(person.email, msg).deliver
     }
   end
 

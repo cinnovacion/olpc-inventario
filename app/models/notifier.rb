@@ -28,6 +28,7 @@
 # # #
                                                                          
 class Notifier < ActionMailer::Base
+  default :from => "inventario@paraguayeduca.org"
   
   ###
   # Prepare & send
@@ -36,12 +37,10 @@ class Notifier < ActionMailer::Base
   # - from addr shouldn't be hard-coded
   # - return path shouldn't be hard-coded
   def lendings_reminder(email, message)
-    from "inventario@paraguayeduca.org"
-    recipients email
-    subject _("REMINDER")
-    body :message => message
-    headers "return-path" => "sistema@paraguayeduca.org"
-    content_type "text/html"
+    @account = email
+    @message = message
+    headers["return-path"] = "sistema@paraguayeduca.org"
+    mail(:to => email, :subject => _("REMINDER"))
   end
 
   ###
@@ -50,12 +49,11 @@ class Notifier < ActionMailer::Base
   # - from addr shouldn't be hard-coded
   # - return path shouldn't be hard-coded
   def fire_notification(notification, extended_data, destinations)
-    recipients destinations
-    from "sistema@paraguayeduca.org"
-    subject notification.getName + (extended_data["subject"] ? " [#{extended_data["subject"]}]" : "") 
-    body :message => notification.getDescription, :extended_data => extended_data.keys.map { |key| key.to_s+" "+extended_data[key].to_s }.join("<br>")
-    headers "return-path" => "sistema@paraguayeduca.org" 
-    content_type "text/html"
+    @account = destinations
+    @message = notification.getDescription
+    @extended_data = extended_data.keys.map { |key| key.to_s+" "+extended_data[key].to_s }.join("<br>")
+    headers["return-path"] = "sistema@paraguayeduca.org"
+    mail(:to => destinations, :subject => notification.getName + (extended_data["subject"] ? " [#{extended_data["subject"]}]" : ""))
   end
 
 end

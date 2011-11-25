@@ -56,7 +56,7 @@ class NotificationsPool < ActiveRecord::Base
         raise _("No one subscribed to the notification %s") % notification.name
       end
  
-      Notifier.deliver_fire_notification(notification, extended_data, destinations)
+      Notifier.fire_notification(notification, extended_data, destinations).deliver
       pool_notification.sent = true
       pool_notification.save!
     }
