@@ -9,6 +9,10 @@ License: GPL
 URL: http://git.paraguayeduca.org/gitweb/projects/inventario.git
 Source0: %{name}-%{version}.tar.gz
 Requires: ruby(abi) = 1.8, crontabs, rubygems, rubygem-activesupport, rubygem-activeresource, rubygem-rails, mysql-server, htmldoc, httpd, ruby-mysql, ruby-json, rubygem-gruff, rubygem-spreadsheet-excel, rubygem-parseexcel, rubygem-gbarcode, logrotate, rubygem-gettext, rubygem-gettext_activerecord, rubygem-gettext_rails, rubygem-locale_rails, rubygem-mysql2
+
+# acts_as_audited gemspec needs this
+Requires: git
+
 BuildArch: noarch
 
 %description
@@ -64,9 +68,6 @@ rm -rf $RPM_BUILD_ROOT
 if [ ! -f /etc/httpd/conf.d/101-tracking.conf ] ; then
   cp /var/%{name}/extra/101-tracking.conf /etc/httpd/conf.d/101-tracking.conf.example
 fi
-
-# update Rails stuff
-cd /var/%{name}/ && rake rails:update
 
 # copy database config template
 cp /var/%{name}/config/database.yml.example /var/%{name}/config/database.yml

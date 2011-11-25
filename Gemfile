@@ -38,3 +38,4 @@ gem 'gbarcode'
 gem 'gruff'
 gem 'spreadsheet-excel'
 gem 'parseexcel'
+gem 'acts_as_audited', "2.0.0", :path => "vendor/gems/acts_as_audited-2.0.0"
