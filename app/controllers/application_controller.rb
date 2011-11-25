@@ -33,9 +33,9 @@
 
 class ApplicationController < ActionController::Base
 
-  # DEPRECATED: but still needed for audited_classes method (Plugin's bug).
-  #             It also requied to add acts_as_audited inside each model
-  audit Person, Place, Laptop
+  # FIXME: rails3 sets protect_from_forgery by default in new projects.
+  # We should set it too, but it seems incompatible with qooxdoo (or whatever
+  # component is responsible for sending POST data from the UI).
 
   cache_sweeper :object_sweeper
   before_init_gettext :default_locale

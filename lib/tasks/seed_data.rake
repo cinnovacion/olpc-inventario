@@ -5,11 +5,10 @@
 # For Paraguay Educa OLPC project 2009
 #
 
-def run_file(filepath)
+require 'lib/constraint_generator'
 
-  file = File.open(filepath, "r")
-  code = file.readlines.join
-  eval code
+def run_file(filepath)
+  require filepath
 end
 
 namespace :seed_data do

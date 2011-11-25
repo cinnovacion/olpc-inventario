@@ -26,7 +26,9 @@
 # E-mail Address:  (tincho_02@hotmail.com | mabente@paraguayeduca.org) 
 # 2009
 # # #
-                                                                         
+
+require 'lib/read_file'
+
 class LaptopsController < SearchController
   skip_filter :rpc_block, :only => [:requestBlackList, :reportStolenLaptops, :reportActivatedLaptops]
   attr_accessor :include_str

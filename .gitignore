@@ -1,0 +1,7 @@
+.bundle
+db/*.sqlite3
+log/*.log
+tmp/
+qooxdoo-sdk
+public/build
+*.swp

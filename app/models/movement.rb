@@ -26,7 +26,9 @@
 # E-mail Address:  (tincho_02@hotmail.com | mabente@paraguayeduca.org) 
 # 2009
 # # #
-                                                                       
+
+require 'lib/fecha'
+
 class Movement < ActiveRecord::Base
   belongs_to :person_responsible, :class_name => "Person", :foreign_key => :responsible_person_id
   belongs_to :source_person, :class_name => "Person", :foreign_key => :source_person_id 

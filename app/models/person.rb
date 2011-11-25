@@ -46,8 +46,6 @@ class Person < ActiveRecord::Base
   validates_presence_of :id_document, :message => _("Must have a document id number")
 
 
-  include DrillDown 
-
   SELECTION_VIEW = "selection"
   BARCODE_UPPERBOUND = 9999999999
 

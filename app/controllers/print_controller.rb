@@ -27,6 +27,8 @@
 # - the imprimir function could be called automatically by an 'after' hook
 #
 
+require 'lib/fecha'
+require 'lib/py_educa_graph'
 
 class PrintController < ApplicationController
 

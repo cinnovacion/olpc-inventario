@@ -20,7 +20,9 @@
 # E-mail Address: rgs@paraguayeduca.org
 # 2009
 # # #
-                                                                   
+
+require 'lib/fecha'
+
 class ShipmentsController < SearchController
 
   def search

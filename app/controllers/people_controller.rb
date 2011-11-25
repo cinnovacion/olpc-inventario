@@ -26,6 +26,8 @@
 # E-mail Address:  (tincho_02@hotmail.com | mabente@paraguayeduca.org) 
 # 2009
 # # #
+
+require 'lib/fecha'
                                                                           
 class PeopleController < SearchController
   skip_filter :rpc_block, :only => [ :show, :update, :requestStudents ]

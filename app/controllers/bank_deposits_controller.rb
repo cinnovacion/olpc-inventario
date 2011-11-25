@@ -21,6 +21,8 @@
 # Author: Martin Abente - mabente@paraguayeduca.org
 #
 
+require 'lib/fecha'
+
 class BankDepositsController < SearchController
   attr_accessor :include_str
 

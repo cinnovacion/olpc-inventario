@@ -8,8 +8,7 @@ Group:	Applications/Internet
 License: GPL	
 URL: http://git.paraguayeduca.org/gitweb/projects/inventario.git
 Source0: %{name}-%{version}.tar.gz
-BuildRoot: %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
-Requires: ruby(abi) = 1.8, crontabs, rubygems, rubygem-activesupport, rubygem-activeresource, rubygem-rails, mysql-server, htmldoc, httpd, ruby-mysql, ruby-json, rubygem-gruff, rubygem-spreadsheet-excel, rubygem-parseexcel, rubygem-gbarcode, logrotate, rubygem-gettext, rubygem-gettext_activerecord, rubygem-gettext_rails, rubygem-locale_rails
+Requires: ruby(abi) = 1.8, crontabs, rubygems, rubygem-activesupport, rubygem-activeresource, rubygem-rails, mysql-server, htmldoc, httpd, ruby-mysql, ruby-json, rubygem-gruff, rubygem-spreadsheet-excel, rubygem-parseexcel, rubygem-gbarcode, logrotate, rubygem-gettext, rubygem-gettext_activerecord, rubygem-gettext_rails, rubygem-locale_rails, rubygem-mysql2
 BuildArch: noarch
 
 %description
@@ -22,7 +21,6 @@ In order to use certain features (i.e.: monitoring) additional packages should b
 
 %build
 %install
-rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/var/%{name}
 mkdir -p $RPM_BUILD_ROOT/etc/cron.d
 cp extra/cron.d/* $RPM_BUILD_ROOT/etc/cron.d
@@ -102,7 +100,10 @@ fi
 /var/%{name}/app
 /var/%{name}/config
 %attr(-,apache,apache) /var/%{name}/config/environment.rb
+/var/%{name}/config.ru
 /var/%{name}/COPYING
+/var/%{name}/Gemfile
+/var/%{name}/README
 /var/%{name}/db
 /var/%{name}/doc
 /var/%{name}/gui

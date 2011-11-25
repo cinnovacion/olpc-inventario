@@ -20,7 +20,9 @@
 # E-mail Address:  (tincho_02@hotmail.com | mabente@paraguayeduca.org) 
 # 2009
 # # #
-                                                                      
+
+require 'lib/read_file'
+
 class DataImportController < ApplicationController
   around_filter :rpc_block
 

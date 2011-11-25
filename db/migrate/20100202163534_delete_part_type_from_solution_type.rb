@@ -1,3 +1,5 @@
+require 'lib/db_util'
+
 class DeletePartTypeFromSolutionType < ActiveRecord::Migration
   extend DbUtil
 

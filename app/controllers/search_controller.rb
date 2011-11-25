@@ -29,7 +29,7 @@
 # 2009
 # # #
 
-
+require 'lib/fecha'
 
 class SearchController < ApplicationController
   around_filter :rpc_block

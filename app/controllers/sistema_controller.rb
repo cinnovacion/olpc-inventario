@@ -27,6 +27,7 @@
 # 2009
 # # #
 
+require 'lib/py_educa_util'
                                                                           
 class SistemaController < ApplicationController
   around_filter :rpc_block
