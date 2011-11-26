@@ -90,10 +90,8 @@ class PartMovement < ActiveRecord::Base
   # User with data scope can only access objects that are related to his
   # performing places and sub-places.
   def self.setScope(places_ids)
-    find_include = [{:place => :ancestor_dependencies}]
-    find_conditions = ["place_dependencies.ancestor_id in (?)", places_ids]
-
-    scope = { :find => {:conditions => find_conditions, :include => find_include } }
+    scope = includes({:place => :ancestor_dependencies})
+    scope = scope.where("place_dependencies.ancestor_id in (?)", places_ids)
     PartMovement.with_scope(scope) do
       yield
     end

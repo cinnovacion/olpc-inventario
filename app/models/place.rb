@@ -93,17 +93,14 @@ class Place < ActiveRecord::Base
     return ret if not place
 
     places_ids = place.getDescendantsIds + [place_id] + place.getAncestorsIds
+    people_ids = Perform.find_all_by_place_id(places_ids).collect(&:person_id)
 
-    cond_v = ["place_id in (?)", places_ids]
-    people_ids = Perform.find(:all, :conditions => cond_v).collect(&:person_id)
+    cond_v = "serial_number is not NULL and serial_number != \"\""
+    cond_v += " and uuid is not NULL and uuid != \"\""
+    cond_v += " and status_id is not NULL and statuses.internal_tag = \"activated\""
+    cond_v += " and owner_id in (?)"
 
-    cond_v = ["serial_number is not NULL and serial_number != \"\""]
-    cond_v[0] += " and uuid is not NULL and uuid != \"\""
-    cond_v[0] += " and status_id is not NULL and statuses.internal_tag = \"activated\""
-    cond_v[0] += " and owner_id in (?)"
-    cond_v.push(people_ids)
-
-    Laptop.find(:all, :conditions => cond_v, :include => [:status]).each { |laptop|
+    Laptop.where(cond_v, people_ids).includes(:status).each { |laptop|
       ret.push({ :serial_number => laptop.serial_number, :uuid => laptop.uuid })
     }
 
@@ -187,9 +184,13 @@ class Place < ActiveRecord::Base
       end
 
       if self.update_attributes(attribs)
-        cond_v = ["nodes.place_id = ?  and nodes.id not in (?)", self.id, nodes.map {|n| n["id"]} ]
-        deleted_nodes = Node.find(:all, :conditions => cond_v)
-        Node.destroy(deleted_nodes)
+        destroy_nodes = Node.where(:place_id => self.id)
+        if not nodes.empty?
+          destroy_nodes = destroy_nodes.where("nodes.id not in (?)", nodes.map {|n| n["id"]})
+        end
+        if destroy_nodes.any?
+          Node.destroy(destroy_nodes)
+        end
         Node.doRegistering(nodes, self.id)
       end
     end
@@ -197,7 +198,7 @@ class Place < ActiveRecord::Base
 
   def self.unregister(places_ids, unregister)
 
-  to_be_destroy_places = Place.find(:all, :conditions => ["places.id in (?)", places_ids])
+  to_be_destroy_places = Place.find_all_by_id(places_ids)
   to_be_destroy_places.each { |place|
     raise _("No sufficient level of access!") if !(unregister.place.owns(place))
   }
@@ -285,8 +286,7 @@ class Place < ActiveRecord::Base
   end
 
   def getAncestorsPlaces
-    cond = ["places.id in (?)", self.getAncestorsIds]
-    Place.find(:all, :conditions => cond)
+    Place.where(:id => self.getAncestorsIds)
   end
 
   def addAncestorsIds(new_ancestors_ids)
@@ -317,8 +317,7 @@ class Place < ActiveRecord::Base
   end
 
   def getDescendantsPlaces
-    cond = ["id in (?)", self.getDescendantsIds]
-    Place.find(:all, :conditions => cond)
+    Place.where("id in (?)", self.getDescendantsIds)
   end
 
   def addDescendantsIds(new_descendants_ids)
@@ -343,8 +342,10 @@ class Place < ActiveRecord::Base
   def getPartDistribution()
     ret = Hash.new
     ret[:place_name] = self.name
-    cnt = Perform.count('laptops.id', :joins => 'LEFT JOIN laptops ON (performs.person_id = laptops.owner_id)', :conditions => "place_id = #{self.id}")
-    cnt_assigned = Perform.count('laptops.id', :joins => 'LEFT JOIN laptops ON (performs.person_id = laptops.assignee_id)', :conditions => "place_id = #{self.id}")
+    performs = Perform.where(:place_id => self.id)
+
+    cnt = performs.joins('LEFT JOIN laptops ON (performs.person_id = laptops.owner_id)').count('laptops.id')
+    cnt_assigned = performs.joins('LEFT JOIN laptops ON (performs.person_id = laptops.assignee_id)').count('laptops.id')
     ret[:count] = cnt
     ret[:count_assigned] = cnt_assigned
     ret[:childs] = Array.new
@@ -476,8 +477,11 @@ class Place < ActiveRecord::Base
   #
 
   def getMapNodes(node_type_ids = [])
-    cond = node_type_ids != [] ? ["nodes.node_type_id in (?)", node_type_ids] : []
-    self.nodes.find(:all, :conditions => cond).map { |node| 
+    nodes = self.nodes
+    if node_type_ids != []
+      nodes = nodes.where(:node_type_id => node_type_ids)
+    end
+    nodes.map { |node| 
       node.nodefize
     }
   end
@@ -538,31 +542,18 @@ class Place < ActiveRecord::Base
   # User with data scope can only access objects that are related to his
   # performing places and sub-places.
   def self.setScope(places_ids)
-
-    find_include = [:ancestor_dependencies]
-    find_conditions = ["place_dependencies.ancestor_id in (?)", places_ids]
-
-    scope = { :find => {:conditions => find_conditions, :include => find_include } }
+    scope = includes(:ancestor_dependencies)
+    scope = scope.where("place_dependencies.ancestor_id in (?)", places_ids)
     Place.with_scope(scope) do
       yield
     end
-
   end
 
-  def self.roots4(current_user, xCond = nil, xInc = nil)
-
+  def self.roots4(query, current_user)
     person = current_user.person
-
-    inc  = xInc ? xInc.dup : []
-    cond = xCond ? xCond.dup : [""]
-    cond[0] += " and " if xCond
-
-    inc.push(:performs)
-    cond[0] += "performs.person_id = ? and performs.profile_id = ?"
-    cond.push(person.id)
-    cond.push(person.profile.id)
-
-    Place.find(:all, :conditions => cond, :include => inc)
+    query = query.includes(:performs)
+    query = query.where('performs.person_id' => person.id, 'performs.profile_id' => person.profile.id)
+    query
   end
 
   ###
@@ -617,25 +608,20 @@ class Place < ActiveRecord::Base
     ret
   end
 
-  def getProblemReports(which = :all) 
-    ret = 0
-    cond = ["problem_reports.place_id in (?)", self.getDescendantsIds.push(self.id)]
+  def getProblemReports(which = nil) 
+    ret = ProblemReport.where(:place_id => self.getDescendantsIds.push(self.id))
     
-    if which != :all
-        bool = (which != :open)
-        cond[0]+= " and problem_reports.solved = ?"
-        cond.push(bool)
+    if which:
+        ret = ret.where(:solved => (which != :open))
     end
 
-    ret = ProblemReport.find(:all, :conditions => cond).length
-
-    ret
+    ret.length
   end
 
   def getLaptopSerials
-   inc = [:owner => :performs]
-   cond = ["performs.place_id in (?)", self.getDescendantsIds.push(self.id)]
-   Laptop.find(:all, :conditions => cond, :include => inc).map { |laptop| laptop.getSerialNumber }
+   laptops = Laptop.includes(:owner => :performs)
+   laptops = laptops.where("performs.place_id in (?)", self.getDescendantsIds.push(self.id))
+   laptops.map { |laptop| laptop.getSerialNumber }
   end
 
   ###
@@ -671,11 +657,9 @@ class Place < ActiveRecord::Base
   end
 
   def performing_people
-  
-    inc = [:performs => :place]
+    people = Person.includes(:performs => :place)
     places_ids = self.getDescendantsIds.push(self.id)
-    cond = ["places.id  in (?)", places_ids]
-    Person.find(:all, :conditions => cond, :include => inc)
+	people.where(:id => places_ids)
   end
 
   ###

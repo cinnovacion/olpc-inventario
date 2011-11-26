@@ -119,8 +119,7 @@ class PlacesController < SearchController
 
   def schools
     prune = [PlaceType.find_by_internal_tag("school").id]
-    cond = ["place_id is null or place_id not in (?)", Place.all.collect(&:id)]
-    places = Place.find(:all, :conditions => cond)
+    places = Place.where("place_id is null or place_id not in (?)", Place.all.collect(&:id))
     @output[:nodes] = places.map { |root|
       root.genTreeElements(prune)
     }
@@ -229,7 +228,7 @@ class PlacesController < SearchController
     subElementTags = JSON.parse(params[:subElementTags])
 
     if id.to_i == -1
-      places = Place.roots4(current_user)
+      places = Place.roots4(Place, current_user)
     else
       parent = Place.find_by_id(id)
       if parent.nil?
@@ -242,7 +241,7 @@ class PlacesController < SearchController
       else
         order = nil
       end
-      places = Place.find_all_by_place_id(id, :order => order)
+      places = Place.order(order).find_all_by_place_id(id)
     end
 
     @output[:elements] = places.map { |place|
@@ -252,20 +251,21 @@ class PlacesController < SearchController
     if subElementTags && subElementTags != []
 
       @output[:sub_elements] = Array.new
-      inc = [:place, :person, :profile]
+      performs = Perform.includes(:place, :person, :profile)
+      performs = performs.where("places.id = ?", id)
+      select_profiles = []
 
       if subElementTags.include?("student")
-
-          cond = ["places.id = ? and profiles.internal_tag = ?", id, "student"]
-          @output[:sub_elements] += Perform.find(:all, :conditions => cond, :include => inc).map { |perform|
-            { :id => perform.person_id, :text => perform.person.getFullName() }
-          }
+          select_profiles.push("student")
       end
 
       if subElementTags.include?("teacher")
+          select_profiles.push("teacher")
+      end
 
-          cond = ["places.id = ? and profiles.internal_tag = ?", id, "teacher"]
-          @output[:sub_elements] += Perform.find(:all, :conditions => cond, :include => inc).map { |perform|
+      if select_profiles.any?
+          performs = performs.where("profiles.internal_tag" => select_profiles)
+          @output[:sub_elements] += performs.map { |perform|
             { :id => perform.person_id, :text => perform.person.getFullName() }
           }
       end
@@ -280,14 +280,16 @@ class PlacesController < SearchController
   def schools_leases
 
     hostnames = params[:hostnames]
-    include_v = [:place]
-    cond_v = (hostnames and hostnames != []) ? ["server_hostname in (?)", hostnames] : [""] 
+    schools = SchoolInfo.includes(:place)
+    if hostnames and hostnames != []
+      schools = schools.where(:server_hostname => hostnames)
+    end
 
     leases = Array.new
     t = Time.now
     now = Time.local(t.year, t.month, t.day, 6, 0) # leases should expire at 6am
 
-    SchoolInfo.find(:all, :include => include_v, :conditions => cond_v).each { |info|
+    schools.each { |info|
 
       place = info.place
       duration_secs = info.getDuration
@@ -308,9 +310,8 @@ class PlacesController < SearchController
 
     ret = { :list => [] }
 
-    inc =  [:place_type]
-    cond = ["place_types.internal_tag = ?","school"]
-    ret[:list] = Place.find(:all, :conditions => cond, :include => inc).map { |school|
+    places = Place.includes(:place_type).where("place_types.internal_tag = 'school'")
+    ret[:list] = places.map { |school|
       h = Hash.new
       h[:id] = school.id
       h[:text] = school.getName
@@ -328,9 +329,9 @@ class PlacesController < SearchController
       school = Place.find_by_id(school_place_id)
       if school
         sub_places_ids = school.getDescendantsIds
-        inc = [:place_type]
-        cond = ["places.place_id in (?) and place_types.internal_tag = ?",sub_places_ids, "section"]
-        ret[:list] = Place.find(:all, :conditions => cond, :include => inc).map { |section|
+        places = Place.includes(:place_type).where(:place_id => sub_places_ids)
+        places = places.where("place_types.internal_tag = 'section'")
+        ret[:list] = places.map { |section|
           h = Hash.new
           h[:id] = section.id
           h[:text] = section.getName

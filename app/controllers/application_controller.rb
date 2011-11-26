@@ -60,9 +60,8 @@ class ApplicationController < ActionController::Base
 
     # Finding current user's performing places
     person = current_user.person
-    inc = [:performs]
-    cond = [" performs.person_id = ? and performs.profile_id = ?", person.id, person.profile.id ]
-    places_objs = Place.find(:all, :conditions => cond, :include => inc)
+    places_objs = Place.includes(:performs)
+    places_objs = places_objs.where("performs.person_id = ? and performs.profile_id = ?", person.id, person.profile.id)
     places_ids = places_objs.collect(&:id)
 
     #File.open("/tmp/debug.txt", "w") { |f| f.write('hola'); }
@@ -117,9 +116,9 @@ class ApplicationController < ActionController::Base
 
     return true if user.hasProfiles?(["root","developer"])
 
-    inc = [:person => {:performs => {:profile => {:permissions => :controller}}}]
-    cond = ["users.person_id = ? and permissions.name = ? and controllers.name = ?", user.person.id, method_name, controller_name]
-    return true if User.find(:first, :conditions => cond, :include => inc)
+    user_query = User.includes(:person => {:performs => {:profile => {:permissions => :controller}}})
+    user_query = user_query.where("users.person_id = ? and permissions.name = ? and controllers.name = ?", user.person.id, method_name, controller_name)
+    return true if user_query.first
     false
   end
 
@@ -228,7 +227,7 @@ class ApplicationController < ActionController::Base
   # buildSelectHash(): retorna una vector de hashes listo p/ que se genere un combobox
   def buildSelectHash(pClassName,pSelectedId,pText)
     ret = []
-    for x in pClassName.find(:all)
+    for x in pClassName.all
       v = x.id
       t = eval("x." + pText.to_s)
       s = v.to_i == pSelectedId.to_i ? true : false
@@ -331,10 +330,9 @@ class ApplicationController < ActionController::Base
   #
   def buildCheckHash(pClassName,method,check_included=false,included_list=[], id_subset=nil)
     list = []
-    find_options = {:order => "id"}
-    find_options[:conditions] = ["id in (?)", id_subset] if id_subset
-
-    pClassName.find(:all, find_options).each  { |o|
+    results = pClassName.order("id")
+    results = results.where(:id => id_subset) if id_subset
+    results.each  { |o|
       h = Hash.new
       h[:label] =  o.send(method)
       h[:cb_name] = o.id
@@ -352,12 +350,11 @@ class ApplicationController < ActionController::Base
     cb_entries = []
     cb_entries.push(comboBoxifize()) if includeBlank
 
-    objSet = modelClass.roots4(current_user)
+    place_query = Place.includes(pruneInc).where(pruneCond)
 
+    objSet = modelClass.roots4(Place, current_user)
     objSet.each { |classSubObj|
-
-      if modelClass.roots4(current_user, pruneCond, pruneInc).include?(classSubObj)
-
+      if modelClass.roots4(place_query, current_user).include?(classSubObj)
         cb_entries.push(comboBoxifize(classSubObj, targetId, classSubObj.send(infoMethod)))
       end
 
@@ -376,7 +373,7 @@ class ApplicationController < ActionController::Base
 
     objSet.each { |classSubObj|
 
-      if objSet.find(:all, :conditions => pruneCond, :include => pruneInc).include?(classSubObj)
+      if objSet.where(pruneCond).includes(pruneInc).include?(classSubObj)
         cb_entries.push(comboBoxifize(classSubObj, targetId, next_concatInf+':'+classSubObj.send(infoMethod)))
       end
 

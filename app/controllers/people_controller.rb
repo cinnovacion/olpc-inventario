@@ -197,7 +197,7 @@ class PeopleController < SearchController
     from_place = Place.find_by_id(from_place_id)
 
     Perform.transaction do
-      Perform.find(:all, :conditions => ["place_id = ?", from_place_id], :include => :person).each { |perform|
+      Perform.where(:place_id => from_place_id).includes(:person).each { |perform|
         if !Perform.alreadyExists?(perform.person_id, to_place_id, perform.profile_id)
           Perform.create!({:person_id => perform.person_id, :place_id => to_place_id, :profile_id => perform.profile_id})
         end
@@ -237,10 +237,9 @@ class PeopleController < SearchController
    place_id =  params["id"]
 
    if place_id
-     inc = [:performs => :profile]
-     cond = ["performs.place_id = ? and profiles.internal_tag = ?", place_id,"student"]
-     ret[:list] = Person.find(:all, :conditions => cond, :include => inc).map { |student|
-
+     people = Person.includes(:performs => :profile)
+     people = people.where("performs.place_id = ? and profiles.internal_tag = 'student'", place_id)
+     ret[:list] = people.map { |student|
        h = Hash.new
        h[:id] = student.id
        h[:text] = student.getFullName
@@ -261,15 +260,17 @@ class PeopleController < SearchController
 
     student_profile_id = Profile.find_by_internal_tag("student").id
 
+    performs = Perform
+
     if assignation_mode
-      include_v = [:person => :laptops_assigned]
+      performs = performs.includes(:person => :laptops_assigned)
     else
-      include_v = [:person => :laptops]
+      performs = performs.includes(:person => :laptops)
     end
-    cond_v = ["place_id = ? and profile_id = ?", place_id, student_profile_id]
+    performs = performs.where(:place_id => place_id, :profile_id => student_profile_id)
 
     amount = 0
-    Perform.find(:all, :conditions => cond_v, :include => include_v).each { |perform|
+    performs.each { |perform|
       person = perform.person
       if assignation_mode
         laptops = person.laptops_assigned
@@ -288,11 +289,11 @@ class PeopleController < SearchController
   # used by DynamicDeliveryForm
   def laptopsNotInHands
     place_id = params[:place_id].to_i
-    include_v = [{ :person => :laptops_assigned } , { :person => :laptops }]
-    cond_v = ["place_id = ?", place_id]
+    performs = Perform.includes(:person => :laptops_assigned, :person => :laptops)
+    performs = performs.where(:place_id => place_id).order("people.lastname")
     result = Array.new()
 
-    Perform.find(:all, :conditions => cond_v, :include => include_v, :order => "people.lastname").each { |perform|
+    performs.each { |perform|
       person = perform.person
       laptops_assigned = person.laptops_assigned.map { |l| l.serial_number }
       laptops = person.laptops.map { |l| l.serial_number }

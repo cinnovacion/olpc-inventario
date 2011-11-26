@@ -20,8 +20,7 @@ class AssignmentsController < SearchController
   skip_filter :rpc_block, :only => [ :show, :create, :update, :destroy, :index ]
 
   def index
-     all = Assignment.find(:all)
-     render :xml => all.to_xml
+     render :xml => Assignment.all.to_xml
   end
  
   def show

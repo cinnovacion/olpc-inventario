@@ -87,7 +87,7 @@ class User < ActiveRecord::Base
   # Delete user.  
   #
   def self.unregister(users_ids, unregister)
-    to_be_destroy_users = User.find(:all, :conditions => ["users.id in (?)", users_ids])
+    to_be_destroy_users = User.find_all_by_id(user_ids)
     to_be_destroy_users.each { |user|
        raise _("You do not have the sufficient level of access") if !(unregister.owns(user.person))
     }
@@ -138,7 +138,7 @@ class User < ActiveRecord::Base
   # Again, we presume the password comes hashed (with SHA1) from the client side. 
   #
   def self.login(name,password)
-    find(:first, :conditions => ["usuario = ? and clave = ?", name, password])
+    User.where(:usuario => name, :clave => password).first
   end
 
   def authenticate
@@ -146,9 +146,9 @@ class User < ActiveRecord::Base
   end
 
   def hasProfiles?(profiles_tags)
-    inc = [:performs => :profile]
-    cond = ["performs.person_id =? and profiles.internal_tag in (?)", self.person.id, profiles_tags]
-    return true if Profile.find(:first, :conditions => cond, :include => inc)
+    profiles = Profile.includes(:performs => :profile)
+    profiles = profiles.where("performs.person_id = ? and profiles.internal_tag in (?)", self.person.id, profiles_tags)
+    return true if profiles.first
     false
   end
 
@@ -157,10 +157,8 @@ class User < ActiveRecord::Base
   # User with data scope can only access objects that are related to his
   # performing places and sub-places.
   def self.setScope(places_ids)
-    find_include = [:person => {:performs => {:place => :ancestor_dependencies}}]
-    find_conditions = ["place_dependencies.ancestor_id in (?)", places_ids]
-
-    scope = { :find => {:conditions => find_conditions, :include => find_include } }
+    scope = includes(:person => {:performs => {:place => :ancestor_dependencies}})
+    scope = scope.where("place_dependencies.ancestor_id in (?)", places_ids)
     User.with_scope(scope) do
       yield
     end

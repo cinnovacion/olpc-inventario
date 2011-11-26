@@ -98,12 +98,13 @@ class MovementDetail < ActiveRecord::Base
     device = self.laptop
     device_class_str = device.class.to_s.downcase
 
-    inc =  [{:movement => :movement_type}]
-    cond = ["movement_details.returned = ? and movement_types.internal_tag = ? and movement_details.#{device_class_str}_id = ?", false, "prestamo", device.id]
-    movement_detail = MovementDetail.find(:first, :conditions => cond, :include => inc, :order => "movements.id DESC")
+    details = MovementDetail.includes({:movement => :movement_type})
+    details = details.where(:returned => false)
+    details = details.where('movement_types.internal_tag' => 'prestamo')
+    details = details.where("movement_details.#{device_class_str}_id = ?", device.id)
 
+    movement_detail = details.order("movements.id DESC").first
     if movement_detail && !movement_detail.returned
-
       movement_detail.returned = true
       movement_detail.save!
     end
@@ -127,14 +128,11 @@ class MovementDetail < ActiveRecord::Base
   # User with data scope can only access objects that are related to his
   # performing places and sub-places.
   def self.setScope(places_ids)
-    find_include = [:laptop => {:owner => {:performs => {:place => :ancestor_dependencies}}}]
-    find_conditions = ["place_dependencies.ancestor_id in (?)", places_ids]
-
-    scope = { :find => {:conditions => find_conditions, :include => find_include } }
+    scope = includes(:laptop => {:owner => {:performs => {:place => :ancestor_dependencies}}})
+    scope = scope.where("place_dependencies.ancestor_id in (?)", places_ids)
     MovementDetail.with_scope(scope) do
       yield
     end
-
   end
 
 end

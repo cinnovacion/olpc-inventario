@@ -264,10 +264,8 @@ class Movement < ActiveRecord::Base
   # that are physically within his places. (This matches the behaviour of
   # the assignments model, where there is no other viable option)
   def self.setScope(places_ids)
-    find_include = [:movement_details => {:laptop => {:owner => {:performs => {:place => :ancestor_dependencies}}}}]
-    find_conditions = ["place_dependencies.ancestor_id in (?)", places_ids]
-
-    scope = { :find => {:conditions => find_conditions, :include => find_include } }
+    scope = includes(:movement_details => {:laptop => {:owner => {:performs => {:place => :ancestor_dependencies}}}})
+    scope = scope.where("place_dependencies.ancestor_id in (?)", places_ids)
     Movement.with_scope(scope) do
       yield
     end

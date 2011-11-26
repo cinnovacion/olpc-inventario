@@ -107,7 +107,7 @@ class Profile < ActiveRecord::Base
 
   def self.unregister(profiles_ids, unregister)
 
-    to_destroy_profiles = Profile.find(:all, :conditions => ["profiles.id in (?)", profiles_ids ])
+    to_destroy_profiles = Profile.find_all_by_id(profiles_ids)
     to_destroy_profiles.each { |profile|
       raise _("You do not have the sufficient level of access") if !(unregister.profile.owns(profile))
     }
@@ -115,7 +115,7 @@ class Profile < ActiveRecord::Base
   end
 
   def self.ids()
-    ids = Profile.find(:all).map { |profile|
+    ids = Profile.all.map { |profile|
       profile.id
     }
   end
@@ -124,8 +124,7 @@ class Profile < ActiveRecord::Base
   #  Checks if the profiles determined by the internal_tag its in the ids list provided
   #
   def self.tagInList?(profiles_ids, profile_tag)
-    cond = ["profiles.id in (?) and profiles.internal_tag = ?", profiles_ids, profile_tag]
-    Profile.find(:first, :conditions => cond)
+    Profile.where(:id => profiles_ids, :internal_tag => profile_tag).first
   end
 
   ###

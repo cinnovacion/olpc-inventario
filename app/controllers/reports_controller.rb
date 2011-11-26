@@ -357,14 +357,6 @@ class ReportsController < SearchController
     @output["print_method"] = "deposits"
   end
   
-
-  def spare_parts_registry
-    @output["widgets"] = Array.new
-    @output["widgets"].push(dateRange)
-    @output["widgets"].push(hierarchy(""))
-    @output["print_method"] = "spare_parts_registry"
-  end
-
   def problems_time_distribution
     @output["widgets"] = Array.new
     since = Fecha.usDate(Date.today.beginning_of_year.to_s)

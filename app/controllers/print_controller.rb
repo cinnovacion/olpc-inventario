@@ -83,15 +83,13 @@ class PrintController < ApplicationController
 
   def stock_status_report
     print_params = JSON.parse(params[:print_params]).reverse
-    cond = [""]
-    inc = [:place, :part_type, :part_movement_type]
+    movements = PartMovement.includes(:place, :part_type, :part_movement_type)
 
     root_place_id = print_params.pop.to_i
     if root_place_id != -1
-
       root_place = Place.find_by_id(root_place_id)
       places_ids = root_place.getDescendantsIds.push(root_place_id)
-      buildComboBoxQuery(cond, places_ids, "part_movements.place_id")     
+      movements = buildComboBoxQuery(movements, places_ids, "place_id") 
     end
 
     stock_status = {}
@@ -100,8 +98,7 @@ class PrintController < ApplicationController
       stock_status[part_type] = { true => 0, false => 0 }
     }
 
-    PartMovement.find(:all, :conditions => cond, :include => inc).each { |part_movement|
-
+    movements.each { |part_movement|
       stock_status[part_movement.part_type][part_movement.part_movement_type.direction] += part_movement.amount
     }
 
@@ -119,14 +116,13 @@ class PrintController < ApplicationController
 
   def audit_report
     print_params = JSON.parse(params[:print_params]).reverse
-    cond = [""]
+    audits = Audit.order("created_at ASC")
 
     timeRange = print_params.pop
-    buildDateQuery(cond, timeRange, "audits.created_at")
+    audits = buildDateQuery(audits, timeRange, "created_at")
 
     auditable_type = print_params.pop
-    cond[0] += " and audits.auditable_type = ?"
-    cond.push(auditable_type)
+    audits = audits.where(:auditable_type => auditable_type)
 
     @titulo = _("Audit at %s") % auditable_type
     @columnas = [_("Date"), _("User"), _("Id"), _("Column"), _("Before"), _("After")]
@@ -134,7 +130,7 @@ class PrintController < ApplicationController
     @fecha_hasta =  timeRange["date_to"]
     @datos = []
 
-    Audit.find(:all, :conditions => cond, :order => "audits.created_at ASC").each { |audit_row|
+    audits.each { |audit_row|
       username = audit_row.user ? audit_row.user.usuario : "System"
       date = audit_row.created_at.to_s
       id = audit_row.auditable_id
@@ -158,27 +154,25 @@ class PrintController < ApplicationController
 
   def average_solved_time
 
-    print_params = JSON.parse(params[:print_params]).reverse    
-    inc = []
-    cond = ["problem_reports.solved_at is not NULL"]
+    print_params = JSON.parse(params[:print_params]).reverse
+    reports = ProblemReport.where("problem_reports.solved_at is not NULL")
 
     timeRange = print_params.pop
-    buildDateQuery(cond, timeRange, "problem_reports.created_at")  
+    reports = buildDateQuery(reports, timeRange, "created_at")  
 
     root_place_id = print_params.pop.to_i
     if root_place_id != -1
 
       root_place = Place.find_by_id(root_place_id)
       places_ids = root_place.getDescendantsIds.push(root_place_id)
-      buildComboBoxQuery(cond, places_ids, "problem_reports.place_id")     
+      reports = buildComboBoxQuery(reports, places_ids, "place_id")
     end
 
     time_min = false
     time_max = false
     time_acum = 0
     time_count = 0
-    ProblemReport.find(:all, :conditions => cond, :include => inc).each { |report|
-
+    reports.each { |report|
       time_diff = (report.solved_at.to_date - report.created_at).days.to_i
       time_diff = time_diff > 0 ? (time_diff/3600/24)+1 : 1
       time_min = time_diff if not time_min or time_diff < time_min
@@ -203,23 +197,21 @@ class PrintController < ApplicationController
   def laptops_problems_recurrence
 
     print_params = JSON.parse(params[:print_params]).reverse    
-    inc = [:laptops => :problem_reports]
-    cond = [""]
+    people = Person.includes(:laptops => :problem_reports)
 
     timeRange = print_params.pop
-    buildDateQuery(cond, timeRange, "problem_reports.created_at")  
+    people = buildDateQuery(people, timeRange, "problem_reports.created_at")
 
     root_place_id = print_params.pop.to_i
     if root_place_id != -1
-
       root_place = Place.find_by_id(root_place_id)
       places_ids = root_place.getDescendantsIds.push(root_place_id)
-      buildComboBoxQuery(cond, places_ids, "problem_reports.place_id")     
+      people = buildComboBoxQuery(people, places_ids, "problem_reports.place_id")
     end
 
     results = [0,0,0,0,0]
     results.each_index { |index|
-      Person.find(:all, :conditions => cond, :include => inc).each { |person|
+      people.each { |person|
         person.laptops.each { |laptop|
           if laptop.problem_reports.length > index
             results[index]+=1
@@ -246,28 +238,24 @@ class PrintController < ApplicationController
   end
 
   def is_hardware_dist
-    print_params = JSON.parse(params[:print_params]).reverse    
-    inc = [:problem_type]
-    cond = [""]
+    print_params = JSON.parse(params[:print_params]).reverse
+    reports = ProblemReport.includes(:problem_type)
 
     timeRange = print_params.pop
-    buildDateQuery(cond, timeRange, "problem_reports.created_at")  
+    reports = buildDateQuery(reports, timeRange, "created_at")
 
     root_place_id = print_params.pop.to_i
     if root_place_id != -1
-
       root_place = Place.find_by_id(root_place_id)
       places_ids = root_place.getDescendantsIds.push(root_place_id)
-      buildComboBoxQuery(cond, places_ids, "problem_reports.place_id")     
+      reports = buildComboBoxQuery(reports, places_ids, "place_id")
     end
 
 		solved = print_params.pop
-		cond[0] += " and problem_reports.solved in (?)"
-		cond.push(solved)
+    reports = reports.where(:solved => solved)
 
     results = { true => 0, false => 0 }
-    ProblemReport.find(:all, :conditions => cond, :include => inc).each { |report|
-
+    reports.each { |report|
       problem_class = report.problem_type.is_hardware
       results[problem_class] += 1
     }
@@ -295,28 +283,26 @@ class PrintController < ApplicationController
   def problems_time_distribution
 
     print_params = JSON.parse(params[:print_params]).reverse    
-    inc = [:problem_type, {:laptop => :model}]
-    cond = [""]
+    reports = ProblemReport.includes(:problem_type, {:laptop => :model})
 
     timeRange = print_params.pop
-    buildDateQuery(cond, timeRange, "problem_reports.created_at")   
+    reports = buildDateQuery(reports, timeRange, "created_at")
 
     window_size = print_params.pop
 
     root_place_id = print_params.pop.to_i
     if root_place_id != -1
-
       root_place = Place.find_by_id(root_place_id)
       places_ids = root_place.getDescendantsIds.push(root_place_id)
-      buildComboBoxQuery(cond, places_ids, "problem_reports.place_id")     
+      reports = buildComboBoxQuery(reports, places_ids, "place_id")
     end
 
     problem_types_ids = print_params.pop
-    buildComboBoxQuery(cond, problem_types_ids, "problem_types.id")
+    reports = buildComboBoxQuery(reports, problem_types_ids, "id")
 
     laptops_models_ids = print_params.pop
-    buildComboBoxQuery(cond, laptops_models_ids, "models.id")
-    laptops_models = Model.find(:all, :conditions => ["models.id in (?)", laptops_models_ids])
+    reports = buildComboBoxQuery(reports, laptops_models_ids, "models.id")
+    laptops_models = Model.where(:id => laptops_models_ids)
 
     results = Hash.new
 
@@ -324,19 +310,16 @@ class PrintController < ApplicationController
     since = timeRange["date_since"].to_date.send(group_method)
     to = timeRange["date_to"].to_date.send(group_method)
 
-    ProblemType.find(:all, :conditions => ["problem_types.id in (?)", problem_types_ids]).each { |problem_type|
-
+    ProblemType.where(:id => problem_types_ids).each { |problem_type|
       results[problem_type] = Hash.new
       aux_window = since
       while aux_window <= to
         results[problem_type][aux_window] = 0
         aux_window += 1.send(window_size)
       end
-
     }
    
-    ProblemReport.find(:all, :conditions => cond, :include => inc).each { |problem_report|
-   
+    reports.each { |problem_report|
       problem_type = problem_report.problem_type
       time_window = problem_report.created_at.send(group_method)
 
@@ -364,19 +347,15 @@ class PrintController < ApplicationController
     graph_labels = Hash.new
     graph_data = Array.new
 
-    inc = [{:owner => :performs}, :model]
-    cond = ["laptops.created_at <= ? and performs.place_id in (?) and models.id in (?)"]
-    cond += [nil, places_ids, laptops_models_ids]
+    laptop_query = Laptop.includes({:owner => :performs}, :model)
+    laptop_query = laptop_query.where("performs.place_id in (?) and models.id in (?)", places_ids, laptops_models_ids)
 
     x_problem_type = results.keys.first
     tabla_tornasol = results[x_problem_type].keys.sort.map { |time_window| 
- 
-      cond[1] = time_window.send("end_of_#{window_size}")
-      Laptop.count(:conditions => cond, :include => inc)
+      laptop_query.where("laptops.created_at <= ?", time_window.send("end_of_#{window_size}")).count
     }
 
     results.keys.each { |problem_type| 
-
       @datos.push([problem_type.getName,"", "", "", "", ""])
       values = []
       sub_total = 0
@@ -416,66 +395,22 @@ class PrintController < ApplicationController
     imprimir("problems_time_distribution", "print/" + "report")
   end
 
-  def spare_parts_registry
-
-    print_params = JSON.parse(params[:print_params]).reverse
-
-    inc = [:person, :place, :part_type]
-    cond = [""]
-
-    timeRange = print_params.pop
-    buildDateQuery(cond, timeRange, "spare_parts_registries.created_at")
-
-    root_place_id = print_params.pop.to_i
-    root_place = Place.find_by_id(root_place_id)
- 
-    if root_place
-
-      places_ids = root_place.getDescendantsIds.push(root_place_id)
-      buildComboBoxQuery(cond, places_ids, "spare_parts_registries.place_id")
-    end
-
-    @titulo = _("Incoming repair parts")
-    @titulo += "  en #{root_place.getName}" if root_place
-    @columnas = [_("Date"), _("Location"), _("Registered by"), _("Assigned to"), _("Device"), _("Part"), _("Quantity")]
-    @datos = []
-
-    SparePartsRegistry.find(:all, :conditions => cond, :include => inc, :order => "spare_parts_registries.created_at ASC").each { |registry|
-
-      @datos.push([
-
-        registry.created_at.to_s,
-        registry.place.getName,
-        registry.person.getFullName,
-        registry.owner.getFullName,
-        registry.device_serial,
-        registry.part_type.getDescription,
-        registry.amount
-      ])
-    }
-
-    imprimir("spare_parts_registry", "print/" + "report")
-  end
-
   def deposits
 
     print_params = JSON.parse(params[:print_params]).reverse
-
-    inc = [{:problem_solution => :problem_report}]
-    cond = [""]
+    deposits = BankDeposit.includes({:problem_solution => :problem_report})
 
     timeRange = print_params.pop
-    buildDateQuery(cond, timeRange, "bank_deposits.deposited_at")
+    deposits = buildDateQuery(deposits, timeRange, "bank_deposits.deposited_at")
     
     root_place_id = print_params.pop.to_i
     root_place =  Place.find_by_id(root_place_id)
     places_ids = root_place.getDescendantsIds.push(root_place_id)
 
-    buildComboBoxQuery(cond, places_ids, "problem_reports.place_id")
+    deposits = buildComboBoxQuery(deposits, places_ids, "problem_reports.place_id")
 
     results = Hash.new
-    BankDeposit.find(:all, :conditions => cond, :include => inc, :order => "bank_deposits.deposited_at ASC").each { |bank_deposit|
-
+    deposits.order("bank_deposits.deposited_at ASC").each { |bank_deposit|
       results[bank_deposit.deposit] = Array.new if !results[bank_deposit.deposit]
       row = [
               bank_deposit.amount,
@@ -506,29 +441,25 @@ class PrintController < ApplicationController
   def problems_and_deposits
 
     print_params = JSON.parse(params[:print_params]).reverse
-
-    inc = [{:problem_solution => [:solution_type, :bank_deposits]}, :problem_type, :owner]
-    cond = [""]
+    reports = ProblemReport.includes({:problem_solution => [:solution_type, :bank_deposits]}, :problem_type, :owner)
 
     timeRange = print_params.pop
-    buildDateQuery(cond, timeRange, "problem_reports.created_at")
+    reports = buildDateQuery(reports, timeRange, "problem_reports.created_at")
     
     root_place_id = print_params.pop.to_i
     root_place =  Place.find_by_id(root_place_id)
     places_ids = root_place.getDescendantsIds.push(root_place_id)
 
-    buildComboBoxQuery(cond, places_ids, "problem_reports.place_id")
+    reports = buildComboBoxQuery(reports, places_ids, "problem_reports.place_id")
 
     status = print_params.pop
-    cond[0] +=  " and problem_reports.solved in (?)"
-    cond.push(status)
+    reports = reports.where(:solved => status)
 
     results = Hash.new
     results[true] = Array.new
     results[false] = Array.new
 
-    ProblemReport.find(:all, :conditions => cond, :include => inc, :order => "problem_reports.created_at ASC").each { |problem_report|
-
+    reports.order("problem_reports.created_at ASC").each { |problem_report|
       solved = problem_report.solved
 
       problem_type = problem_report.problem_type
@@ -581,11 +512,11 @@ class PrintController < ApplicationController
   def students_ids_distro
     print_params = JSON.parse(params[:print_params]).reverse
 
-    inc_v = [{:performs => [:place, :profile]}]
-    cond_v = ["profiles.internal_tag = ?", "student"]
+    people = Person.includes({:performs => [:place, :profile]})
+    people = people.where("profiles.internal_tag = 'student'")
 
     timeRange = print_params.pop
-    buildDateQuery(cond_v, timeRange, "people.created_at")
+    people = buildDateQuery(people, timeRange, "people.created_at")
 
     group_criteria = print_params.pop
     if ["day","week","month","year"].include?(group_criteria)
@@ -599,8 +530,7 @@ class PrintController < ApplicationController
     if place_id != -1
       place = Place.find_by_id(place_id)
       if place
-        cond_v[0] += " and performs.place_id in (?)"
-        cond_v.push(place.getDescendantsIds.push(place_id))
+        people = people.where("performs.place_id in (?)", place.getDescendantsIds.push(place_id))
       end
     end
 
@@ -618,8 +548,7 @@ class PrintController < ApplicationController
       aux_window += 1.send(group_criteria)
     end
 
-    Person.find(:all, :conditions => cond_v, :include => inc_v).each { |person|
-
+    people.each { |person|
       registered = person.id_document_created_at
       registered_window = registered ? registered.send(group_method) : nil
       created_window = person.created_at.send(group_method)
@@ -629,7 +558,6 @@ class PrintController < ApplicationController
       end
 
       results[created_window][:created_this_window] += 1
-
     }
 
     @titulo = _("Number of document ids generated") + "<br>"
@@ -677,8 +605,7 @@ class PrintController < ApplicationController
     places_ids = print_params.pop
     places = nil
     if places_ids != []
-      cond = ["places.id in (?)", places_ids]
-      places = Place.find(:all, :conditions => cond)
+      places = Place.where(:id => places_ids)
     end
 
     root_places = []
@@ -711,18 +638,13 @@ class PrintController < ApplicationController
     print_params = JSON.parse(params[:print_params]).reverse
 
     #A title hack...
-    inc_v = [:event_type]
-    cond_v = ["event_types.internal_tag in (?) and (events.extended_info like ? or events.extended_info like ?)"]
-    cond_v.push(["node_up","node_down"])
-    cond_v.push("%\"type\": \"server\"%")
-    cond_v.push("%\"type\": \"ap\"%")
+    events = Event.includes(:event_type)
+    events = events.where("event_types.internal_tag in (?) and (events.extended_info like ? or events.extended_info like ?)", ["node_up","node_down"], "%\"type\": \"server\"%", "%\"type\": \"ap\"%")
 
     timeRange = print_params.pop
     range_start = timeRange["date_since"].to_date.beginning_of_day.to_time
     range_end = timeRange["date_to"].to_date.end_of_day.to_time
-    cond_v[0] += " and events.created_at > ? and events.created_at < ?"
-    cond_v.push(range_start)
-    cond_v.push(range_end)
+    events = events.where("events.created_at > ? and events.created_at < ?", range_start, range_end)
 
     root_place_id = print_params.pop.to_i
     root_place = Place.find_by_id(root_place_id)
@@ -730,26 +652,22 @@ class PrintController < ApplicationController
     root_places_ids = root_place.getDescendantsIds.push(root_place_id)
 
     results = Hash.new
-    Place.find(:all, :conditions => ["places.id in (?)", root_places_ids]).each { |place|
-
+    Place.find_all_by_id(root_places_ids).each { |place|
       #finding the parent place and grouping by them...
       place_ids = place.getAncestorsIds.push(place.id)
-      inc = [:place_type]
-      cond = ["places.id in (?) and place_types.internal_tag = ?", place_ids, "school"]
-      parent_place = Place.find(:first, :conditions => cond, :include => inc)     
+      parent_q = Place.includes(:place_type)
+      parent_q = parent_q.where("places.id in (?) and place_types.internal_tag = 'school'", place_ids)
+      parent_place = parent_q.first   
 
       #Grouping...
       if parent_place && !results[parent_place]
 
         results[parent_place] = Hash.new
-        inc = [:place, :node_type]
-        cond = ["places.id in (?) and node_types.internal_tag not in (?)"]
-        cond.push(parent_place.getDescendantsIds.push(parent_place.id))
-        cond.push(["center"])
+        nodes = Node.includes(:place, :node_type)
+        nodes = nodes.where("places.id in (?) and node_types.internal_tag not in ('center')", parent_place.getDescendantsIds.push(parent_place.id))
 
         #Creating nodes entries....
-        Node.find(:all, :conditions => cond, :include => inc).each { |node|
-
+        nodes.each { |node|
           results[parent_place][node] = Hash.new
           results[parent_place][node][:ranges] = Array.new
           results[parent_place][node][:ranges].push( { :range_start => range_start } )
@@ -759,8 +677,7 @@ class PrintController < ApplicationController
       end
     }
 
-    Event.find(:all, :conditions => cond_v, :include => inc_v, :order => "events.created_at ASC").each { |event|
-
+    events.order("events.created_at ASC").each { |event|
       info = event.getHash
       node = Node.find_by_id(info["id"])
 
@@ -770,9 +687,9 @@ class PrintController < ApplicationController
         if place
 
           place_ids = place.getAncestorsIds.push(place.id)
-          inc = [:place_type]
-          cond = ["places.id in (?) and place_types.internal_tag = ?", place_ids, "school"]
-          parent_place = Place.find(:first, :conditions => cond, :include => inc)
+          parent_place = Place.includes(:place_type)
+          parent_place = parent_place.where("places.id in (?) and place_types.internal_tag = 'school'", place_ids)
+          parent_place = parent_place.first
 
           if parent_place
 
@@ -881,13 +798,12 @@ class PrintController < ApplicationController
 
     laptop_serials = print_params.pop.split("\n").map { |line| line.strip.upcase }
 
-    inc_v = [:owner, :assignee]
-    cond_v = ["laptops.serial_number in (?)", laptop_serials]
+    laptops = Laptop.includes(:owner, :assignee)
+    laptops = laptops.where(:serial_number => laptop_serials)
 
     @datos = []
     found_laptops = []
-    Laptop.find(:all, :conditions => cond_v, :include => inc_v).each { |laptop|
-
+    laptops.each { |laptop|
       laptop_serial = laptop.getSerialNumber
       location = ""
       owner = laptop.owner
@@ -923,8 +839,7 @@ class PrintController < ApplicationController
   def used_parts_per_person
     print_params = JSON.parse(params[:print_params]).reverse
 
-    inc_v = [{:problem_report => [:place, :owner]}, {:solution_type => :part_types}]
-    cond_v = [""]
+    solutions = ProblemSolution.includes({:problem_report => [:place, :owner]}, {:solution_type => :part_types})
 
     person_type = print_params.pop
 
@@ -933,24 +848,19 @@ class PrintController < ApplicationController
     place_id = print_params.pop.to_i
     place = Place.find_by_id(place_id)      
     if place
-      cond_v[0] += "problem_reports.place_id in (?)"
-      cond_v.push(place.getDescendantsIds.push(place_id))
+      solutions = solutions.where("problem_reports.place_id in (?)", place.getDescendantsIds.push(place_id))
     else
       raise _("You must select the location")
     end
 
     part_ids = print_params.pop
     if part_ids != []
-      cond = ["part_types.id in (?)", part_ids]
-      cond_v[0] += "and part_types.id in (?)"
-      cond_v.push(part_ids)
-    else
-      cond = []
+      solutions = solutions.where("part_types.id in (?)", part_ids)
     end
-    part_types = PartType.find(:all, :conditions => cond)
+    part_types = PartType.where(:id => part_ids)
 
     results = Hash.new
-    ProblemSolution.find(:all, :conditions => cond_v, :include => inc_v).each { |problem_solution|
+    solutions.each { |problem_solution|
 
       if person_type == "solved_by_person"
         person = problem_solution.solved_by_person
@@ -961,8 +871,7 @@ class PrintController < ApplicationController
       place = problem_solution.problem_report.place
       ps_part_types = problem_solution.solution_type.part_types
 
-      cond = ["places.id in (?) and places.place_type_id in (?)", place.getAncestorsIds.push(place.id), place_type_id]
-      parent_place = Place.find(:first, :conditions => cond)
+      parent_place = Place.where(:id => place.getAncestorsIds.push(place.id), :place_type_id => place_type_id).first
     
       if person && parent_place && ps_part_types != []
 
@@ -1008,8 +917,7 @@ class PrintController < ApplicationController
       when -1
         #nothing
       else
-        cond = ["id = ? and id in (?)",sort_key, part_types.map { |part| part.id }]
-        part_type = PartType.find(:first, :conditions => cond)
+        part_type = PartType.where("id = ? and id in (?)", sort_key, part_types.map { |part| part.id }).first
         if part_type
           sort_index = @columnas.index(part_type.getDescription)
         else
@@ -1029,16 +937,16 @@ class PrintController < ApplicationController
   def problems_per_grade
     print_params = JSON.parse(params[:print_params]).reverse
 
-    inc_v = [{:place => :place_type}, :problem_type]
-    cond_v = ["place_types.internal_tag = ?","section"]
+    reports = ProblemReport.includes({:place => :place_type}, :problem_type)
+    reports = reports.where("place_types.internal_tag = 'section'")
 
     timeRange = print_params.pop
-    buildDateQuery(cond_v, timeRange, "problem_reports.created_at")
+    reports = buildDateQuery(reports, timeRange, "problem_reports.created_at")
 
     place_id = print_params.pop.to_i
     if place_id != -1
       place = Place.find_by_id(place_id)
-      buildComboBoxQuery(cond_v, place.getDescendantsIds.push(place_id), "places.id") if place
+      reports = buildComboBoxQuery(reports, place.getDescendantsIds.push(place_id), "places.id") if place
     else
       raise _("You must select a location.")
     end
@@ -1046,24 +954,21 @@ class PrintController < ApplicationController
     problems_type_ids = print_params.pop
     if problems_type_ids != []
       problems_type_titles = ProblemType.find(problems_type_ids).map { |type| type.name }
-      buildComboBoxQuery(cond_v, problems_type_ids, "problem_types.id")
+      reports = buildComboBoxQuery(reports, problems_type_ids, "problem_types.id")
     end
 
     grade_types = ["first_grade", "second_grade", "third_grade", "fourth_grade", "fifth_grade", "sixth_grade", "seventh_grade", "eighth_grade","ninth_grade"]
     h = Hash.new
-    PlaceType.find(:all, :conditions => ["place_types.internal_tag in (?)", grade_types]).each {|type| h[type] = 0 }
+    PlaceType.find_all_by_internal_tag(grade_types).each {|type| h[type] = 0 }
 
     current_year = Date.today.year
-    ProblemReport.find(:all, :conditions => cond_v, :include => inc_v).each { |problem_report|
-
+    reports.each { |problem_report|
       report_year = problem_report.created_at.year
       rPlace = problem_report.place
       places_ids = rPlace.getAncestorsIds
 
-      inc = [:place_type]
-      cond = ["places.id in (?) and place_types.internal_tag in (?)",places_ids, grade_types]
-
-      grade_place = Place.find(:first, :conditions => cond, :include => inc )
+      grade_place = Place.includes(:place_type)
+      grade_place = grade_place.where("places.id in (?) and place_types.internal_tag in (?)", places_ids, grade_types).first
 
       #Note that we don't want the ACTUAL grade, we need the grade WHEN it happened.
       if grade_place
@@ -1103,43 +1008,39 @@ class PrintController < ApplicationController
 
   def problems_per_school
     print_params = JSON.parse(params[:print_params]).reverse
-
-    inc_v = [{:place => :place_type}, :problem_type]
-    cond_v = [""]
+    reports = ProblemReport.includes({:place => :place_type}, :problem_type)
 
     timeRange = print_params.pop
-    buildDateQuery(cond_v, timeRange, "problem_reports.created_at")
+    reports = buildDateQuery(reports, timeRange, "problem_reports.created_at")
 
     place_type_id = print_params.pop.to_i
 
     place_id = print_params.pop.to_i
     if place_id != -1
       place = Place.find_by_id(place_id)
-      buildComboBoxQuery(cond_v, place.getDescendantsIds.push(place_id), "places.id") if place
+      reports = buildComboBoxQuery(reports, place.getDescendantsIds.push(place_id), "places.id") if place
     end
 
     problems_type_ids = print_params.pop
     if problems_type_ids != []
       problems_type_titles = ProblemType.find(problems_type_ids).map { |type| type.name }
-      buildComboBoxQuery(cond_v, problems_type_ids, "problem_types.id")
+      reports = buildComboBoxQuery(reports, problems_type_ids, "problem_types.id")
     end
 
     solved_statuses = print_params.pop
     if solved_statuses != []
-      cond_v[0]+= "and problem_reports.solved in (?)"
-      cond_v.push(solved_statuses)
+      reports = reports.where(:solved => solved_statuses)
     end
 
     sort_criteria = print_params.pop.to_i
 
     h = Hash.new
-    ProblemReport.find(:all, :conditions => cond_v, :include => inc_v).each { |problem_report|
+    reports.each { |problem_report|
 
       places_ids = problem_report.place.getAncestorsIds
 
-      inc = [:place_type]
-      cond = ["places.id in (?) and place_types.id = ?", places_ids, place_type_id]
-      place = Place.find(:all, :conditions => cond, :include => inc).first
+      place = Place.includes(:place_type).where(:id => places_ids)
+      place = place.where("place_types.id = ?", place_type_id).first
 
       if place
         if !h[place]
@@ -1232,10 +1133,10 @@ class PrintController < ApplicationController
  
     @title = _("Delivery receipt")
     @data = Array.new
-   
-    cond_v = ["movements.id in (?)", mov_ids]
-    include_v = [{:movement_details => :laptop}, :destination_person]
-    Movement.find(:all, :conditions => cond_v, :include => include_v).each {|movement|
+  
+    movements = Movement.includes({:movement_details => :laptop}, :destination_person)
+    movements = movements.where(:id => mov_ids)
+    movements.each {|movement|
       h = Hash.new
       h[:id] = movement.id
       h[:parts] = movement.movement_details.map { |detail|
@@ -1263,10 +1164,10 @@ class PrintController < ApplicationController
       place = stack.pop
       stack+= place.places.reverse
 
-      second_cond = ["performs.place_id = ?",place.id]
-      second_inc = [ { :person => { :laptops_assigned => :status } } ]
-      performs = Perform.find(:all, :conditions => second_cond, :include => second_inc, :order => "people.lastname, people.name")
-      next if performs.length == 0
+      performs = Perform.where(:place_id => place.id)
+      performs = performs.includes({ :person => { :laptops_assigned => :status } })
+      performs = performs.order("people.lastname, people.name")
+      next if performs.count == 0
 
       entries = []
       performs.each { |perform|
@@ -1305,22 +1206,21 @@ class PrintController < ApplicationController
     raise _("Invalid Place") if not place
 
     document_filters = print_params.pop
-    filters = ""
-    filters += "id_document not REGEXP \"_\"" if not document_filters.include?('fake')
-    filters += " and " if document_filters.length == 0
-    filters += "id_document REGEXP \"_\"" if not document_filters.include?('normal')
-    filters += " and " if filters.length != 0
+
+    people = Person.includes(:performs)
+    people = people.where("id_document not REGEXP \"_\"") if not document_filters.include?('fake')
+    people = people.where("id_document REGEXP \"_\"") if not document_filters.include?('normal')
 
     columns = [_("Location"), _("Name"), _("Document id")]
     rows = []
     student_id = Profile.find_by_internal_tag('student').id
+    people = people.where("performs.profile_id" => student_id)
 
     places = [place]
     while(places != [])
         place = places.pop
         location = place.getName()
-        cond_v = ["#{filters} performs.place_id = ? and performs.profile_id = ?", place.id, student_id]
-        Person.find(:all, :conditions => cond_v, :include => [:performs]).each { |person|
+        people.where("performs.place_id" => place.id).each { |person|
             rows.push([location, person.getFullName, person.getIdDoc])
         }
 
@@ -1346,16 +1246,15 @@ class PrintController < ApplicationController
     buffer = ""
 
     places_ids = root_place.getDescendantsIds + [root_place.id]
-    cond_v = ["place_id in (?)", places_ids]
-    people_ids = Perform.find(:all, :conditions => cond_v).collect(&:person_id)
+    people_ids = Perform.find_all_by_place_id(places_ids).collect(&:person_id)
 
-    cond_v = ["serial_number is not NULL and serial_number != \"\""]
-    cond_v[0] += " and uuid is not NULL and uuid != \"\""
-    cond_v[0] += " and status_id is not NULL and statuses.internal_tag = \"activated\""
-    cond_v[0] += " and #{relation} in (?)"
-    cond_v.push(people_ids)
+    laptops = Laptop.includes(:status)
+    laptops = laptops.where("serial_number is not NULL and serial_number != \"\"")
+    laptops = laptops.where("uuid is not NULL and uuid != \"\"")
+    laptops = laptops.where("status_id is not NULL and statuses.internal_tag = \"activated\"")
+    laptops = laptops.where("#{relation} in (?)", people_ids)
 
-    Laptop.find(:all, :conditions => cond_v, :include => [:status]).each { |laptop|
+    laptops.each { |laptop|
       buffer +=  "#{laptop.serial_number.to_s},#{laptop.uuid.to_s}\n"
     }
 
@@ -1377,6 +1276,8 @@ class PrintController < ApplicationController
     student_profile_id = Profile.find_by_internal_tag("student").id
     section_place_type_id = PlaceType.find_by_internal_tag("section").id
 
+    performs = Perform.includes(:person => :laptops).where(:profile_id => student_profile_id)
+
     stack = [root_place]
     while(stack != [])
       place = stack.pop
@@ -1385,14 +1286,11 @@ class PrintController < ApplicationController
         sub_total = 0
         sub_total_con_laptops = 0
 
-        second_cond = ["performs.place_id = ? and performs.profile_id = ?",place.id,student_profile_id]
-        second_inc = [:person => :laptops]
-        Perform.find(:all, :conditions => second_cond, :include => second_inc).each { |perform|
+        performs.where(:place_id => place.id).each { |perform|
           person = perform.person
 
-          third_cond = ["people.name = ? and people.id != ?",person.name, person.id]
-          possible_clones = Person.find(:all, :conditions => third_cond)
-          possible_clones.each { |possible_clone|
+          possible_clones = Person.where(:name => person.name)
+          possible_clones.where("id != ?", person.id).each { |possible_clone|
 
             check = Perform.find_by_person_id_and_place_id_and_profile_id(possible_clone.id, place.id, student_profile_id)
             if check
@@ -1450,7 +1348,7 @@ class PrintController < ApplicationController
     place.places.each { |subPlace|
       sub_total = 0
       sub_places_ids = subPlace.getDescendantsIds
-      Place.find(:all, :conditions => ["id in (?)",sub_places_ids]).each { |subSubPlace|
+      Place.find_all_by_id(sub_places_ids).each { |subSubPlace|
         subSubPlace.performs.each { |perform|
           sub_total += perform.person.laptops.length
         }
@@ -1501,7 +1399,7 @@ class PrintController < ApplicationController
     places_ids = print_params.pop
 
     root_places = []
-    places = Place.find(:all, :conditions => ["places.id in (?)", places_ids])
+    places = Place.find_all_by_id(places_ids)
     places.each { |root|
 
       isRoot = true
@@ -1541,10 +1439,10 @@ class PrintController < ApplicationController
 
           place_info[:students] = Array.new
 
-          cond_v = ["performs.place_id = ? and profiles.id in (?)", current_place.id, profiles_ids]
-          include_v = [{:person => :laptops}, :place, :profile]
-
-          Perform.find(:all, :conditions => cond_v, :include => include_v, :order => "people.lastname, people.name").each { |perform|
+          performs = Perform.includes({:person => :laptops}, :place, :profile)
+          performs = performs.where(:place_id => current_place.id)
+          performs = performs.where('profiles.id' => profiles_ids)
+          performs.order("people.lastname, people.name").each { |perform|
 
             person = perform.person
             laptops = person.laptops
@@ -1592,27 +1490,27 @@ class PrintController < ApplicationController
   #
   def movements
     print_params = JSON.parse(params[:print_params]).reverse
-    cond_v = [""]
+    movements = Movement.includes({:movement_details => :laptop},:movement_type,:source_person, {:destination_person => {:performs => :place}})
 
     dateOpts = print_params.pop
-    buildDateQuery(cond_v, dateOpts, "movements.date_moved_at")
+    movements = buildDateQuery(movements, dateOpts, "movements.date_moved_at")
 
     serials = print_params.pop
-    buildSerialQuery(cond_v,serials)
+    movements = buildSerialQuery(movements,serials)
 
     reasons = print_params.pop
-    buildReasonQuery(cond_v,reasons,"movements")
+    movements = buildReasonQuery(movements,reasons,"movements")
 
     from_person_id = print_params.pop
-    buildPersonQuery(cond_v, from_person_id,"movements.source_person_id")
+    movements = buildPersonQuery(movements, from_person_id,"movements.source_person_id")
 
     to_person_id = print_params.pop
-    buildPersonQuery(cond_v, to_person_id,"movements.destination_person_id")
+    movements = buildPersonQuery(movements, to_person_id,"movements.destination_person_id")
 
     place_id = print_params.pop
     if place_id.to_i != -1
       places = Place.find_by_id(place_id).getDescendantsIds().push(place_id.to_i)
-      buildComboBoxQuery(cond_v, places, "places.id")
+      movements = buildComboBoxQuery(movements, places, "places.id")
     end
 
     @titulo = _("Laptop movements")
@@ -1621,8 +1519,7 @@ class PrintController < ApplicationController
     @columnas = [_("Mov \#"), _("Fecha"), _("Desc"), _("Serial"), _("Given by"), _("Received by"), _("Reason")]
     @datos = []
 
-    inc_v = [{:movement_details => :laptop},:movement_type,:source_person, {:destination_person => {:performs => :place}}]
-    Movement.find(:all, :include => inc_v, :conditions => cond_v, :order => "movements.id ASC").each  { |m|
+    movements.order("movements.id ASC").each  { |m|
       m.movement_details.each { |md|
         @datos.push([
                      md.movement_id,
@@ -1644,21 +1541,21 @@ class PrintController < ApplicationController
   #
   def movement_types
     print_params = JSON.parse(params[:print_params]).reverse
-    cond_v = [""]
+    types = MovementType.includes(:movements => [ {:destination_person => :performs}, { :movement_details => :laptop} ])
 
     from_person_id = print_params.pop
-    buildPersonQuery(cond_v, from_person_id, "movements.source_person_id")
+    types = buildPersonQuery(types, from_person_id, "movements.source_person_id")
 
     to_person_id = print_params.pop
-    buildPersonQuery(cond_v, to_person_id, "movements.destination_person_id")
+    types = buildPersonQuery(types, to_person_id, "movements.destination_person_id")
 
     dateOpts = print_params.pop
-    buildDateQuery(cond_v, dateOpts, "movements.date_moved_at")
+    types = buildDateQuery(types, dateOpts, "movements.date_moved_at")
 
     place_id = print_params.pop.to_i
     if place_id != -1
       places = Place.find_by_id(place_id).getDescendantsIds().push(place_id.to_i)
-      buildComboBoxQuery(cond_v, places, "performs.place_id")
+      types = buildComboBoxQuery(types, places, "performs.place_id")
     else
       raise _("You must select a location.")
     end
@@ -1671,8 +1568,7 @@ class PrintController < ApplicationController
     @datos = []
 
     graph_data = Array.new
-    include_v = [:movements => [ {:destination_person => :performs}, { :movement_details => :laptop} ] ]
-    MovementType.find(:all,:include => include_v,:conditions => cond_v).each { |mt|
+    types.each { |mt|
       total=laptops=0
       mt.movements.each { |m|
         m.movement_details.each { |md|
@@ -1698,19 +1594,16 @@ class PrintController < ApplicationController
   # Movimientos en un vetana de tiempo.
   def movements_time_range
     print_params = JSON.parse(params[:print_params]).reverse
-    cond_v = [""]
+    movements = Movement.includes({:destination_person => {:performs => :place}}, :source_person, {:movement_details => [:laptop]})
 
     dateOpts = print_params.pop
-    buildDateQuery(cond_v, dateOpts, "date_moved_at")
+    movements = buildDateQuery(movements, dateOpts, "date_moved_at")
 
     place_id = print_params.pop.to_i
     if place_id != -1
       places = Place.find_by_id(place_id).getDescendantsIds().push(place_id.to_i)
-      buildComboBoxQuery(cond_v, places, "places.id")
+      movements = buildComboBoxQuery(movements, places, "places.id")
     end
-
-    include_v = [{:destination_person => {:performs => :place}}, :source_person, {:movement_details => [:laptop]}]
-    movements = Movement.find(:all, :conditions => cond_v,:include => include_v)
 
     # Se definen los elementos del view.
     @titulo = _("Movements on a given timeframe")
@@ -1735,19 +1628,16 @@ class PrintController < ApplicationController
   def laptops_per_owner
 
     print_params = JSON.parse(params[:print_params]).reverse
-    cond_v = [""]
+    people = Person.includes(:laptops)
 
     ownerData = print_params.pop
-    buildPersonQuery(cond_v, ownerData, "id")
+    people = buildPersonQuery(people, ownerData, "id")
 
     @datos = []
-    include_v = [:laptops]
-    Person.find(:all,:conditions => cond_v,:include => include_v).each { |p|
-      
+    laptops.each { |p|
       if p.laptops.length > 0
         @datos.push([p.getFullName(),p.laptops.length])
       end
-
     }
 
     # order according number of laptops (descending)
@@ -1762,16 +1652,15 @@ class PrintController < ApplicationController
   # Distribution of laptops handed off per person. 
   def laptops_per_source_person
     print_params = JSON.parse(params[:print_params]).reverse
-    cond_v = [""]
+    people = Person.includes({:source_movements => :movement_details})
 
     source_person = print_params.pop
-    buildPersonQuery(cond_v,source_person,"id")
+    people = buildPersonQuery(people,source_person,"id")
 
     @titulo = _("Laptops handed out per person")
     @columnas = [_("Person"), _("Quantity")]
     @datos = []
-    include_v = [{:source_movements => :movement_details}]
-    Person.find(:all,:conditions => cond_v, :include => include_v).each { |p|
+    people.each { |p|
       count=0
       p.source_movements.each { |m|
         m.movement_details.each { |md|
@@ -1797,16 +1686,15 @@ class PrintController < ApplicationController
   # Distribution of laptops to people.
   def laptops_per_destination_person
     print_params = JSON.parse(params[:print_params]).reverse
-    cond_v = [""]
+    people = Person.includes({:destination_movements => :movement_details})
 
     destination_person = print_params.pop
-    buildPersonQuery(cond_v,destination_person,"id")
+    people = buildPersonQuery(people,destination_person,"id")
 
     @titulo = _("Laptops given to people")
     @columnas = [_("Person"), _("Quantity")]
     @datos = []
-    include_v = [{:destination_movements => :movement_details}]
-    Person.find(:all,:conditions => cond_v, :include => include_v).each { |p|
+    people.each { |p|
       count=0
       p.destination_movements.each { |m|
         m.movement_details.each { |md|
@@ -1829,21 +1717,22 @@ class PrintController < ApplicationController
   #
   def lendings
     print_params = JSON.parse(params[:print_params]).reverse
-    cond_v = [" return_date is not null "]
+    movements = Movement.includes(:movement_details)
+    movements = movements.where("return_date is not null")
 
     timeRange = print_params.pop
-    buildDateQuery(cond_v,timeRange,"date_moved_at")
+    movements = buildDateQuery(movements,timeRange,"date_moved_at")
 
     sourcePerson = print_params.pop
-    buildPersonQuery(cond_v,sourcePerson,"source_person_id")
+    movements = buildPersonQuery(movements,sourcePerson,"source_person_id")
 
     destinationPerson = print_params.pop
-    buildPersonQuery(cond_v,destinationPerson,"destination_person_id")
+    movements = buildPersonQuery(movements,destinationPerson,"destination_person_id")
 
     filters = print_params.pop
     if filters.length > 0
-      cond_v[0] += " and movement_details.returned = false " if !filters.include? "returned"
-      cond_v[0] += " and movement_details.returned = true " if !filters.include? "not_returned"
+      movements = movements.where("movement_details.returned = false") if !filters.include? "returned"
+      movements = movements.where("movement_details.returned = true") if !filters.include? "not_returned"
     end
 
     @titulo = _("Lendings")
@@ -1851,9 +1740,8 @@ class PrintController < ApplicationController
     @fecha_hasta = timeRange["date_to"]
     @columnas = [_("#"), _("Date"), _("Given by"), _("Received by"), _("Return date"), _("Part"), _("Serial number"), _("Returned?")]
     @datos =[]
-    include_v = [:movement_details]
     counter = 1
-    Movement.find(:all,:conditions => cond_v, :order => "date_moved_at DESC", :include => include_v).each { |m|
+    movements.order("date_moved_at DESC").each { |m|
       m.movement_details.each { |md|
         @datos.push([
                      counter,
@@ -1877,16 +1765,15 @@ class PrintController < ApplicationController
   #
   def statuses_distribution
     print_params = JSON.parse(params[:print_params]).reverse
-
-    cond_v = ["statuses.internal_tag not in (?)",["used", "broken", "available"]]
-    include_v = [:laptops => {:owner => :performs}]
+    statuses = Status.includes(:laptops => {:owner => :performs})
+    statuses = statuses.where("statuses.internal_tag not in (?)", ["used", "broken", "available"])
 
     root_place_id = print_params.pop.to_i
     if root_place_id != -1
 
       root_place = Place.find_by_id(root_place_id)
       places_ids = root_place.getDescendantsIds.push(root_place_id)
-      buildComboBoxQuery(cond_v, places_ids, "performs.place_id") 
+      statuses = buildComboBoxQuery(statuses, places_ids, "performs.place_id")
     end
 
     @titulo = _("Distribution of laptops grouped by status")
@@ -1895,7 +1782,7 @@ class PrintController < ApplicationController
 
     graph_data = Array.new
 
-    Status.find(:all, :conditions => cond_v ,:include => include_v).each { |s|
+    statuses.each { |s|
       v = []
 
       v.push(s.getDescription())
@@ -1920,10 +1807,10 @@ class PrintController < ApplicationController
   #
   def status_changes
     print_params = JSON.parse(params[:print_params]).reverse
-    cond_v = [""]
+    changes = StatusChange.includes(:previous_state, :new_state, :laptop)
 
     timeRange = print_params.pop
-    buildDateQuery(cond_v,timeRange,"status_changes.date_created_at")
+    changes = buildDateQuery(changes,timeRange,"status_changes.date_created_at")
 
     @titulo = _("Status changes")
     @fecha_desde = timeRange["date_since"]
@@ -1931,8 +1818,7 @@ class PrintController < ApplicationController
     @columnas = [_("Date"), _("Previous"), _("Next"), _("Serial Number")]
     @datos = []
 
-    include_v = [:previous_state,:new_state,:laptop]
-    StatusChange.find(:all,:include => include_v,:conditions => cond_v,:order => "status_changes.date_created_at DESC").each {  |sc|
+    changes.order("status_changes.date_created_at DESC").each {  |sc|
       @datos.push([sc.getDate(),sc.getPreviousState(),sc.getNewState(),sc.getPart(),sc.getSerial()])
     }
 
@@ -1961,12 +1847,10 @@ class PrintController < ApplicationController
   #
   def parts_replaced
     print_params = JSON.parse(params[:print_params]).reverse
-
-    cond_v = [""]
-    include_v = [{:problem_report => :place}, {:solution_type => :part_types}]
+    solutions = ProblemSolution.includes({:problem_report => :place}, {:solution_type => :part_types})
 
     timeRange = print_params.pop
-    buildDateQuery(cond_v,timeRange,"problem_solutions.created_at")
+    solutions = buildDateQuery(solutions,timeRange,"problem_solutions.created_at")
 
     group_criteria = print_params.pop
     if ["day","week","month","year"].include?(group_criteria)
@@ -1978,13 +1862,13 @@ class PrintController < ApplicationController
     place_id = print_params.pop.to_i
     if place_id != -1
       place = Place.find_by_id(place_id)
-      buildComboBoxQuery(cond_v, place.getDescendantsIds.push(place_id), "places.id") if place
+      solutions = buildComboBoxQuery(solutions, place.getDescendantsIds.push(place_id), "places.id") if place
     end
 
     part_type_ids = print_params.pop
     if part_type_ids != []
-      part_types = PartType.find(:all, :conditions => ["part_types.id in (?)",part_type_ids])
-      buildComboBoxQuery(cond_v, part_type_ids, "part_types.id")
+      part_types = PartType.find_all_by_id(part_type_ids)
+      solutions = buildComboBoxQuery(solutions, part_type_ids, "part_types.id")
     end
 
     since = timeRange["date_since"].to_date.send(group_method)
@@ -1998,8 +1882,7 @@ class PrintController < ApplicationController
       aux_window += 1.send(group_criteria)
     end
 
-    ProblemSolution.find(:all, :conditions => cond_v, :include => include_v).each { |ps|
-
+    solutions.each { |ps|
       ps_part_types = ps.solution_type.part_types
       if ps_part_types != []
 
@@ -2050,19 +1933,19 @@ class PrintController < ApplicationController
 
   def problems_per_type
     print_params = JSON.parse(params[:print_params]).reverse
-    cond_v = [""]
+    types = ProblemType.includes({:problem_reports => [{:laptop => :owner}, :place]})
 
     timeRange = print_params.pop
-    buildDateQuery(cond_v,timeRange,"problem_reports.created_at")
+    types = buildDateQuery(types,timeRange,"problem_reports.created_at")
 
     place_id = print_params.pop.to_i
     if place_id != -1
       subplaces_ids = Place.find_by_id(place_id).getDescendantsIds().push(place_id.to_i)
-      buildComboBoxQuery(cond_v,subplaces_ids,"places.id")
+      types = buildComboBoxQuery(types,subplaces_ids,"places.id")
     end
 
     problem_types = print_params.pop
-    buildComboBoxQuery(cond_v,problem_types,"problem_types.id")
+    types = buildComboBoxQuery(types,problem_types,"problem_types.id")
 
     @titulo = _("Problems grouped by type") 
     @fecha_desde = timeRange["date_since"]
@@ -2071,8 +1954,7 @@ class PrintController < ApplicationController
     @datos = []
 
     graph_data = Array.new
-    include_v = [{:problem_reports => [{:laptop => :owner}, :place]}]
-    ProblemType.find(:all, :conditions => cond_v, :include => include_v).each { |pt|
+    types.each { |pt|
       desc = pt.getName()
       amount = pt.problem_reports.length
       @datos.push([desc, amount])
@@ -2097,9 +1979,8 @@ class PrintController < ApplicationController
                                                      HAVING repeated > 1;")
     results.each { |row|
       serial_number = row[0]
-      cond = ["serial_number = ?", row[0]]
-      inc = [:owner => {:performs => :place}]
-      Laptop.find(:all, :conditions => cond, :include => inc).each { |laptop|
+      laptops = Laptop.includes(:owner => {:performs => :place})
+      laptops.find_all_by_serial_number(serial_number).each { |laptop|
         owner = laptop.owner
         location = owner.performs.first.place
         xls_rows.push([serial_number, owner.getFullName, owner.getIdDoc, location.getName])
@@ -2165,7 +2046,7 @@ class PrintController < ApplicationController
         generator = IO.popen(open_arg, "w+")
         # FIXME: we should test if we are in Windows and included the following method call
         # generator.binmode
-        generator.puts @template.render(:file => template_file)
+        generator.puts render_to_string(:template => template_file, :layout => false)
         generator.close_write
 
         send_data(generator.read, :filename => pdf_filename + ".pdf", :type => "application/pdf") 
@@ -2189,75 +2070,67 @@ class PrintController < ApplicationController
   end
 
 
-  def buildDateQuery(cond_v, dateOpts, col_canonical_name)
-
+  def buildDateQuery(query, dateOpts, col_canonical_name)
     if dateOpts["date_since"] && dateOpts["date_since"].to_s != ""
-      cond_v[0] += " and " if cond_v[0] != ""
-      cond_v[0] += " #{col_canonical_name} >= ? "
-      cond_v.push(Fecha::usDate(dateOpts["date_since"]))
+      query = query.where("#{col_canonical_name} >= ? ", Fecha::usDate(dateOpts["date_since"]))
     end
 
     if dateOpts["date_to"] && dateOpts["date_to"].to_s != ""
-      cond_v[0] += " and " if cond_v[0] != ""
-      cond_v[0] += " #{col_canonical_name} <= ? "
-      cond_v.push(Fecha::usDate(dateOpts["date_to"]))
+      query = query.where("#{col_canonical_name} <= ? ", Fecha::usDate(dateOpts["date_to"]))
     end
 
-    cond_v
+    query
   end
 
-  def buildPartQuery(cond_v, partOpts, table_name)
+  def buildPartQuery(query, partOpts, table_name)
     if partOpts.length > 0 && partOpts.length != 3
-
       if !partOpts.include? "laptop"
-        cond_v[0] += " and " if cond_v[0] != ""
-        cond_v[0] += " #{table_name}.laptop_id is null " 
+        query = query.where("#{table_name}.laptop_id is null") 
       end
     end
+    query
   end
 
-  def buildPersonQuery(cond_v, person_id, col_canonical_name)
+  def buildPersonQuery(query, person_id, col_canonical_name)
     if person_id.to_i != -1
-      cond_v[0] += " and " if cond_v[0] != ""
-      cond_v[0] += " #{col_canonical_name} = ? "
-      cond_v.push(person_id)
+      query = query.where("#{col_canonical_name} = ?", person_id)
     end
+    query
   end
 
-  def buildReasonQuery(cond_v,reasons,col_canonical_name)
+  def buildReasonQuery(query,reasons,col_canonical_name)
     if reasons && reasons.length > 0
-      cond_v[0] += " and " if cond_v[0] != ""
-      cond_v[0] += " #{col_canonical_name}.movement_type_id in (?) "
-      cond_v.push(reasons)
+      query = query.where("#{col_canonical_name}.movement_type_id in (?)", reasons)
     end
+    query
   end
 
-  def buildComboBoxQuery(cond_v,cb_options,col_canonical_name)
+  def buildComboBoxQuery(query, cb_options, col_canonical_name)
     if cb_options && cb_options.length > 0
-    cond_v[0] += " and " if cond_v[0] != ""
-    cond_v[0] += "#{col_canonical_name} in (?)"
-    cond_v.push(cb_options)
+      query = query.where("#{col_canonical_name} in (?)", cb_options)
     end
+    query
   end
 
-  def buildSerialQuery(cond_v, cvs_fields)
+  def buildSerialQuery(query, cvs_fields)
     if cvs_fields.length > 0
       theres_one = false
       cond_aux = " ( "
+      cond_params = []
       for field in cvs_fields do
         if field["value"] && field["value"] != ""
           theres_one = true
           cond_aux += " or " if cond_aux != " ( "
           cond_aux += "#{field["col_name"].pluralize}.serial_number = ?"
-          cond_v.push(field["value"])
+          cond_params.push(field["value"])
         end
       end
       cond_aux += " ) "
       if theres_one
-        cond_v[0] += " and " if cond_v[0] != ""
-        cond_v[0] += cond_aux
+        query = query.where(cond_aux, *cond_params)
       end
     end
+    query
   end
 
 end

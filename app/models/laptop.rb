@@ -108,9 +108,9 @@ class Laptop < ActiveRecord::Base
   end
 
   def self.getBlackList
-    inc = [:status]
-    cond = ["statuses.internal_tag in (?)",["stolen","stolen_deactivated"]]
-    black_list = Laptop.find(:all, :conditions => cond, :include => inc).map { |laptop| 
+    laptops = Laptop.includes(:status)
+    laptops = laptops.where("statuses.internal_tag in (?)",["stolen","stolen_deactivated"])
+    black_list = laptops.map { |laptop| 
       {:serial_number => laptop.getSerialNumber } 
     }
   end
@@ -176,9 +176,10 @@ class Laptop < ActiveRecord::Base
   end
 
   def getLastMovementType
-    inc = [:movement_details]
-    cond = ["movement_details.laptop_id = ?", self.id]
-    last_movement = Movement.find(:first, :conditions => cond, :include => inc, :order => "movements.id DESC")
+    movements = Movement.includes(:movement_details)
+    movements = movements.where("movement_details.laptop_id = ?", self.id)
+    movements = movements.order("movements.id DESC")
+    last_movement = movements.first
     last_movement ? last_movement.movement_type : nil
   end
 
@@ -191,15 +192,11 @@ class Laptop < ActiveRecord::Base
   # User with data scope can only access objects that are related to his
   # performing places and sub-places.
   def self.setScope(places_ids)
-
-    find_include = [:owner => {:performs => {:place => :ancestor_dependencies}}]
-    find_conditions = ["place_dependencies.ancestor_id in (?)", places_ids]
-
-    scope = { :find => {:conditions => find_conditions, :include => find_include } }
+    scope = includes(:owner => {:performs => {:place => :ancestor_dependencies}})
+    scope = scope.where("place_dependencies.ancestor_id in (?)", places_ids)
     Laptop.with_scope(scope) do
       yield
     end
-
   end
 
 end

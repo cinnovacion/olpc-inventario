@@ -46,9 +46,11 @@ class SchoolsController < ApplicationController
     info.push({ :label => _("Number of teachers"), :data => length })
 
     info.push({ :label => _("Principals"), :data => "" })
-    inc = [:person,:profile]
-    cond = ["performs.place_id = ? and profiles.id = ?", school_id, director_profile_id]
-    Perform.find(:all, :include => inc, :conditions => cond).each { |member|
+
+    performs = Perform.includes(:person, :profile)
+    performs = performs.where(:place_id => school_id)
+    performs = performs.where("profiles.id = ?", director_profile_id)
+    performs.each { |member|
       info.push({ :label => member.person.getFullName, :data => member.person.getPhone })
     }
 
