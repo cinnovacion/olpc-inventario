@@ -24,7 +24,7 @@
 class PlaceType < ActiveRecord::Base
   has_many :places
 
-  validates_uniqueness_of :internal_tag, :message => _("The tag must be unique")
+  validates_uniqueness_of :internal_tag, :message => N_("The tag must be unique")
 
   @@grades_list = ["first_grade", "second_grade", "third_grade", "fourth_grade", "fifth_grade", "sixth_grade", "seventh_grade", "eighth_grade","ninth_grade"]
 

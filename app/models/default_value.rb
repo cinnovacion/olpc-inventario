@@ -1,6 +1,6 @@
 class DefaultValue < ActiveRecord::Base
 
-  validates_uniqueness_of :key, :message => "La llave debe ser unica."
+  validates_uniqueness_of :key, :message => N_("The key must be unique.")
 
   def self.getColumnas()
     [ 

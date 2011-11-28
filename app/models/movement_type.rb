@@ -25,7 +25,7 @@ class MovementType < ActiveRecord::Base
   #DEPRECATED: has_many :movement_details
   has_many :movements
 
-  validates_uniqueness_of :internal_tag, :message => _("The tag must be unique")
+  validates_uniqueness_of :internal_tag, :message => N_("The tag must be unique")
   
   ###
   # Listado

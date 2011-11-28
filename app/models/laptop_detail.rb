@@ -26,8 +26,8 @@ class LaptopDetail < ActiveRecord::Base
   belongs_to :person
   belongs_to :laptop
 
-  validates_presence_of :person_id, :message => _("You must provide the student.")
-  validates_presence_of :laptop_id, :message => _("There is a student without laptop.")
+  validates_presence_of :person_id, :message => N_("You must provide the student.")
+  validates_presence_of :laptop_id, :message => N_("There is a student without laptop.")
 
   def self.alreadyExists?(section_detail_id, person_id, laptop_id)
     return true if LaptopDetail.find_by_section_detail_id_and_person_id_and_laptop_id(section_detail_id, person_id, laptop_id)

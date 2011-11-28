@@ -24,9 +24,9 @@
 class NodeType < ActiveRecord::Base
   belongs_to :image
 
-  validates_presence_of :name, :message => _("Must specify the name.")
-  validates_presence_of :internal_tag, :message => _("You must specify the internal tag")
-  validates_uniqueness_of :internal_tag, :message => _("The tag must be unique")
+  validates_presence_of :name, :message => N_("Must specify the name.")
+  validates_presence_of :internal_tag, :message => N_("You must specify the internal tag")
+  validates_uniqueness_of :internal_tag, :message => N_("The tag must be unique")
 
   def self.getColumnas(vista = "")
     [

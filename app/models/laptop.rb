@@ -40,10 +40,10 @@ class Laptop < ActiveRecord::Base
   belongs_to :model
   belongs_to :status
 
-  validates_presence_of :serial_number, :message => _("You must provide the serial number")
-  validates_uniqueness_of :serial_number, :message => _("Laptop Serial Number can not be repeated")
-  validates_presence_of :status_id, :message => _("You must provide the State")
-  validates_presence_of :owner_id, :message => _("You must provide the Owner")
+  validates_presence_of :serial_number, :message => N_("You must provide the serial number")
+  validates_uniqueness_of :serial_number, :message => N_("Laptop Serial Number can not be repeated")
+  validates_presence_of :status_id, :message => N_("You must provide the State")
+  validates_presence_of :owner_id, :message => N_("You must provide the Owner")
 
   def self.getColumnas()
     ret = Hash.new

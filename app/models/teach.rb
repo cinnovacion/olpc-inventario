@@ -2,8 +2,8 @@ class Teach < ActiveRecord::Base
   belongs_to :person
   belongs_to :place
 
-  validates_presence_of :person_id, :message => _("Specify the person.")
-  validates_presence_of :place_id, :message => _("Specify the place.")
+  validates_presence_of :person_id, :message => N_("Specify the person.")
+  validates_presence_of :place_id, :message => N_("Specify the place.")
 
   def self.getColumnas(vista = "")
     ret = Hash.new

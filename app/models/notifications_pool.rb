@@ -22,8 +22,8 @@ class NotificationsPool < ActiveRecord::Base
   belongs_to :notification
   belongs_to :place
 
-  validates_presence_of :notification_id, :message => _("You must specify the notification.")
-  validates_presence_of :place_id, :message => _("You must specify the Location.")
+  validates_presence_of :notification_id, :message => N_("You must specify the notification.")
+  validates_presence_of :place_id, :message => N_("You must specify the Location.")
 
 
   ####

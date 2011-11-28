@@ -32,13 +32,14 @@
 
 
 class ApplicationController < ActionController::Base
+  include FastGettext::Translation
 
   # FIXME: rails3 sets protect_from_forgery by default in new projects.
   # We should set it too, but it seems incompatible with qooxdoo (or whatever
   # component is responsible for sending POST data from the UI).
 
   cache_sweeper :object_sweeper
-  before_init_gettext :default_locale
+  before_filter :set_gettext_locale
   before_filter :auth_control
   before_filter :access_control
   around_filter :do_scoping
@@ -49,16 +50,6 @@ class ApplicationController < ActionController::Base
   end
 
   private 
-
-  def default_locale
-    if !session["lang"]
-      set_locale getDefaultLang
-    else
-      set_locale session["lang"]
-    end
-  end
- 
-  init_gettext("inventario", :locale_path => Rails.root.join("translation", "locale"))
 
   ###
   # tch says: 
@@ -438,7 +429,7 @@ class ApplicationController < ActionController::Base
 
   def setLanguage(lang)
     accepted_languages = getAcceptedLang
-    session["lang"] = accepted_languages.include?(lang) ? lang : getDefaultLang
+    session["lang"] = session["locale"] = accepted_languages.include?(lang) ? lang : getDefaultLang
   end
 
 end

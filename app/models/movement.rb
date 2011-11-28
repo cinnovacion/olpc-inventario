@@ -37,8 +37,8 @@ class Movement < ActiveRecord::Base
   has_many :movement_details
 
   
-  validates_presence_of :source_person_id, :message => _("Please specify who delivered.")
-  validates_presence_of :destination_person_id, :message => _("Please specify who gets it.")
+  validates_presence_of :source_person_id, :message => N_("Please specify who delivered.")
+  validates_presence_of :destination_person_id, :message => N_("Please specify who gets it.")
 
 
   def self.getColumnas()

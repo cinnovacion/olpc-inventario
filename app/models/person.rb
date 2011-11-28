@@ -42,8 +42,8 @@ class Person < ActiveRecord::Base
   has_many :notification_subscribers
   has_one :user
 
-  validates_uniqueness_of :id_document, :message => _("Repeated document id number")
-  validates_presence_of :id_document, :message => _("Must have a document id number")
+  validates_uniqueness_of :id_document, :message => N_("Repeated document id number")
+  validates_presence_of :id_document, :message => N_("Must have a document id number")
 
 
   SELECTION_VIEW = "selection"

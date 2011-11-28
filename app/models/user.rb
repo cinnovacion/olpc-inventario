@@ -37,8 +37,8 @@ class User < ActiveRecord::Base
 
   validates_uniqueness_of :usuario, :if => :user_exists?
   validates_presence_of :password, :if => :password_exists?
-  validates_length_of :usuario, :allow_nil => true, :minimum => 5, :too_short => _("Must be at least %d characters")
-  validates_length_of :password, :allow_nil => true, :minimum => 5, :too_short => _("Must be at least %d characters")
+  validates_length_of :usuario, :allow_nil => true, :minimum => 5, :too_short => N_("Must be at least %d characters")
+  validates_length_of :password, :allow_nil => true, :minimum => 5, :too_short => N_("Must be at least %d characters")
 
   
   ##

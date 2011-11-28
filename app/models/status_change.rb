@@ -29,7 +29,7 @@ class StatusChange < ActiveRecord::Base
   belongs_to :charger
 
   #DEBUG: validates_presence_of :previous_state_id, :message => "Debe proveer el estado anterior."
-  validates_presence_of :new_state_id, :message => _("You must provide the new state.")
+  validates_presence_of :new_state_id, :message => N_("You must provide the new state.")
 
   def self.getColumnas()
     ret = Hash.new

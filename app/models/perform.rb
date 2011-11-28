@@ -26,9 +26,9 @@ class Perform < ActiveRecord::Base
   belongs_to :place
   belongs_to :profile
 
-  validates_presence_of :person_id, :message => _("You must specify the person.")
-  validates_presence_of :place_id, :message => _("You must specify the place.")
-  validates_presence_of :profile_id, :message => _("You must specify the profile.")
+  validates_presence_of :person_id, :message => N_("You must specify the person.")
+  validates_presence_of :place_id, :message => N_("You must specify the place.")
+  validates_presence_of :profile_id, :message => N_("You must specify the profile.")
 
   def self.getColumnas()
     ret = Hash.new

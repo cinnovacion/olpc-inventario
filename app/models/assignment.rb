@@ -24,7 +24,7 @@ class Assignment < ActiveRecord::Base
   belongs_to :laptop, :class_name => "Laptop", :foreign_key => :laptop_id
 
   
-  validates_presence_of :laptop_id, :message => _("Please specify a laptop.")
+  validates_presence_of :laptop_id, :message => N_("Please specify a laptop.")
 
 
   def self.getColumnas()

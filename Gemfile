@@ -33,9 +33,12 @@ gem 'mysql2', '< 0.3'
 
 gem 'json'
 gem 'locale'
-gem 'gettext'
 gem 'gbarcode'
 gem 'gruff'
 gem 'spreadsheet-excel'
 gem 'parseexcel'
 gem 'acts_as_audited', "2.0.0", :path => "vendor/gems/acts_as_audited-2.0.0"
+
+gem 'fast_gettext'
+gem 'gettext', '>=1.9.3', :require => false, :group => :development
+

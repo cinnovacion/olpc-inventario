@@ -25,12 +25,12 @@ class Node < ActiveRecord::Base
   belongs_to :place
   belongs_to :node_type
 
-  validates_presence_of :name, :message => _("Must specify the name.")
-  validates_presence_of :lat, :message => _("Must specify the Latitude")
-  validates_presence_of :lng, :message => _("Must specify the Longitude")
-  validates_presence_of :zoom, :message => _("You must specify the zoom.")
-  validates_presence_of :place_id, :message => _("You must specify the place")
-  validates_presence_of :node_type_id, :message => _("You must specify the node type.")
+  validates_presence_of :name, :message => N_("Must specify the name.")
+  validates_presence_of :lat, :message => N_("Must specify the Latitude")
+  validates_presence_of :lng, :message => N_("Must specify the Longitude")
+  validates_presence_of :zoom, :message => N_("You must specify the zoom.")
+  validates_presence_of :place_id, :message => N_("You must specify the place")
+  validates_presence_of :node_type_id, :message => N_("You must specify the node type.")
 
   
   DEFAULT_ZOOM_VALUE = 17

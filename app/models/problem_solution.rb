@@ -27,9 +27,9 @@ class ProblemSolution < ActiveRecord::Base
   belongs_to :problem_report
   has_many :bank_deposits
 
-  validates_presence_of :solution_type_id, :message => _("Specify the solution.")
-  validates_presence_of :solved_by_person_id, :message => _("Specify who made the repair.")
-  validates_presence_of :problem_report_id, :message => _("Specify the problem.")
+  validates_presence_of :solution_type_id, :message => N_("Specify the solution.")
+  validates_presence_of :solved_by_person_id, :message => N_("Specify who made the repair.")
+  validates_presence_of :problem_report_id, :message => N_("Specify the problem.")
 
   def self.getColumnas()
     [ 

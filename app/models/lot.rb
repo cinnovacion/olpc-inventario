@@ -25,7 +25,7 @@ class Lot < ActiveRecord::Base
   has_many :section_details
   belongs_to :person
 
-  validates_presence_of :person_id, :message => "You must provide the responsible."
+  validates_presence_of :person_id, :message => N_("You must provide the responsible.")
 
   def self.getColumnas()
     [ 

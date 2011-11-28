@@ -30,10 +30,10 @@ class ProblemReport < ActiveRecord::Base
   belongs_to :laptop
   has_one :problem_solution
 
-  validates_presence_of :problem_type_id, :message => _("You must provide the type of problem.")
-  validates_presence_of :laptop_id, :message => _("You must provide the laptop linked to the problem.")
-  validates_presence_of :place_id, :message => _("You must provide the location of the owner.")
-  validates_presence_of :owner_id, :message => _("You must provide the owner.")
+  validates_presence_of :problem_type_id, :message => N_("You must provide the type of problem.")
+  validates_presence_of :laptop_id, :message => N_("You must provide the laptop linked to the problem.")
+  validates_presence_of :place_id, :message => N_("You must provide the location of the owner.")
+  validates_presence_of :owner_id, :message => N_("You must provide the owner.")
 
   def self.getColumnas()
     [ 

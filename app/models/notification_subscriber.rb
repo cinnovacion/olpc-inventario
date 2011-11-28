@@ -26,8 +26,8 @@ class NotificationSubscriber < ActiveRecord::Base
   belongs_to :person
   belongs_to :notification
 
-  validates_presence_of :person_id, :message => _("You must provide the subscriber.")
-  validates_presence_of :notification_id, :message => _("You must provide the Notification.")
+  validates_presence_of :person_id, :message => N_("You must provide the subscriber.")
+  validates_presence_of :notification_id, :message => N_("You must provide the Notification.")
 
   def self.getColumnas()
     ret = Hash.new 

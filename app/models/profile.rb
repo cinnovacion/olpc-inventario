@@ -28,7 +28,7 @@ class Profile < ActiveRecord::Base
   has_many :performs
   has_many :people, :through => :performs, :source => :person
 
-  validates_uniqueness_of :internal_tag, :message => _("The tag must be unique")
+  validates_uniqueness_of :internal_tag, :message => N_("The tag must be unique")
 
   def self.getColumnas(vista = "")
     ret = Hash.new
