@@ -38,6 +38,7 @@ gem 'gruff'
 gem 'spreadsheet-excel'
 gem 'parseexcel'
 gem 'acts_as_audited', "2.0.0", :path => "vendor/gems/acts_as_audited-2.0.0"
+gem 'will_paginate'
 
 gem 'fast_gettext'
 gem 'gettext', '>=1.9.3', :require => false, :group => :development
