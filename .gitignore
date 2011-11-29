@@ -5,3 +5,7 @@ tmp/
 qooxdoo-sdk
 public/build
 *.swp
+qooxdoo-*-sdk.zip
+public/system/barcodes
+Gemfile.lock
+db/schema.rb
