@@ -94,6 +94,10 @@ class ImagesController < SearchController
 
   private 
   def show_image(image)
+    if not image
+      send_data nil
+      return
+    end
     send_data image.file, :filename => image.name ,:type => "image/jpeg", :disposition => "inline"
   end
 end
