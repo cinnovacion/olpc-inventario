@@ -18,6 +18,10 @@
 // author: Raul Gutierrez S. - rgs@paraguayeduca.org
 //
 
+/*
+  #asset(qx/icon/Tango/22/actions/document-new.png)
+*/
+
 qx.Class.define("inventario.widget.Window",
 {
   extend : qx.core.Object,

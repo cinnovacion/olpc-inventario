@@ -54,7 +54,6 @@
 
 /*
   #asset(qx/icon/Tango/16/actions/zoom-in.png)
-  #asset(qx/icon/Tango/16/actions/zoom.png)
   #asset(qx/icon/Tango/16/actions/go-previous.png)
   #asset(qx/icon/Tango/16/actions/go-next.png)
 */
@@ -530,7 +529,7 @@ qx.Class.define("inventario.window.Abm2",
       this.setSearchOptions(cb);
 
       var t = this.getSearchButtonText();
-      var but = new qx.ui.form.Button(t, "qx/icon/Tango/16/actions/zoom.png");
+      var but = new qx.ui.form.Button(t, "qx/icon/Tango/16/actions/zoom-in.png");
       this.setSearchButton(but);
 
       var but = new qx.ui.form.Button("", "qx/icon/Tango/16/actions/zoom-in.png");
