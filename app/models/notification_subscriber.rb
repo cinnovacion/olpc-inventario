@@ -29,6 +29,8 @@ class NotificationSubscriber < ActiveRecord::Base
   validates_presence_of :person_id, :message => N_("You must provide the subscriber.")
   validates_presence_of :notification_id, :message => N_("You must provide the Notification.")
 
+  before_save :validate_person
+
   def self.getColumnas()
     ret = Hash.new 
     ret[:columnas] = [
@@ -59,7 +61,7 @@ class NotificationSubscriber < ActiveRecord::Base
     ret
   end
 
-  def before_save()
+  def validate_person()
     if !self.person.isEmailValid?
       person_name = self.person.getFullName()
       error_msg =  _("%s does not have a valid email address. It can not be signed") % person_name

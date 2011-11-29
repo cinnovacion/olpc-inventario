@@ -32,6 +32,7 @@ class Node < ActiveRecord::Base
   validates_presence_of :place_id, :message => N_("You must specify the place")
   validates_presence_of :node_type_id, :message => N_("You must specify the node type.")
 
+  before_update :register_events
   
   DEFAULT_ZOOM_VALUE = 17
 
@@ -137,7 +138,7 @@ class Node < ActiveRecord::Base
       attribs
   end
 
-  def before_update
+  def register_events
 
     #Dijkstra forgive me...
     old_me = Node.find_by_id(self.id)

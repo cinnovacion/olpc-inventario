@@ -35,6 +35,10 @@ class ProblemReport < ActiveRecord::Base
   validates_presence_of :place_id, :message => N_("You must provide the location of the owner.")
   validates_presence_of :owner_id, :message => N_("You must provide the owner.")
 
+  before_create :set_created_at
+  after_create :register_notifications
+  before_validation :sync_laptop_details
+
   def self.getColumnas()
     [ 
      {:name => _("Id"), :key => "problem_reports.id", :related_attribute => "getId()", :width => 50},
@@ -56,7 +60,7 @@ class ProblemReport < ActiveRecord::Base
     ret
   end
 
-  def before_validation
+  def sync_laptop_details
     # Since we need a lot of statistical information,
     # we cannot rely on laptops data to deduce the
     # owner and his location, since this may change.
@@ -64,11 +68,11 @@ class ProblemReport < ActiveRecord::Base
     self.place_id = self.laptop.owner.place.id
   end
 
-  def before_create
+  def set_created_at
     self.created_at = Time.now
   end
 
-  def after_create
+  def register_notifications
     extended_data = { 
                       _("Id:") => self.id,
                       _("subject") => self.problem_type.getName,

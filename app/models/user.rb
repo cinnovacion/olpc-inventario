@@ -40,7 +40,11 @@ class User < ActiveRecord::Base
   validates_length_of :usuario, :allow_nil => true, :minimum => 5, :too_short => N_("Must be at least %d characters")
   validates_length_of :password, :allow_nil => true, :minimum => 5, :too_short => N_("Must be at least %d characters")
 
-  
+  before_create :ensure_clave
+  before_update :ensure_clave
+  after_create :set_nil_password
+  after_update :set_nil_password
+
   ##
   # Listing
   #
@@ -110,23 +114,13 @@ class User < ActiveRecord::Base
   #
   # FIXME: we should check if it _actually_ is hashed, otherwise hash it ourselves. 
   #        Server-side code should never trust the client!
-  def before_create
+  def ensure_clave
     if self.password and self.password != ""
       self.clave = self.password
     end
   end
 
-  def after_create
-    @password = nil
-  end
-  
-  def before_update
-    if self.password and self.password != ""
-      self.clave = self.password
-    end
-  end
-
-  def after_update
+  def set_nil_password
     @password = nil
   end
   

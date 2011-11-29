@@ -23,6 +23,7 @@ class PartMovement < ActiveRecord::Base
   belongs_to :place
   belongs_to :person
 
+  before_save :set_created_at
 
   def self.getColumnas()
     [ 
@@ -61,7 +62,7 @@ class PartMovement < ActiveRecord::Base
     PartMovement.create!(attribs)
   end
 
-  def before_save
+  def set_created_at
     self.created_at = Time.now if !self.created_at
   end
 

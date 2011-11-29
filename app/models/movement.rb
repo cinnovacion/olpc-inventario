@@ -40,6 +40,7 @@ class Movement < ActiveRecord::Base
   validates_presence_of :source_person_id, :message => N_("Please specify who delivered.")
   validates_presence_of :destination_person_id, :message => N_("Please specify who gets it.")
 
+  before_save :do_before_save
 
   def self.getColumnas()
     ret = Hash.new
@@ -167,7 +168,7 @@ class Movement < ActiveRecord::Base
     end
   end
 
-  def before_save
+  def do_before_save
     raise _("The loans require return date.") if !self.return_date and self.movement_type.internal_tag == "prestamo"
     raise _("Only loans require return date.") if self.return_date and self.movement_type.internal_tag != "prestamo"
     self.created_at = self.date_moved_at = self.time_moved_at = Time.now

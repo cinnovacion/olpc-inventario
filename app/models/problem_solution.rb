@@ -31,6 +31,9 @@ class ProblemSolution < ActiveRecord::Base
   validates_presence_of :solved_by_person_id, :message => N_("Specify who made the repair.")
   validates_presence_of :problem_report_id, :message => N_("Specify the problem.")
 
+  before_create :set_created_at
+  after_create :do_after_create
+
   def self.getColumnas()
     [ 
      {:name => _("Id"),:key => "problem_solutions.id", :related_attribute => "getId", :width => 50},
@@ -99,11 +102,11 @@ class ProblemSolution < ActiveRecord::Base
     true
   end
 
-  def before_create
+  def set_created_at
    self.created_at = Time.now
   end
 
-  def after_create
+  def do_after_create
 
     #Mark the report as solved
     problem_report.solved = true

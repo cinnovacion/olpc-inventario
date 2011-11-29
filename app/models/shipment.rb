@@ -24,6 +24,7 @@
 class Shipment < ActiveRecord::Base
   has_many :laptops
 
+  before_save :set_created_at
 
   ###
   # Listado
@@ -49,7 +50,7 @@ class Shipment < ActiveRecord::Base
   end
 
 
-  def before_save
+  def set_created_at
     self.created_at = Time.now
   end
 

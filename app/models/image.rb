@@ -30,6 +30,7 @@ class Image < ActiveRecord::Base
   validates_presence_of :name, :message => N_("The image must be named.")
   validates_presence_of :file, :message => N_("The image must have an associated file.")
 
+  before_create :set_created_at
 
   def self.getColumnas(vista = "")
     [ 
@@ -66,7 +67,7 @@ class Image < ActiveRecord::Base
     self.name ? self.name : ""
   end
 
-  def before_create
+  def set_created_at
     self.created_at = Fecha.getFecha()
   end
 

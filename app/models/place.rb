@@ -45,6 +45,10 @@ class Place < ActiveRecord::Base
   has_many :problem_reports
   has_one :school_info
 
+  before_create :set_created_at_and_ancestors
+  after_create :register_place_dependencies
+  before_update :update_place_dependencies
+  before_destroy :unregister_place_dependencies
   
   ###
   # Listado
@@ -107,7 +111,7 @@ class Place < ActiveRecord::Base
     ret
   end
   
-  def before_update
+  def update_place_dependencies
 
     Place.send(:with_exclusive_scope) do
 
@@ -125,21 +129,21 @@ class Place < ActiveRecord::Base
     end
   end
 
-  def before_create
+  def set_created_at_and_ancestors
     self.created_at = Time.now
     Place.send(:with_exclusive_scope) do
       self.setAncestorsIds
     end
   end
 
-  def before_destroy
+  def unregister_place_dependencies
     Place.send(:with_exclusive_scope) do
       self.unregister_from_ancestors
       PlaceDependency.unregister_dependencies(self)
     end
   end
 
-  def after_create
+  def register_place_dependencies
     Place.send(:with_exclusive_scope) do 
       self.register_on_ancestors
       PlaceDependency.register_dependencies(self)

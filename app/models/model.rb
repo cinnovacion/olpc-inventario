@@ -27,6 +27,8 @@ class Model < ActiveRecord::Base
   validates_presence_of :name
   validates_presence_of :description
 
+  before_save :set_created_at
+
   def self.getColumnas()
     [ 
      {:name => _("Id"),:key => "models.id",:related_attribute => "id", :width => 50},
@@ -36,7 +38,7 @@ class Model < ActiveRecord::Base
     ]
   end
 
-  def before_save
+  def set_created_at
     self.created_at = Time.now
   end
 

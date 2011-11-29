@@ -45,6 +45,11 @@ class Laptop < ActiveRecord::Base
   validates_presence_of :status_id, :message => N_("You must provide the State")
   validates_presence_of :owner_id, :message => N_("You must provide the Owner")
 
+  before_create :set_created_at_and_status_id
+  before_save :upcase_serial_number
+
+  #TODO, register stock entrance after_create
+
   def self.getColumnas()
     ret = Hash.new
     ret[:columnas] = [ 
@@ -77,18 +82,13 @@ class Laptop < ActiveRecord::Base
     }
   end
 
-
-  def before_create
+  def set_created_at_and_status_id
     self.created_at = Time.now
     self.status_id = Status.find_by_internal_tag("deactivated").id if !self.status_id 
   end
 
-  def before_save
+  def upcase_serial_number
     self.serial_number.upcase!
-  end
-
-  def after_create
-    #TODO, register stock entrance
   end
 
   def getDrillDownInfo

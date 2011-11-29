@@ -45,6 +45,8 @@ class Person < ActiveRecord::Base
   validates_uniqueness_of :id_document, :message => N_("Repeated document id number")
   validates_presence_of :id_document, :message => N_("Must have a document id number")
 
+  before_create :set_created_at
+  before_save :do_before_save
 
   SELECTION_VIEW = "selection"
   BARCODE_UPPERBOUND = 9999999999
@@ -216,13 +218,13 @@ class Person < ActiveRecord::Base
     end
   end
 
-  def before_save
+  def do_before_save
     old_self = Person.find_by_id(self.id)
     self.id_document_created_at = Date.today if (!old_self || (old_self && !old_self.hasValidIdDoc?)) && self.hasValidIdDoc?
     self.generateBarCode if !self.barcode
   end
 
-  def before_create
+  def set_created_at
     self.created_at = Time.now
   end
 

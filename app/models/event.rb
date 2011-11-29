@@ -25,6 +25,8 @@ class Event < ActiveRecord::Base
   belongs_to :event_type
   belongs_to :place
 
+  before_create :set_created_at
+
   def self.getColumnas()
     [ 
      {:name => _("Id"), :key => "events.id", :related_attribute => "id", :width => 50},
@@ -49,7 +51,7 @@ class Event < ActiveRecord::Base
     false
   end
 
-  def before_create
+  def set_created_at
     self.created_at = Time.now
   end
 

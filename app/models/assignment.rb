@@ -26,6 +26,7 @@ class Assignment < ActiveRecord::Base
   
   validates_presence_of :laptop_id, :message => N_("Please specify a laptop.")
 
+  before_save :do_before_save
 
   def self.getColumnas()
     ret = Hash.new
@@ -75,7 +76,7 @@ class Assignment < ActiveRecord::Base
     end
   end
 
-  def before_save
+  def do_before_save
     self.created_at = self.date_assigned = self.time_assigned = Time.now
   end
 

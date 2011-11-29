@@ -31,6 +31,8 @@ class MovementDetail < ActiveRecord::Base
   belongs_to :movement
   belongs_to :laptop
 
+  before_save :sync_laptop_details
+  after_save :do_after_save
 
   ###
   # Listado
@@ -56,12 +58,12 @@ class MovementDetail < ActiveRecord::Base
     ret
   end
 
-  def before_save
+  def sync_laptop_details
     self.description = laptop.getDescription()
     self.serial_number = laptop.getSerialNumber()
   end
 
-  def after_save
+  def do_after_save
     self.checkReturned2 if self.movement.movement_type.is_return?
   end
 

@@ -27,6 +27,8 @@ class Lot < ActiveRecord::Base
 
   validates_presence_of :person_id, :message => N_("You must provide the responsible.")
 
+  before_create :set_created_at
+
   def self.getColumnas()
     [ 
      {:name => _("Id"),:key => "lots.id",:related_attribute => "id", :width => 120},
@@ -81,7 +83,7 @@ class Lot < ActiveRecord::Base
 
   end
 
-  def before_create
+  def set_created_at
     self.created_at = Time.now
   end
 

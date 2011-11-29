@@ -2,6 +2,8 @@ class BankDeposit < ActiveRecord::Base
 
   belongs_to :problem_solution
 
+  before_create :set_created_at
+
   def self.getColumnas()
     [ 
      {:name => _("Id"), :key => "bank_deposits.id", :related_attribute => "getId", :width => 50},
@@ -41,7 +43,7 @@ class BankDeposit < ActiveRecord::Base
     true
   end
 
-  def before_create
+  def set_created_at
     self.created_at = Date.today
   end
 
