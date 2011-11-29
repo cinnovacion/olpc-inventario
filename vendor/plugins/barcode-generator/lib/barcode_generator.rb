@@ -10,34 +10,37 @@
 # supports.
 
 # Extending <tt>ActionView::Base</tt> to support rendering themes
-require 'gs_wrapper'
+require 'imagemagick_wrapper'
 module ActionView
   # Extending <tt>ActionView::Base</tt> to support rendering themes
   class Base
-    include GsWrapper
+    include ImageMagickWrapper
 
 
-    VALID_BARCODE_OPTIONS = [:encoding_format, :output_format, :width, :height, :scaling_factor, :xoff, :yoff, :margin	]
+    VALID_BARCODE_OPTIONS = [:encoding_format, :output_format, :width, :height, :scaling_factor, :xoff, :yoff, :margin, :resolution, :antialias	]
     
     def barcode(id, options = {:encoding_format => DEFAULT_ENCODING })
 
       options.assert_valid_keys(VALID_BARCODE_OPTIONS)
-      options[:width] = DEFAULT_WIDTH unless options[:width]
-      options[:height] = DEFAULT_HEIGHT unless options[:height]
-
       output_format = options[:output_format] ? options[:output_format] : DEFAULT_FORMAT
 
       id.upcase!
-      eps = "#{RAILS_ROOT}/public/images/barcodes/#{id}.eps"
-      out = "#{RAILS_ROOT}/public/images/barcodes/#{id}.#{output_format}"
+      # This gives us a partitioned path so as not to have thousands
+      # of files in the same directory.  Also, put the files in
+      # public system since capistrano symlinks this path across
+      # deployments by default
+      path = Rails.root.join('public', 'system', 'barcodes', *Digest::MD5.hexdigest(id).first(9).scan(/.../))
+      FileUtils.mkdir_p(path)
+      eps = "#{path}/#{id}.eps"
+      out = "#{path}/#{id}.#{output_format}"
       
       #dont generate a barcode again, if already generated
       unless File.exists?(out)
         #generate the barcode object with all supplied options
         options[:encoding_format] = DEFAULT_ENCODING unless options[:encoding_format]
         bc = Gbarcode.barcode_create(id)
-        bc.width  = options[:width]
-        bc.height = options[:height]
+        bc.width  = options[:width]          if options[:width]
+        bc.height = options[:height]         if options[:height]
         bc.scalef = options[:scaling_factor] if options[:scaling_factor]
         bc.xoff   = options[:xoff]           if options[:xoff]
         bc.yoff   = options[:yoff]           if options[:yoff]
@@ -54,15 +57,14 @@ module ActionView
         File.open(eps,'wb') do |eps_img| 
           Gbarcode.barcode_print(bc, eps_img, print_options)
           eps_img.close
-          gs_convert(output_format, eps, out)
+          convert_to_png(eps, out, options[:resolution], options[:antialias])
         end
         
-        # delete the eps image, no need to accummulate cruft
+        #delete the eps image, no need to accummulate cruft
         File.delete(eps)
       end
       #send the html image tag
-      puts "width #{options[:width]}"
-      image_tag("barcodes/#{id}.#{output_format}", :width => options[:width], :height => options[:height])
+      image_tag(out.gsub(/.*public\/system/, '/system'))
     end
     
   end

@@ -112,7 +112,8 @@ fi
 %attr(-,apache,apache) /var/%{name}/log
 /var/%{name}/public
 %attr(-,apache,apache) /var/%{name}/public/images
-%attr(-,apache,apache) /var/%{name}/public/images/barcodes
+%attr(-,apache,apache) /var/%{name}/public/system
+%attr(-,apache,apache) /var/%{name}/public/system/barcodes
 /var/%{name}/Rakefile
 /var/%{name}/INSTALL
 /var/%{name}/script
