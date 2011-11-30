@@ -74,6 +74,7 @@ class MovementType < ActiveRecord::Base
   end
 
   def self.check(last_movement_type, movement_type)
+    return true if not APP_CONFIG["enable_movement_type_checking"]
 
     if last_movement_type == nil
       return true

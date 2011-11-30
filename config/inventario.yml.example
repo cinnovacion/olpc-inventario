@@ -2,3 +2,8 @@
 # Default: OLPC Inventario
 name: MyProject Inventario
 
+# Whether to apply strict rules on movements.
+# This applies a selection of rules when movements are created. For example,
+# if a "delivery" movement is created on a laptop, the next movement must be
+# a return. Default true.
+#enable_movement_type_checking: true
