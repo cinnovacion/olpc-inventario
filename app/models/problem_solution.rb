@@ -83,7 +83,9 @@ class ProblemSolution < ActiveRecord::Base
       problem_report = ProblemReport.find_by_id(impure_attribs[:problem_report_id].to_i)
       solution_type = SolutionType.find_by_id(impure_attribs[:solution_type_id].to_i)
 
-      raise _("The number of deposit is required") if !BankDeposit.check(solution_type, bank_deposits_data)
+      if APP_CONFIG["repairs_require_deposits"] and !BankDeposit.check(solution_type, bank_deposits_data)
+        raise _("The number of deposit is required")
+      end
       raise _("Select the type of solution") if !solution_type
       raise _("Specify the number of report") if !problem_report
 

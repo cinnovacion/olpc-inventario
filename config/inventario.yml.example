@@ -7,3 +7,7 @@ name: MyProject Inventario
 # if a "delivery" movement is created on a laptop, the next movement must be
 # a return. Default true.
 #enable_movement_type_checking: true
+
+# Whether laptop repairs require bank deposits in order to be carried out.
+# Default true
+#repairs_require_deposits: true
