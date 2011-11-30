@@ -1,0 +1,4 @@
+# The name of the application that will appear in the title bar.
+# Default: OLPC Inventario
+name: MyProject Inventario
+

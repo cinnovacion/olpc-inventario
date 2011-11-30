@@ -40,13 +40,19 @@ class ApplicationController < ActionController::Base
 
   cache_sweeper :object_sweeper
   before_filter :set_gettext_locale
-  before_filter :auth_control
-  before_filter :access_control
-  around_filter :do_scoping
+  before_filter :auth_control, :except => :index
+  before_filter :access_control, :except => :index
+  around_filter :do_scoping, :except => :index
 
   def initialize 
     super
     @check_authentication = true
+  end
+
+  def index
+    # Render the standard application template (which launches the JS app and
+    # opens the login screen)
+    render :layout => 'application', :nothing => true
   end
 
   private 
