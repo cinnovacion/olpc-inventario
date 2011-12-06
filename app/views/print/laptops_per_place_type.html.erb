@@ -7,14 +7,14 @@
 <B><U><%= @title %></B></U><br>
 <B><U><%= @date %></B></U><br>
 
-<small><%= @comment %></small>
+<small><%= raw(@comment) %></small>
 
 <table border=1>
 
 <% @matrix.each { |f|  %>
    <tr>
       <% f.each { |col|  %>
-         <td> <%= col ? col : "&nbsp;" -%> </td>
+         <td> <%= col ? col : raw("&nbsp;") -%> </td>
       <% } %>
    </tr>
 <% } %>

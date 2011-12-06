@@ -19,14 +19,14 @@
    <td align="center"><font size=1><%= m[:name] %></font></td>
    <td align="center"><font size=1><%= m[:doc_id] %></font></td>
    <td align="center"><font size=1><%= m[:laptop_sn] %><%= (" (" + m[:status] + ")") if m[:status] %></font></td>
-   <td align="center"><font size=1><%= m[:delivered] ? _("Yes") : "<font color=red>" + _("No") + "</font>" %></font></td>
+   <td align="center"><font size=1><%= m[:delivered] ? _("Yes") : raw("<font color=red>") + _("No") + raw("</font>") %></font></td>
    <% end %>
 
    <% if m[:type] == 'multiple' %>
    <td align="left"></td>
    <td align="left" colspan="2"><font size=1 color=red><%= _("Person has multiple laptops!") %></b></td>
    <td align="center"><font size=1><%= m[:laptop_sn] %><%= (" (" + m[:status] + ")") if m[:status] %></font></td>
-   <td align="center"><font size=1><%= m[:delivered] ? _("Yes") : "<font color=red>" + _("No") + "</font>" %></font></td>
+   <td align="center"><font size=1><%= m[:delivered] ? _("Yes") : raw("<font color=red>") + _("No") + raw("</font>") %></font></td>
    <% end %>
 
    <% if m[:type] == 'person_no_laptop' %>
@@ -39,7 +39,7 @@
 
    <% if m[:type] == 'person_notes' %>
    <td align="left"></td>
-   <td colspan=4><font size="0.5"><%= _("Notes: %s") % h(m[:notes]).gsub(/\r?\n/, "<br />") %></font></td>
+   <td colspan=4><font size="0.5"><%= _("Notes: %s") % m[:notes].gsub(/\r?\n/, "<br />") %></font></td>
    <% end %>
 
 </tr>

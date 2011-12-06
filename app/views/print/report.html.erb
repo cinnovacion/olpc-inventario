@@ -1,4 +1,4 @@
-<center><h1><%= @titulo -%></h1></center>
+<center><h1><%= raw(@titulo) -%></h1></center>
 
 <CENTER>
 <%if @fecha_desde and @fecha_hasta %>
@@ -21,7 +21,7 @@
 
 <tr <%= bg_attr -%> >
    <%m.each { |d| %>
-   <td align="center" ><font size= <%= @fontsize ? @fontsize.to_s : "1"-%> ><%= d -%></font></td>
+   <td align="center" ><font size= <%= @fontsize ? @fontsize.to_s : "1"-%> ><%= raw(d) -%></font></td>
    <% } %>
 </tr>
 
