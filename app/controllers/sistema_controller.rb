@@ -195,7 +195,7 @@ class SistemaController < ApplicationController
 
   def genSchoolManagerElements
     school_type_id = PlaceType.find_by_internal_tag("school").id
-    Place.roots4(Place, current_user).map { |root|
+    current_user.getRootPlaces().map { |root|
       genSchoolsTree(root, school_type_id)
     }
   end

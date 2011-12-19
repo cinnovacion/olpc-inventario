@@ -109,6 +109,14 @@ class User < ActiveRecord::Base
     self.person ? self.person.getFullName() : ""
   end
 
+  # Root places where the user has access
+  def getRootPlaces()
+    person = self.person
+    query = Place.includes(:performs)
+    query = query.where('performs.person_id' => person.id, 'performs.profile_id' => person.profile.id)
+    query
+  end
+
   ####
   # We presume the password comes hashed (with SHA1) from the client side. 
   #

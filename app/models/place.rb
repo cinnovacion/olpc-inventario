@@ -553,13 +553,6 @@ class Place < ActiveRecord::Base
     end
   end
 
-  def self.roots4(query, current_user)
-    person = current_user.person
-    query = query.includes(:performs)
-    query = query.where('performs.person_id' => person.id, 'performs.profile_id' => person.profile.id)
-    query
-  end
-
   ###
   # tch says: Should this die already?
   def self.theSwissArmyKnifeFuntion(city_id, schoolInfo = nil, shiftInfo = nil, gradeInfo = nil, sectionInfo = nil)

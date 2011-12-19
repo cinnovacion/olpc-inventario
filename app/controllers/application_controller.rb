@@ -356,11 +356,11 @@ class ApplicationController < ActionController::Base
     cb_entries = []
     cb_entries.push(comboBoxifize()) if includeBlank
 
-    place_query = Place.includes(pruneInc).where(pruneCond)
+    roots = current_user.getRootPlaces()
+    roots_filtered = roots.includes(pruneInc).where(pruneCond)
 
-    objSet = modelClass.roots4(Place, current_user)
-    objSet.each { |classSubObj|
-      if modelClass.roots4(place_query, current_user).include?(classSubObj)
+    roots.each { |classSubObj|
+      if roots_filtered.include?(classSubObj)
         cb_entries.push(comboBoxifize(classSubObj, targetId, classSubObj.send(infoMethod)))
       end
 
@@ -376,10 +376,11 @@ class ApplicationController < ActionController::Base
     next_concatInf = (concatInf ? concatInf+':' : "") + classObj.send(infoMethod)
 
     objSet = classObj.send(hierarchyMethod)
+    objSet_filtered = objSet.where(pruneCond).includes(pruneInc)
 
     objSet.each { |classSubObj|
 
-      if objSet.where(pruneCond).includes(pruneInc).include?(classSubObj)
+      if objSet_filtered.include?(classSubObj)
         cb_entries.push(comboBoxifize(classSubObj, targetId, next_concatInf+':'+classSubObj.send(infoMethod)))
       end
 
