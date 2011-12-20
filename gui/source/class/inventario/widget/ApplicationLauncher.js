@@ -185,6 +185,13 @@ qx.Class.define("inventario.widget.ApplicationLauncher",
           };
 
           break;
+
+        case "people_mover":
+          execute = function() {
+            inventario.widget.PeopleMover.launch(this._page);
+          };
+
+          break;
       }
 
       var menuButton = new qx.ui.menu.Button(node.label, node.image, command, menu);

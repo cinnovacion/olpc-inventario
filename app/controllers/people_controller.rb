@@ -169,44 +169,57 @@ class PeopleController < SearchController
     @output["msg"] = _("Elements deleted.")
   end
 
-  def new_person_transfer
-    @output["window_title"] = _("Transfer people")
-    @output["fields"] = []
+  def listPeople
+    place_id = params["id"]
+    list = []
 
-    h = { "label" => _("Note"), "datatype" => "label", "text" => _("This form is for moving <b>all people</b> from one place to another.") }
-    @output["fields"].push(h)
-
-    h = { "label" => _("Move people from"), "datatype" => "hierarchy_on_demand", "options" => { "width" => 360, "height" => 120 }}
-    @output["fields"].push(h)
-
-    h = { "label" => _("Move people to"), "datatype" => "hierarchy_on_demand", "options" => { "width" => 360, "height" => 120 }}
-    @output["fields"].push(h)
-
-    h = { "label" => "", "datatype" => "checkbox", "text" => _("Add comment to person notes"), "value" => true}
-    @output["fields"].push(h)
+    if place_id
+      people = Person.includes(:performs)
+      people = people.where("performs.place_id = ?", place_id)
+      list = people.order("people.lastname, people.name").map { |student|
+        h = Hash.new
+        h[:id] = student.id
+        h[:text] = student.getFullName
+        h
+      }
+    end
+    @output[:list] = list
   end
 
-  def save_person_transfer
+  def movePeople
     datos = JSON.parse(params[:payload])
-    data_fields = datos["fields"].reverse
+    src_place_id = datos["src_place_id"]
+    dst_place_id = datos["dst_place_id"]
+    add_comment = datos["add_comment"]
 
-    from_place_id = data_fields.pop.to_i
-    to_place_id = data_fields.pop.to_i
-    add_comment = data_fields.pop
+    people_ids = datos["people_ids"]
+    if src_place_id.nil? or dst_place_id.nil? or people_ids.nil?
+      raise _("Missing field data.");
+    end
 
-    from_place = Place.find_by_id(from_place_id)
+    src_place = Place.find_by_id(src_place_id)
+    dst_place = Place.find_by_id(dst_place_id)
+    raise _("Could not find place.") if src_place.nil? or dst_place.nil?
 
     Perform.transaction do
-      Perform.where(:place_id => from_place_id).includes(:person).each { |perform|
-        if !Perform.alreadyExists?(perform.person_id, to_place_id, perform.profile_id)
-          Perform.create!({:person_id => perform.person_id, :place_id => to_place_id, :profile_id => perform.profile_id})
+      people_ids.each { |person_id|
+        perform = Perform
+        perform = perform.includes(:person) if add_comment
+        perform = perform.where(:person_id => person_id, :place_id => src_place.id).first
+        next if perform.nil?
+
+        if !Perform.alreadyExists?(person_id, dst_place_id, perform.profile_id)
+          Perform.create!({:person_id => person_id, :place_id => dst_place_id, :profile_id => perform.profile_id})
         end
         Perform.delete(perform.id)
 
         if add_comment
           person = perform.person
-          tstr = Time.now.strftime("%d/%m/%Y")
-          comment = tstr + ": " + _("Person was moved from %s") % from_place.getName()
+          time = Time.now.strftime("%d/%m/%Y")
+          moved_by = current_user.getPersonName()
+          old_place = src_place.getName
+          new_place = dst_place.getName
+          comment = _("#{time}: Person was moved from #{old_place} to #{new_place} by #{moved_by}")
           if person.notes and person.notes != ""
             comment = person.notes + "\n" + comment
           end
@@ -216,6 +229,7 @@ class PeopleController < SearchController
       }
     end
 
+    @output[:msg] = _("People moved.")
   end
 
   ##

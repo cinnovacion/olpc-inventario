@@ -380,11 +380,9 @@ class SistemaController < ApplicationController
     menu_option[:elements].push(genElement(_("Tool Box"), "place_tool_box"))
 
     submenu = genOption(_("People"))
-    cButton1 = genAbm2CustomButton(_("Transfer complete."), "/people/new_person_transfer/0",
-                                   "/people/save_person_transfer", "add", _("Transfer people"), true)
-
-    submenu[:elements].push(genElement(_("List people"), "abm2", genAbm2("personas", true, true, true, true, true, [cButton1])))
+    submenu[:elements].push(genElement(_("List people"), "abm2", genAbm2("personas", true, true, true, true, true)))
     submenu[:elements].push(genElement(_("Add people") , "abmform", genAbm2("personas")))
+    submenu[:elements].push(genElement(_("Move people"), "people_mover"))
     menu_option[:elements].push(submenu)
     menu_option[:elements].push(getMenuDeploymentInform)
     menu_option[:elements].push(getMenuDeploymentConfig)
