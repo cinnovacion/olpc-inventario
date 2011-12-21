@@ -22,10 +22,6 @@ qx.Class.define("inventario.widget.NodeTracker",
 {
   extend : inventario.window.AbstractWindow,
 
-  /*
-       * CONSTRUCTOR
-       */
-
   construct : function(page)
   {
     this.base(arguments, page);
@@ -34,18 +30,8 @@ qx.Class.define("inventario.widget.NodeTracker",
     this._refreshText = null;
   },
 
-  /*
-       * STATICS
-       */
-
   statics :
   {
-    /**
-     * TODOC
-     *
-     * @param page {var} TODOC
-     * @return {void} 
-     */
     launch : function(page)
     {
       var nodes_state = new inventario.widget.NodeTracker(null);
@@ -54,10 +40,6 @@ qx.Class.define("inventario.widget.NodeTracker",
       nodes_state.show();
     }
   },
-
-  /*
-       * PROPERTIES
-       */
 
   properties :
   {
@@ -70,28 +52,12 @@ qx.Class.define("inventario.widget.NodeTracker",
     verticalBox : { check : "Object" }
   },
 
-  /*
-       * MEMBERS
-       */
-
   members :
   {
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     show : function() {
       this._loadInitialData();
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param mainVBox {var} TODOC
-     * @return {void} 
-     */
     _doShow : function(mainVBox)
     {
       this.setVerticalBox(mainVBox);
@@ -99,14 +65,6 @@ qx.Class.define("inventario.widget.NodeTracker",
       this._setWindowTitle();
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param places {var} TODOC
-     * @param node_types {var} TODOC
-     * @return {void} 
-     */
     _createLayout : function(places, node_types)
     {
       var mainVBox = new qx.ui.container.Composite(new qx.ui.layout.VBox(20));
@@ -130,12 +88,6 @@ qx.Class.define("inventario.widget.NodeTracker",
       this._doShow(mainVBox);
     },
 
-
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     _loadInitialData : function()
     {
       var hopts = {};
@@ -147,24 +99,10 @@ qx.Class.define("inventario.widget.NodeTracker",
       inventario.transport.Transport.callRemote(hopts, this);
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param remoteData {var} TODOC
-     * @param params {var} TODOC
-     * @return {void} 
-     */
     _loadInitialDataResp : function(remoteData, params) {
       this._createLayout(remoteData.places, remoteData.node_types);
     },
 
-
-    /**
-     * TODOC
-     *
-     * @return {var} TODOC
-     */
     _mapLocator : function()
     {
       var hbox = new qx.ui.container.Composite(new qx.ui.layout.HBox(20));
@@ -180,13 +118,6 @@ qx.Class.define("inventario.widget.NodeTracker",
       return hbox;
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param places {var} TODOC
-     * @return {var} TODOC
-     */
     _trackMenu : function(places)
     {
       var hbox = new qx.ui.container.Composite(new qx.ui.layout.HBox(20));
@@ -215,13 +146,6 @@ qx.Class.define("inventario.widget.NodeTracker",
       return hbox;
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param node_types {var} TODOC
-     * @return {var} TODOC
-     */
     _filtersMenu : function(node_types)
     {
       var hbox = new qx.ui.container.Composite(new qx.ui.layout.HBox(20));
@@ -239,12 +163,6 @@ qx.Class.define("inventario.widget.NodeTracker",
       return hbox;
     },
 
-
-    /**
-     * TODOC
-     *
-     * @return {var} TODOC
-     */
     _statisticsMenu : function()
     {
       var hbox = new qx.ui.container.Composite(new qx.ui.layout.HBox(20));
@@ -273,13 +191,6 @@ qx.Class.define("inventario.widget.NodeTracker",
       return hbox;
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param e {Event} TODOC
-     * @return {void} 
-     */
     _updateNodeTypeIds : function(e)
     {
       var filter_cb = e.getCurrentTarget();
@@ -304,11 +215,6 @@ qx.Class.define("inventario.widget.NodeTracker",
     },
 
     // this._mapWidget.forceRefresh({ center : true }); To much spam.
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     _updatePlaceId : function()
     {
       var placeId = inventario.widget.Form.getInputValue(this._placesCombo);
@@ -318,24 +224,12 @@ qx.Class.define("inventario.widget.NodeTracker",
       this._setWindowTitle();
     },
 
-
-    /**
-     * _setWindowTitle(): change window title
-     *
-     * @return {void} 
-     */
     _setWindowTitle : function()
     {
       var placeName = this._placesCombo.getSelection()[0].getLabel();
       this.setWindowTitle(placeName);
     },
 
-
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     _callReset : function()
     {
       if (this._mapWidget != null)

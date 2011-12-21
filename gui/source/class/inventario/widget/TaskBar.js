@@ -24,10 +24,6 @@ qx.Class.define("inventario.widget.TaskBar",
   type : "singleton",
   extend : qx.ui.container.Composite,
 
-  /*
-       * CONSTRUCTOR
-       */
-
   construct : function()
   {
     try
@@ -57,10 +53,6 @@ qx.Class.define("inventario.widget.TaskBar",
     }
   },
 
-  /*
-       * PROPERTIES
-       */
-
   properties :
   {
     toolBar :
@@ -88,18 +80,8 @@ qx.Class.define("inventario.widget.TaskBar",
     }
   },
 
-  /*
-       * MEMBERS
-       */
-
   members :
   {
-    /**
-     * TODOC
-     *
-     * @param widget {var} TODOC
-     * @return {void} 
-     */
     addLeft : function(widget)
     {
       var part = this.getLeftPart();
@@ -109,13 +91,6 @@ qx.Class.define("inventario.widget.TaskBar",
       }
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param widget {var} TODOC
-     * @return {void} 
-     */
     addRight : function(widget)
     {
       var part = this.getRightPart();
@@ -125,12 +100,6 @@ qx.Class.define("inventario.widget.TaskBar",
       }
     },
 
-
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     clearIt : function()
     {
       var part = this.getLeftPart();
@@ -146,13 +115,6 @@ qx.Class.define("inventario.widget.TaskBar",
       this.getPart().removeAll();
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param widget {var} TODOC
-     * @return {void} 
-     */
     addWidget : function(widget)
     {
       this.removeWidget(widget);
@@ -160,13 +122,6 @@ qx.Class.define("inventario.widget.TaskBar",
       part.add(widget);
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param widget {var} TODOC
-     * @return {void} 
-     */
     removeWidget : function(widget)
     {
       var part = this.getPart();
@@ -178,13 +133,6 @@ qx.Class.define("inventario.widget.TaskBar",
       }
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param abstractWindow {var} TODOC
-     * @return {var} TODOC
-     */
     _createIcon : function(abstractWindow)
     {
       var title = abstractWindow.getWindowTitle();
@@ -205,13 +153,6 @@ qx.Class.define("inventario.widget.TaskBar",
       return button;
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param abstractWindow {var} TODOC
-     * @return {void} 
-     */
     minimize : function(abstractWindow)
     {
       var part = this.getPart();

@@ -29,12 +29,6 @@ qx.Class.define("inventario.widget.PlaceCreationToolBox",
 
   statics :
   {
-    /**
-     * TODOC
-     *
-     * @param page {var} TODOC
-     * @return {void} 
-     */
     launch : function(page)
     {
       var PCToolBox = new inventario.widget.PlaceCreationToolBox(null);
@@ -87,14 +81,6 @@ qx.Class.define("inventario.widget.PlaceCreationToolBox",
 
   members :
   {
-    /**
-     * TODOC
-     *
-     * @param data {var} TODOC
-     * @param url {var} TODOC
-     * @param handle {var} TODOC
-     * @return {void} 
-     */
     _sendToServer : function(data, url, handle)
     {
       var hopts = {};
@@ -106,59 +92,24 @@ qx.Class.define("inventario.widget.PlaceCreationToolBox",
       inventario.transport.Transport.callRemote(hopts, this);
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param remoteData {var} TODOC
-     * @param params {var} TODOC
-     * @return {void} 
-     */
     _refreshAfterCreate : function(remoteData, params) {
       this.getHierarchyWidget().reLoadElements();
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param remoteData {var} TODOC
-     * @param params {var} TODOC
-     * @return {void} 
-     */
     _refreshAfterDelete : function(remoteData, params) {
       this.getHierarchyWidget().reLoadParentElements();
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param layout {var} TODOC
-     * @return {void} 
-     */
     _doShow : function(layout) {
       this._doShow2(layout);
     },
 
-
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     show : function()
     {
       var layout = this._createLayout();
       this._doShow(layout);
     },
 
-
-    /**
-     * TODOC
-     *
-     * @return {var} TODOC
-     */
     _createLayout : function()
     {
       var container = new qx.ui.container.Composite(new qx.ui.layout.VBox(20));
@@ -180,15 +131,6 @@ qx.Class.define("inventario.widget.PlaceCreationToolBox",
     },
 
     /* Add Place Callback */
-
-    /**
-     * TODOC
-     *
-     * @param comboBox {var} TODOC
-     * @param customName {var} TODOC
-     * @param customType {var} TODOC
-     * @return {void} 
-     */
     _addPlaceCB : function(comboBox, customName, customType)
     {
       try
@@ -230,12 +172,6 @@ qx.Class.define("inventario.widget.PlaceCreationToolBox",
       }
     },
 
-
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     _deletePlaceCB : function()
     {
       var hierarchy = this.getHierarchyWidget();
@@ -252,12 +188,6 @@ qx.Class.define("inventario.widget.PlaceCreationToolBox",
       }
     },
 
-
-    /**
-     * TODOC
-     *
-     * @return {var} TODOC
-     */
     _creationMenu : function()
     {
       var container = new qx.ui.container.Composite(new qx.ui.layout.Grid());
@@ -473,16 +403,6 @@ qx.Class.define("inventario.widget.PlaceCreationToolBox",
       return container;
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param nameText {var} TODOC
-     * @param lastNameText {var} TODOC
-     * @param idDocText {var} TODOC
-     * @param type {var} TODOC
-     * @return {void} 
-     */
     _addPersonCB : function(nameText, lastNameText, idDocText, type)
     {
       var hierarchy = this.getHierarchyWidget();
@@ -504,12 +424,6 @@ qx.Class.define("inventario.widget.PlaceCreationToolBox",
       }
     },
 
-
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     _deletePersonCB : function()
     {
       var hierarchy = this.getHierarchyWidget();
@@ -532,15 +446,6 @@ qx.Class.define("inventario.widget.PlaceCreationToolBox",
       }
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param nameText {var} TODOC
-     * @param lastNameText {var} TODOC
-     * @param idDocText {var} TODOC
-     * @return {void} 
-     */
     _updatePersonCB : function(nameText, lastNameText, idDocText)
     {
       var hierarchy = this.getHierarchyWidget();
@@ -598,14 +503,6 @@ qx.Class.define("inventario.widget.PlaceCreationToolBox",
       }
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param checkBox {var} TODOC
-     * @param value {var} TODOC
-     * @return {void} 
-     */
     _changeChecked : function(checkBox, value)
     {
       var hierarchy = this.getHierarchyWidget();
@@ -621,12 +518,6 @@ qx.Class.define("inventario.widget.PlaceCreationToolBox",
       }
     },
 
-
-    /**
-     * TODOC
-     *
-     * @return {var} TODOC
-     */
     _personCreationMenu : function()
     {
       var container = new qx.ui.container.Composite(new qx.ui.layout.Grid());

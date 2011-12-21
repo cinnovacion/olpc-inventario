@@ -29,10 +29,6 @@ qx.Class.define("inventario.widget.ApplicationLauncher",
 {
   extend : qx.ui.container.Composite,
 
-  /*
-       * CONSTRUCTOR
-       */
-
   construct : function(page)
   {
     try
@@ -45,10 +41,6 @@ qx.Class.define("inventario.widget.ApplicationLauncher",
       alert(e.toString());
     }
   },
-
-  /*
-       * PROPERTIES
-       */
 
   properties :
   {
@@ -65,17 +57,8 @@ qx.Class.define("inventario.widget.ApplicationLauncher",
     }
   },
 
-  /*
-       * MEMBERS
-       */
-
   members :
   {
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     loadGuiContent : function()
     {
       var hopts = {};
@@ -87,14 +70,6 @@ qx.Class.define("inventario.widget.ApplicationLauncher",
       inventario.transport.Transport.callRemote(hopts, this);
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param remoteData {var} TODOC
-     * @param params {var} TODOC
-     * @return {void} 
-     */
     _loadGuiContentResp : function(remoteData, params)
     {
       this.removeAll();
@@ -107,13 +82,6 @@ qx.Class.define("inventario.widget.ApplicationLauncher",
       this.add(new qx.ui.form.MenuButton(remoteData.label, remoteData.image, menu));
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param node {Node} TODOC
-     * @return {var} TODOC
-     */
     _loadGuiContentRespRec : function(node)
     {
       var command = null;

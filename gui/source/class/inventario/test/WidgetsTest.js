@@ -40,16 +40,8 @@ qx.Class.define("inventario.test.WidgetsTest",
 
   members :
   {
-    /*
-            ---------------------------------------------------------------------------
-              TESTS
-            ---------------------------------------------------------------------------
-            */
-
     /**
      * Test CheckboxSelector
-     *
-     * @return {void} 
      */
     testCheckboxSelector : function()
     {
@@ -89,12 +81,6 @@ qx.Class.define("inventario.test.WidgetsTest",
       this.getRoot().add(widget);
     },
 
-
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     testDateRange : function() {
       this.getRoot().add(new inventario.widget.DateRange());
     }

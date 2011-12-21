@@ -214,29 +214,14 @@ qx.Class.define("inventario.window.AbstractWindow",
 
   members :
   {
-    /**
-     * _createInputs(): metodo abstracto,hay que redefinir
-     *
-     * @abstract 
-     * @return {void} 
-     * @throws the abstract function warning.
-     * @abstract
-     */
     _createInputs : function() {
       throw new Error("createInputs is abstract");
     },
 
-
-    /**
-     * TODOC
-     *
-     * @return {var} TODOC
-     */
     getWindowIcon : function() {
       var icon = this.getAbstractPopupWindow().getWindow().getIcon();
       return icon;
     },
-
 
     /**
      * _setHandlers(): metodo abstracto
@@ -306,34 +291,14 @@ qx.Class.define("inventario.window.AbstractWindow",
       throw new Error("saveData is abstract");
     },
 
-    /**
-     * TODOC
-     *
-     * @abstract 
-     * @return {void} 
-     * @throws the abstract function warning.
-     * @abstract
-     */
     _exitWindow : function() {
       throw new Error("_exitWindow() is abstract");
     },
 
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     cerrar : function() {
       this.getAbstractPopupWindow().getWindow().close();
     },
 
-    /**
-     * TODOC
-     *
-     * @param arriba {var} TODOC
-     * @param distancia {var} TODOC
-     * @return {var} TODOC
-     */
     _buildCommandToolBar : function(arriba, distancia)
     {
       var tb = new qx.ui.toolbar.ToolBar;
@@ -373,25 +338,12 @@ qx.Class.define("inventario.window.AbstractWindow",
       return tb;
     },
 
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     doMaximize : function()
     {
       var window = this.getAbstractPopupWindow().getWindow();
       window.open();
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param label {var} TODOC
-     * @param key_accel {var} TODOC
-     * @return {var} TODOC
-     */
     _underlineLabel : function(label, key_accel)
     {
       var ret = "";
@@ -430,13 +382,6 @@ qx.Class.define("inventario.window.AbstractWindow",
       return ret;
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param vbox {var} TODOC
-     * @return {void} 
-     */
     _doShow2 : function(vbox)
     {
       var page;
@@ -498,26 +443,12 @@ qx.Class.define("inventario.window.AbstractWindow",
 
     },
 
-
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     _minimize_cb : function()
     {
       var taskbar = inventario.widget.TaskBar.getInstance();
       taskbar.minimize(this);
     },
 
-    /**
-     * TODOC
-     *
-     * @param key_str {var} TODOC
-     * @param func {Function} TODOC
-     * @param obj {Object} TODOC
-     * @return {void} 
-     */
     _addAccelerator : function(key_str, func, obj)
     {
       var h = {};
@@ -527,28 +458,10 @@ qx.Class.define("inventario.window.AbstractWindow",
       this.getAceleradores().push(h);
     },
 
-    /**
-     * TODOC
-     *
-     * @param accel_key {var} TODOC
-     * @param callback {var} TODOC
-     * @param callback_ctxt {var} TODOC
-     * @param widgetAsociarKeys {var} TODOC
-     * @return {void} 
-     */
     _doAddAccelerator : function(accel_key, callback, callback_ctxt, widgetAsociarKeys) {
       inventario.util.Keys.addAccelerator(accel_key, callback, callback_ctxt, widgetAsociarKeys);
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param btn {var} TODOC
-     * @param callback {var} TODOC
-     * @param callback_ctxt {var} TODOC
-     * @return {Object} TODOC
-     */
     _doAddToolbarButton : function(btn, callback, callback_ctxt)
     {
       var text = btn.text;
@@ -580,13 +493,6 @@ qx.Class.define("inventario.window.AbstractWindow",
       return o;
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param e {Event} TODOC
-     * @return {void} 
-     */
     _escape_cb : function(e)
     {
       if (e.getKeyIdentifier() == "Escape")
@@ -605,13 +511,6 @@ qx.Class.define("inventario.window.AbstractWindow",
       }
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param value {var} TODOC
-     * @return {void} 
-     */
     _applyWindowTitle : function(value)
     {
       var win = this.getAbstractPopupWindow();

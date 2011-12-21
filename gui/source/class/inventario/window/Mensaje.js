@@ -108,18 +108,6 @@ qx.Class.define("inventario.window.Mensaje",
 
   statics :
   {
-    /**
-     * TODOC
-     *
-     * @param str {String} TODOC
-     * @param func {Function} TODOC
-     * @param context {var} TODOC
-     * @param tituloVentana {var} TODOC
-     * @param tituloPrincipal {var} TODOC
-     * @param tipoDeMensaje {var} TODOC
-     * @param debuggingMsg {var} TODOC
-     * @return {void} 
-     */
     mensaje : function(str, func, context, tituloVentana, tituloPrincipal, tipoDeMensaje, debuggingMsg)
     {
       var w = new inventario.window.Mensaje();
@@ -156,11 +144,6 @@ qx.Class.define("inventario.window.Mensaje",
 
   members :
   {
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     show : function()
     {
       if (!this._prepared) {
@@ -172,12 +155,6 @@ qx.Class.define("inventario.window.Mensaje",
       this._button.focus();
     },
 
-
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     _createLayout : function()
     {
       var vbox = new qx.ui.container.Composite(new qx.ui.layout.VBox(), { height : 400 });
@@ -263,12 +240,6 @@ qx.Class.define("inventario.window.Mensaje",
       this._prepared = true;
     },
 
-
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     _accept_cb : function()
     {
       var f = this.getFuncCallback();
@@ -286,11 +257,6 @@ qx.Class.define("inventario.window.Mensaje",
       this.getAbstractPopupWindow().getWindow().close();
     },
 
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     _more_info_cb : function() {
       inventario.window.Mensaje.mensaje(this.getDebuggingMsg());
     }

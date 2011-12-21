@@ -31,15 +31,6 @@ qx.Class.define("inventario.widget.Select",
 {
   extend : qx.ui.container.Composite,
 
-
-
-
-  /*
-      *****************************************************************************
-         CONSTRUCTOR
-      *****************************************************************************
-      */
-
   construct : function(param, options)
   {
     try
@@ -117,15 +108,6 @@ qx.Class.define("inventario.widget.Select",
     }
   },
 
-
-
-
-  /*
-      *****************************************************************************
-         PROPERTIES
-      *****************************************************************************
-      */
-
   properties :
   {
     comboBox : { check : "Object" },
@@ -145,45 +127,18 @@ qx.Class.define("inventario.widget.Select",
     }
   },
 
-
-
-
-  /*
-      *****************************************************************************
-         MEMBERS
-      *****************************************************************************
-      */
-
   members :
   {
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     activar : function() {
       this._create();
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param vista {var} TODOC
-     * @return {void} 
-     */
     setVistaAbm : function(vista)
     {
       vista = (vista ? vista : "");
       this.getAbm().setVista(vista);
     },
 
-
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     _create : function()
     {
       try {

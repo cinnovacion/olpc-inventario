@@ -21,19 +21,11 @@ qx.Class.define("inventario.widget.SchoolInfo",
 {
   extend : inventario.window.AbstractWindow,
 
-  /*
-       * CONSTRUCTOR
-       */
-
   construct : function(page, school_id)
   {
     this.base(arguments, page);
     this.school_id = school_id;
   },
-
-  /*
-       * PROPERTIES
-       */
 
   properties :
   {
@@ -46,29 +38,14 @@ qx.Class.define("inventario.widget.SchoolInfo",
     verticalBox : { check : "Object" }
   },
 
-  /*
-       * MEMBERS
-       */
-
   members :
   {
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     show : function()
     {
       this._createLayout();
       this._loadInitialData();
     },
 
-
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     _doShow : function()
     {
       var mainVBox = new qx.ui.container.Composite(new qx.ui.layout.VBox(20));
@@ -77,40 +54,16 @@ qx.Class.define("inventario.widget.SchoolInfo",
       this._doShow2(mainVBox);
     },
 
-
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     _createInputs : function() {},
 
-
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     _setHandlers : function() {},
 
-
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     _createLayout : function()
     {
       var vbox = new qx.ui.container.Composite(new qx.ui.layout.VBox(20), { height : 700 });
       this.setVerticalBox(vbox);
     },
 
-
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     _loadInitialData : function()
     {
       var hopts = {};
@@ -122,14 +75,6 @@ qx.Class.define("inventario.widget.SchoolInfo",
       inventario.transport.Transport.callRemote(hopts, this);
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param remoteData {var} TODOC
-     * @param params {var} TODOC
-     * @return {void} 
-     */
     _loadInitialDataResp : function(remoteData, params)
     {
       var gl = new qx.ui.layout.VBox();

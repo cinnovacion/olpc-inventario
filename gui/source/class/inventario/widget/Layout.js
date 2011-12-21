@@ -20,16 +20,13 @@ qx.Class.define("inventario.widget.Layout",
 {
   extend : qx.core.Object,
 
-
   construct : function() {},
-
 
   statics :
   {
     /**
      * removeChilds(): borrar childs (si los hay)
      *
-     * @param widget {Object} TODOC
      * @return {void} FIXME: esto genera un dispose? leaking?
      */
     removeChilds : function(widget)

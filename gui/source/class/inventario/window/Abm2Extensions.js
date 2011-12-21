@@ -22,36 +22,10 @@ qx.Class.define("inventario.window.Abm2Extensions",
 {
   extend : qx.core.Object,
 
-
-
-
-  /*
-      *****************************************************************************
-         CONSTRUCTOR
-      *****************************************************************************
-      */
-
   construct : function() {},
-
-
-
-
-  /*
-      *****************************************************************************
-         STATICS
-      *****************************************************************************
-      */
 
   statics :
   {
-    /**
-     * TODOC
-     *
-     * @param label {var} TODOC
-     * @param options {var} TODOC
-     * @param context {var} TODOC
-     * @return {void} 
-     */
     launch : function(label, options, context)
     {
       var abm2 = new inventario.window.Abm2(null, inventario.widget.Url.getUrl(options.option), label);
@@ -69,18 +43,6 @@ qx.Class.define("inventario.window.Abm2Extensions",
       abm2.show();
     },
 
-
-    /**
-     * launch an AbmForm win
-     *
-     * @param options {var} TODOC
-     * @param context {var} TODOC
-     * @return {var} TODOC
-     *
-     *
-     * TODO:
-     * - establish window title
-     */
     launchAbmForm : function(label, option_name, context)
     {
         var options = inventario.widget.Url.getUrl(option_name)
@@ -88,14 +50,6 @@ qx.Class.define("inventario.window.Abm2Extensions",
 	    f.call();
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param options {var} TODOC
-     * @param context {var} TODOC
-     * @return {var} TODOC
-     */
     customAbmFormButton : function(options, context, abm2)
     {
 	var f = inventario.window.Abm2Extensions.getAbmFormFunction(options, context, abm2);
@@ -111,7 +65,6 @@ qx.Class.define("inventario.window.Abm2Extensions",
 
 	return button;
     }, 
-
 
    getAbmFormFunction : function(options, context, abm2) {
 

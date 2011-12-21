@@ -22,10 +22,6 @@ qx.Class.define("inventario.widget.MultipleHierarchySelection",
 {
   extend : qx.ui.container.Composite,
 
-  /*
-       * CONSTRUCTOR
-       */
-
   construct : function(opts)
   {
     try
@@ -71,10 +67,6 @@ qx.Class.define("inventario.widget.MultipleHierarchySelection",
     }
   },
 
-  /*
-       * PROPERTIES
-       */
-
   properties :
   {
     hierarchyWidget :
@@ -90,17 +82,8 @@ qx.Class.define("inventario.widget.MultipleHierarchySelection",
     }
   },
 
-  /*
-       * MEMBERS
-       */
-
   members :
   {
-    /**
-     * TODOC
-     *
-     * @return {var} TODOC
-     */
     getValues : function()
     {
       var list = this.getListWidget();
@@ -115,12 +98,6 @@ qx.Class.define("inventario.widget.MultipleHierarchySelection",
       return values;
     },
 
-
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     _addItem : function()
     {
       var hierarchy = this.getHierarchyWidget();
@@ -133,12 +110,6 @@ qx.Class.define("inventario.widget.MultipleHierarchySelection",
       list.add(item);
     },
 
-
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     _removeItem : function()
     {
       var list = this.getListWidget();

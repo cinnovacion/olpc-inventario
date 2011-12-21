@@ -145,12 +145,6 @@ qx.Class.define("inventario.widget.Window",
 
   members :
   {
-    /**
-     * TODOC
-     *
-     * @param title {String} titulo de la ventana
-     * @return {void} void
-     */
     show : function(title)
     {
       var win = this.getWindow();

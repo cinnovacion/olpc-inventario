@@ -23,15 +23,6 @@ qx.Class.define("inventario.widget.PageNavigatorAbstract",
 {
   extend : qx.core.Object,
 
-
-
-
-  /*
-    *****************************************************************************
-       CONSTRUCTOR
-    *****************************************************************************
-    */
-
   construct : function(page, list_url)
   {
     // llamar al constructor del padre
@@ -51,15 +42,6 @@ qx.Class.define("inventario.widget.PageNavigatorAbstract",
     this.list_url = list_url;
     this.paginated = false;
   },
-
-
-
-
-  /*
-    *****************************************************************************
-       PROPERTIES
-    *****************************************************************************
-    */
 
   properties :
   {
@@ -82,15 +64,6 @@ qx.Class.define("inventario.widget.PageNavigatorAbstract",
     tabla : { check : "Object" }
   },
 
-
-
-
-  /*
-    *****************************************************************************
-       MEMBERS
-    *****************************************************************************
-    */
-
   members :
   {
     /* La idea del groupBox es darle un titulo a la accion..
@@ -98,11 +71,6 @@ qx.Class.define("inventario.widget.PageNavigatorAbstract",
          * El verticalBox es el agrupador de todos los elementos
          */
 
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     show : function()
     {
       this.getPage().removeAll();  // limpiar ventana
@@ -140,7 +108,6 @@ qx.Class.define("inventario.widget.PageNavigatorAbstract",
       },
       this);
     },
-
 
     /**
      * TODOC
@@ -280,12 +247,6 @@ qx.Class.define("inventario.widget.PageNavigatorAbstract",
          * TODO:  Esto no corresponde aca.. hay que llevar a a widget/Table.js
          */
 
-    /**
-     * TODOC
-     *
-     * @param allRows {var} TODOC
-     * @return {var} TODOC
-     */
     _getSelected : function(allRows)
     {
       var ret = new Array();

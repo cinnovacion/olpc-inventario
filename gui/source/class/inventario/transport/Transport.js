@@ -153,15 +153,6 @@ qx.Class.define("inventario.transport.Transport",
       }
     },
 
-    /**
-     * TODOC
-     *
-     * @param e {Event} TODOC
-     * @param f_callback {var} TODOC
-     * @param f_params {var} TODOC
-     * @param self {var} TODOC
-     * @return {void} 
-     */
     _callRemoteResp : function(e, f_callback, f_params, self)
     {
         var c;
@@ -202,11 +193,6 @@ qx.Class.define("inventario.transport.Transport",
       return ret;
     },
 
-    /**
-     * TODOC
-     *
-     * @return {var} TODOC
-     */
     getStatusWin : function() {
       var messageText = new qx.ui.basic.Atom(qx.locale.Manager.tr("Processing your request..."));
 

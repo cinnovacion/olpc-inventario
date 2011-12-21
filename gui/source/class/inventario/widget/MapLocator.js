@@ -15,9 +15,6 @@
 //     along with this program.  If not, see <http://www.gnu.org/licenses/>
 //
 
-
-
-
 /**********************************************************************************
   MapLocator.js
   Implementation of Google Map API.
@@ -38,18 +35,9 @@
   #ignore(GBrowserIsCompatible)
 ************************************************************************************/
 
-
-
-
-
-
 qx.Class.define("inventario.widget.MapLocator",
 {
   extend : inventario.window.AbstractWindow,
-
-  /*
-       * CONSTRUCTOR
-       */
 
   construct : function(page, placeId, readOnly, width, height, subNodes)
   {
@@ -82,10 +70,6 @@ qx.Class.define("inventario.widget.MapLocator",
     // Incase we are tracking also the sub map nodes.
     this._subNodes = subNodes;
   },
-
-  /*
-       * PROPERTIES
-       */
 
   properties :
   {
@@ -153,27 +137,12 @@ qx.Class.define("inventario.widget.MapLocator",
     }
   },
 
-  /*
-       * MEMBERS
-       */
-
   members :
   {
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     show : function() {
       this._loadGoogleApi();
     },
 
-
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     _loadGoogleApi : function()
     {
       var hopts = {};
@@ -187,14 +156,6 @@ qx.Class.define("inventario.widget.MapLocator",
       inventario.transport.Transport.callRemote(hopts, this);
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param remoteData {var} TODOC
-     * @param params {var} TODOC
-     * @return {void} 
-     */
     _loadGoogleApiResp : function(remoteData, params)
     {
       var key = remoteData.values.google_api_key != null ? remoteData.values.google_api_key : "";
@@ -203,24 +164,12 @@ qx.Class.define("inventario.widget.MapLocator",
       this._insertGoogleApi();
     },
 
-
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     _insertGoogleApi : function()
     {
       var loader = new qx.io.ScriptLoader();
       loader.load(this.getGoogleApiUrl(), this._insertGoogleApiResp, this);
     },
 
-
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     _insertGoogleApiResp : function()
     {
       var that = this;
@@ -233,12 +182,6 @@ qx.Class.define("inventario.widget.MapLocator",
       });
     },
 
-
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     _loadInitialData : function()
     {
       var data = {};
@@ -257,14 +200,6 @@ qx.Class.define("inventario.widget.MapLocator",
       inventario.transport.Transport.callRemote(hopts, this);
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param remoteData {var} TODOC
-     * @param params {var} TODOC
-     * @return {void} 
-     */
     _loadInitialDataResp : function(remoteData, params)
     {
       var mapDesc = remoteData.map;
@@ -281,12 +216,6 @@ qx.Class.define("inventario.widget.MapLocator",
       this._createLayout(mapDesc, nodeTypes);
     },
 
-
-    /**
-     * TODOC
-     *
-     * @return {var} TODOC
-     */
     getValues : function()
     {
       var markers = this._markers;
@@ -300,13 +229,6 @@ qx.Class.define("inventario.widget.MapLocator",
       return result;
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param marker {var} TODOC
-     * @return {Node} TODOC
-     */
     _marker2Node : function(marker)
     {
       var node = {};
@@ -321,27 +243,12 @@ qx.Class.define("inventario.widget.MapLocator",
       return node;
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param vbox {var} TODOC
-     * @return {void} 
-     */
     _doShow : function(vbox)
     {
       this.setVerticalBox(vbox);
       this._doShow2(vbox);
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param mapDesc {var} TODOC
-     * @param nodeTypes {var} TODOC
-     * @return {void} 
-     */
     _createLayout : function(mapDesc, nodeTypes)
     {
       var hbox = new qx.ui.container.Composite(new qx.ui.layout.HBox(20));
@@ -356,13 +263,6 @@ qx.Class.define("inventario.widget.MapLocator",
       this._doShow(hbox);
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param mapDesc {var} TODOC
-     * @return {var} TODOC
-     */
     _createMap : function(mapDesc)
     {
       var width = this.getWidth();
@@ -415,13 +315,6 @@ qx.Class.define("inventario.widget.MapLocator",
       return map_embed;
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param node {Node} TODOC
-     * @return {var} TODOC
-     */
     _createMarker : function(node)
     {
       var point = new GLatLng(node.lat, node.lng);
@@ -499,13 +392,6 @@ qx.Class.define("inventario.widget.MapLocator",
       return marker;
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param icon {var} TODOC
-     * @return {var} TODOC
-     */
     _createIcon : function(icon)
     {
       var customIcon = new GIcon();
@@ -522,13 +408,6 @@ qx.Class.define("inventario.widget.MapLocator",
       return customIcon;
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param nodeTypes {var} TODOC
-     * @return {var} TODOC
-     */
     _createEditMenu : function(nodeTypes)
     {
       var container = new qx.ui.container.Composite(new qx.ui.layout.Grid());
@@ -705,13 +584,6 @@ qx.Class.define("inventario.widget.MapLocator",
       return container;
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param updating {var} TODOC
-     * @return {Node} TODOC
-     */
     _form2Node : function(updating)
     {
       var node = {};
@@ -739,13 +611,6 @@ qx.Class.define("inventario.widget.MapLocator",
       return node;
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param marker {var} TODOC
-     * @return {void} 
-     */
     _removeMarker : function(marker)
     {
       // TODO: Find out how to do this correctly.
@@ -754,13 +619,6 @@ qx.Class.define("inventario.widget.MapLocator",
       this._map.removeOverlay(marker);
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param node {Node} TODOC
-     * @return {void} 
-     */
     _updateNodeData : function(node)
     {
       var data = {};
@@ -775,14 +633,6 @@ qx.Class.define("inventario.widget.MapLocator",
       inventario.transport.Transport.callRemote(hopts, this);
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param remoteData {var} TODOC
-     * @param params {var} TODOC
-     * @return {void} 
-     */
     _updateNodeDataResp : function(remoteData, params)
     {
       var node = remoteData.node;
@@ -791,12 +641,6 @@ qx.Class.define("inventario.widget.MapLocator",
     },
 
     // These functions are necesary for auto-refresh mode.
-    /**
-     * TODOC
-     *
-     * @param time {var} TODOC
-     * @return {void} 
-     */
     startAutoResfresh : function(time)
     {
       if (this._readOnly && this._timer == null && this.getPlaceId() != null)
@@ -815,13 +659,6 @@ qx.Class.define("inventario.widget.MapLocator",
       }
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param time {var} TODOC
-     * @return {void} 
-     */
     resetTimer : function(time)
     {
       if (this._timer != null)
@@ -834,13 +671,6 @@ qx.Class.define("inventario.widget.MapLocator",
       }
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param options {var} TODOC
-     * @return {void} 
-     */
     forceRefresh : function(options)
     {
       if (this._readOnly && this._subNodes) {
@@ -848,12 +678,6 @@ qx.Class.define("inventario.widget.MapLocator",
       }
     },
 
-
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     _stopAutoResfresh : function()
     {
       if (this._timer != null) {
@@ -861,13 +685,6 @@ qx.Class.define("inventario.widget.MapLocator",
       }
     },
 
-    // alert("Stoped");
-    /**
-     * TODOC
-     *
-     * @param options {var} TODOC
-     * @return {void} 
-     */
     _refreshMap : function(options)
     {
       var data = {};
@@ -884,14 +701,6 @@ qx.Class.define("inventario.widget.MapLocator",
       inventario.transport.Transport.callRemote(hopts, this);
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param remoteData {var} TODOC
-     * @param params {var} TODOC
-     * @return {void} 
-     */
     _refreshMapResp : function(remoteData, params)
     {
       var nodes = remoteData.nodes;
@@ -916,12 +725,6 @@ qx.Class.define("inventario.widget.MapLocator",
       }
     },
 
-    // alert("updated!");
-    /**
-     * TODOC
-     *
-     * @return {var | null} TODOC
-     */
     _findCenter : function()
     {
       var markers = this._markers;
@@ -939,13 +742,6 @@ qx.Class.define("inventario.widget.MapLocator",
       return null;
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param marker {var} TODOC
-     * @return {boolean} TODOC
-     */
     _goToMarker : function(marker)
     {
       var map = this._map;
@@ -955,11 +751,6 @@ qx.Class.define("inventario.widget.MapLocator",
     },
 
     // More and more extensions ;/
-    /**
-     * TODOC
-     *
-     * @return {var} TODOC
-     */
     getNodeTypeStatistics : function()
     {
       var statistics = {};

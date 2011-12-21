@@ -30,15 +30,6 @@ qx.Class.define("inventario.widget.SearchAdvanced",
 {
   extend : qx.core.Object,
 
-
-
-
-  /*
-      *****************************************************************************
-         CONSTRUCTOR
-      *****************************************************************************
-      */
-
   construct : function(param, data)
   {
     qx.core.Object.call(this);
@@ -151,15 +142,6 @@ qx.Class.define("inventario.widget.SearchAdvanced",
     this.getWindow().show();
   },
 
-
-
-
-  /*
-      *****************************************************************************
-         PROPERTIES
-      *****************************************************************************
-      */
-
   properties :
   {
     window :
@@ -209,23 +191,8 @@ qx.Class.define("inventario.widget.SearchAdvanced",
     }
   },
 
-
-
-
-  /*
-      *****************************************************************************
-         MEMBERS
-      *****************************************************************************
-      */
-
   members :
   {
-    /**
-     * TODOC
-     *
-     * @param param {var} TODOC
-     * @return {var} TODOC
-     */
     _setComponent : function(param)
     {
       var tf;
@@ -255,13 +222,6 @@ qx.Class.define("inventario.widget.SearchAdvanced",
       return tf;
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param form {var} TODOC
-     * @return {var} TODOC
-     */
     _getComponent : function(form)
     {
       var ret;
@@ -297,12 +257,6 @@ qx.Class.define("inventario.widget.SearchAdvanced",
       return ret;
     },
 
-
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     add_all : function()
     {
       var forms = this.getForm();
@@ -313,28 +267,12 @@ qx.Class.define("inventario.widget.SearchAdvanced",
       }
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param dateStr {var} TODOC
-     * @return {var} TODOC
-     */
     fixDate : function(dateStr)
     {
       var dateArr = dateStr.split("-");
       return dateArr[2] + "-" + dateArr[1] + "-" + dateArr[0];
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param key {var} TODOC
-     * @param operator {var} TODOC
-     * @param value {var} TODOC
-     * @return {void} 
-     */
     addComponent : function(key, operator, value)
     {
       var components = this.getQueryComponents();
@@ -355,14 +293,6 @@ qx.Class.define("inventario.widget.SearchAdvanced",
       components[key].values.push(value);
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param key {var} TODOC
-     * @param value {var} TODOC
-     * @return {void} 
-     */
     dateRangeQueryElement : function(key, value)
     {
       if (value.date_since) {
@@ -374,13 +304,6 @@ qx.Class.define("inventario.widget.SearchAdvanced",
       }
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param e {Event} TODOC
-     * @return {void} 
-     */
     addQueryElement : function(e)
     {
       var widget = e.getTarget().getUserData("widget");
@@ -401,13 +324,6 @@ qx.Class.define("inventario.widget.SearchAdvanced",
       this.humanizeQuery();
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param e {Event} TODOC
-     * @return {void} 
-     */
     removeQueryElement : function(e)
     {
       var widget = e.getTarget().getUserData("widget");
@@ -432,12 +348,6 @@ qx.Class.define("inventario.widget.SearchAdvanced",
       this.humanizeQuery();
     },
 
-
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     search : function()
     {
       // this.getWindow().getWindow().close();
@@ -445,12 +355,6 @@ qx.Class.define("inventario.widget.SearchAdvanced",
       f.call(this.getCallBackObject(), this.getQueryComponents());
     },
 
-
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     humanizeQuery : function()
     {
       var humanQuery = this.getHumanQuery();

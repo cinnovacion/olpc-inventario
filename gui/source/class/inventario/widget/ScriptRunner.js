@@ -19,28 +19,14 @@ qx.Class.define("inventario.widget.ScriptRunner",
 {
   extend : inventario.window.AbstractWindow,
 
-  /*
-       * CONSTRUCTOR
-       */
-
   construct : function(page)
   {
     this.base(arguments, page);
     this._comboBox = null;
   },
 
-  /*
-       * STATICS
-       */
-
   statics :
   {
-    /**
-     * TODOC
-     *
-     * @param page {var} TODOC
-     * @return {void} 
-     */
     launch : function(page)
     {
       var scriptRunner = new inventario.widget.ScriptRunner(null);
@@ -50,10 +36,6 @@ qx.Class.define("inventario.widget.ScriptRunner",
       scriptRunner.show();
     }
   },
-
-  /*
-       * PROPERTIES
-       */
 
   properties :
   {
@@ -70,39 +52,16 @@ qx.Class.define("inventario.widget.ScriptRunner",
     }
   },
 
-  /*
-       * MEMBERS
-       */
-
   members :
   {
-    /**
-     * TODOC
-     *
-     * @param layout {var} TODOC
-     * @return {void} 
-     */
     _doShow : function(layout) {
       this._doShow2(layout);
     },
 
-
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     show : function() {
       this._getList();
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param options {var} TODOC
-     * @return {void} 
-     */
     _createLayout : function(options)
     {
       var layout = new qx.ui.container.Composite(new qx.ui.layout.VBox(5));
@@ -119,12 +78,6 @@ qx.Class.define("inventario.widget.ScriptRunner",
       this._doShow(layout);
     },
 
-
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     _getList : function()
     {
       var hopts = {};
@@ -136,26 +89,12 @@ qx.Class.define("inventario.widget.ScriptRunner",
       inventario.transport.Transport.callRemote(hopts, this);
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param remoteData {var} TODOC
-     * @param params {var} TODOC
-     * @return {void} 
-     */
     _getListCb : function(remoteData, params)
     {
       var options = remoteData.options;
       this._createLayout(options);
     },
 
-
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     _runScript : function()
     {
       var script_key = inventario.widget.Form.getInputValue(this._comboBox);
@@ -168,14 +107,6 @@ qx.Class.define("inventario.widget.ScriptRunner",
       inventario.transport.Transport.callRemote(hopts, this);
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param remoteData {var} TODOC
-     * @param params {var} TODOC
-     * @return {void} 
-     */
     _runScriptCb : function(remoteData, params) {
       inventario.window.Mensaje.mensaje(remoteData["msg"]);
     }

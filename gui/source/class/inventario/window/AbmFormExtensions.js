@@ -22,34 +22,10 @@ qx.Class.define("inventario.window.AbmFormExtensions",
 {
   extend : qx.core.Object,
 
-
-
-
-  /*
-      *****************************************************************************
-         CONSTRUCTOR
-      *****************************************************************************
-      */
-
   construct : function() {},
-
-
-
-
-  /*
-      *****************************************************************************
-         STATICS
-      *****************************************************************************
-      */
 
   statics :
   {
-    /**
-     * TODOC
-     *
-     * @param opts {var} TODOC
-     * @return {void} 
-     */
     launch : function(opts)
     {
       var add_form = new inventario.window.AbmForm(null, {});

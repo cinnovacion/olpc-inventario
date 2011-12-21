@@ -33,32 +33,12 @@ qx.Class.define("inventario.widget.Url",
 {
   extend : qx.core.Object,
 
-
-
-
-  /*
-      *****************************************************************************
-         CONSTRUCTOR
-      *****************************************************************************
-      */
-
   construct : function() {},
 
   // llamar al constructor del padre
-  /*
-      *****************************************************************************
-         STATICS
-      *****************************************************************************
-      */
 
   statics :
   {
-    /**
-     * TODOC
-     *
-     * @param param {var} TODOC
-     * @return {var} TODOC
-     */
     getUrl : function(param)
     {
       var ret = "";

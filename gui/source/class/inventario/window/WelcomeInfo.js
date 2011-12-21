@@ -55,11 +55,6 @@ qx.Class.define("inventario.window.WelcomeInfo",
 
   members :
   {
-    /**
-     * show():
-     *
-     * @return {void} void
-     */
     show : function()
     {
       this._createInputs();
@@ -68,12 +63,6 @@ qx.Class.define("inventario.window.WelcomeInfo",
       this._loadInitialData();
     },
 
-
-    /**
-     * _doShow()
-     *
-     * @return {void} void
-     */
     _doShow : function()
     {
       var mainVBox = new qx.ui.container.Composite(new qx.ui.layout.VBox(20));
@@ -82,42 +71,16 @@ qx.Class.define("inventario.window.WelcomeInfo",
       this._doShow2(mainVBox);
     },
 
-
-    /**
-     * createInputs():
-     *
-     * @return {void} 
-     */
     _createInputs : function() {},
 
-
-    /**
-     * setHandlers():
-     *
-     * @return {void} 
-     */
     _setHandlers : function() {},
 
-
-    /**
-     * createLayout(): metodo abstracto
-     * 
-     * Posicionamiento de inputs
-     *
-     * @return {void} 
-     */
     _createLayout : function()
     {
       var vbox = new qx.ui.container.Composite(new qx.ui.layout.VBox(20), { height : 700 });
       this.setVerticalBox(vbox);
     },
 
-
-    /**
-     * loadInitialData():
-     *
-     * @return {void} 
-     */
     _loadInitialData : function()
     {
       var hopts = {};
@@ -129,14 +92,6 @@ qx.Class.define("inventario.window.WelcomeInfo",
       inventario.transport.Transport.callRemote(hopts, this);
     },
 
-
-    /**
-     * _loadInitialDataResp():
-     *
-     * @param remoteData {var} TODOC
-     * @param params {var} TODOC
-     * @return {void} 
-     */
     _loadInitialDataResp : function(remoteData, params)
     {
       var hbox   = new qx.ui.container.Composite(new qx.ui.layout.HBox(20));

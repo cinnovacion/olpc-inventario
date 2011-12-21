@@ -29,16 +29,6 @@ qx.Class.define("inventario.sistema.Login",
   extend : qx.core.Object,
   include : [qx.locale.MTranslation],
 
-
-
-
-
-  /*
-  *****************************************************************************
-     CONSTRUCTOR
-  *****************************************************************************
-  */
-
   construct : function(loginUrl)
   {
     this.base(arguments);
@@ -48,15 +38,6 @@ qx.Class.define("inventario.sistema.Login",
       this.setLoginUrl(loginUrl);
     }
   },
-
-
-
-
-  /*
-  *****************************************************************************
-     PROPERTIES
-  *****************************************************************************
-  */
 
   properties :
   {
@@ -107,15 +88,6 @@ qx.Class.define("inventario.sistema.Login",
     }
   },
 
-
-
-
-  /*
-  *****************************************************************************
-     MEMBERS
-  *****************************************************************************
-  */
-
   members :
   {
     /**
@@ -146,13 +118,8 @@ qx.Class.define("inventario.sistema.Login",
       this.loginWindow(msg, lang_list);
     },
 
-    /* this.doLogin(); */
-
     /**
      * doLogin(): bloquearse hasta que se haya autenticado
-     *
-     * @type member
-     * @return {void} void
      */
     doLogin : function()
     {
@@ -160,8 +127,6 @@ qx.Class.define("inventario.sistema.Login",
         qx.event.Timer.once(this.doLogin, this, 100);
       }
     },
-
-    /* setTimeout(this.doLogin,0); */
 
     /**
      * loginWindow(): autenticarse & ingresar al sistema
@@ -245,14 +210,6 @@ qx.Class.define("inventario.sistema.Login",
       win.addListener("keydown", this._eventHandler, this);
     },
 
-
-    /**
-     * TODOC
-     *
-     * @type member
-     * @param e {Event} TODOC
-     * @return {void}
-     */
     _eventHandler : function(e)
     {
         if (e.getKeyIdentifier() == 'Enter') {
@@ -260,14 +217,8 @@ qx.Class.define("inventario.sistema.Login",
         }
     },
 
-
     /**
      * loginHandler(): autenticarse & ingresar al sistema
-     *
-     * @type member
-     * @param userName {var} TODOC
-     * @param passwd {var} TODOC
-     * @return {void} void
      */
     loginHandler : function(userName, passwd, lang)
     {
@@ -315,15 +266,6 @@ qx.Class.define("inventario.sistema.Login",
 	}
     },
 
-
-    /**
-     * loginHandlerResp():
-     *
-     * @type member
-     * @param remoteData {var} TODOC
-     * @param handleParams {var} TODOC
-     * @return {void} void
-     */
     loginHandlerResp : function(remoteData, handleParams)
     {
       this.getWindow().removeListener("keydown", this._eventHandler, this);

@@ -24,15 +24,6 @@ qx.Class.define("inventario.widget.CheckboxSelector",
 {
   extend : qx.ui.container.Composite,
 
-
-
-
-  /*
-      *****************************************************************************
-         CONSTRUCTOR
-      *****************************************************************************
-      */
-
   /**
        *  
        * @param group_label {String} Name of this group of checkboxes
@@ -101,32 +92,12 @@ qx.Class.define("inventario.widget.CheckboxSelector",
     }
   },
 
-
-
-
-  /*
-      *****************************************************************************
-         PROPERTIES
-      *****************************************************************************
-      */
-
   properties : { checkBoxArray : { check : "Object" } },
-
-
-
-
-  /*
-      *****************************************************************************
-         MEMBERS
-      *****************************************************************************
-      */
 
   members :
   {
     /**
      * getSelectedParts: returnes array of selected parts
-     *
-     * @return {Map} TODOC
      */
     getSelectedParts : function()
     {
@@ -146,15 +117,6 @@ qx.Class.define("inventario.widget.CheckboxSelector",
       return ret;
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param label_text {var} TODOC
-     * @param cb_name {var} TODOC
-     * @param checked {var} TODOC
-     * @return {Map} TODOC
-     */
     _addPart : function(label_text, cb_name, checked)
     {
       this._addToGrid(new qx.ui.basic.Label(label_text));
@@ -171,12 +133,6 @@ qx.Class.define("inventario.widget.CheckboxSelector",
     },
 
     // TODO: add layout code
-    /**
-     * TODOC
-     *
-     * @param addObj {var} TODOC
-     * @return {void} 
-     */
     _addToGrid : function(addObj)
     {
       this._grid_layout.add(addObj,
@@ -188,13 +144,6 @@ qx.Class.define("inventario.widget.CheckboxSelector",
       this._col_num++;
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param state {var} TODOC
-     * @return {void} 
-     */
     _setAllCheckedTo : function(state)
     {
       var cb_array = this.getCheckBoxArray();

@@ -41,37 +41,13 @@ qx.Class.define("inventario.qooxdoo.ListDataCellRenderer",
 {
   extend : qx.ui.table.cellrenderer.Abstract,
 
-
-
-
-  /*
-    *****************************************************************************
-       CONSTRUCTOR
-    *****************************************************************************
-    */
-
   construct : function() {
     qx.ui.table.cellrenderer.Abstract.call(this);
   },
 
-
-
-
-  /*
-    *****************************************************************************
-       MEMBERS
-    *****************************************************************************
-    */
-
   members :
   {
     // overridden
-    /**
-     * TODOC
-     *
-     * @param cellInfo {var} TODOC
-     * @return {var} TODOC
-     */
     _getCellStyle : function(cellInfo)
     {
       var style = qx.ui.table.cellrenderer.Abstract.prototype._getCellStyle(cellInfo);
@@ -80,12 +56,6 @@ qx.Class.define("inventario.qooxdoo.ListDataCellRenderer",
     },
 
     // overridden
-    /**
-     * TODOC
-     *
-     * @param cellInfo {var} TODOC
-     * @return {var} TODOC
-     */
     _getContentHtml : function(cellInfo)
     {
       var input = cellInfo.value;
@@ -93,13 +63,6 @@ qx.Class.define("inventario.qooxdoo.ListDataCellRenderer",
     },
 
     // overridden
-    /**
-     * TODOC
-     *
-     * @param cellInfo {var} TODOC
-     * @param cellElement {var} TODOC
-     * @return {void} 
-     */
     updateDataCellElement : function(cellInfo, cellElement) {
       cellElement.innerHTML = this._getContentHtml(cellInfo);
     }

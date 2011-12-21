@@ -24,15 +24,6 @@ qx.Class.define("inventario.widget.ListSelector",
 {
   extend : qx.ui.container.Composite,
 
-
-
-
-  /*
-      *****************************************************************************
-         CONSTRUCTOR
-      *****************************************************************************
-      */
-
   /**
        *  
        * @param cb_label {String} Label that goes next to the combobox
@@ -86,15 +77,6 @@ qx.Class.define("inventario.widget.ListSelector",
     }
   },
 
-
-
-
-  /*
-      *****************************************************************************
-         PROPERTIES
-      *****************************************************************************
-      */
-
   properties :
   {
     comboBox : { check : "Object" },
@@ -106,21 +88,10 @@ qx.Class.define("inventario.widget.ListSelector",
     }
   },
 
-
-
-
-  /*
-      *****************************************************************************
-         MEMBERS
-      *****************************************************************************
-      */
-
   members :
   {
     /**
      * getSelectedValue: returns selected value
-     *
-     * @return {Map} TODOC
      */
     getSelectedValue : function()
     {
@@ -128,13 +99,6 @@ qx.Class.define("inventario.widget.ListSelector",
       return inventario.widget.Form.getInputValue(cb);
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param e {Event} TODOC
-     * @return {void} 
-     */
     _view_selection_cb : function(e)
     {
       var v = this.getSelectedValue();

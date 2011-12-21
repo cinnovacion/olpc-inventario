@@ -23,10 +23,6 @@ qx.Class.define("inventario.widget.DataImporter",
 {
   extend : inventario.window.AbstractWindow,
 
-  /*
-       * CONSTRUCTOR
-       */
-
   construct : function(page)
   {
     this.base(arguments, page);
@@ -34,18 +30,8 @@ qx.Class.define("inventario.widget.DataImporter",
     this._formatsCombo = null;
   },
 
-  /*
-       * STATICS
-       */
-
   statics :
   {
-    /**
-     * TODOC
-     *
-     * @param page {var} TODOC
-     * @return {void} 
-     */
     launch : function(page)
     {
       var dataImport = new inventario.widget.DataImporter(null);
@@ -54,10 +40,6 @@ qx.Class.define("inventario.widget.DataImporter",
       dataImport.show();
     }
   },
-
-  /*
-       * PROPERTIES
-       */
 
   properties :
   {
@@ -83,39 +65,18 @@ qx.Class.define("inventario.widget.DataImporter",
     }
   },
 
-  /*
-       * MEMBERS
-       */
-
   members :
   {
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     show : function() {
       this._loadInitialData();
     },
 
-
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     _doShow : function()
     {
       this._doShow2(this.getVerticalBox());
       this.setWindowTitle(qx.locale.Manager.tr("Data Importer"));
     },
 
-
-    /**
-     * TODOC
-     *
-     * @return {var} TODOC
-     */
     _getFormData : function()
     {
       var resp = {};
@@ -125,14 +86,6 @@ qx.Class.define("inventario.widget.DataImporter",
       return resp;
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param modelsDesc {var} TODOC
-     * @param formatsDesc {var} TODOC
-     * @return {void} 
-     */
     _createLayout : function(modelsDesc, formatsDesc)
     {
       var mainVBox = new qx.ui.container.Composite(new qx.ui.layout.VBox());
@@ -170,12 +123,6 @@ qx.Class.define("inventario.widget.DataImporter",
       this._doShow();
     },
 
-
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     _loadInitialData : function()
     {
       var hopts = {};
@@ -187,26 +134,12 @@ qx.Class.define("inventario.widget.DataImporter",
       inventario.transport.Transport.callRemote(hopts, this);
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param remoteData {var} TODOC
-     * @param params {var} TODOC
-     * @return {void} 
-     */
     _loadInitialDataResp : function(remoteData, params)
     {
       var definition = remoteData.definition;
       this._createLayout(definition.models, definition.formats);
     },
 
-
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     _import_cb : function()
     {
       var combosData = this._getFormData();
@@ -230,14 +163,6 @@ qx.Class.define("inventario.widget.DataImporter",
       inventario.transport.Transport.callRemote(opts, this);
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param remoteData {var} TODOC
-     * @param handleParams {var} TODOC
-     * @return {void} 
-     */
     _import_cb_resp : function(remoteData, handleParams)
     {
       var msg = (remoteData["msg"] ? remoteData["msg"] : qx.locale.Manager.tr(" Data successfully imported."));

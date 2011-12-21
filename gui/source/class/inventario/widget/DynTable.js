@@ -19,17 +19,9 @@ qx.Class.define("inventario.widget.DynTable",
 {
   extend : inventario.window.AbstractWindow,
 
-  /*
-       * CONSTRUCTOR
-       */
-
   construct : function(page) {
     this.base(arguments, page);
   },
-
-  /*
-       * PROPERTIES
-       */
 
   properties :
   {
@@ -60,40 +52,18 @@ qx.Class.define("inventario.widget.DynTable",
     verticalBox : { check : "Object" }
   },
 
-  /*
-       * MEMBERS
-       */
-
   members :
   {
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     show : function()
     {
       this._createLayout();
       this._doShow();
     },
 
-
-    /**
-     * TODOC
-     *
-     * @return {var} TODOC
-     */
     getTableData : function() {
       return this.getTableObj().getHashedData();
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param tableData {var} TODOC
-     * @return {void} 
-     */
     setTableData : function(tableData)
     {
       if (tableData) {
@@ -101,22 +71,10 @@ qx.Class.define("inventario.widget.DynTable",
       }
     },
 
-
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     _doShow : function() {
       this._doShow2(this.getVerticalBox());
     },
 
-
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     _createLayout : function()
     {
       var vbox = new qx.ui.container.Composite(new qx.ui.layout.VBox(20));
@@ -130,12 +88,6 @@ qx.Class.define("inventario.widget.DynTable",
       vbox.add(table_hbox);
     },
 
-
-    /**
-     * TODOC
-     *
-     * @return {var} TODOC
-     */
     _getColumnsInputs : function()
     {
       var grid = new qx.ui.container.Composite(new qx.ui.layout.Grid());
@@ -174,13 +126,6 @@ qx.Class.define("inventario.widget.DynTable",
       return grid;
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param col {var} TODOC
-     * @return {var} TODOC
-     */
     _createDataInput : function(col)
     {
       var retInput;
@@ -215,12 +160,6 @@ qx.Class.define("inventario.widget.DynTable",
       return retInput;
     },
 
-
-    /**
-     * TODOC
-     *
-     * @return {var} TODOC
-     */
     _getAddButton : function()
     {
       var but = new qx.ui.form.Button("+");
@@ -229,13 +168,6 @@ qx.Class.define("inventario.widget.DynTable",
       return but;
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param hbox {var} TODOC
-     * @return {var} TODOC
-     */
     _getTable : function(hbox)
     {
       var rows_num = 5;  // TODO: has to be a settable property
@@ -273,25 +205,12 @@ qx.Class.define("inventario.widget.DynTable",
       return tableObj;
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param e {Event} TODOC
-     * @return {void} 
-     */
     _add_row_cb : function(e)
     {
       var row = this._getRowData();
       this.getTableObj().addRows([ row ], -1);
     },
 
-
-    /**
-     * TODOC
-     *
-     * @return {var} TODOC
-     */
     _getRowData : function()
     {
       var inputs = this.getDataInputs();

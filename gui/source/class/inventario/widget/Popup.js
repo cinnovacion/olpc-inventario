@@ -34,15 +34,6 @@ qx.Class.define("inventario.widget.Popup",
 {
   extend : qx.core.Object,
 
-
-
-
-  /*
-      *****************************************************************************
-         CONSTRUCTOR
-      *****************************************************************************
-      */
-
   construct : function(param)
   {
     qx.core.Object.call(this);
@@ -55,15 +46,6 @@ qx.Class.define("inventario.widget.Popup",
     abm.setPaginated(true);
     abm.setRefreshOnShow(false);
   },
-
-
-
-
-  /*
-      *****************************************************************************
-         PROPERTIES
-      *****************************************************************************
-      */
 
   properties :
   {
@@ -82,22 +64,8 @@ qx.Class.define("inventario.widget.Popup",
     }
   },
 
-
-
-
-  /*
-      *****************************************************************************
-         MEMBERS
-      *****************************************************************************
-      */
-
   members :
   {
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     show : function() {
       this.getAbm().show();
     }

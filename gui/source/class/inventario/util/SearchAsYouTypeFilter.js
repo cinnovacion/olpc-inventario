@@ -20,7 +20,6 @@ qx.Class.define("inventario.util.SearchAsYouTypeFilter",
 {
   extend : qx.core.Object,
 
-
   construct : function(controller)
   {
     this.base(arguments);
@@ -70,12 +69,6 @@ qx.Class.define("inventario.util.SearchAsYouTypeFilter",
 
     filter: null
   },
-
-  /*
-   *****************************************************************************
-      DESTRUCT
-   *****************************************************************************
-   */
 
   destruct : function() {
     this.__controller = null;

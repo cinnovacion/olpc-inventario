@@ -25,10 +25,6 @@ qx.Class.define("inventario.widget.DynamicDeliveryForm",
 {
   extend : inventario.window.AbstractWindow,
 
-  /*
-       * CONSTRUCTOR
-       */
-
   construct : function(page, mode)
   {
     this.base(arguments, page);
@@ -36,10 +32,6 @@ qx.Class.define("inventario.widget.DynamicDeliveryForm",
     this._fields = null;
     this._placesCombo = null;
   },
-
-  /*
-       * PROPERTIES
-       */
 
   properties :
   {
@@ -58,37 +50,16 @@ qx.Class.define("inventario.widget.DynamicDeliveryForm",
     verticalBox : { check : "Object" }
   },
 
-  /*
-       * MEMBERS
-       */
-
   members :
   {
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     show : function() {
       this._loadInitialData();
     },
 
-
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     _doShow : function() {
       this._doShow2(this.getVerticalBox());
     },
 
-
-    /**
-     * TODOC
-     *
-     * @return {var} TODOC
-     */
     getValues : function()
     {
       if (this._fields == null || !this._fields.hasChildren())
@@ -109,13 +80,6 @@ qx.Class.define("inventario.widget.DynamicDeliveryForm",
       return list;
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param places {var} TODOC
-     * @return {void} 
-     */
     _createLayout : function(places)
     {
       var mainVBox = new qx.ui.container.Composite(new qx.ui.layout.VBox(20));
@@ -127,12 +91,6 @@ qx.Class.define("inventario.widget.DynamicDeliveryForm",
       this._doShow();
     },
 
-
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     _loadInitialData : function()
     {
       var hopts = {};
@@ -144,25 +102,10 @@ qx.Class.define("inventario.widget.DynamicDeliveryForm",
       inventario.transport.Transport.callRemote(hopts, this);
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param remoteData {var} TODOC
-     * @param params {var} TODOC
-     * @return {void} 
-     */
     _loadInitialDataRespCb : function(remoteData, params) {
       this._createLayout(remoteData.places);
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param places {var} TODOC
-     * @return {var} TODOC
-     */
     _addPlacesCombo : function(places)
     {
       var hbox = new qx.ui.container.Composite(new qx.ui.layout.HBox(20));
@@ -181,12 +124,6 @@ qx.Class.define("inventario.widget.DynamicDeliveryForm",
       return hbox;
     },
 
-
-    /**
-     * TODOC
-     *
-     * @return {var} TODOC
-     */
     _addForm : function()
     {
       var subMainVbox = new qx.ui.container.Composite(new qx.ui.layout.VBox());
@@ -208,12 +145,6 @@ qx.Class.define("inventario.widget.DynamicDeliveryForm",
       return subMainVbox;
     },
 
-
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     _loadForm : function()
     {
       var placeId = inventario.widget.Form.getInputValue(this._placesCombo);
@@ -231,14 +162,6 @@ qx.Class.define("inventario.widget.DynamicDeliveryForm",
       inventario.transport.Transport.callRemote(hopts, this);
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param remoteData {var} TODOC
-     * @param params {var} TODOC
-     * @return {void} 
-     */
     _loadFormRespCb : function(remoteData, params)
     {
       this._fields.removeAll();

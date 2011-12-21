@@ -195,11 +195,6 @@ qx.Class.define("inventario.window.AbmForm",
   },
 
   members : {
-    /**
-     * show():
-     *
-     * @return {void} void
-     */
     show : function()
     {
       if (!this.prepared) {
@@ -209,21 +204,11 @@ qx.Class.define("inventario.window.AbmForm",
       }
     },
 
-    /**
-     * _doShow()
-     *
-     * @return {void} void
-     */
     _doShow : function() {
       var vbox = this.getVbox();
       this._doShow2(vbox);
     },
 
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     _loadInitialData : function()
     {
       var data = {};
@@ -258,14 +243,6 @@ qx.Class.define("inventario.window.AbmForm",
       this);
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param remoteData {var} TODOC
-     * @param handleParams {var} TODOC
-     * @return {void} 
-     */
     _loadInitialDataResp : function(remoteData, handleParams)
     {
       var vbox = new qx.ui.container.Composite(new qx.ui.layout.VBox(20), { height : 400 });
@@ -407,14 +384,6 @@ qx.Class.define("inventario.window.AbmForm",
       this._doShow();
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param callback_func {var} TODOC
-     * @param callback_obj {var} TODOC
-     * @return {void} 
-     */
     saveData : function(callback_func, callback_obj)
     {
       var fields = this._formFields;
@@ -436,12 +405,6 @@ qx.Class.define("inventario.window.AbmForm",
       }
     },
 
-
-    /**
-     * TODOC
-     *
-     * @return {var} TODOC
-     */
     _buildButtonsHbox : function()
     {
       var hbox = new qx.ui.container.Composite(new qx.ui.layout.HBox(30));
@@ -469,14 +432,6 @@ qx.Class.define("inventario.window.AbmForm",
       return hbox;
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param tabTitle {var} TODOC
-     * @param icon {var} TODOC
-     * @return {var} TODOC
-     */
     _buildTabPageWithGrid : function(tabTitle, icon) {
       if (!icon) icon = "icon/16/apps/utilities-terminal.png";
 
@@ -490,13 +445,6 @@ qx.Class.define("inventario.window.AbmForm",
       return gl;
     },
 
-    /**
-     * TODOC
-     *
-     * @param fieldData {var} TODOC
-     * @param readOnly {var} TODOC
-     * @return {var} TODOC
-     */
     _buildField : function(fieldData, readOnly) {
       var input;
       var drill_down_vbox = null;
@@ -1036,23 +984,10 @@ qx.Class.define("inventario.window.AbmForm",
       }
     },
 
-
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     _clearFormFields : function() {
       inventario.widget.Form.resetInputs(this._formFields);
     },
 
-    /**
-     * TODOC
-     *
-     * @param remoteData {var} TODOC
-     * @param newData {var} TODOC
-     * @return {void} 
-     */
     _saveCallback : function(remoteData, newData)
     {
       var f = this.getSaveCallback();
@@ -1064,27 +999,12 @@ qx.Class.define("inventario.window.AbmForm",
       }
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param newRow {var} TODOC
-     * @param remoteDataIgnored {var} TODOC
-     * @return {void} 
-     */
     _addRow2Table : function(newRow, remoteDataIgnored)
     {
       var tableObj = this.getUserData("table_obj");
       tableObj.addRows([ newRow ], -1);
     },
 
-    /**
-     * TODOC
-     *
-     * @param colsMapping {var} TODOC
-     * @param fields {var} TODOC
-     * @return {var} TODOC
-     */
     _getDataFromForm : function(colsMapping, fields)
     {
       var ret = new Array();
@@ -1128,14 +1048,6 @@ qx.Class.define("inventario.window.AbmForm",
       return ret;
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param datos {var} TODOC
-     * @param tableObj {var} TODOC
-     * @return {void} 
-     */
     _doAddHandlerTable : function(datos, tableObj)
     {
       if (datos.add_form_url) {
@@ -1184,13 +1096,6 @@ qx.Class.define("inventario.window.AbmForm",
       }
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param e {Event} TODOC
-     * @return {void} 
-     */
     _save_cb : function(e)
     {
       this._verify_msg = "";
@@ -1216,38 +1121,18 @@ qx.Class.define("inventario.window.AbmForm",
       }
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param remoteData {var} TODOC
-     * @param handleParams {var} TODOC
-     * @return {void} 
-     */
     _verify_save_resp : function(remoteData, handleParams)
     {
       this._verify_msg = remoteData["obj_data"];
       this._do_save_cb();
     },
 
-
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     _do_save_cb : function()
     {
       var pId = (this._remote_ids.length > 0 ? this._remote_ids : this._remote_id);
       this._saveFormData(this._editingFlag, this._formFields, pId);
     },
 
-    /**
-     * TODOC
-     *
-     * @param tableObj {var} TODOC
-     * @return {void} 
-     */
     _table_add_cb : function(tableObj)
     {
 
@@ -1289,13 +1174,6 @@ qx.Class.define("inventario.window.AbmForm",
       popup_win.show();
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param e {Event} TODOC
-     * @return {void} 
-     */
     _cancel_cb : function(e)
     {
       if (this.getUsePopup()) {
@@ -1303,13 +1181,6 @@ qx.Class.define("inventario.window.AbmForm",
       }
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param fields {var} TODOC
-     * @return {var} TODOC
-     */
     _getDataFromFields : function(fields)
     {
       this.data = {};
@@ -1347,13 +1218,6 @@ qx.Class.define("inventario.window.AbmForm",
       return updated;
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param e {Event} TODOC
-     * @return {void} 
-     */
     _set_select_vista_cb : function(e)
     {
       var cb = e.getTarget();
@@ -1364,13 +1228,6 @@ qx.Class.define("inventario.window.AbmForm",
       this.getDataInputObjects()[j].getAbm().setVista(vista);
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param hOpts {Map} TODOC
-     * @return {var} TODOC
-     */
     _buildDrillDownInfo : function(hOpts)
     {
       var vbox = new qx.ui.container.Composite(new qx.ui.layout.VBox(20));
@@ -1391,13 +1248,6 @@ qx.Class.define("inventario.window.AbmForm",
       return vbox;
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param hOpts {Map} TODOC
-     * @return {var} TODOC
-     */
     _doBuildDrillDownInfo : function(hOpts)
     {
       var hbox = new qx.ui.container.Composite(new qx.ui.layout.HBox(20));

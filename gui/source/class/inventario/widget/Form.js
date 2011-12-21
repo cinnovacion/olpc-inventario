@@ -70,12 +70,6 @@ qx.Class.define("inventario.widget.Form",
       }
     },
 
-    /**
-     * TODOC
-     *
-     * @param cb {var} TODOC
-     * @return {Map} TODOC
-     */
     comboBoxToHash : function(cb)
     {
       return {
@@ -84,13 +78,6 @@ qx.Class.define("inventario.widget.Form",
       };
     },
 
-    /**
-     * TODOC
-     *
-     * @param cb {var} TODOC
-     * @param value {var} TODOC
-     * @return {void} 
-     */
     setComboBox : function(cb, value) {
       var items = value.getSelectables();
       for (var i in items) {
@@ -102,14 +89,6 @@ qx.Class.define("inventario.widget.Form",
       return false;
     },
 
-    /**
-     * TODOC
-     *
-     * @param cb {var} TODOC
-     * @param value {var} TODOC
-     * @param userData {var} TODOC
-     * @return {void} 
-     */
     setComboBoxByUserData : function(cb, value, userData)
     {
       var lista = cb.getList().getChildren();
@@ -125,12 +104,6 @@ qx.Class.define("inventario.widget.Form",
       }
     },
 
-    /**
-     * TODOC
-     *
-     * @param cb {var} TODOC
-     * @return {void} 
-     */
     clearComboBox : function(cb)
     {
       cb.removeAll();
@@ -216,13 +189,7 @@ qx.Class.define("inventario.widget.Form",
       return f.parse(num);
     },
 
-    /**
-     * FIXME: this should be simplified by making widget comply with an interface (i.e.: getValue()
-     *
-     * @param pInput {var} TODOC
-     * @param rich_output {var} TODOC
-     * @return {var} TODOC
-     */
+    /* FIXME: this should be simplified by making widget comply with an interface (i.e.: getValue()) */
     getInputValue : function(pInput, rich_output) {
       var v = "";
 
@@ -366,12 +333,8 @@ qx.Class.define("inventario.widget.Form",
       return v;
     },
 
-
     /**
      * resetInputs() :  set inputs to inital state
-     *
-     * @param arrayInputs {var} TODOC
-     * @return {void} 
      */
     resetInputs : function(arrayInputs)
     {
@@ -405,7 +368,6 @@ qx.Class.define("inventario.widget.Form",
      * createLayout
      *
      * @param vdata {var} hash{clase,width,height} de cada columna
-     * @return {var} TODOC
      */
     createLayout : function(vdata)
     {

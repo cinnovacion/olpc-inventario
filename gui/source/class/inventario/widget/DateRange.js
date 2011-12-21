@@ -24,15 +24,6 @@ qx.Class.define("inventario.widget.DateRange",
 {
   extend : qx.ui.container.Composite,
 
-
-
-
-  /*
-      *****************************************************************************
-         CONSTRUCTOR
-      *****************************************************************************
-      */
-
   construct : function(options)
   {
     try
@@ -56,37 +47,14 @@ qx.Class.define("inventario.widget.DateRange",
     }
   },
 
-
-
-
-  /*
-      *****************************************************************************
-         PROPERTIES
-      *****************************************************************************
-      */
-
   properties :
   {
     hasta : { check : "Object" },
     desde : { check : "Object" }
   },
 
-
-
-
-  /*
-      *****************************************************************************
-         MEMBERS
-      *****************************************************************************
-      */
-
   members :
   {
-    /**
-     * TODOC
-     *
-     * @return {Map} TODOC
-     */
     getValue : function()
     {
       var date_since = inventario.widget.Form.getInputValue(this.getDesde());
@@ -98,18 +66,6 @@ qx.Class.define("inventario.widget.DateRange",
       };
     },
 
-    /*
-                @params desde {string}
-                @params hasta {string}
-            */
-
-    /**
-     * TODOC
-     *
-     * @param desde {var} TODOC
-     * @param hasta {var} TODOC
-     * @return {void} 
-     */
     setValue : function(desde, hasta)
     {
       var aux = this._dateElements(desde);
@@ -119,13 +75,6 @@ qx.Class.define("inventario.widget.DateRange",
       this.getHasta().setValue(new Date(aux2.year, aux2.month, aux2.date));
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param date {var} TODOC
-     * @return {var} TODOC
-     */
     _dateElements : function(date)
     {
       // alert(date);

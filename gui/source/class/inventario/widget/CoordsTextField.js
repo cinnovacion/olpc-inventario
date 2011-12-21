@@ -22,10 +22,6 @@ qx.Class.define("inventario.widget.CoordsTextField",
 {
   extend : qx.ui.container.Composite,
 
-  /*
-       * CONSTRUCTOR
-       */
-
   construct : function(decimals)
   {
     try
@@ -110,10 +106,6 @@ qx.Class.define("inventario.widget.CoordsTextField",
     }
   },
 
-  /*
-       * PROPERTIES
-       */
-
   properties :
   {
     decimalsText :
@@ -145,27 +137,12 @@ qx.Class.define("inventario.widget.CoordsTextField",
     }
   },
 
-  /*
-       * MEMBERS
-       */
-
   members :
   {
-    /**
-     * TODOC
-     *
-     * @return {var} TODOC
-     */
     getInputValue : function() {
       return this.getDecimalsText().getValue();
     },
 
-
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     _degreesToDecimal : function()
     {
       var degrees = Number(this.getDegreesText().getValue());

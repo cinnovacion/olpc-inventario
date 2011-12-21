@@ -30,15 +30,6 @@ qx.Class.define("inventario.widget.Table2",
 {
   extend : inventario.window.AbstractWindow,
 
-
-
-
-  /*
-      *****************************************************************************
-         CONSTRUCTOR
-      *****************************************************************************
-      */
-
   construct : function(page)
   {
     inventario.window.AbstractWindow.call(this, page);
@@ -46,25 +37,8 @@ qx.Class.define("inventario.widget.Table2",
     this.setHashKeys(new Array());
   },
 
-
-
-
-  /*
-      *****************************************************************************
-         STATICS
-      *****************************************************************************
-      */
-
   statics :
   {
-    /**
-     * TODOC
-     *
-     * @param mat {var} TODOC
-     * @param row {var} TODOC
-     * @param useEmpty {var} TODOC
-     * @return {var} TODOC
-     */
     isEmpty2 : function(mat, row, useEmpty)
     {
       var ret = false;
@@ -89,21 +63,8 @@ qx.Class.define("inventario.widget.Table2",
     }
   },
 
-
-
-
-  /*
-      *****************************************************************************
-         PROPERTIES
-      *****************************************************************************
-      */
-
   properties :
   {
-    /*
-             *  Propiedades
-             */
-
     /* parametros de comportamiento */
 
     useEmptyTable :
@@ -342,15 +303,6 @@ qx.Class.define("inventario.widget.Table2",
     }
   },
 
-
-
-
-  /*
-      *****************************************************************************
-         MEMBERS
-      *****************************************************************************
-      */
-
   members :
   {
     /**
@@ -418,12 +370,6 @@ qx.Class.define("inventario.widget.Table2",
       this.prepared = true;
     },
 
-
-    /**
-     * _createInputs():
-     *
-     * @return {void} 
-     */
     _createInputs : function()
     {
       var tableModel = new qx.ui.table.model.Simple();
@@ -634,44 +580,14 @@ qx.Class.define("inventario.widget.Table2",
       }
     },
 
-
-    /**
-     * _loadInitialData(): metodo abstracto
-     *
-     * @abstract 
-     * @return {void} 
-     * @throws the abstract function warning.
-     * @abstract
-     * @abstract
-     */
     _loadInitialData : function() {
       throw new Error("loadInitialData is abstract");
     },
 
-
-    /**
-     * _validateData(): metodo abstracto
-     *
-     * @abstract 
-     * @return {void} 
-     * @throws the abstract function warning.
-     * @abstract
-     * @abstract
-     */
     _validateData : function() {
       throw new Error("validateData is abstract");
     },
 
-
-    /**
-     * _saveData(): metodo abstracto
-     *
-     * @abstract 
-     * @return {void} 
-     * @throws the abstract function warning.
-     * @abstract
-     * @abstract
-     */
     _saveData : function() {
       throw new Error("saveData is abstract");
     },
@@ -829,15 +745,6 @@ qx.Class.define("inventario.widget.Table2",
       }
     },
 
-
-    /**
-     * _addEmptyRows():
-     *
-     * @param mat {Array} matriz
-     * @param numFilas {Number} TODOC
-     * @param numCols {Number} TODOC
-     * @return {void} void
-     */
     _addEmptyRows : function(mat, numFilas, numCols)
     {
       var filaDato = (mat.length > 0 ? mat[0] : false);
@@ -1044,13 +951,6 @@ qx.Class.define("inventario.widget.Table2",
       }
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param e {Event} TODOC
-     * @return {void} 
-     */
     deleteRow : function(e)
     {
       try
@@ -1076,12 +976,6 @@ qx.Class.define("inventario.widget.Table2",
       }
     },
 
-
-    /**
-     * TODOC
-     *
-     * @return {var} TODOC
-     */
     getSeleccionadas : function()
     {
       var ret = new Array();
@@ -1099,13 +993,6 @@ qx.Class.define("inventario.widget.Table2",
       return ret;
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param e {Event} TODOC
-     * @return {void} 
-     */
     selectRow : function(e)
     {
       var sm = this.getGrid().getSelectionModel();

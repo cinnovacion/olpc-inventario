@@ -28,10 +28,6 @@ qx.Class.define("inventario.widget.HierarchyOnDemand",
 {
   extend : qx.ui.container.Composite,
 
-  /*
-       * CONSTRUCTOR
-       */
-
   construct : function(dataHash, opts)
   {
     try
@@ -91,10 +87,6 @@ qx.Class.define("inventario.widget.HierarchyOnDemand",
     }
   },
 
-  /*
-       * PROPERTIES
-       */
-
   properties :
   {
     treeWidget :
@@ -118,17 +110,8 @@ qx.Class.define("inventario.widget.HierarchyOnDemand",
     }
   },
 
-  /*
-       * MEMBERS
-       */
-
   members :
   {
-    /**
-     * TODOC
-     *
-     * @return {var} TODOC
-     */
     getItemFullLabel : function()
     {
       var tree = this.getTreeWidget();
@@ -146,14 +129,6 @@ qx.Class.define("inventario.widget.HierarchyOnDemand",
       return label;
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param width {var} TODOC
-     * @param height {var} TODOC
-     * @return {void} 
-     */
     setSize : function(width, height)
     {
       var tree = this.getTreeWidget();
@@ -165,22 +140,10 @@ qx.Class.define("inventario.widget.HierarchyOnDemand",
       });
     },
 
-
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     reLoadElements : function() {
       this._requestElements();
     },
 
-
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     reLoadParentElements : function()
     {
       var tree = this.getTreeWidget();
@@ -194,12 +157,6 @@ qx.Class.define("inventario.widget.HierarchyOnDemand",
       }
     },
 
-
-    /**
-     * TODOC
-     *
-     * @return {var} TODOC
-     */
     getValue : function()
     {
       var ret = -1;
@@ -215,12 +172,6 @@ qx.Class.define("inventario.widget.HierarchyOnDemand",
       return ret;
     },
 
-
-    /**
-     * TODOC
-     *
-     * @return {var} TODOC
-     */
     getElementData : function()
     {
       var selected_element = this.getTreeWidget().getSelection()[0];
@@ -228,12 +179,6 @@ qx.Class.define("inventario.widget.HierarchyOnDemand",
       return element_data;
     },
 
-
-    /**
-     * TODOC
-     *
-     * @return {var} TODOC
-     */
     isSubElement : function()
     {
       var selected_element = this.getTreeWidget().getSelection()[0];
@@ -241,16 +186,6 @@ qx.Class.define("inventario.widget.HierarchyOnDemand",
       return type;
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param data {var} TODOC
-     * @param callback {var} TODOC
-     * @param type {var} TODOC
-     * @param icon {var} TODOC
-     * @return {var} TODOC
-     */
     _newElement : function(data, callback, type, icon)
     {
       var new_element = new qx.ui.tree.TreeFolder();
@@ -274,14 +209,6 @@ qx.Class.define("inventario.widget.HierarchyOnDemand",
       return new_element;
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param remoteData {var} TODOC
-     * @param selected_element {var} TODOC
-     * @return {void} 
-     */
     _loadElements : function(remoteData, selected_element)
     {
       selected_element.removeAll();
@@ -301,13 +228,6 @@ qx.Class.define("inventario.widget.HierarchyOnDemand",
       selected_element.setOpen(true);
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param e {Event} TODOC
-     * @return {void} 
-     */
     _requestElements : function(e)
     {
       var subElementTags = this.getSubElementTags();
@@ -329,14 +249,6 @@ qx.Class.define("inventario.widget.HierarchyOnDemand",
       inventario.transport.Transport.callRemote(hopts, this);
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param selectedElement {var} TODOC
-     * @param hashData {var} TODOC
-     * @return {void} 
-     */
     _recursiveLoad : function(selectedElement, hashData)
     {
       var new_element = this._newElement(hashData, this._requestElements, false);

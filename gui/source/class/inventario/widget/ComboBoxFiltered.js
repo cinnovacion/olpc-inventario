@@ -22,10 +22,6 @@ qx.Class.define("inventario.widget.ComboBoxFiltered",
 {
   extend : qx.ui.container.Composite,
 
-  /*
-       * CONSTRUCTOR
-       */
-
   construct : function(cb_label, cbs_options, width)
   {
     try
@@ -72,10 +68,6 @@ qx.Class.define("inventario.widget.ComboBoxFiltered",
     }
   },
 
-  /*
-       * PROPERTIES
-       */
-
   properties :
   {
     FilterComboBox : { check : "Object" },
@@ -88,27 +80,12 @@ qx.Class.define("inventario.widget.ComboBoxFiltered",
     }
   },
 
-  /*
-       * MEMBERS
-       */
-
   members :
   {
-    /**
-     * TODOC
-     *
-     * @return {var} TODOC
-     */
     getSelectedValue : function() {
       return this.getDataComboBox().getSelectedValue();
     },
 
-
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     _loadDataComboBox : function()
     {
       var refValue = this.getFilterComboBox().getSelectedValue();
@@ -121,14 +98,6 @@ qx.Class.define("inventario.widget.ComboBoxFiltered",
       inventario.transport.Transport.callRemote(hopts, this);
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param remoteData {var} TODOC
-     * @param params {var} TODOC
-     * @return {void} 
-     */
     _loadDataComboBoxResp : function(remoteData, params)
     {
       var cb_options = remoteData.cb_options;

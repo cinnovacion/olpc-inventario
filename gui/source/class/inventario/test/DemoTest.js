@@ -26,16 +26,8 @@ qx.Class.define("inventario.test.DemoTest",
 
   members :
   {
-    /*
-            ---------------------------------------------------------------------------
-              TESTS
-            ---------------------------------------------------------------------------
-            */
-
     /**
      * Here are some simple tests
-     *
-     * @return {void} 
      */
     testSimple : function()
     {
@@ -46,8 +38,6 @@ qx.Class.define("inventario.test.DemoTest",
 
     /**
      * Here are some more advanced tests
-     *
-     * @return {void} 
      */
     testAdvanced : function()
     {

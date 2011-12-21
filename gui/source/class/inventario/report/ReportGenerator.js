@@ -27,15 +27,6 @@ qx.Class.define("inventario.report.ReportGenerator",
 {
   extend : inventario.window.AbstractWindow,
 
-
-
-
-  /*
-      *****************************************************************************
-         CONSTRUCTOR
-      *****************************************************************************
-      */
-
   construct : function(page)
   {
     this.base(arguments, page);
@@ -43,15 +34,6 @@ qx.Class.define("inventario.report.ReportGenerator",
     this.setWidgetArray(new Array());
     this.setDataTypes(new Array());
   },
-
-
-
-
-  /*
-      *****************************************************************************
-         PROPERTIES
-      *****************************************************************************
-      */
 
   properties :
   {
@@ -103,25 +85,8 @@ qx.Class.define("inventario.report.ReportGenerator",
     }
   },
 
-
-
-
-  /*
-      *****************************************************************************
-         MEMBERS
-      *****************************************************************************
-      */
-
   members :
   {
-    /**
-     * show():
-     *
-     * @param report_name {var} TODOC
-     * @param report_title {var} TODOC
-     * @param use_popup {var} TODOC
-     * @return {void} void
-     */
     show : function(report_name, report_title, use_popup)
     {
       if (report_name) {
@@ -147,40 +112,21 @@ qx.Class.define("inventario.report.ReportGenerator",
       this._loadInitialData();
     },
 
-
-    /**
-     * _doShow()
-     *
-     * @return {void} void
-     */
     _doShow : function()
     {
       this.setWindowTitle(this.getReportTitle());
       this._doShow2(this.getVerticalBox());
     },
 
-
-    /**
-     * createInputs():
-     *
-     * @return {void} 
-     */
     _createInputs : function()
     {
       var b = new qx.ui.form.Button(qx.locale.Manager.tr("Generate"), "inventario/22/adobe-reader.png");
       this.setGenerateButton(b);
     },
 
-
-    /**
-     * setHandlers():
-     *
-     * @return {void} 
-     */
     _setHandlers : function() {
       this.getGenerateButton().addListener("execute", this._generate_cb, this);
     },
-
 
     /**
      * createLayout(): metodo abstracto
@@ -210,12 +156,6 @@ qx.Class.define("inventario.report.ReportGenerator",
       this.getVerticalBox().add(hbox);
     },
 
-
-    /**
-     * loadInitialData():
-     *
-     * @return {void} 
-     */
     _loadInitialData : function()
     {
       var hopts = {};
@@ -227,14 +167,6 @@ qx.Class.define("inventario.report.ReportGenerator",
       inventario.transport.Transport.callRemote(hopts, this);
     },
 
-
-    /**
-     * _loadInitialDataResp():
-     *
-     * @param remoteData {var} TODOC
-     * @param params {var} TODOC
-     * @return {void} 
-     */
     _loadInitialDataResp : function(remoteData, params)
     {
       this.setPrintMethod(remoteData["print_method"]);
@@ -249,12 +181,6 @@ qx.Class.define("inventario.report.ReportGenerator",
       this._doShow();
     },
 
-
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     _generate_cb : function()
     {
       var params = this._getReportParams();
@@ -269,13 +195,6 @@ qx.Class.define("inventario.report.ReportGenerator",
       });
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param widgetDef {var} TODOC
-     * @return {void} 
-     */
     _createWidget : function(widgetDef)
     {
       var w = null;
@@ -333,12 +252,6 @@ qx.Class.define("inventario.report.ReportGenerator",
       this.getWidgetArray().push(w);
     },
 
-
-    /**
-     * TODOC
-     *
-     * @return {var} TODOC
-     */
     _getReportParams : function()
     {
       var params = new Array();

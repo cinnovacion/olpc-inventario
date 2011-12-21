@@ -22,19 +22,11 @@ qx.Class.define("inventario.widget.Permissions",
 {
   extend : inventario.window.AbstractWindow,
 
-  /*
-       * CONSTRUCTOR
-       */
-
   construct : function(page, tree)
   {
     this.base(arguments, page);
     this.tree = tree;
   },
-
-  /*
-       * PROPERTIES
-       */
 
   properties :
   {
@@ -43,29 +35,14 @@ qx.Class.define("inventario.widget.Permissions",
     treeWidget  : { check : "Object" }
   },
 
-  /*
-       * MEMBERS
-       */
-
   members :
   {
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     show : function() {
       this._createLayout();
     },
 
     // Since the subTrees are loaded on demand, some of them are not loaded to the wigets
     //   so its necesary to check wich of them are originary selected.
-    /**
-     * TODOC
-     *
-     * @param controller {var} TODOC
-     * @return {var} TODOC
-     */
     _getSubTreeValues : function(controller)
     {
       var methods = new Array();
@@ -83,12 +60,6 @@ qx.Class.define("inventario.widget.Permissions",
     },
 
 
-    /**
-     * TODOC
-     *
-     * @param state {var} TODOC
-     * @return {void} 
-     */
     _changeSelection : function(state)
     {
       var selectedItem = this.getTreeWidget().getSelection()[0];
@@ -112,12 +83,6 @@ qx.Class.define("inventario.widget.Permissions",
       }
     },
 
-
-    /**
-     * TODOC
-     *
-     * @return {var} TODOC
-     */
     getTreeValues : function()
     {
       var returnTree = new Array();
@@ -157,23 +122,10 @@ qx.Class.define("inventario.widget.Permissions",
       return returnTree;
     },
 
-
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     _doShow : function() {
       this._doShow2(this.getVerticalBox());
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param e {Event} TODOC
-     * @return {void} 
-     */
     _loadSubTree_cb : function(e)
     {
       var cWidget = this.getTreeWidget().getSelection()[0];
@@ -197,12 +149,6 @@ qx.Class.define("inventario.widget.Permissions",
       }
     },
 
-
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     _createLayout : function()
     {
       var vbox = new qx.ui.container.Composite(new qx.ui.layout.VBox(20),

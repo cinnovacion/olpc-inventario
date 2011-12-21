@@ -25,12 +25,6 @@ qx.Class.define("inventario.widget.Table",
 
   statics :
   {
-    /**
-     * TODOC
-     *
-     * @param table {var} TODOC
-     * @return {var} TODOC
-     */
     copiarTabla : function(table)
     {
       var data = table.getTableModel().getData();
@@ -51,12 +45,6 @@ qx.Class.define("inventario.widget.Table",
       return data2;
     },
 
-    /**
-     * TODOC
-     *
-     * @param t {var} TODOC
-     * @return {var} TODOC
-     */
     copiarTablaSlice : function(t)
     {
       var ret = new Array();

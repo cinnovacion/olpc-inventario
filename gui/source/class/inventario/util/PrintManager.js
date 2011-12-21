@@ -29,29 +29,11 @@ qx.Class.define("inventario.util.PrintManager",
 {
   extend : qx.core.Object,
 
-
-
-
-  /*
-      *****************************************************************************
-         CONSTRUCTOR
-      *****************************************************************************
-      */
-
   construct : function()
   {
     // llamar al constructor del padre
     qx.core.Object.call(this);
   },
-
-
-
-
-  /*
-      *****************************************************************************
-         STATICS
-      *****************************************************************************
-      */
 
   statics :
   {
@@ -107,7 +89,6 @@ qx.Class.define("inventario.util.PrintManager",
       return iframe;
     },
 
-
     /**
      * print()
      *
@@ -127,14 +108,6 @@ qx.Class.define("inventario.util.PrintManager",
       inventario.transport.Transport.callRemote(h, null);
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param remoteData {var} TODOC
-     * @param params {var} TODOC
-     * @return {void} 
-     */
     printExcelResp : function(remoteData, params)
     {
       var documento = params;
@@ -154,7 +127,6 @@ qx.Class.define("inventario.util.PrintManager",
              */
 
     printZone : null,
-
 
     /**
      * getPrintUrl()

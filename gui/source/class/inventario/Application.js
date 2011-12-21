@@ -58,12 +58,6 @@ qx.Class.define("inventario.Application",
       this.startApp();
     },
 
-
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     startApp : function()
     {
       this.option_name = null;
@@ -86,11 +80,6 @@ qx.Class.define("inventario.Application",
       loginObj.login();
     },
 
-    /**
-     * TODOC
-     *
-     * @return {var} TODOC
-     */
     _getLoginObj : function()
     {
       // TODO: we could save a reference to this object to avoid re-instantiating
@@ -101,11 +90,6 @@ qx.Class.define("inventario.Application",
       return loginObj;
     },
 
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     _loadMainWin : function()
     {
       // Main Vbox, containing the taskbar and the old screen.

@@ -23,10 +23,6 @@ qx.Class.define("inventario.widget.DynamicBarcodeScanForm",
 {
   extend : inventario.window.AbstractWindow,
 
-  /*
-       * CONSTRUCTOR
-       */
-
   construct : function(page, mode)
   {
     this.base(arguments, page);
@@ -37,10 +33,6 @@ qx.Class.define("inventario.widget.DynamicBarcodeScanForm",
     this._filterCheck = null;
     this._amount = 0;
   },
-
-  /*
-       * PROPERTIES
-       */
 
   properties :
   {
@@ -59,37 +51,16 @@ qx.Class.define("inventario.widget.DynamicBarcodeScanForm",
     verticalBox : { check : "Object" }
   },
 
-  /*
-       * MEMBERS
-       */
-
   members :
   {
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     show : function() {
       this._loadInitialData();
     },
 
-
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     _doShow : function() {
       this._doShow2(this.getVerticalBox());
     },
 
-
-    /**
-     * TODOC
-     *
-     * @return {var} TODOC
-     */
     getValues : function()
     {
       var list = new Array();
@@ -117,13 +88,6 @@ qx.Class.define("inventario.widget.DynamicBarcodeScanForm",
       return list;
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param places {var} TODOC
-     * @return {void} 
-     */
     _createLayout : function(places)
     {
       var mainVBox = new qx.ui.container.Composite(new qx.ui.layout.VBox(20));
@@ -136,12 +100,6 @@ qx.Class.define("inventario.widget.DynamicBarcodeScanForm",
       this._doShow();
     },
 
-
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     _loadInitialData : function()
     {
       var hopts = {};
@@ -153,24 +111,10 @@ qx.Class.define("inventario.widget.DynamicBarcodeScanForm",
       inventario.transport.Transport.callRemote(hopts, this);
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param remoteData {var} TODOC
-     * @param params {var} TODOC
-     * @return {void} 
-     */
     _loadInitialDataRespCb : function(remoteData, params) {
       this._createLayout(remoteData.places);
     },
 
-
-    /**
-     * TODOC
-     *
-     * @return {var} TODOC
-     */
     _addFilterCheckBox : function()
     {
       var msg = qx.locale.Manager.tr("Only without laptops in hands");
@@ -183,13 +127,6 @@ qx.Class.define("inventario.widget.DynamicBarcodeScanForm",
       return filterCheckeBox;
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param places {var} TODOC
-     * @return {var} TODOC
-     */
     _addPlacesCombo : function(places)
     {
       var hbox = new qx.ui.container.Composite(new qx.ui.layout.HBox(20));
@@ -208,12 +145,6 @@ qx.Class.define("inventario.widget.DynamicBarcodeScanForm",
       return hbox;
     },
 
-
-    /**
-     * TODOC
-     *
-     * @return {var} TODOC
-     */
     _addForm : function()
     {
       var subMainVbox = new qx.ui.container.Composite(new qx.ui.layout.VBox());
@@ -255,12 +186,6 @@ qx.Class.define("inventario.widget.DynamicBarcodeScanForm",
       return subMainVbox;
     },
 
-
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     _loadForm : function()
     {
       var filterChecked = this._filterCheck.getValue();
@@ -280,14 +205,6 @@ qx.Class.define("inventario.widget.DynamicBarcodeScanForm",
       inventario.transport.Transport.callRemote(hopts, this);
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param remoteData {var} TODOC
-     * @param params {var} TODOC
-     * @return {void} 
-     */
     _loadFormRespCb : function(remoteData, params)
     {
       this._fields.removeAll();
@@ -316,16 +233,6 @@ qx.Class.define("inventario.widget.DynamicBarcodeScanForm",
       this._amount = amount;
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param parent {var} TODOC
-     * @param pos {var} TODOC
-     * @param jumpAt {var} TODOC
-     * @param expresion {var} TODOC
-     * @return {var} TODOC
-     */
     _createTextField : function(parent, pos, jumpAt, expresion)
     {
       var textField = new qx.ui.form.TextField();

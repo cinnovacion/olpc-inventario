@@ -22,30 +22,14 @@ qx.Class.define("inventario.window.SchoolManager",
 {
   extend : inventario.window.AbstractWindow,
 
-  /*
-       * CONSTRUCTOR
-       */
-
   construct : function(page, title)
   {
     this.base(arguments, page);
     if (typeof (title) != "undefined") this.setTitle(title);
   },
 
-  /*
-       * STATICS
-       */
-
   statics :
   {
-    /**
-     * TODOC
-     *
-     * @param page {var} TODOC
-     * @param place_id {var} TODOC
-     * @param title {var} TODOC
-     * @return {void} 
-     */
     launch : function(page, place_id, title)
     {
       var schoolManager = new inventario.window.SchoolManager(page, title);
@@ -55,10 +39,6 @@ qx.Class.define("inventario.window.SchoolManager",
       schoolManager.show();
     }
   },
-
-  /*
-       * PROPERTIES
-       */
 
   properties :
   {
@@ -78,17 +58,8 @@ qx.Class.define("inventario.window.SchoolManager",
     }
   },
 
-  /*
-       * MEMBERS
-       */
-
   members :
   {
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     show : function()
     {
       var vbox = new qx.ui.container.Composite(new qx.ui.layout.VBox(20), { height : 200 });
@@ -154,58 +125,20 @@ qx.Class.define("inventario.window.SchoolManager",
       this._doShow();
     },
 
-
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     _doShow : function()
     {
       this._doShow2(this.getVerticalBox());
       this.setWindowTitle(this.getTitle());
     },
 
-
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     _createInputs : function() {},
 
-
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     _setHandlers : function() {},
 
-
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     _createLayout : function() {},
 
-
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     _loadInitialData : function() {},
 
-
-    /**
-     * TODOC
-     *
-     * @param remoteData {var} TODOC
-     * @param params {var} TODOC
-     * @return {void} 
-     */
     _loadInitialDataResp : function(remoteData, params) {}
   }
 });

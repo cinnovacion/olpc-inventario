@@ -22,35 +22,10 @@ qx.Class.define("inventario.report.ReportGeneratorExtensions",
 {
   extend : qx.core.Object,
 
-
-
-
-  /*
-      *****************************************************************************
-         CONSTRUCTOR
-      *****************************************************************************
-      */
-
   construct : function() {},
-
-
-
-
-  /*
-      *****************************************************************************
-         STATICS
-      *****************************************************************************
-      */
 
   statics :
   {
-    /**
-     * TODOC
-     *
-     * @param label {var} TODOC
-     * @param options {var} TODOC
-     * @return {void} 
-     */
     launch : function(label, options)
     {
       var report = new inventario.report.ReportGenerator(null);

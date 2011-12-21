@@ -23,15 +23,6 @@ qx.Class.define("inventario.widget.ColumnValueSelector",
 {
   extend : qx.ui.container.Composite,
 
-
-
-
-  /*
-      *****************************************************************************
-         CONSTRUCTOR
-      *****************************************************************************
-      */
-
   /**
        *  
        * @param column_options {Array} Array with options [ { datatype : "textfield", text : "Col1", value : "col_name"  } ] 
@@ -74,15 +65,6 @@ qx.Class.define("inventario.widget.ColumnValueSelector",
     }
   },
 
-
-
-
-  /*
-      *****************************************************************************
-         PROPERTIES
-      *****************************************************************************
-      */
-
   properties :
   {
     debug :
@@ -92,22 +74,8 @@ qx.Class.define("inventario.widget.ColumnValueSelector",
     }
   },
 
-
-
-
-  /*
-      *****************************************************************************
-         MEMBERS
-      *****************************************************************************
-      */
-
   members :
   {
-    /**
-     * TODOC
-     *
-     * @return {var} TODOC
-     */
     getValues : function()
     {
       var ret = new Array();
@@ -129,12 +97,6 @@ qx.Class.define("inventario.widget.ColumnValueSelector",
       return ret;
     },
 
-
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     _addRow : function()
     {
       var row_num = this._row_num;
@@ -169,23 +131,10 @@ qx.Class.define("inventario.widget.ColumnValueSelector",
       this._row_num++;
     },
 
-
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     _add_row_cb : function() {
       this._addRow();
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param e {Event} TODOC
-     * @return {void} 
-     */
     _remove_row_cb : function(e)
     {
       var start_w = this._grid_layout.indexOf(e.getTarget()) - 2;
@@ -197,13 +146,6 @@ qx.Class.define("inventario.widget.ColumnValueSelector",
       this._row_num--;
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param e {Event} TODOC
-     * @return {void} 
-     */
     _show_values_cb : function(e)
     {
       var values = this.getValues();

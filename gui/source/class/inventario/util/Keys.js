@@ -25,39 +25,12 @@ qx.Class.define("inventario.util.Keys",
 {
   extend : qx.core.Object,
 
-
-
-
-  /*
-      *****************************************************************************
-         CONSTRUCTOR
-      *****************************************************************************
-      */
-
   construct : function() {
     qx.core.Object.call(this);
   },
 
-
-
-
-  /*
-      *****************************************************************************
-         STATICS
-      *****************************************************************************
-      */
-
   statics :
   {
-    /**
-     * TODOC
-     *
-     * @param accel_key {var} TODOC
-     * @param callback {var} TODOC
-     * @param callback_ctxt {var} TODOC
-     * @param widgetAsociarKeys {var} TODOC
-     * @return {void} 
-     */
     addAccelerator : function(accel_key, callback, callback_ctxt, widgetAsociarKeys)
     {
       /* Preparamos el contexto bajo el cual se va a llamar al callback..
@@ -97,15 +70,6 @@ qx.Class.define("inventario.util.Keys",
              *
              * FIXME: callback podria ser un metodo estatico (para ahorrar memoria)
              */
-
-    /**
-     * TODOC
-     *
-     * @param accel_key {var} TODOC
-     * @param msg {var} TODOC
-     * @param widget {var} TODOC
-     * @return {void} 
-     */
     addAcceleratorSideBar : function(accel_key, msg, widget)
     {
       var callback = function(e)

@@ -431,11 +431,6 @@ qx.Class.define("inventario.window.Abm2",
 
   members :
   {
-    /**
-     * show(): 
-     *
-     * @return {void} void
-     */
     show : function()
     {
       if (this.prepared) {
@@ -463,13 +458,6 @@ qx.Class.define("inventario.window.Abm2",
       }
     },
 
-
-    /**
-     * checkRefresh()
-     *
-     * @param huboCambios {var} TODOC
-     * @return {void} void
-     */
     checkRefresh : function(huboCambios)
     {
       if (huboCambios) {
@@ -477,12 +465,6 @@ qx.Class.define("inventario.window.Abm2",
       }
     },
 
-
-    /**
-     * _doShow()
-     *
-     * @return {void} void
-     */
     _doShow : function()
     {
       var mainVBox = new qx.ui.container.Composite(new qx.ui.layout.VBox(20));
@@ -510,12 +492,6 @@ qx.Class.define("inventario.window.Abm2",
 
     },
 
-
-    /**
-     * createInputs():
-     *
-     * @return {void} 
-     */
     _createInputs : function()
     {
       /*
@@ -899,22 +875,10 @@ qx.Class.define("inventario.window.Abm2",
       this._addAccelerator("Control+S", this._advancedSearch, this);
     },
 
-
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     _searchTextFieldFocus : function() {
       this.getSearchTextField().focus();
     },
 
-
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     _searchOptionsFocus : function() {
       this.getSearchOptions().focus();
     },
@@ -1017,12 +981,6 @@ qx.Class.define("inventario.window.Abm2",
       vbox.add(inferiorBox, { flex : 1 });
     },
 
-
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     updateTable : function() {
       this._navegar();
     },
@@ -1304,13 +1262,6 @@ qx.Class.define("inventario.window.Abm2",
       add_form.show();
     },
 
-    /**
-     * TODOC
-     *
-     * @param filaAgregada {var} TODOC
-     * @param remoteData {var} TODOC
-     * @return {void} 
-     */
     _addRowHandler : function(filaAgregada, remoteData)
     {
       var msg = (remoteData["msg"] ? remoteData["msg"] : qx.locale.Manager.tr(" Added row "));
@@ -1372,11 +1323,6 @@ qx.Class.define("inventario.window.Abm2",
       }
     },
 
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     _deleteRows : function()
     {
       var table = this.getResultsGrid();
@@ -1405,13 +1351,6 @@ qx.Class.define("inventario.window.Abm2",
       }
     },
 
-    /**
-     * TODOC
-     *
-     * @param remoteData {var} TODOC
-     * @param handleParams {var} TODOC
-     * @return {void} 
-     */
     _deleteRowsResp : function(remoteData, handleParams)
     {
       var msg = (remoteData["msg"] ? remoteData["msg"] : qx.locale.Manager.tr(" Deleted row "));
@@ -1439,11 +1378,6 @@ qx.Class.define("inventario.window.Abm2",
       this._saveData(false);
     },
 
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     _modify : function()
     {
       var table = this.getResultsGrid();
@@ -1456,11 +1390,6 @@ qx.Class.define("inventario.window.Abm2",
       }
     },
 
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     _details : function()
     {
       var table = this.getResultsGrid();
@@ -1473,12 +1402,6 @@ qx.Class.define("inventario.window.Abm2",
       }
     },
 
-
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     _showPageNumber : function()
     {
       var cadena = qx.locale.Manager.tr("Displaying Results page: ") + this._pages + qx.locale.Manager.tr(" of ") + this._numPages;
@@ -1488,11 +1411,6 @@ qx.Class.define("inventario.window.Abm2",
       this.getBoxCurrentPage().add(new qx.ui.basic.Label(cadena));
     },
 
-    /**
-     * TODOC
-     *
-     * @return {var} TODOC
-     */
     getDataHashQuery : function()
     {
       var datos = this.getQueryComponents();
@@ -1518,12 +1436,6 @@ qx.Class.define("inventario.window.Abm2",
       return dhash;
     },
 
-    /**
-     * TODOC
-     *
-     * @param remoteData {var} TODOC
-     * @return {void} 
-     */
     _actualizarPantalla : function(remoteData)
     {
       var table = this.getResultsGrid();
@@ -1533,13 +1445,6 @@ qx.Class.define("inventario.window.Abm2",
       this._showPageNumber();
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param e {Event} TODOC
-     * @return {void} 
-     */
     _navegarPaginaAnterior : function(e)
     {
       if (this._pages == this._numPages)
@@ -1564,13 +1469,6 @@ qx.Class.define("inventario.window.Abm2",
       }
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param e {Event} TODOC
-     * @return {void} 
-     */
     _navegarPaginaSiguiente : function(e)
     {
       if (this._pages == 1)
@@ -1595,12 +1493,6 @@ qx.Class.define("inventario.window.Abm2",
       }
     },
 
-    /**
-     * TODOC
-     *
-     * @param e {Event} TODOC
-     * @return {void} 
-     */
     _navegarPrimeraPagina : function(e)
     {
       if (this._pages != 1) {
@@ -1618,12 +1510,6 @@ qx.Class.define("inventario.window.Abm2",
       }
     },
 
-    /**
-     * TODOC
-     *
-     * @param {void}
-     * @return {void}
-     */
     _resetNavigationOptions : function()
     {
       this.getPrevButton().setEnabled(false);
@@ -1634,12 +1520,6 @@ qx.Class.define("inventario.window.Abm2",
       this._showPageNumber();
     },
 
-    /**
-     * TODOC
-     *
-     * @param e {Event} TODOC
-     * @return {void} 
-     */
     _navegarUltimaPagina : function(e)
     {
       if (this._numPages > 1) {
@@ -1657,12 +1537,6 @@ qx.Class.define("inventario.window.Abm2",
       }
     },
 
-
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     _advancedSearch : function()
     {
       try
@@ -1691,13 +1565,6 @@ qx.Class.define("inventario.window.Abm2",
       }
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param e {Event} TODOC
-     * @return {void} 
-     */
     _elegirFila : function(e)
     {
       var filasSeleccionadas = inventario.widget.Table.getSelected2(this.getResultsGrid(), null, true);
@@ -1796,12 +1663,6 @@ qx.Class.define("inventario.window.Abm2",
       }
     }, 
 
-    /**
-     * TODOC
-     *
-     * @param e {Event} TODOC
-     * @return {void} 
-     */
     _seleccionarCheckBox : function(e)
     {
       var col = e.getColumn();
@@ -1818,11 +1679,6 @@ qx.Class.define("inventario.window.Abm2",
       }
     },
 
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     _exportExcel : function()
     {
       var tm = this.getResultsGrid().getTableModel();

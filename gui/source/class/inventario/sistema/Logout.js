@@ -24,10 +24,6 @@ qx.Class.define("inventario.sistema.Logout",
   extend : qx.ui.container.Composite,
 
   /*
-  * CONSTRUCTOR
-  */
-
-  /*
     #asset(qx/icon/Tango/22/actions/application-exit.png)
   */
   construct : function()
@@ -51,10 +47,6 @@ qx.Class.define("inventario.sistema.Logout",
     }
   },
 
-  /*
-       * PROPERTIES
-       */
-
   properties :
   {
     logoutButton :
@@ -70,17 +62,8 @@ qx.Class.define("inventario.sistema.Logout",
     }
   },
 
-  /*
-       * MEMBERS
-       */
-
   members :
   {
-    /**
-     * TODOC
-     *
-     * @return {void} 
-     */
     _doLogout : function()
     {
       if (confirm(qx.locale.Manager.tr("Are you sure you want to exit the system?")))
@@ -95,14 +78,6 @@ qx.Class.define("inventario.sistema.Logout",
       }
     },
 
-
-    /**
-     * TODOC
-     *
-     * @param remoteData {var} TODOC
-     * @param params {var} TODOC
-     * @return {void} 
-     */
     _doLogoutResp : function(remoteData, params)
     {
       var message = remoteData.msg;
