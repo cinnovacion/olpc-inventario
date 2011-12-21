@@ -254,7 +254,7 @@ qx.Class.define("inventario.window.Mensaje",
         f.call(ctxt);
       }
 
-      this.getAbstractPopupWindow().getWindow().close();
+      this.getAbstractPopupWindow().close();
     },
 
     _more_info_cb : function() {

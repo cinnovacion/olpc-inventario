@@ -787,7 +787,7 @@ qx.Class.define("inventario.window.Abm2",
       {
 
         var f = function(e) {
-          this.getAbstractPopupWindow().getWindow().close();
+          this.getAbstractPopupWindow().close();
         };
 
         var h =
@@ -1631,7 +1631,7 @@ qx.Class.define("inventario.window.Abm2",
                 inventario.widget.Form.loadComboBox(cb, v, true);
 
                 if (this.getCloseAfterChoose()) {
-                  this.getAbstractPopupWindow().getWindow().close();
+                  this.getAbstractPopupWindow().close();
                 }
 	    } else { 
 	      inventario.window.Mensaje.mensaje(agregarFilaMsgError);
@@ -1657,7 +1657,7 @@ qx.Class.define("inventario.window.Abm2",
 	       this.getChooseButtonCallBackInputField(), this.getChooseButtonCallBackParams());
 
 	if (this.getCloseAfterChoose()) {
-	  this.getAbstractPopupWindow().getWindow().close();
+	  this.getAbstractPopupWindow().close();
 	}
 
       }

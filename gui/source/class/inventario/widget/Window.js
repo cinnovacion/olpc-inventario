@@ -24,159 +24,42 @@
 
 qx.Class.define("inventario.widget.Window",
 {
-  extend : qx.core.Object,
+  extend : qx.ui.window.Window,
 
-
-  construct : function(param)
+  construct : function(title, icon, width, height)
   {
-    var title = "";
+    if (title == undefined)
+      title = "";
+    if (icon == undefined)
+      icon = "icon/22/actions/document-new.png";
 
-    if (param)
-    {
-      if (typeof (param) == "object")
-      {
-        if (param["title"]) {
-          title = param["title"];
-        }
+    this.base(arguments, title, icon);
 
-        if (param["height"]) {
-          this.setHeight(parseInt(param["height"]));
-        }
+    if (height != undefined)
+      this.setMinHeight(height);
+    if (width != undefined)
+      this.setMinWidth(width)
 
-        if (param["width"]) {
-          this.setWidth(parseInt(param["width"]));
-        }
-      }
-      else
-      {
-        title = param;
-      }
-    }
-
-    this.setTitle(title);
-
-    var win = new qx.ui.window.Window(this.getTitle(), this.getIcon());
-
-
-    win.addListenerOnce("appear", function(e) {
-      win.center();
+    this.addListenerOnce("appear", function(e) {
+      this.center();
     });
 
-    win.setLayout(new qx.ui.layout.VBox(10));
-    this.setWindow(win);
-
-    var width = this.getWidth();
-    var height = this.getHeight();
-    win.setMinWidth(width);
-    win.setMinHeight(height);
-    win.setShowClose(true);
-    win.setShowMaximize(false);
+    this.setLayout(new qx.ui.layout.VBox(10));
+    this.setShowClose(true);
+    this.setShowMaximize(false);
 
     var vbox = new qx.ui.container.Composite(new qx.ui.layout.VBox(20));
     this.setVbox(vbox);
-
-    win.add(vbox);
+    this.add(vbox);
   },
-
-
 
   properties :
   {
-    window :
-    {
-      check    : "Object",
-      init     : null,
-      nullable : true
-    },
-
     vbox :
     {
       check    : "Object",
       init     : null,
       nullable : true
-    },
-
-    width :
-    {
-      check : "Number",
-      init  : 400
-    },
-
-    height :
-    {
-      check : "Number",
-      init  : 200
-    },
-
-    relatedObj :
-    {
-      check    : "Object",
-      init     : null,
-      nullable : true
-    },
-
-    title :
-    {
-      check : "String",
-      init  : ""
-    },
-
-    icon :
-    {
-      check : "String",
-      init  : "icon/22/actions/document-new.png"
-    },
-
-    onCloseCallBack :
-    {
-      check    : "Function",
-      init     : null,
-      nullable : true
-    },
-
-    onCloseCallBackContext :
-    {
-      check    : "Object",
-      init     : null,
-      nullable : true
-    }
-  },
-
-
-  members :
-  {
-    show : function(title)
-    {
-      var win = this.getWindow();
-      if (title) win.setCaption(title);
-
-      var func = this.getOnCloseCallBack();
-
-      if (func)
-      {
-        var contexto = this.getOnCloseCallBackContext();
-        var objWin = this;
-
-        var f = function(e)
-        {
-          var huboCambios = false;
-          var obj = objWin.getRelatedObj();
-
-          if (obj) {
-            huboCambios = obj.getSavedChanges();
-          }
-
-          func.call(contexto, huboCambios);
-        };
-
-        win.addListener("disappear", f, contexto);
-      }
-
-      var width = this.getWidth();
-      var height = this.getHeight();
-      win.setMinWidth(width);
-      win.setMinHeight(height);
-      win.open();
     }
   }
 });

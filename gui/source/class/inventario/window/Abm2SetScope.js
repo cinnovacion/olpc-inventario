@@ -89,7 +89,7 @@ qx.Class.define("inventario.window.Abm2SetScope",
             this.setWindowTitle(this.getTitle());
 
             /* */
-            var wpopup = this.getAbstractPopupWindow().getWindow();
+            var wpopup = this.getAbstractPopupWindow();
 
             wpopup.addListenerOnce("appear", function() {
                 wpopup.set({

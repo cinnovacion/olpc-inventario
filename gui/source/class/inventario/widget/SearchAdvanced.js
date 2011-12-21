@@ -42,7 +42,7 @@ qx.Class.define("inventario.widget.SearchAdvanced",
     }
 
     var win = new inventario.widget.Window();
-    win.getWindow().setModal(false);
+    win.setModal(false);
     var vbox = win.getVbox();
 
     this.setWindow(win);

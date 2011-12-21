@@ -167,26 +167,6 @@ qx.Class.define("inventario.window.AbstractWindow",
       nullable : true
     },
 
-    onCloseCallBack :
-    {
-      check    : "Function",
-      init     : null,
-      nullable : true
-    },
-
-    onCloseCallBackContext :
-    {
-      check    : "Object",
-      init     : null,
-      nullable : true
-    },
-
-    savedChanges :
-    {
-      check : "Boolean",
-      init  : false
-    },
-
     closeAfterSave :
     {
       check : "Boolean",
@@ -219,7 +199,7 @@ qx.Class.define("inventario.window.AbstractWindow",
     },
 
     getWindowIcon : function() {
-      var icon = this.getAbstractPopupWindow().getWindow().getIcon();
+      var icon = this.getAbstractPopupWindow().getIcon();
       return icon;
     },
 
@@ -296,7 +276,7 @@ qx.Class.define("inventario.window.AbstractWindow",
     },
 
     cerrar : function() {
-      this.getAbstractPopupWindow().getWindow().close();
+      this.getAbstractPopupWindow().close();
     },
 
     _buildCommandToolBar : function(arriba, distancia)
@@ -340,8 +320,7 @@ qx.Class.define("inventario.window.AbstractWindow",
 
     doMaximize : function()
     {
-      var window = this.getAbstractPopupWindow().getWindow();
-      window.open();
+      this.getAbstractPopupWindow().open();
     },
 
     _underlineLabel : function(label, key_accel)
@@ -394,44 +373,35 @@ qx.Class.define("inventario.window.AbstractWindow",
         if (!w)
         {
           var t = (this.getWindowTitle() ? this.getWindowTitle() : " ");
-          w = new inventario.widget.Window({ title : t });
+          w = new inventario.widget.Window(t);
           this.setAbstractPopupWindow(w);
-
-          /* Le indicamos a la ventana (widget.Window) que consulte con nosotros si hubo cambios para 
-          	   * llamar al callback al cerrar la ventana
-          	   * la consulta de si hubo cambios es via getSavedChanges
-          	   */
-
-          w.setRelatedObj(this);
-          w.setOnCloseCallBack(this.getOnCloseCallBack());
-          w.setOnCloseCallBackContext(this.getOnCloseCallBackContext());
 
           var height = this.getAbstractPopupWindowHeight();
           var width = this.getAbstractPopupWindowWidth();
 
           if (height > 0) {
-            this.getAbstractPopupWindow().getWindow().setHeight(height);
+            this.getAbstractPopupWindow().setHeight(height);
           }
 
           if (width > 0) {
-            this.getAbstractPopupWindow().getWindow().setWidth(width);
+            this.getAbstractPopupWindow().setWidth(width);
           }
 
-          this.getAbstractPopupWindow().getWindow().setModal(false);
+          this.getAbstractPopupWindow().setModal(false);
 
           /* Manejar Esc. como cierre de ventana */
 
-          this.getAbstractPopupWindow().getWindow().addListener("keyup", this._escape_cb, this);
+          this.getAbstractPopupWindow().addListener("keyup", this._escape_cb, this);
 
           // minimize to the application taskbar
-          this.getAbstractPopupWindow().getWindow().addListener("minimize", this._minimize_cb, this);
+          this.getAbstractPopupWindow().addListener("minimize", this._minimize_cb, this);
         }
 
         page = this.getAbstractPopupWindow().getVbox();
         inventario.widget.Layout.removeChilds(page);
         page.add(vbox);
-        this.getAbstractPopupWindow().show();
-        widgetAsociarKeys = this.getAbstractPopupWindow().getWindow();
+		this.getAbstractPopupWindow().open();
+        widgetAsociarKeys = this.getAbstractPopupWindow();
       }
       else
       {
@@ -501,12 +471,12 @@ qx.Class.define("inventario.window.AbstractWindow",
         {
           if (confirm(qx.locale.Manager.tr("Close window?")))
           {
-            this.getAbstractPopupWindow().getWindow().close();
+            this.getAbstractPopupWindow().close();
           }
         }
         else
         {
-          this.getAbstractPopupWindow().getWindow().close();
+          this.getAbstractPopupWindow().close();
         }
       }
     },
@@ -516,7 +486,7 @@ qx.Class.define("inventario.window.AbstractWindow",
       var win = this.getAbstractPopupWindow();
 
       if (win) {
-        win.getWindow().setCaption(value);
+        win.setCaption(value);
       }
     }
   }

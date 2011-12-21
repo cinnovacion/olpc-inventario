@@ -110,7 +110,7 @@ qx.Class.define("inventario.transport.Transport",
       var statusWin = inventario.transport.Transport.getStatusWin();
 
       var _finish_cb = function(e) {
-        statusWin.getWindow().close();
+        statusWin.close();
       };
 
       req.addListener("sending", function(e) {
@@ -142,11 +142,12 @@ qx.Class.define("inventario.transport.Transport",
 
       req.addListener("completed", function(e)
       {
-        statusWin.getWindow().close();
+        statusWin.close();
         inventario.transport.Transport._callRemoteResp(e, params.handle, params.parametros, self);
       });
 
       try {
+        statusWin.open();
         req.send();
       } catch(e) {
         alert("Transport => " + e.toString());
@@ -196,23 +197,15 @@ qx.Class.define("inventario.transport.Transport",
     getStatusWin : function() {
       var messageText = new qx.ui.basic.Atom(qx.locale.Manager.tr("Processing your request..."));
 
-      var winParams =
-      {
-        width  : "150",
-        height : "80"
-      };
-
-      var statusWin = new inventario.widget.Window(winParams);
-      statusWin.getWindow().setShowMaximize(false);
-      statusWin.getWindow().setShowMinimize(false);
-      statusWin.getWindow().setShowClose(false);
-      statusWin.getWindow().setOpacity(0.7);
+      var statusWin = new inventario.widget.Window();
+      statusWin.setShowMaximize(false);
+      statusWin.setShowMinimize(false);
+      statusWin.setShowClose(false);
+      statusWin.setOpacity(0.7);
       statusWin.getVbox().add(messageText);
       statusWin.getVbox().add(inventario.transport.Transport.getProcessingImage());
-      statusWin.getWindow().setModal(true);
-      statusWin.show();
-
-      statusWin.getWindow().center();
+      statusWin.setModal(true);
+      statusWin.center();
 
       statusWin.setUserData("message_text", messageText);
 

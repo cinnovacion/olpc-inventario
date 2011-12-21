@@ -924,7 +924,7 @@ qx.Class.define("inventario.window.AbmForm",
             this._saveCallback(null, this.data["fields"]);
 
             if (this.getUsePopup() && this.getCloseAfterInsert()) {
-              this.getAbstractPopupWindow().getWindow().close();
+              this.getAbstractPopupWindow().close();
             }
           }
           else
@@ -976,7 +976,7 @@ qx.Class.define("inventario.window.AbmForm",
       this._saveCallback(remoteData, this.data["fields"]);
 
       if (this.getUsePopup() && this.getCloseAfterInsert()) {
-        this.getAbstractPopupWindow().getWindow().close();
+        this.getAbstractPopupWindow().close();
       }
 
       if (this.getClearFormFieldsAfterSave()) {
@@ -1177,7 +1177,7 @@ qx.Class.define("inventario.window.AbmForm",
     _cancel_cb : function(e)
     {
       if (this.getUsePopup()) {
-        this.getAbstractPopupWindow().getWindow().close();
+        this.getAbstractPopupWindow().close();
       }
     },
 
