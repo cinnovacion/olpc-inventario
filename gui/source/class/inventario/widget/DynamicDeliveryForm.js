@@ -23,11 +23,12 @@
 // Author: Daniel Drake
 qx.Class.define("inventario.widget.DynamicDeliveryForm",
 {
-  extend : inventario.window.AbstractWindow,
+  extend : qx.ui.container.Composite,
 
-  construct : function(page, mode)
+  construct : function(mode)
   {
-    this.base(arguments, page);
+    this._vbox = new qx.ui.layout.VBox(20);
+    this.base(arguments, this._vbox);
     this._mode = mode;
     this._fields = null;
     this._placesCombo = null;
@@ -45,21 +46,11 @@ qx.Class.define("inventario.widget.DynamicDeliveryForm",
     {
       check : "String",
       init  : "/people/laptopsNotInHands"
-    },
-
-    verticalBox : { check : "Object" }
+    }
   },
 
   members :
   {
-    show : function() {
-      this._loadInitialData();
-    },
-
-    _doShow : function() {
-      this._doShow2(this.getVerticalBox());
-    },
-
     getValues : function()
     {
       if (this._fields == null || !this._fields.hasChildren())
@@ -80,18 +71,7 @@ qx.Class.define("inventario.widget.DynamicDeliveryForm",
       return list;
     },
 
-    _createLayout : function(places)
-    {
-      var mainVBox = new qx.ui.container.Composite(new qx.ui.layout.VBox(20));
-
-      mainVBox.add(this._addPlacesCombo(places));
-      mainVBox.add(this._addForm());
-
-      this.setVerticalBox(mainVBox);
-      this._doShow();
-    },
-
-    _loadInitialData : function()
+    launch : function()
     {
       var hopts = {};
       hopts["url"] = this.getPlacesDataUrl();
@@ -103,7 +83,8 @@ qx.Class.define("inventario.widget.DynamicDeliveryForm",
     },
 
     _loadInitialDataRespCb : function(remoteData, params) {
-      this._createLayout(remoteData.places);
+      this.add(this._addPlacesCombo(remoteData.places));
+      this.add(this._addForm());
     },
 
     _addPlacesCombo : function(places)

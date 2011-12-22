@@ -557,13 +557,10 @@ qx.Class.define("inventario.window.AbmForm",
           break;
 
         case "dynamic_delivery_form":
-          input = new qx.ui.container.Composite(new qx.ui.layout.HBox(20));
-          var dynDelForm = new inventario.widget.DynamicDeliveryForm(null, fieldData.mode);
-          dynDelForm.setPage(input);
-          dynDelForm.show();
-
-          this._formFields.push(dynDelForm);
-          this.getDataInputObjects().push(dynDelForm);
+          input = new inventario.widget.DynamicDeliveryForm(fieldData.mode);
+          input.launch();
+          this._formFields.push(input);
+          this.getDataInputObjects().push(input);
           break;
 
         case "coords_text_field":
