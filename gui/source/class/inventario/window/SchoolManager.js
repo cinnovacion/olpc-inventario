@@ -115,9 +115,9 @@ qx.Class.define("inventario.window.SchoolManager",
       // Google Maps Tab
       var mapPage = new qx.ui.tabview.Page(qx.locale.Manager.tr("Map"), "icon/16/apps/utilities-help.png");
       mapPage.setLayout(new qx.ui.layout.VBox());
-      var mapAbm = new inventario.widget.MapLocator(null, Number(this.getPlaceId()), true, 600, 500, false);
-      mapAbm.setPage(mapPage);
-      mapAbm.show();
+      var mapAbm = new inventario.widget.MapLocator(Number(this.getPlaceId()), true, 600, 500, false);
+      mapPage.add(mapAbm);
+      mapAbm.launch();
       tabView.add(mapPage);
 
       this.getVerticalBox().add(tabView);

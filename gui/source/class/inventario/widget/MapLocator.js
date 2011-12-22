@@ -37,11 +37,12 @@
 
 qx.Class.define("inventario.widget.MapLocator",
 {
-  extend : inventario.window.AbstractWindow,
+  extend : qx.ui.container.Composite,
 
-  construct : function(page, placeId, readOnly, width, height, subNodes)
+  construct : function(placeId, readOnly, width, height, subNodes)
   {
-    this.base(arguments, page);
+    this._hbox = new qx.ui.layout.HBox(20)
+    this.base(arguments, this._hbox);
 
     // State variables
     this._readOnly = readOnly;
@@ -139,7 +140,7 @@ qx.Class.define("inventario.widget.MapLocator",
 
   members :
   {
-    show : function() {
+    launch : function() {
       this._loadGoogleApi();
     },
 
@@ -243,24 +244,14 @@ qx.Class.define("inventario.widget.MapLocator",
       return node;
     },
 
-    _doShow : function(vbox)
-    {
-      this.setVerticalBox(vbox);
-      this._doShow2(vbox);
-    },
-
     _createLayout : function(mapDesc, nodeTypes)
     {
-      var hbox = new qx.ui.container.Composite(new qx.ui.layout.HBox(20));
-      hbox.addListener("disappear", this._stopAutoResfresh, this);
+      this.addListener("disappear", this._stopAutoResfresh, this);
 
-      hbox.add(this._createMap(mapDesc));
+      this.add(this._createMap(mapDesc));
 
-      if (!this._readOnly) {
-        hbox.add(this._createEditMenu(nodeTypes));
-      }
-
-      this._doShow(hbox);
+      if (!this._readOnly)
+        this.add(this._createEditMenu(nodeTypes));
     },
 
     _createMap : function(mapDesc)

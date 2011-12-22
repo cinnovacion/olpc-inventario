@@ -109,9 +109,9 @@ qx.Class.define("inventario.widget.NodeTracker",
 
       var initValue = inventario.widget.Form.getInputValue(this._placesCombo);
 
-      var mapWidget = new inventario.widget.MapLocator(null, Number(initValue), true, 800, 600, true);
-      mapWidget.setPage(hbox);
-      mapWidget.show();
+      var mapWidget = new inventario.widget.MapLocator(Number(initValue), true, 800, 600, true);
+      hbox.add(mapWidget);
+      mapWidget.launch();
       mapWidget.startAutoResfresh(Number(this._refreshText.getValue()) * 1000);
 
       this._mapWidget = mapWidget;

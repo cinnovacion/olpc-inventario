@@ -536,13 +536,11 @@ qx.Class.define("inventario.window.AbmForm",
             var readOnly = fieldData.readOnly;
           }
 
-          input = new qx.ui.container.Composite(new qx.ui.layout.HBox(20));
-          var mapWidget = new inventario.widget.MapLocator(null, placeId, readOnly, width, height, false);
-          mapWidget.setPage(input);
-          mapWidget.show();
+          input = new inventario.widget.MapLocator(placeId, readOnly, width, height, false);
+          input.launch();
 
-          this._formFields.push(mapWidget);
-          this.getDataInputObjects().push(mapWidget);
+          this._formFields.push(input);
+          this.getDataInputObjects().push(input);
 
           break;
 
