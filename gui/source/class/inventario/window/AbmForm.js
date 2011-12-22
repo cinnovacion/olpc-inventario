@@ -671,67 +671,59 @@ qx.Class.define("inventario.window.AbmForm",
           break;
 
         case "table":
-          input = new qx.ui.container.Composite(new qx.ui.layout.VBox(20));
-
           var rows_num = (fieldData.rows_num ? fieldData.rows_num : 5);
           var width = (fieldData.width ? fieldData.width : 250);
           var height = (fieldData.height ? fieldData.height : 250);
 
-          var tableObj = new inventario.widget.Table2();
-          tableObj.setUseEmptyTable(true);
-          tableObj.setRowsNum(rows_num);
-          tableObj.setColsNum(fieldData["col_titles"].length);
-          tableObj.setTitles(fieldData["col_titles"]);
-          tableObj.setEditables(fieldData["editables"]);
-          tableObj.setWidths(fieldData["widths"]);
-          tableObj.setPage(input);
-          tableObj.setButtonsAlignment("center");
+          input = new inventario.widget.Table2();
+          input.setUseEmptyTable(true);
+          input.setRowsNum(rows_num);
+          input.setColsNum(fieldData["col_titles"].length);
+          input.setTitles(fieldData["col_titles"]);
+          input.setEditables(fieldData["editables"]);
+          input.setWidths(fieldData["widths"]);
+          input.setButtonsAlignment("center");
 
-          if (fieldData["columnas_visibles"]) {
-            tableObj.setColumnasVisibles(fieldData["columnas_visibles"]);
-          }
+          if (fieldData["columnas_visibles"])
+            input.setColumnasVisibles(fieldData["columnas_visibles"]);
 
           /*
                     	     * Si estamos en modo "Detalles" no nos interesa poder agregar cosas a la tabla
                     	     */
 
-          if (this.getDetails()) {
-            tableObj.setWithButtons(false);
-          } else {
-            tableObj.setWithButtons(true);
-          }
+          if (this.getDetails())
+            input.setWithButtons(false);
+          else
+            input.setWithButtons(true);
 
-          tableObj.setShowSelectButton(false);
-          tableObj.setShowModifyButton(false);
-          tableObj.setAddButtonLabel("+");
-          tableObj.setAddButtonIcon("");
-          tableObj.setDeleteButtonLabel("-");
-          tableObj.setDeleteButtonIcon("");
+          input.setShowSelectButton(false);
+          input.setShowModifyButton(false);
+          input.setAddButtonLabel("+");
+          input.setAddButtonIcon("");
+          input.setDeleteButtonLabel("-");
+          input.setDeleteButtonIcon("");
 
           // ku 2007-05-16
-          if (fieldData.options.length > 0) tableObj.setGridData(fieldData.options);
+          if (fieldData.options.length > 0) input.setGridData(fieldData.options);
 
-          // ////////////////////////////////
-          tableObj.show();
+          input.launch();
 
-          if (fieldData.cols_mapping) {
-            tableObj.setUserData("cols_mapping", fieldData.cols_mapping);
-          }
+          if (fieldData.cols_mapping)
+            input.setUserData("cols_mapping", fieldData.cols_mapping);
 
-          tableObj.setHashKeys(fieldData.hashed_data);
+          input.setHashKeys(fieldData.hashed_data);
 
           if (fieldData.formula_table)
           {
-            tableObj.setFormulaTable(fieldData.formula_table);
-            tableObj.setFormulaContext(this);
+            input.setFormulaTable(fieldData.formula_table);
+            input.setFormulaContext(this);
           }
 
-          if (!this.getDetails()) {
-            this._doAddHandlerTable(fieldData, tableObj);
-          }
+          if (!this.getDetails())
+            this._doAddHandlerTable(fieldData, input);
 
-          this._formFields.push(tableObj);
-          this.getDataInputObjects().push(tableObj);
+          this._formFields.push(input);
+          this.getDataInputObjects().push(input);
           break;
 
         case "uploadfield":

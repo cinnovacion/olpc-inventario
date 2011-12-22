@@ -28,11 +28,11 @@
  */
 qx.Class.define("inventario.widget.Table2",
 {
-  extend : inventario.window.AbstractWindow,
+  extend : qx.ui.container.Composite,
 
-  construct : function(page)
+  construct : function()
   {
-    inventario.window.AbstractWindow.call(this, page);
+    this.base(arguments, new qx.ui.layout.VBox(20));
     this.prepared = false;
     this.setHashKeys(new Array());
   },
@@ -177,12 +177,6 @@ qx.Class.define("inventario.widget.Table2",
 
     /* contenedor & grilla */
 
-    vbox :
-    {
-      check : "Object",
-      init  : null
-    },
-
     titles :
     {
       check : "Object",
@@ -306,13 +300,13 @@ qx.Class.define("inventario.widget.Table2",
   members :
   {
     /**
-     * show(): rock & roll!
+     * launch(): rock & roll!
      * 
      * Volar de aca estos try/catch cuando este todo depurado
      *
      * @return {void} 
      */
-    show : function()
+    launch : function()
     {
       if (!this.prepared)
       {
@@ -320,9 +314,6 @@ qx.Class.define("inventario.widget.Table2",
         this._setHandlers();
         this._createLayout();
       }
-
-      var p = this.getPage();  /* aca vamos a poner todo */
-      inventario.widget.Layout.removeChilds(p);  /* hacer desaparecer la tabla anterior.. */
 
       try
       {
@@ -357,16 +348,15 @@ qx.Class.define("inventario.widget.Table2",
       }
       catch(e)
       {
-        inventario.window.Mensaje.mensaje("Tabl2.show() setData() =>" + e);
+        inventario.window.Mensaje.mensaje("Tabl2.launch() setData() =>" + e);
       }
 
       try {
         inventario.widget.Table.setRenderers(this.getGrid(), this.getGridData()[0]);  /* renderers */
       } catch(e) {
-        inventario.window.Mensaje.mensaje("Tabl2.show() setRenderers()" + e);
+        inventario.window.Mensaje.mensaje("Tabl2.launch() setRenderers()" + e);
       }
 
-      p.add(this.getVbox());
       this.prepared = true;
     },
 
@@ -533,13 +523,10 @@ qx.Class.define("inventario.widget.Table2",
      */
     _createLayout : function()
     {
-      var vbox = new qx.ui.container.Composite(new qx.ui.layout.VBox(20));
-      this.setVbox(vbox);
-
       var tableBox = new qx.ui.container.Composite(new qx.ui.layout.VBox(20));
 
       tableBox.add(this.getGrid());
-      vbox.add(tableBox);
+      this.add(tableBox);
 
       if (this.getWithButtons())
       {
@@ -576,7 +563,7 @@ qx.Class.define("inventario.widget.Table2",
           buttonsContenedorHbox.add(totalizadorHbox);
         }
 
-        vbox.add(buttonsContenedorHbox);
+        this.add(buttonsContenedorHbox);
       }
     },
 

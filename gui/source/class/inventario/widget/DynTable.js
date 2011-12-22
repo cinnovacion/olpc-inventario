@@ -156,10 +156,10 @@ qx.Class.define("inventario.widget.DynTable",
     {
       var rows_num = 5;  // TODO: has to be a settable property
       var tableObj = new inventario.widget.Table2();
+      hbox.add(tableObj);
 
       tableObj.setTableHeight(150);
       tableObj.setTableWidth(300);
-      tableObj.setPage(hbox);
       tableObj.setUseEmptyTable(true);
       tableObj.setRowsNum(rows_num);
       tableObj.setColsNum(this.getTableDef().col_titles.length);
@@ -182,10 +182,8 @@ qx.Class.define("inventario.widget.DynTable",
 
       tableObj.setHashKeys(this.getTableDef().hashed_data);
 
-      tableObj.show();  // FIXME: necessary?
-
+      tableObj.launch();
       this.setTableObj(tableObj);
-
       return tableObj;
     },
 
