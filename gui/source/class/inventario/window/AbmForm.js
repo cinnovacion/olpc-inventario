@@ -547,13 +547,9 @@ qx.Class.define("inventario.window.AbmForm",
           break;
 
         case "dynamic_barcode_scan_form":
-          input = new qx.ui.container.Composite(new qx.ui.layout.HBox(20));
-          var dynDelForm = new inventario.widget.DynamicBarcodeScanForm(null, fieldData.mode);
-          dynDelForm.setPage(input);
-          dynDelForm.show();
-
-          this._formFields.push(dynDelForm);
-          this.getDataInputObjects().push(dynDelForm);
+          input = new inventario.widget.DynamicBarcodeScanForm(fieldData.mode);
+          this._formFields.push(input);
+          this.getDataInputObjects().push(input);
           break;
 
         case "dynamic_delivery_form":

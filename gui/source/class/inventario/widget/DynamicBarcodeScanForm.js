@@ -21,17 +21,19 @@
 // 2009
 qx.Class.define("inventario.widget.DynamicBarcodeScanForm",
 {
-  extend : inventario.window.AbstractWindow,
+  extend : qx.ui.container.Composite,
 
-  construct : function(page, mode)
+  construct : function(mode)
   {
-    this.base(arguments, page);
+    this._vbox = new qx.ui.layout.VBox(20);
+    this.base(arguments, this._vbox);
     this._mode = mode;
     this._fields = null;
     this._placesCombo = null;
     this._amountLabel = null;
     this._filterCheck = null;
     this._amount = 0;
+    this._loadInitialData();
   },
 
   properties :
@@ -46,21 +48,11 @@ qx.Class.define("inventario.widget.DynamicBarcodeScanForm",
     {
       check : "String",
       init  : "/people/studentsAmount"
-    },
-
-    verticalBox : { check : "Object" }
+    }
   },
 
   members :
   {
-    show : function() {
-      this._loadInitialData();
-    },
-
-    _doShow : function() {
-      this._doShow2(this.getVerticalBox());
-    },
-
     getValues : function()
     {
       var list = new Array();
@@ -88,18 +80,6 @@ qx.Class.define("inventario.widget.DynamicBarcodeScanForm",
       return list;
     },
 
-    _createLayout : function(places)
-    {
-      var mainVBox = new qx.ui.container.Composite(new qx.ui.layout.VBox(20));
-
-      mainVBox.add(this._addFilterCheckBox());
-      mainVBox.add(this._addPlacesCombo(places));
-      mainVBox.add(this._addForm());
-
-      this.setVerticalBox(mainVBox);
-      this._doShow();
-    },
-
     _loadInitialData : function()
     {
       var hopts = {};
@@ -107,12 +87,13 @@ qx.Class.define("inventario.widget.DynamicBarcodeScanForm",
       hopts["parametros"] = null;
       hopts["handle"] = this._loadInitialDataRespCb;
       hopts["data"] = { sections_only : true };
-
       inventario.transport.Transport.callRemote(hopts, this);
     },
 
     _loadInitialDataRespCb : function(remoteData, params) {
-      this._createLayout(remoteData.places);
+      this.add(this._addFilterCheckBox());
+      this.add(this._addPlacesCombo(remoteData.places));
+      this.add(this._addForm());
     },
 
     _addFilterCheckBox : function()
