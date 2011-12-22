@@ -23,11 +23,11 @@ qx.Class.define("inventario.widget.PeopleMover",
 
   construct : function(page)
   {
-    this.base(arguments, page);
+    this.base(arguments, page, qx.locale.Manager.tr("Move people"));
     this._state = inventario.widget.PeopleMover.states.PLACES
     this._people = []
 
-    this._vbox = new qx.ui.container.Composite(new qx.ui.layout.VBox(10));
+    this.getVbox().getLayout().setSpacing(10);
 
     /* Tree selectors for source and destination places */
     var opts = { width: 360, height: 120 };
@@ -42,7 +42,7 @@ qx.Class.define("inventario.widget.PeopleMover",
     this._addComment = new qx.ui.form.CheckBox(qx.locale.Manager.tr("Add comment to person notes"));
 
     var hbox = new qx.ui.container.Composite(new qx.ui.layout.HBox());
-    this._vbox.add(hbox)
+    this.getVbox().add(hbox)
 
     this._backButton = new qx.ui.form.Button(qx.locale.Manager.tr("Back"));
     this._backButton.addListener("execute", this._backClicked, this);
@@ -54,17 +54,15 @@ qx.Class.define("inventario.widget.PeopleMover",
 
     this._placeSelector = this._createPlaceSelector();
     this._peopleSelector = this._createPeopleSelector();
+    this._showPlaces(); /* initial state */
   },
 
   statics :
   {
     launch : function(page)
     {
-      var mover = new inventario.widget.PeopleMover(null);
-      mover.setPage(page);
-      mover.setWindowTitle(qx.locale.Manager.tr("Move people"));
-      mover.setUsePopup(true);
-      mover.show();
+      var mover = new inventario.widget.PeopleMover(page);
+      mover.open();
     },
 
     states : { PLACES: 0, PEOPLE: 1 }
@@ -179,7 +177,7 @@ qx.Class.define("inventario.widget.PeopleMover",
 
     _doMoveCb : function(remoteData, params) {
       inventario.window.Mensaje.mensaje(remoteData["msg"]);
-      this.cerrar();
+      this.close();
     },
 
     _doMove : function() {
@@ -215,17 +213,17 @@ qx.Class.define("inventario.widget.PeopleMover",
 
     /* Remove all elements from main view except the button hbox */
     _clearVbox : function() {
-      var children = this._vbox.getChildren();
+      var children = this.getVbox().getChildren();
       children = children.slice(0, -1);
       for (var idx in children) {
-        this._vbox.remove(children[idx]);
+        this.getVbox().remove(children[idx]);
       }
     },
 
     _showPlaces : function() {
       this._state = inventario.widget.PeopleMover.states.PLACES;
       this._clearVbox();
-      this._vbox.addAt(this._placeSelector, 0);
+      this.getVbox().addAt(this._placeSelector, 0);
       this._nextButton.setLabel(qx.locale.Manager.tr("Next"));
       this._backButton.setEnabled(false);
 
@@ -236,7 +234,7 @@ qx.Class.define("inventario.widget.PeopleMover",
     _showPeople : function() {
       this._state = inventario.widget.PeopleMover.states.PEOPLE;
       this._clearVbox();
-      this._vbox.addAt(this._peopleSelector, 0);
+      this.getVbox().addAt(this._peopleSelector, 0);
       this._backButton.setEnabled(true);
       this._nextButton.setLabel(qx.locale.Manager.tr("Move people"));
       this._nextButton.setEnabled(true);
@@ -250,11 +248,6 @@ qx.Class.define("inventario.widget.PeopleMover",
         checkbox.setValue(true);
         this._studentsBox.add(checkbox);
       }
-    },
-
-    show : function() {
-      this._showPlaces();
-      this._doShow2(this._vbox);
     }
   }
 });

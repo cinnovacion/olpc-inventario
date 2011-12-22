@@ -25,7 +25,7 @@ qx.Class.define("inventario.widget.DataImporter",
 
   construct : function(page)
   {
-    this.base(arguments, page);
+    this.base(arguments, page, qx.locale.Manager.tr("Data Importer"));
     this._modelsCombo = null;
     this._formatsCombo = null;
   },
@@ -34,10 +34,8 @@ qx.Class.define("inventario.widget.DataImporter",
   {
     launch : function(page)
     {
-      var dataImport = new inventario.widget.DataImporter(null);
-      dataImport.setPage(page);
-      dataImport.setUsePopup(true);
-      dataImport.show();
+      var dataImport = new inventario.widget.DataImporter(page);
+      dataImport.launch();
     }
   },
 
@@ -48,8 +46,6 @@ qx.Class.define("inventario.widget.DataImporter",
       check : "String",
       init  : "/data_import/initialData"
     },
-
-    verticalBox : { check : "Object" },
 
     saveUrl :
     {
@@ -67,14 +63,8 @@ qx.Class.define("inventario.widget.DataImporter",
 
   members :
   {
-    show : function() {
+    launch : function() {
       this._loadInitialData();
-    },
-
-    _doShow : function()
-    {
-      this._doShow2(this.getVerticalBox());
-      this.setWindowTitle(qx.locale.Manager.tr("Data Importer"));
     },
 
     _getFormData : function()
@@ -88,7 +78,7 @@ qx.Class.define("inventario.widget.DataImporter",
 
     _createLayout : function(modelsDesc, formatsDesc)
     {
-      var mainVBox = new qx.ui.container.Composite(new qx.ui.layout.VBox());
+      var mainVBox = this.getVbox();
 
       this._modelsCombo = new qx.ui.form.SelectBox;
       inventario.widget.Form.loadComboBox(this._modelsCombo, modelsDesc, true);
@@ -119,8 +109,6 @@ qx.Class.define("inventario.widget.DataImporter",
       mainVBox.add(this._placeHierarchy);
       mainVBox.add(uploadForm);
       mainVBox.add(button);
-      this.setVerticalBox(mainVBox);
-      this._doShow();
     },
 
     _loadInitialData : function()
@@ -138,6 +126,7 @@ qx.Class.define("inventario.widget.DataImporter",
     {
       var definition = remoteData.definition;
       this._createLayout(definition.models, definition.formats);
+      this.open();
     },
 
     _import_cb : function()

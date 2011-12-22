@@ -34,10 +34,8 @@ qx.Class.define("inventario.widget.NodeTracker",
   {
     launch : function(page)
     {
-      var nodes_state = new inventario.widget.NodeTracker(null);
-      nodes_state.setPage(page);
-      nodes_state.setUsePopup(true);
-      nodes_state.show();
+      var nodes_state = new inventario.widget.NodeTracker(page);
+      nodes_state.launch();
     }
   },
 
@@ -47,27 +45,19 @@ qx.Class.define("inventario.widget.NodeTracker",
     {
       check : "String",
       init  : "/places/requestPlaces"
-    },
-
-    verticalBox : { check : "Object" }
+    }
   },
 
   members :
   {
-    show : function() {
+    launch : function() {
       this._loadInitialData();
-    },
-
-    _doShow : function(mainVBox)
-    {
-      this.setVerticalBox(mainVBox);
-      this._doShow2(mainVBox);
-      this._setWindowTitle();
     },
 
     _createLayout : function(places, node_types)
     {
-      var mainVBox = new qx.ui.container.Composite(new qx.ui.layout.VBox(20));
+      var mainVBox = this.getVbox()
+      mainVBox.getLayout().setSpacing(20);
 
       mainVBox.add(this._trackMenu(places));
       mainVBox.add(this._filtersMenu(node_types));
@@ -84,8 +74,6 @@ qx.Class.define("inventario.widget.NodeTracker",
 
       mainVBox.add(scroller);
       mainVBox.add(this._statisticsMenu());
-
-      this._doShow(mainVBox);
     },
 
     _loadInitialData : function()
@@ -101,6 +89,8 @@ qx.Class.define("inventario.widget.NodeTracker",
 
     _loadInitialDataResp : function(remoteData, params) {
       this._createLayout(remoteData.places, remoteData.node_types);
+      this._setWindowTitle();
+      this.open();
     },
 
     _mapLocator : function()
@@ -227,7 +217,7 @@ qx.Class.define("inventario.widget.NodeTracker",
     _setWindowTitle : function()
     {
       var placeName = this._placesCombo.getSelection()[0].getLabel();
-      this.setWindowTitle(placeName);
+      this.setCaption(placeName);
     },
 
     _callReset : function()

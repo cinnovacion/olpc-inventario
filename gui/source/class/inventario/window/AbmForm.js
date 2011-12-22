@@ -33,8 +33,6 @@ qx.Class.define("inventario.window.AbmForm",
 
     this.prepared = false;
 
-    this.setUsePopup(true);
-
     this.setEditIds(new Array());
 
     try {
@@ -134,13 +132,6 @@ qx.Class.define("inventario.window.AbmForm",
       init  : "icon/22/actions/document-new.png"
     },
 
-    vbox :
-    {
-      check    : "Object",
-      init     : null,
-      nullable : true
-    },
-
     dataInputObjects :
     {
       check    : "Object",
@@ -195,18 +186,13 @@ qx.Class.define("inventario.window.AbmForm",
   },
 
   members : {
-    show : function()
+    launch : function()
     {
       if (!this.prepared) {
         this._loadInitialData();
       } else {
-        this._doShow();
+        this.open();
       }
-    },
-
-    _doShow : function() {
-      var vbox = this.getVbox();
-      this._doShow2(vbox);
     },
 
     _loadInitialData : function()
@@ -245,8 +231,7 @@ qx.Class.define("inventario.window.AbmForm",
 
     _loadInitialDataResp : function(remoteData, handleParams)
     {
-      var vbox = new qx.ui.container.Composite(new qx.ui.layout.VBox(20), { height : 400 });
-
+      var vbox = this.getVbox();
       var datos = remoteData["fields"];
       var len = datos.length;
 
@@ -261,9 +246,7 @@ qx.Class.define("inventario.window.AbmForm",
       this._tabView = new qx.ui.tabview.TabView();
       this._tabView.setWidth(500);
       vbox.add(this._tabView);
-
       // End.
-      this.setVbox(vbox);
 
       // TODO: take to _initParams()
       if (remoteData["verify_before_save"])
@@ -273,33 +256,31 @@ qx.Class.define("inventario.window.AbmForm",
       }
 
       if (this.getDetails()) {
-        this.setWindowTitle(qx.locale.Manager.tr("Details"));
+        this.setCaption(qx.locale.Manager.tr("Details"));
       }
 
       if (remoteData["id"])
       {
         this._editingFlag = true;
         this._remote_id = remoteData["id"];
-        if (this.getWindowTitle() == "") this.setWindowTitle(qx.locale.Manager.tr("Edit"));
+        if (this.getCaption() == "") this.setCaption(qx.locale.Manager.tr("Edit"));
       }
       else if (remoteData["ids"])
       {
         this._editingFlag = true;
         this._remote_ids = remoteData["ids"];
 
-        if (this.getWindowTitle() == "") {
-          this.setWindowTitle("Editar");
-        }
+        if (this.getCaption() == "")
+          this.setCaption("Editar");
       }
       else
       {
         remoteData["id"];
-        if (this.getWindowTitle() == "") this.setWindowTitle(qx.locale.Manager.tr("Add"));
+        if (this.getCaption() == "") this.setCaption(qx.locale.Manager.tr("Add"));
       }
 
-      if (remoteData["window_title"]) {
-        this.setWindowTitle(remoteData["window_title"]);
-      }
+      if (remoteData["window_title"])
+        this.setCaption(remoteData["window_title"]);
 
       /*
        * Si venimos de otro AbmForm tal vez tenga una manera especial de pasar los datos
@@ -311,12 +292,12 @@ qx.Class.define("inventario.window.AbmForm",
       /* HACK: until we learn to calc the size of the window automagically */
       if (remoteData["window_width"]) {
         var w = parseInt(remoteData["window_width"]);
-        this.setAbstractPopupWindowWidth(w);
+        this.setWidth(w);
       }
 
       if (remoteData["window_height"]) {
         var h = parseInt(remoteData["window_height"]);
-        this.setAbstractPopupWindowHeight(h);
+        this.setHeight(h);
       }
 
       var tab_page_title = remoteData.first_tab_title ? remoteData.first_tab_title : qx.locale.Manager.tr("Main");
@@ -382,7 +363,7 @@ qx.Class.define("inventario.window.AbmForm",
       }
 
       this.prepared = true;
-      this._doShow();
+      this.open();
     },
 
     saveData : function(callback_func, callback_obj)
@@ -891,9 +872,8 @@ qx.Class.define("inventario.window.AbmForm",
 
             this._saveCallback(null, this.data["fields"]);
 
-            if (this.getUsePopup() && this.getCloseAfterInsert()) {
-              this.getAbstractPopupWindow().close();
-            }
+            if (this.getCloseAfterInsert())
+              this.close();
           }
           else
           {
@@ -943,9 +923,8 @@ qx.Class.define("inventario.window.AbmForm",
     {
       this._saveCallback(remoteData, this.data["fields"]);
 
-      if (this.getUsePopup() && this.getCloseAfterInsert()) {
-        this.getAbstractPopupWindow().close();
-      }
+      if (this.getCloseAfterInsert())
+        this.close();
 
       if (this.getClearFormFieldsAfterSave()) {
         this._clearFormFields();
@@ -1043,7 +1022,7 @@ qx.Class.define("inventario.window.AbmForm",
           add_form.setSaveColsMapping();
           var url = this.getUserData("add_form_url");
           add_form.setInitialDataUrl(url);
-          add_form.show();
+          add_form.launch();
         }, this);
 
       } else {
@@ -1144,9 +1123,7 @@ qx.Class.define("inventario.window.AbmForm",
 
     _cancel_cb : function(e)
     {
-      if (this.getUsePopup()) {
-        this.getAbstractPopupWindow().close();
-      }
+      this.close();
     },
 
     _getDataFromFields : function(fields)

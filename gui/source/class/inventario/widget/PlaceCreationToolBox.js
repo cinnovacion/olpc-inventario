@@ -24,18 +24,16 @@ qx.Class.define("inventario.widget.PlaceCreationToolBox",
   extend : inventario.window.AbstractWindow,
 
   construct : function(page) {
-    this.base(arguments, page);
+    this.base(arguments, page, qx.locale.Manager.tr("Locations ToolBox"));
+    this._createLayout();
   },
 
   statics :
   {
     launch : function(page)
     {
-      var PCToolBox = new inventario.widget.PlaceCreationToolBox(null);
-      PCToolBox.setPage(page);
-      PCToolBox.setWindowTitle(qx.locale.Manager.tr("Locations ToolBox"));
-      PCToolBox.setUsePopup(true);
-      PCToolBox.show();
+      var PCToolBox = new inventario.widget.PlaceCreationToolBox(page);
+      PCToolBox.open();
     }
   },
 
@@ -100,16 +98,6 @@ qx.Class.define("inventario.widget.PlaceCreationToolBox",
       this.getHierarchyWidget().reLoadParentElements();
     },
 
-    _doShow : function(layout) {
-      this._doShow2(layout);
-    },
-
-    show : function()
-    {
-      var layout = this._createLayout();
-      this._doShow(layout);
-    },
-
     _createLayout : function()
     {
       var container = new qx.ui.container.Composite(new qx.ui.layout.VBox(20));
@@ -127,7 +115,7 @@ qx.Class.define("inventario.widget.PlaceCreationToolBox",
       container.add(personCreationMenu);
       layout.add(container);
 
-      return layout;
+      this.getVbox().add(layout);
     },
 
     /* Add Place Callback */

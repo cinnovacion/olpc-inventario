@@ -138,10 +138,9 @@ class SistemaController < ApplicationController
     attribs
   end
 
-  def genAbm2(option, popup = true, add = true, modify = true, details = true, destroy = true, customButtons = [])
+  def genAbm2(option, add = true, modify = true, details = true, destroy = true, customButtons = [])
     attribs = Hash.new
     attribs[:option] = option
-    attribs[:popup] = popup
     attribs[:add] = add
     attribs[:modify] = modify
     attribs[:details] = details
@@ -254,7 +253,7 @@ class SistemaController < ApplicationController
                                    "/assignments/save_mass_assignment", "add", _("Students lot"), true)
 
     assignments[:elements].push(genElement(_("List assignments"), "abm2", 
-                                        genAbm2("assignments", true, true, false, false, false, [cButton1,cButton2])))
+                                        genAbm2("assignments", true, false, false, false, [cButton1,cButton2])))
     assignments[:elements].push(genElement(_("New assignment"), "abmform", genAbm2("assignments")))
     menu_option[:elements].push(assignments)
 
@@ -267,7 +266,7 @@ class SistemaController < ApplicationController
     cButton3 = genAbm2CustomButton(_("Movements recorded."),"/movements/new_handout/0", 
                                    "/movements/save_handout", "add", _("Register handout"), true)
     entregas[:elements].push(genElement(_("List movements"), "abm2", 
-                                        genAbm2("movimientos", true, true, false, false, false, [cButton1,cButton2,cButton3])))
+                                        genAbm2("movimientos", true, false, false, false, [cButton1,cButton2,cButton3])))
     entregas[:elements].push(genElement(_("New movement"), "abmform", genAbm2("movimientos")))
     menu_option[:elements].push(entregas)
 
@@ -323,7 +322,7 @@ class SistemaController < ApplicationController
     menu_option[:elements].push(genElement(_("Network nodes tracking"), "node_tracker"))
 
     cButton1 = genAbm2CustomButton(_("Transfers"), "/part_movements/new_transfer/0", "/part_movements/save_transfer","add","Transferencias", true)
-    menu_option[:elements].push(genElement(_("Part movements"), "abm2", genAbm2("part_movements", true, true, true, false, true, [cButton1])))
+    menu_option[:elements].push(genElement(_("Part movements"), "abm2", genAbm2("part_movements", true, true, false, true, [cButton1])))
 
     menu_option[:elements].push(genElement(_("Report a problem"), "abm2", genAbm2("problem_reports")))
 
@@ -333,7 +332,7 @@ class SistemaController < ApplicationController
     cButton3 = genAbm2CustomButton(_("Register solution"), "/problem_solutions/simple_solution/0", 
                                    "/problem_solutions/save_simple_solution","add", _("Simples"), true)
     menu_option[:elements].push(genElement(_("Problem solutions"), "abm2", 
-                                           genAbm2("problem_solutions", true, false, true, false, true, [cButton2, cButton3])))
+                                           genAbm2("problem_solutions", false, true, false, true, [cButton2, cButton3])))
 
     menu_option[:elements].push(getMenuListAndCreate("bank_deposits", _("Deposits")))
 
@@ -380,7 +379,7 @@ class SistemaController < ApplicationController
     menu_option[:elements].push(genElement(_("Tool Box"), "place_tool_box"))
 
     submenu = genOption(_("People"))
-    submenu[:elements].push(genElement(_("List people"), "abm2", genAbm2("personas", true, true, true, true, true)))
+    submenu[:elements].push(genElement(_("List people"), "abm2", genAbm2("personas", true, true, true, true)))
     submenu[:elements].push(genElement(_("Add people") , "abmform", genAbm2("personas")))
     submenu[:elements].push(genElement(_("Move people"), "people_mover"))
     menu_option[:elements].push(submenu)

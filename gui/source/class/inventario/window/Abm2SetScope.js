@@ -62,7 +62,6 @@ qx.Class.define("inventario.window.Abm2SetScope",
             this.prepared = false;
             this._searchMode = false;
 
-            this.setUsePopup(true);
             if (typeof (title) != "undefined") this.setTitle(title);
 
             var get_selected = function (q) {
@@ -86,13 +85,10 @@ qx.Class.define("inventario.window.Abm2SetScope",
             mainVBox.add(hbox);
             hbox.add(input);
             this._doShow2(mainVBox, false);
-            this.setWindowTitle(this.getTitle());
+            this.setCaption(this.getTitle());
 
-            /* */
-            var wpopup = this.getAbstractPopupWindow();
-
-            wpopup.addListenerOnce("appear", function() {
-                wpopup.set({
+            this.addListenerOnce("appear", function() {
+                this.set({
                     allowClose  : false,
                     allowGrowX :false,
                     allowGrowY : false,
@@ -108,7 +104,7 @@ qx.Class.define("inventario.window.Abm2SetScope",
                 });
                 this.setAlignX("right");
                 this.setAlignY("middle");
-            }, wpopup);
+            }, this);
         }
     }
 

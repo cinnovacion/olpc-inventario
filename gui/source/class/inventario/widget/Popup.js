@@ -41,7 +41,6 @@ qx.Class.define("inventario.widget.Popup",
     var url = inventario.widget.Url.getUrl(param);
     var abm = new inventario.window.Abm2(null, url);
     this.setAbm(abm);
-    abm.setUsePopup(true);
     abm.setWithChooseButton(true);
     abm.setPaginated(true);
     abm.setRefreshOnShow(false);
@@ -67,7 +66,7 @@ qx.Class.define("inventario.widget.Popup",
   members :
   {
     show : function() {
-      this.getAbm().show();
+      this.getAbm().launch();
     }
   }
 });

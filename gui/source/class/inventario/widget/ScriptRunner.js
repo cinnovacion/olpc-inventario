@@ -21,19 +21,16 @@ qx.Class.define("inventario.widget.ScriptRunner",
 
   construct : function(page)
   {
-    this.base(arguments, page);
+    this.base(arguments, page, qx.locale.Manager.tr("Run Script"));
     this._comboBox = null;
+    this._getList();
   },
 
   statics :
   {
     launch : function(page)
     {
-      var scriptRunner = new inventario.widget.ScriptRunner(null);
-      scriptRunner.setPage(page);
-      scriptRunner.setWindowTitle(qx.locale.Manager.tr("Run Script"));
-      scriptRunner.setUsePopup(true);
-      scriptRunner.show();
+      var scriptRunner = new inventario.widget.ScriptRunner(page);
     }
   },
 
@@ -54,17 +51,10 @@ qx.Class.define("inventario.widget.ScriptRunner",
 
   members :
   {
-    _doShow : function(layout) {
-      this._doShow2(layout);
-    },
-
-    show : function() {
-      this._getList();
-    },
-
     _createLayout : function(options)
     {
-      var layout = new qx.ui.container.Composite(new qx.ui.layout.VBox(5));
+      var layout = this.getVbox();
+      layout.getLayout().setSpacing(5);
       var cbWidget = new qx.ui.form.SelectBox;
       var runButton = new qx.ui.form.Button(qx.locale.Manager.tr("Run"), "inventario/16/no.png");
 
@@ -75,7 +65,6 @@ qx.Class.define("inventario.widget.ScriptRunner",
       layout.add(runButton);
 
       this._comboBox = cbWidget;
-      this._doShow(layout);
     },
 
     _getList : function()
@@ -93,6 +82,7 @@ qx.Class.define("inventario.widget.ScriptRunner",
     {
       var options = remoteData.options;
       this._createLayout(options);
+      this.open();
     },
 
     _runScript : function()

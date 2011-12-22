@@ -34,13 +34,12 @@ qx.Class.define("inventario.window.Abm2Extensions",
       abm2.setShowModifyButton(options.modify);
       abm2.setShowDetailsButton(options.details);
       abm2.setShowDeleteButton(options.destroy);
-      abm2.setUsePopup(options.popup);
 
       for (var i in options.custom) {
         abm2.getToolBarButtons().push(inventario.window.Abm2Extensions.customAbmFormButton(options.custom[i], context, abm2));
       }
 
-      abm2.show();
+      abm2.launch();
     },
 
     launchAbmForm : function(label, option_name, context)
@@ -93,8 +92,7 @@ qx.Class.define("inventario.window.Abm2Extensions",
         mass_add_form.setSaveUrl(options.saveUrl);
         mass_add_form.setPage(hbox);
         mass_add_form.setCloseAfterInsert(true);
-        mass_add_form.setUsePopup(true);
-        mass_add_form.show();
+        mass_add_form.launch();
       };
 
       return f;

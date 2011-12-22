@@ -28,8 +28,8 @@ qx.Class.define("inventario.report.ReportGeneratorExtensions",
   {
     launch : function(label, options)
     {
-      var report = new inventario.report.ReportGenerator(null);
-      report.show(options.option, label, true);
+      var report = new inventario.report.ReportGenerator(options.option, label);
+      report.launch();
     }
   }
 });

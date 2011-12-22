@@ -30,13 +30,21 @@
 
 qx.Class.define("inventario.window.AbstractWindow",
 {
-  extend : qx.core.Object,
+  extend : inventario.widget.Window,
 
-  construct : function(page)
+  construct : function(page, title, icon)
   {
-    if (page) {
+    this.base(arguments, title, icon);
+    this.setModal(false);
+
+    /* Manejar Esc. como cierre de ventana */
+    this.addListener("keyup", this._escape_cb, this);
+
+    // minimize to the application taskbar
+    this.addListener("minimize", this._minimize_cb, this);
+
+    if (page)
       this.setPage(page);
-    }
 
     var o = new Array();
     this.setToolBarButtons(o);
@@ -68,92 +76,6 @@ qx.Class.define("inventario.window.AbstractWindow",
       nullable : true
     },
 
-    exitCallback :
-    {
-      check    : "Function",
-      init     : null,
-      nullable : true
-    },
-
-    exitCallbackContext :
-    {
-      check    : "Object",
-      init     : null,
-      nullable : true
-    },
-
-    editingId :
-    {
-      check : "Number",
-      init  : 0
-    },
-
-    editingRows :
-    {
-      check    : "Object",
-      init     : null,
-      nullable : true
-    },
-
-    impresionFrame :
-    {
-      check    : "Object",
-      init     : null,
-      nullable : true
-    },
-
-    commandsManager :
-    {
-      check    : "Object",
-      init     : null,
-      nullable : true
-    },
-
-    commandsManager :
-    {
-      check    : "Object",
-      init     : null,
-      nullable : true
-    },
-
-    usePopup :
-    {
-      check : "Boolean",
-      init  : false
-    },
-
-    windowTitle :
-    {
-      check : "String",
-      init  : "",
-      apply : "_applyWindowTitle"
-    },
-
-    abstractPopupWindow :
-    {
-      check    : "Object",
-      init     : null,
-      nullable : true
-    },
-
-    abstractWindowReadOnly :
-    {
-      check : "Boolean",
-      init  : false
-    },
-
-    abstractPopupWindowHeight :
-    {
-      check : "Number",
-      init  : 0
-    },
-
-    abstractPopupWindowWidth :
-    {
-      check : "Number",
-      init  : 0
-    },
-
     askConfirmationOnClose :
     {
       check : "Boolean",
@@ -173,18 +95,6 @@ qx.Class.define("inventario.window.AbstractWindow",
       init  : false
     },
 
-    textBackgroundColor :
-    {
-      check : "String",
-      init  : "#EEEEEE"
-    },
-
-    overFlow :
-    {
-      check : "String",
-      init  : "auto"
-    },
-
     arrayBotones :
     {
       check : "Object",
@@ -194,91 +104,6 @@ qx.Class.define("inventario.window.AbstractWindow",
 
   members :
   {
-    _createInputs : function() {
-      throw new Error("createInputs is abstract");
-    },
-
-    getWindowIcon : function() {
-      var icon = this.getAbstractPopupWindow().getIcon();
-      return icon;
-    },
-
-    /**
-     * _setHandlers(): metodo abstracto
-     * 
-     * Aqui hay que establecer interacciones entre inputs,botones & validaciones
-     *
-     * @abstract 
-     * @return {void} 
-     * @throws the abstract function warning.
-     * @abstract
-     */
-    _setHandlers : function() {
-      throw new Error("setHandlers is abstract");
-    },
-
-
-    /**
-     * _createLayout(): metodo abstracto
-     * 
-     * Posicionamiento de inputs
-     *
-     * @abstract 
-     * @return {void} 
-     * @throws the abstract function warning.
-     * @abstract
-     */
-    _createLayout : function() {
-      throw new Error("createLayout is abstract");
-    },
-
-
-    /**
-     * _loadInitialData(): metodo abstracto
-     *
-     * @abstract 
-     * @return {void} 
-     * @throws the abstract function warning.
-     * @abstract
-     */
-    _loadInitialData : function() {
-      throw new Error("loadInitialData is abstract");
-    },
-
-
-    /**
-     * _validateData(): metodo abstracto
-     *
-     * @abstract 
-     * @return {void} 
-     * @throws the abstract function warning.
-     * @abstract
-     */
-    _validateData : function() {
-      throw new Error("validateData is abstract");
-    },
-
-
-    /**
-     * _saveData(): metodo abstracto
-     *
-     * @abstract 
-     * @return {void} 
-     * @throws the abstract function warning.
-     * @abstract
-     */
-    _saveData : function() {
-      throw new Error("saveData is abstract");
-    },
-
-    _exitWindow : function() {
-      throw new Error("_exitWindow() is abstract");
-    },
-
-    cerrar : function() {
-      this.getAbstractPopupWindow().close();
-    },
-
     _buildCommandToolBar : function(arriba, distancia)
     {
       var tb = new qx.ui.toolbar.ToolBar;
@@ -318,11 +143,6 @@ qx.Class.define("inventario.window.AbstractWindow",
       return tb;
     },
 
-    doMaximize : function()
-    {
-      this.getAbstractPopupWindow().open();
-    },
-
     _underlineLabel : function(label, key_accel)
     {
       var ret = "";
@@ -359,58 +179,6 @@ qx.Class.define("inventario.window.AbstractWindow",
       }
 
       return ret;
-    },
-
-    _doShow2 : function(vbox)
-    {
-      var page;
-      var widgetAsociarKeys;
-
-      if (this.getUsePopup())
-      {
-        var w = this.getAbstractPopupWindow();
-
-        if (!w)
-        {
-          var t = (this.getWindowTitle() ? this.getWindowTitle() : " ");
-          w = new inventario.widget.Window(t);
-          this.setAbstractPopupWindow(w);
-
-          var height = this.getAbstractPopupWindowHeight();
-          var width = this.getAbstractPopupWindowWidth();
-
-          if (height > 0) {
-            this.getAbstractPopupWindow().setHeight(height);
-          }
-
-          if (width > 0) {
-            this.getAbstractPopupWindow().setWidth(width);
-          }
-
-          this.getAbstractPopupWindow().setModal(false);
-
-          /* Manejar Esc. como cierre de ventana */
-
-          this.getAbstractPopupWindow().addListener("keyup", this._escape_cb, this);
-
-          // minimize to the application taskbar
-          this.getAbstractPopupWindow().addListener("minimize", this._minimize_cb, this);
-        }
-
-        page = this.getAbstractPopupWindow().getVbox();
-        inventario.widget.Layout.removeChilds(page);
-        page.add(vbox);
-		this.getAbstractPopupWindow().open();
-        widgetAsociarKeys = this.getAbstractPopupWindow();
-      }
-      else
-      {
-        page = this.getPage();
-        inventario.widget.Layout.removeChilds(page);
-        page.add(vbox);
-        widgetAsociarKeys = page;
-      }
-
     },
 
     _minimize_cb : function()
@@ -471,22 +239,13 @@ qx.Class.define("inventario.window.AbstractWindow",
         {
           if (confirm(qx.locale.Manager.tr("Close window?")))
           {
-            this.getAbstractPopupWindow().close();
+            this.close();
           }
         }
         else
         {
-          this.getAbstractPopupWindow().close();
+          this.close();
         }
-      }
-    },
-
-    _applyWindowTitle : function(value)
-    {
-      var win = this.getAbstractPopupWindow();
-
-      if (win) {
-        win.setCaption(value);
       }
     }
   }

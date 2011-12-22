@@ -27,10 +27,7 @@ qx.Class.define("inventario.window.Mensaje",
   construct : function(page)
   {
     inventario.window.AbstractWindow.call(this, page);
-
     this.setAskConfirmationOnClose(false);
-    this.setUsePopup(true);
-
     this._prepared = false;
   },
 
@@ -40,13 +37,6 @@ qx.Class.define("inventario.window.Mensaje",
     {
       check : "String",
       init  : ""
-    },
-
-    vbox :
-    {
-      check    : "Object",
-      init     : null,
-      nullable : true
     },
 
     borderColor :
@@ -65,12 +55,6 @@ qx.Class.define("inventario.window.Mensaje",
     {
       check : "Number",
       init  : 2
-    },
-
-    messageWindowTitle :
-    {
-      check : "String",
-      init  : "Alerta"
     },
 
     tituloPrincipal :
@@ -113,7 +97,7 @@ qx.Class.define("inventario.window.Mensaje",
       var w = new inventario.window.Mensaje();
 
       if (tituloVentana) {
-        w.setWindowTitle(tituloVentana);
+        w.setCaption(tituloVentana);
       }
 
       if (tituloPrincipal) {
@@ -138,27 +122,24 @@ qx.Class.define("inventario.window.Mensaje",
       }
 
       w.setMensaje(str);
-      w.show();
+      w.launch();
     }
   },
 
   members :
   {
-    show : function()
+    launch : function()
     {
-      if (!this._prepared) {
+      if (!this._prepared)
         this._createLayout();
-      }
 
-      var vbox = this.getVbox();
-      this._doShow2(vbox);
+      this.open();
       this._button.focus();
     },
 
     _createLayout : function()
     {
-      var vbox = new qx.ui.container.Composite(new qx.ui.layout.VBox(), { height : 400 });
-
+      var vbox = this.getVbox()
       var hbox = new qx.ui.container.Composite(new qx.ui.layout.HBox());
       var image = null;
 
@@ -181,9 +162,7 @@ qx.Class.define("inventario.window.Mensaje",
         hbox.add(image);
       }
 
-      if (this.getMessageWindowTitle() != "") {
-        this.setWindowTitle(this.getMessageWindowTitle());
-      }
+      this.setCaption(qx.locale.Manager.tr("Alert"));
 
       if (this.getTituloPrincipal() != "")
       {
@@ -235,8 +214,6 @@ qx.Class.define("inventario.window.Mensaje",
       hbox_abajo.add(caja_relleno_right, { flex : 2 });
 
       vbox.add(hbox_abajo, { flex : 1 });
-      this.setVbox(vbox);
-
       this._prepared = true;
     },
 
@@ -254,7 +231,7 @@ qx.Class.define("inventario.window.Mensaje",
         f.call(ctxt);
       }
 
-      this.getAbstractPopupWindow().close();
+      this.close();
     },
 
     _more_info_cb : function() {

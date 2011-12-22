@@ -135,13 +135,13 @@ qx.Class.define("inventario.widget.TaskBar",
 
     _createIcon : function(abstractWindow)
     {
-      var title = abstractWindow.getWindowTitle();
-      var icon = abstractWindow.getWindowIcon();
+      var title = abstractWindow.getCaption();
+      var icon = abstractWindow.getIcon();
       var button = new qx.ui.form.Button(title, icon);
 
       button.addListener("execute", function()
       {
-        abstractWindow.doMaximize();
+        abstractWindow.show();
 
         var part = this.getPart();
         var icons = part.getChildren();

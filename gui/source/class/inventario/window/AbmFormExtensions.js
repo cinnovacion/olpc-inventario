@@ -35,7 +35,7 @@ qx.Class.define("inventario.window.AbmFormExtensions",
       add_form.setCloseAfterInsert(opts.close_after_insert);
       add_form.setClearFormFieldsAfterSave(opts.clear_after_insert);
       add_form.setAskSaveConfirmation(opts.ask_confirmation);
-      add_form.show();
+      add_form.launch();
     }
   }
 });

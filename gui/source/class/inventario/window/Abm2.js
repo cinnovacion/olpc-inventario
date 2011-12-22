@@ -431,7 +431,7 @@ qx.Class.define("inventario.window.Abm2",
 
   members :
   {
-    show : function()
+    launch : function()
     {
       if (this.prepared) {
         this._doShow();
@@ -467,11 +467,9 @@ qx.Class.define("inventario.window.Abm2",
 
     _doShow : function()
     {
-      var mainVBox = new qx.ui.container.Composite(new qx.ui.layout.VBox(20));
+      var mainVBox = this.getVbox();
       mainVBox.add(this._buildCommandToolBar(true));
       mainVBox.add(this.getVerticalBox());
-
-      this._doShow2(mainVBox);
 
       /*
                    * Cuando se carga el Abm lo normal es querer buscar...
@@ -481,7 +479,7 @@ qx.Class.define("inventario.window.Abm2",
         this.getSearchTextField().focus();
       }, this);
 
-      this.setWindowTitle(this.getTitle());
+      this.setCaption(this.getTitle());
 
     /* {@crodas} Little hook to setScope, to update to the new scope on ASAP  {{{ */
         var scope = inventario.window.Abm2SetScope.getInstance();
@@ -490,6 +488,7 @@ qx.Class.define("inventario.window.Abm2",
         }, this);
     /* }}} */
 
+      this.open();
     },
 
     _createInputs : function()
@@ -783,25 +782,20 @@ qx.Class.define("inventario.window.Abm2",
         this.getToolBarButtons().push({ type : "separator" });
       }
 
-      if (this.getUsePopup())
+      var f = function(e) {
+        this.close();
+      };
+
+      var h =
       {
+        type            : "button",
+        icon            : "exit",
+        text            : qx.locale.Manager.tr("Close"),
+        callBackFunc    : f,
+        callBackContext : this
+      };
 
-        var f = function(e) {
-          this.getAbstractPopupWindow().close();
-        };
-
-        var h =
-        {
-          type            : "button",
-          icon            : "exit",
-          text            : qx.locale.Manager.tr("Close"),
-          callBackFunc    : f,
-          callBackContext : this
-        };
-
-        this.getToolBarButtons().push(h);
-
-      }
+      this.getToolBarButtons().push(h);
     },
 
 
@@ -1259,7 +1253,7 @@ qx.Class.define("inventario.window.Abm2",
       add_form.setSaveUrl(url);
       add_form.setVista(this.getVista());
       add_form.setCloseAfterInsert(this.getAbmFormCloseAfterInsert());
-      add_form.show();
+      add_form.launch();
     },
 
     _addRowHandler : function(filaAgregada, remoteData)
@@ -1630,9 +1624,8 @@ qx.Class.define("inventario.window.Abm2",
                 var v = [ { text : text, value : val, selected : true } ];
                 inventario.widget.Form.loadComboBox(cb, v, true);
 
-                if (this.getCloseAfterChoose()) {
-                  this.getAbstractPopupWindow().close();
-                }
+                if (this.getCloseAfterChoose())
+                  this.close();
 	    } else { 
 	      inventario.window.Mensaje.mensaje(agregarFilaMsgError);
 	    }
@@ -1656,9 +1649,8 @@ qx.Class.define("inventario.window.Abm2",
 	f.call(this.getChooseButtonCallBackContext(), filasSeleccionadas, 
 	       this.getChooseButtonCallBackInputField(), this.getChooseButtonCallBackParams());
 
-	if (this.getCloseAfterChoose()) {
-	  this.getAbstractPopupWindow().close();
-	}
+	if (this.getCloseAfterChoose())
+	  this.close();
 
       }
     }, 

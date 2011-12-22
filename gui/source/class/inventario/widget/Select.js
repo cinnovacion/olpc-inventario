@@ -68,10 +68,9 @@ qx.Class.define("inventario.widget.Select",
 
       var url = inventario.widget.Url.getUrl(this.getUrl());
       var abm = new inventario.window.Abm2(null, url);
-      abm.setUsePopup(true);
-      abm.setWindowTitle(tituloVentana);
-      abm.setAbstractPopupWindowHeight(450);
-      abm.setAbstractPopupWindowWidth(800);
+      abm.setCaption(tituloVentana);
+      abm.setHeight(450);
+      abm.setWidth(800);
       abm.setWithChooseButton(true);
       abm.setPaginated(true);
 
@@ -142,7 +141,7 @@ qx.Class.define("inventario.widget.Select",
     _create : function()
     {
       try {
-        this.getAbm().show();
+        this.getAbm().launch();
       } catch(e) {
         inventario.window.Mensaje.mensaje(e);
       }
