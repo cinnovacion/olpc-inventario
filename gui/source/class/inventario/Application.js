@@ -108,20 +108,16 @@ qx.Class.define("inventario.Application",
       var logout = inventario.sistema.Logout.getInstance();
       taskbar.addRight(logout);
 
-      // Main Split Pane
-      var mainsplit = new qx.ui.splitpane.Pane("horizontal");
-
       var layout = new qx.ui.layout.VBox();
       var panel = new qx.ui.container.Composite(layout);
       this.main_panel = panel;
 
-      var welcomeInfo = new inventario.window.WelcomeInfo(null);
+      var welcomeInfo = new inventario.window.WelcomeInfo();
       // pass along the list of menu elements for spotlight widget to make use of them
       welcomeInfo.setMenuElements(launcher.getMenuElements());
-      welcomeInfo.setPage(this.main_panel);
-      welcomeInfo.show();
+      welcomeInfo.launch();
+      panel.add(welcomeInfo);
 
-      // mainsplit.add(panel, 3);
       mainVbox.add(panel, { flex : 1 });
       mainVbox.add(taskbar);
 

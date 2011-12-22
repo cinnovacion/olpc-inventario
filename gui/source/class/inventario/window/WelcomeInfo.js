@@ -23,10 +23,11 @@
 //
 qx.Class.define("inventario.window.WelcomeInfo",
 {
-  extend : inventario.window.AbstractWindow,
+  extend : qx.ui.container.Composite,
 
-  construct : function(page) {
-    this.base(arguments, page);
+  construct : function() {
+    this._vbox = new qx.ui.layout.HBox(20);
+    this.base(arguments, this._vbox);
   },
 
   properties :
@@ -36,8 +37,6 @@ qx.Class.define("inventario.window.WelcomeInfo",
       check : "String",
       init  : "/sistema/welcome_info"
     },
-
-    verticalBox : { check : "Object" },
 
     defaultLogoPath :
     {
@@ -55,33 +54,7 @@ qx.Class.define("inventario.window.WelcomeInfo",
 
   members :
   {
-    show : function()
-    {
-      this._createInputs();
-      this._setHandlers();
-      this._createLayout();
-      this._loadInitialData();
-    },
-
-    _doShow : function()
-    {
-      var mainVBox = new qx.ui.container.Composite(new qx.ui.layout.VBox(20));
-      mainVBox.add(this.getVerticalBox());
-
-      this._doShow2(mainVBox);
-    },
-
-    _createInputs : function() {},
-
-    _setHandlers : function() {},
-
-    _createLayout : function()
-    {
-      var vbox = new qx.ui.container.Composite(new qx.ui.layout.VBox(20), { height : 700 });
-      this.setVerticalBox(vbox);
-    },
-
-    _loadInitialData : function()
+    launch : function()
     {
       var hopts = {};
       hopts["url"] = this.getInitialDataUrl();
@@ -94,27 +67,17 @@ qx.Class.define("inventario.window.WelcomeInfo",
 
     _loadInitialDataResp : function(remoteData, params)
     {
-      var hbox   = new qx.ui.container.Composite(new qx.ui.layout.HBox(20));
-      var spacer = new qx.ui.container.Composite(new qx.ui.layout.HBox(20));
+      var spacer = new qx.ui.core.Spacer();
       var img    = new qx.ui.basic.Image(this.getDefaultLogoPath());
-
-      hbox.setBackgroundColor('#FFFFFF');
-      hbox.add(img, { flex : 1 });
-      hbox.add(spacer, { flex : 2});
-      hbox.add(this.spotlight(), { flex : 1 });
-      
-      this.getVerticalBox().add(hbox, {flex:1});
-
-      var hbox   = new qx.ui.container.Composite(new qx.ui.layout.HBox(20));
-      this.getVerticalBox().add(hbox, {flex: 1});
+      this.setBackgroundColor('#FFFFFF');
+      this.add(img, { flex : 1 });
+      this.add(spacer, { flex : 2});
+      this.add(this.spotlight(), { flex : 1 });
 
       // BROKEN;
       // var scope = inventario.window.Abm2SetScope.getInstance();
       // scope.show(this.getPage(), "Set scope");
-      
-      this._doShow();
     },
-
 
     // Perhaps we should check if menu elements was given to us in order 
     // to instantiate Autocomplete?
@@ -132,6 +95,5 @@ qx.Class.define("inventario.window.WelcomeInfo",
         spotlight.add(container);
         return spotlight;
     }
-
   }
 });
