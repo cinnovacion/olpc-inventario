@@ -338,11 +338,12 @@ qx.Class.define("inventario.window.AbmForm",
                 column : 0
               });
             } else {
-              gl.add(field_data.label,
-              {
-                row    : row_count,
-                column : 0
-              });
+              if (field_data.label)
+                gl.add(field_data.label,
+                {
+                  row    : row_count,
+                  column : 0
+                });
 
               gl.add(field_data.input,
               {
@@ -449,12 +450,13 @@ qx.Class.define("inventario.window.AbmForm",
       var input;
       var drill_down_vbox = null;
       var rAccelKey = fieldData["accel_key"];  /* Cargo el acelerador de tecla si tiene */
+      var label = null;
 
       if (rAccelKey) {
         var rLabel = fieldData.label;
-        var label = new qx.ui.basic.Label(this._underlineLabel(rLabel, rAccelKey));
-      } else {
-        var label = new qx.ui.basic.Label();
+        label = new qx.ui.basic.Label(this._underlineLabel(rLabel, rAccelKey));
+      } else if (fieldData.label) {
+        label = new qx.ui.basic.Label();
 
         label.set(
         {
