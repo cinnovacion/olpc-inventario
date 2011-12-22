@@ -17,10 +17,19 @@
 //
 qx.Class.define("inventario.widget.DynTable",
 {
-  extend : inventario.window.AbstractWindow,
+  extend : qx.ui.container.Composite,
 
-  construct : function(page) {
-    this.base(arguments, page);
+  construct : function(tableDef, columnsData) {
+    this.base(arguments, new qx.ui.layout.VBox(20));
+    this.setTableDef(tableDef);
+    this.setColumnsData(columnsData);
+
+    var columns_hbox = this._getColumnsInputs();
+    this.add(columns_hbox);
+
+    var table_hbox = new qx.ui.container.Composite(new qx.ui.layout.HBox(20));
+    this._getTable(table_hbox);
+    this.add(table_hbox);
   },
 
   properties :
@@ -47,19 +56,11 @@ qx.Class.define("inventario.widget.DynTable",
     {
       check : "Object",
       init  : null
-    },
-
-    verticalBox : { check : "Object" }
+    }
   },
 
   members :
   {
-    show : function()
-    {
-      this._createLayout();
-      this._doShow();
-    },
-
     getTableData : function() {
       return this.getTableObj().getHashedData();
     },
@@ -69,23 +70,6 @@ qx.Class.define("inventario.widget.DynTable",
       if (tableData) {
         this.getTableObj().addRows(tableData, -1);
       }
-    },
-
-    _doShow : function() {
-      this._doShow2(this.getVerticalBox());
-    },
-
-    _createLayout : function()
-    {
-      var vbox = new qx.ui.container.Composite(new qx.ui.layout.VBox(20));
-      this.setVerticalBox(vbox);
-
-      var columns_hbox = this._getColumnsInputs();
-      vbox.add(columns_hbox);
-
-      var table_hbox = new qx.ui.container.Composite(new qx.ui.layout.HBox(20));
-      this._getTable(table_hbox);
-      vbox.add(table_hbox);
     },
 
     _getColumnsInputs : function()

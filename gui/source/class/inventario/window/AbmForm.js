@@ -764,13 +764,7 @@ qx.Class.define("inventario.window.AbmForm",
           break;
 
         case "dyntable":
-          input = new qx.ui.container.Composite(new qx.ui.layout.HBox(20));
-          var dynTableObj = new inventario.widget.DynTable();
-
-          dynTableObj.setColumnsData(fieldData.options);
-
           var optsLen = fieldData.options.length;
-
           var table_data = {};
           table_data.col_titles = new Array();
           table_data.widths = new Array();
@@ -785,17 +779,12 @@ qx.Class.define("inventario.window.AbmForm",
 	      table_data.hashed_data.push(fieldData.options[j].label);
           }
 
-          dynTableObj.setTableDef(table_data);
+          input = new inventario.widget.DynTable(table_data, fieldData.options);
+          if (fieldData.data)
+            input.setTableData(fieldData.data);
 
-          dynTableObj.setPage(input);
-          dynTableObj.show();
-
-          if (fieldData.data) {
-            dynTableObj.setTableData(fieldData.data);
-          }
-
-          this._formFields.push(dynTableObj);
-          this.getDataInputObjects().push(dynTableObj);
+          this._formFields.push(input);
+          this.getDataInputObjects().push(input);
 
           break;
 
