@@ -20,27 +20,27 @@
 // 2009
 qx.Class.define("inventario.widget.Permissions",
 {
-  extend : inventario.window.AbstractWindow,
+  extend : qx.ui.container.Composite,
 
-  construct : function(page, tree)
+  construct : function(tree)
   {
-    this.base(arguments, page);
+    this.base(arguments, new qx.ui.layout.VBox(20),
+      {
+        width  : 640,
+        height : 480
+      });
     this.tree = tree;
+    this._createLayout();
   },
 
   properties :
   {
-    verticalBox : { check : "Object" },
     treeRoot    : { check : "Object" },
     treeWidget  : { check : "Object" }
   },
 
   members :
   {
-    show : function() {
-      this._createLayout();
-    },
-
     // Since the subTrees are loaded on demand, some of them are not loaded to the wigets
     //   so its necesary to check wich of them are originary selected.
     _getSubTreeValues : function(controller)
@@ -122,10 +122,6 @@ qx.Class.define("inventario.widget.Permissions",
       return returnTree;
     },
 
-    _doShow : function() {
-      this._doShow2(this.getVerticalBox());
-    },
-
     _loadSubTree_cb : function(e)
     {
       var cWidget = this.getTreeWidget().getSelection()[0];
@@ -151,12 +147,6 @@ qx.Class.define("inventario.widget.Permissions",
 
     _createLayout : function()
     {
-      var vbox = new qx.ui.container.Composite(new qx.ui.layout.VBox(20),
-      {
-        width  : 640,
-        height : 480
-      });
-
       var scroller = new qx.ui.container.Scroll();
 
       scroller.set(
@@ -215,10 +205,8 @@ qx.Class.define("inventario.widget.Permissions",
 
       hbox.add(unChecksButton);
       hbox.add(checksButton);
-      vbox.add(hbox);
-      vbox.add(scroller, { flex : 1 });
-      this.setVerticalBox(vbox);
-      this._doShow();
+      this.add(hbox);
+      this.add(scroller, { flex : 1 });
     }
   }
 });

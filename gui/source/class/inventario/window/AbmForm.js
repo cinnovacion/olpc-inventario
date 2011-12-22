@@ -517,15 +517,9 @@ qx.Class.define("inventario.window.AbmForm",
           break;
 
         case "permissions":
-
-          input = new qx.ui.container.Composite(new qx.ui.layout.HBox(20));
-          var permissionsObj = new inventario.widget.Permissions(null, fieldData.tree);
-          permissionsObj.setPage(input);
-          permissionsObj.show();
-
-          this._formFields.push(permissionsObj);
-          this.getDataInputObjects().push(permissionsObj);
-
+          input = new inventario.widget.Permissions(fieldData.tree);
+          this._formFields.push(input);
+          this.getDataInputObjects().push(input);
           break;
 
         case "map_locator":
