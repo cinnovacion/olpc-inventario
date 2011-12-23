@@ -220,10 +220,30 @@ class PlacesController < SearchController
 
   end
 
+  def mapPlaces(places, levels)
+    places.map { |place|
+      element = { :id => place.id, :text => place.name }
+
+      if levels > 0
+        children = place.places
+
+        # sort certain place types alphabetically
+        if place.place_type and ["country", "state", "city"].include?(place.place_type.internal_tag)
+          children = children.order("name")
+        end
+
+        if children.any?
+          element[:children] = mapPlaces(children, levels - 1)
+        end
+      end
+      element
+    }
+  end
+
   ###
   # data source method for HierarchyOnDemand GUI Widget.
   def requestElements
-    
+    skip_toplevel_place = false
     id = params[:id]
     subElementTags = JSON.parse(params[:subElementTags])
 
@@ -234,19 +254,16 @@ class PlacesController < SearchController
       if parent.nil?
         raise _("Could not find place %d") % id
       end
-
-      # sort certain place types alphabetically
-      if parent.place_type and ["country", "state", "city"].include?(parent.place_type.internal_tag)
-        order = "name"
-      else
-        order = nil
-      end
-      places = Place.order(order).find_all_by_place_id(id)
+      places = [parent]
+      skip_toplevel_place = true
     end
 
-    @output[:elements] = places.map { |place|
-      { :id => place.id, :text => place.name }
-    }
+    mapped_places = self.mapPlaces(places, 1)
+    if skip_toplevel_place
+      @output[:elements] = mapped_places[0][:children]
+    else
+      @output[:elements] = mapped_places
+    end
 
     if subElementTags && subElementTags != []
 

@@ -209,15 +209,21 @@ qx.Class.define("inventario.widget.HierarchyOnDemand",
       return new_element;
     },
 
+    _populateElements : function(parent_element, new_elements)
+    {
+      for (var i in new_elements) {
+        var element = this._newElement(new_elements[i], this._requestElements, false);
+        parent_element.add(element);
+        if (new_elements[i].children != undefined)
+          this._populateElements(element, new_elements[i].children);
+      }
+    },
+
     _loadElements : function(remoteData, selected_element)
     {
       selected_element.removeAll();
-
       var new_elements = remoteData.elements;
-
-      for (var i in new_elements) {
-        selected_element.add(this._newElement(new_elements[i], this._requestElements, false));
-      }
+      this._populateElements(selected_element, new_elements);
 
       var new_sub_elements = remoteData.sub_elements;
 
