@@ -3,13 +3,19 @@ InventarioNicaragua::Application.routes.draw do
   # first created -> highest priority.
 
   # Root routing:
-  # The GUI is built into a "build" subdirectory and we must launch the app
+  # The GUI is built into a "build" subdirectory (or, in development mode, is
+  # launched directly from gui/source) and we must launch the app
   # from that relative path so that js files and images are available.
-  # Redirect to build/index.html
-  root :to => redirect('/build/index.html')
-  # However, we implement build/index.html within Rails, because it uses a
+  # Redirect accordingly.
+  if Rails.env.development?
+    root :to => redirect('/gui/source/index.html')
+  else
+    root :to => redirect('/build/index.html')
+  end
+  # However, we implement index.html within Rails, because it uses a
   # template which includes ruby code.
   match 'build/index.html' => 'application#index'
+  match 'gui/source/index.html' => 'application#index'
 
   resources :nodes do
     collection do

@@ -32,13 +32,13 @@ mkdir -p $RPM_BUILD_ROOT/etc/logrotate.d
 cp extra/inventario-logrotate $RPM_BUILD_ROOT/etc/logrotate.d/inventario
 cp -r * $RPM_BUILD_ROOT/var/%{name}
 test -d $RPM_BUILD_ROOT/var/%{name}/public/build && rm -rf $RPM_BUILD_ROOT/var/%{name}/public/build > /dev/null 2>&1
-cd $RPM_BUILD_ROOT/var/%{name}/gui
 # Qooxdoo no maneja links simbolicos :(
-ln -s /usr/share/qooxdoo-sdk $RPM_BUILD_ROOT/var/%{name}/
-./compile_gui.sh
+ln -s /usr/share/qooxdoo-sdk $RPM_BUILD_ROOT/var/%{name}/public
+cd $RPM_BUILD_ROOT/var/%{name}
+rake gui:generate[build]
 
 # kill sym link de qooxdoo-sdk
-rm $RPM_BUILD_ROOT/var/%{name}/qooxdoo-sdk
+rm $RPM_BUILD_ROOT/var/%{name}/public/qooxdoo-sdk
 
 # kill gui compilation cache 
 rm -rf $RPM_BUILD_ROOT/var/%{name}/gui/cache
@@ -48,6 +48,9 @@ rm -f $RPM_BUILD_ROOT/var/%{name}/log/*
 
 # kill packaging 
 rm -rf $RPM_BUILD_ROOT/var/%{name}/packaging
+
+# kill Gemfile.lock so that it is generated on first run
+rm -f $RPM_BUILD_ROOT/var/inventario/Gemfile.lock
 
 # kill migrations
 #rm -f $RPM_BUILD_ROOT/var/%{name}/db/migrate/*
@@ -107,7 +110,6 @@ fi
 /var/%{name}/README
 /var/%{name}/db
 /var/%{name}/doc
-/var/%{name}/gui
 /var/%{name}/lib
 %attr(-,apache,apache) /var/%{name}/log
 /var/%{name}/public

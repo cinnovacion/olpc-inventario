@@ -10,3 +10,4 @@ public/system/barcodes
 Gemfile.lock
 db/schema.rb
 config/inventario.yml
+public/gui/source/script
