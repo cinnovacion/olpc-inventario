@@ -164,7 +164,7 @@ qx.Class.define("inventario.transport.Transport",
           c = e;
         }
 
-        var datos = qx.util.Json.parse(c, true);
+        var datos = qx.lang.Json.parse(c, true);
 
         if (datos["result"] == "ok") {
           f_callback.call(self, datos, f_params);

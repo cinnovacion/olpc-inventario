@@ -139,7 +139,7 @@ qx.Class.define("inventario.widget.DataImporter",
         parametros : null,
         handle     : this._import_cb_resp,
 
-        // data       : qx.util.Json.stringify(combosData)
+        // data       : qx.lang.Json.stringify(combosData)
         data       : combosData
       };
 

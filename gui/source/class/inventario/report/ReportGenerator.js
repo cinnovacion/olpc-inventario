@@ -146,7 +146,7 @@ qx.Class.define("inventario.report.ReportGenerator",
     _generate_cb : function()
     {
       var params = this._getReportParams();
-      var hopts = { print_params : qx.util.Json.stringify(params) };
+      var hopts = { print_params : qx.lang.Json.stringify(params) };
       var iframe = inventario.util.PrintManager.print(this.getPrintMethod(), hopts);
       var document = inventario.Application.appInstance.getRoot();
 

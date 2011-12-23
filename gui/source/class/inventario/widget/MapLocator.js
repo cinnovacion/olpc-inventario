@@ -152,7 +152,7 @@ qx.Class.define("inventario.widget.MapLocator",
       hopts["url"] = this.getGoogleKeyUrl();
       hopts["parametros"] = null;
       hopts["handle"] = this._loadGoogleApiResp;
-      hopts["data"] = { data : qx.util.Json.stringify(data) };
+      hopts["data"] = { data : qx.lang.Json.stringify(data) };
 
       inventario.transport.Transport.callRemote(hopts, this);
     },
@@ -613,7 +613,7 @@ qx.Class.define("inventario.widget.MapLocator",
     _updateNodeData : function(node)
     {
       var data = {};
-      data.node = qx.util.Json.stringify(node);
+      data.node = qx.lang.Json.stringify(node);
 
       var hopts = {};
       hopts["url"] = this.getUpdateDataUrl();
@@ -680,7 +680,7 @@ qx.Class.define("inventario.widget.MapLocator",
     {
       var data = {};
       data.id = this.getPlaceId();
-      data.nodeTypeIds = qx.util.Json.stringify(this.getNodeTypeIds());
+      data.nodeTypeIds = qx.lang.Json.stringify(this.getNodeTypeIds());
       data.subNodes = this._subNodes;
 
       var hopts = {};

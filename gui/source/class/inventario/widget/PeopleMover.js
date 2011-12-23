@@ -207,7 +207,7 @@ qx.Class.define("inventario.widget.PeopleMover",
       hopts["url"] = this.getMovePeopleUrl();
       hopts["parametros"] = null;
       hopts["handle"] = this._doMoveCb;
-      hopts["data"] = { payload: qx.util.Json.stringify(payload) };
+      hopts["data"] = { payload: qx.lang.Json.stringify(payload) };
       inventario.transport.Transport.callRemote(hopts, this);
     },
 

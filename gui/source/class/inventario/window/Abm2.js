@@ -1324,7 +1324,7 @@ qx.Class.define("inventario.window.Abm2",
 
       if (ids.length > 0 && confirm(qx.locale.Manager.tr("Delete selected items")))
       {
-        var payload = qx.util.Json.stringify(ids);
+        var payload = qx.lang.Json.stringify(ids);
         var data = { payload : payload };
         var vista = this.getVista();
 
@@ -1414,7 +1414,7 @@ qx.Class.define("inventario.window.Abm2",
 
       var dhash =
       {
-        payload   : qx.util.Json.stringify(datos),
+        payload   : qx.lang.Json.stringify(datos),
         page      : this._pages,
         cant_fila : cant_fila,
         sort      : this._sort,
@@ -1694,8 +1694,8 @@ qx.Class.define("inventario.window.Abm2",
       }
 
       var hopts = {};
-      hopts["datos"] = qx.util.Json.stringify(datos);
-      hopts["titulos"] = qx.util.Json.stringify(titulos);
+      hopts["datos"] = qx.lang.Json.stringify(datos);
+      hopts["titulos"] = qx.lang.Json.stringify(titulos);
       inventario.util.PrintManager.printExcel("planilla", hopts);
     },
 

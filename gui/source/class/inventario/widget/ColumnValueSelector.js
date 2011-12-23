@@ -149,7 +149,7 @@ qx.Class.define("inventario.widget.ColumnValueSelector",
     _show_values_cb : function(e)
     {
       var values = this.getValues();
-      var s = qx.util.Json.stringify(values);
+      var s = qx.lang.Json.stringify(values);
       alert(s);
     }
   }

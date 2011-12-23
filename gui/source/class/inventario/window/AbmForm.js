@@ -208,13 +208,13 @@ qx.Class.define("inventario.window.AbmForm",
         data["id"] = editRow;
         if (details) viewDetails = true;
       } else if (ids.length > 0) {
-        data["ids"] = qx.util.Json.stringify(ids);
+        data["ids"] = qx.lang.Json.stringify(ids);
       }
 
       if (vista != "") data["vista"] = vista;
 
       if (this.getExtraData()) {
-        data["extra_data"] = qx.util.Json.stringify(this.getExtraData());
+        data["extra_data"] = qx.lang.Json.stringify(this.getExtraData());
       }
 
       var url = this.getInitialDataUrl();
@@ -877,11 +877,11 @@ qx.Class.define("inventario.window.AbmForm",
           }
           else
           {
-            var payload = qx.util.Json.stringify(this.data);
+            var payload = qx.lang.Json.stringify(this.data);
             var data = { payload : payload };
 
             if (this.getExtraData()) {
-              data["extra_data"] = qx.util.Json.stringify(this.getExtraData());
+              data["extra_data"] = qx.lang.Json.stringify(this.getExtraData());
             }
 
             var vista = this.getVista();
@@ -1049,7 +1049,7 @@ qx.Class.define("inventario.window.AbmForm",
 
       if (this.getVerifySave()) {
         var updated = this._getDataFromFields(this._formFields);
-        var payload = qx.util.Json.stringify(this.data);
+        var payload = qx.lang.Json.stringify(this.data);
         var data = { payload : payload };
         var url = this.getVerifySaveUrl();
 

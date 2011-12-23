@@ -243,7 +243,7 @@ qx.Class.define("inventario.widget.HierarchyOnDemand",
       var data =
       {
         id             : element_data.id,
-        subElementTags : qx.util.Json.stringify(subElementTags)
+        subElementTags : qx.lang.Json.stringify(subElementTags)
       };
 
       var hopts = {};
