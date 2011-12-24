@@ -665,7 +665,7 @@ qx.Class.define("inventario.window.Abm2",
               var self = this.getUserData("self");
               var context = self;
               var f = self.getArrayButtonCallBack()[i];
-              var filasSeleccionadas = inventario.widget.Table.getSelected2(self.getResultsGrid(), null, true);
+              var filasSeleccionadas = self.getResultsGrid().getSelected2(null, true);
 
               /* Por default todo el mundo necesita que una fila este seleccionada p/ que se llame al callback de su boton */
 
@@ -725,7 +725,7 @@ qx.Class.define("inventario.window.Abm2",
           {
             var but = e.getTarget();
             var f = but.getUserData("callback");
-            var filasSeleccionadas = inventario.widget.Table.getSelected2(this.getResultsGrid(), null, true);
+            var filasSeleccionadas = this.getResultsGrid().getSelected2(null, true);
 
             var necesita_seleccion = but.getUserData("uses_selected");
 
@@ -1128,7 +1128,6 @@ qx.Class.define("inventario.window.Abm2",
         this.getLastButton().setEnabled(true);
       }
 
-      // show time
       this.prepared = true;
 
       this._doShow();
@@ -1326,7 +1325,7 @@ qx.Class.define("inventario.window.Abm2",
     _deleteRows : function()
     {
       var table = this.getResultsGrid();
-      var ids = inventario.widget.Table.getSelected2(table, [ 0 ], true);
+      var ids = table.getSelected2([ 0 ], true);
 
       if (ids.length > 0 && confirm(qx.locale.Manager.tr("Delete selected items")))
       {
@@ -1381,7 +1380,7 @@ qx.Class.define("inventario.window.Abm2",
     _modify : function()
     {
       var table = this.getResultsGrid();
-      var ids = inventario.widget.Table.getSelected2(table, [ 0 ], true);
+      var ids = table.getSelected2([ 0 ], true);
 
       if (ids.length > 0) {
         this._addRow(ids, false);
@@ -1393,7 +1392,7 @@ qx.Class.define("inventario.window.Abm2",
     _details : function()
     {
       var table = this.getResultsGrid();
-      var ids = inventario.widget.Table.getSelected2(table, [ 0 ], false);
+      var ids = table.getSelected2([ 0 ], false);
 
       if (ids.length > 0) {
         this._addRow(ids[0], true);
@@ -1567,7 +1566,7 @@ qx.Class.define("inventario.window.Abm2",
 
     _elegirFila : function(e)
     {
-      var filasSeleccionadas = inventario.widget.Table.getSelected2(this.getResultsGrid(), null, true);
+      var filasSeleccionadas = this.getResultsGrid().getSelected2(null, true);
 
       if (filasSeleccionadas.length > 0) {
 	this._doSelectRow(filasSeleccionadas);
@@ -1685,8 +1684,8 @@ qx.Class.define("inventario.window.Abm2",
 
       if (confirm(qx.locale.Manager.tr("Export only visible columns?")))
       {
-        datos = inventario.widget.Table.getVisibleData(this.getResultsGrid());
-        titulos = inventario.widget.Table.getVisibleColumnNames(this.getResultsGrid());
+        datos = this.getResultsGrid().getVisibleData();
+        titulos = this.getResultsGrid().getVisibleColumnNames();
       }
       else
       {

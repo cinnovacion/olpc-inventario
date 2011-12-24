@@ -351,12 +351,7 @@ qx.Class.define("inventario.widget.Table2",
         inventario.window.Mensaje.mensaje("Tabl2.launch() setData() =>" + e);
       }
 
-      try {
-        inventario.widget.Table.setRenderers(this.getGrid(), this.getGridData()[0]);  /* renderers */
-      } catch(e) {
-        inventario.window.Mensaje.mensaje("Tabl2.launch() setRenderers()" + e);
-      }
-
+      this._setRenderers(this.getGridData()[0]);  /* renderers */
       this.prepared = true;
     },
 
@@ -513,6 +508,35 @@ qx.Class.define("inventario.widget.Table2",
       this.getGrid().getTableModel().addListener("dataChanged", this._dataChangedHandler, this);
     },
 
+    /**
+     * _setRenderers(): establecer renderers de las columnas
+     *
+     * @param row {Array} una fila  para ver que tipo de datos tiene
+     * @return {void} void
+     */
+    _setRenderers : function(row)
+    {
+      var len = row.length;
+      var tcm = this.getGrid().getTableColumnModel();
+
+      for (var i=0; i<len; i++)
+      {
+        var tipo = typeof (row[i]);
+
+        if (tipo == "object") {
+          tcm.setDataCellRenderer(i, new inventario.qooxdoo.ListDataCellRenderer());
+        }
+        else if (tipo == "boolean")
+        {
+          tcm.setDataCellRenderer(i, new qx.ui.table.cellrenderer.Boolean());
+          tcm.setCellEditorFactory(i, new qx.ui.table.celleditor.CheckBox());
+        }
+        else
+        {
+          tcm.setDataCellRenderer(i, new qx.ui.table.cellrenderer.Default());
+        }
+      }
+    },
 
     /**
      * _createLayout(): metodo abstracto
@@ -629,10 +653,10 @@ qx.Class.define("inventario.widget.Table2",
 
         /* es un buen momento para establecer los renderers.. por si no hubo data al iniciar */
 
-        inventario.widget.Table.setRenderers(this.getGrid(), filas[0]);
+        this._setRenderers(filas[0]);
 
         if (!this.getUseEmptyTable()) {
-          inventario.widget.Table.addRows(tabla, col, filas);
+          for (var i=0; i<col.length; i++) tabla.addRow(col[i], filas);
         }
         else
         {
@@ -727,7 +751,7 @@ qx.Class.define("inventario.widget.Table2",
     {
       if (filas.length > 0)
       {
-        inventario.widget.Table.setRenderers(this.getGrid(), filas[0]);
+        this._setRenderers(filas[0]);
         this.getGrid().getTableModel().addRows(filas, comienzo);
       }
     },
@@ -893,7 +917,7 @@ qx.Class.define("inventario.widget.Table2",
     emptyTable : function()
     {
       if (!this.getUseEmptyTable()) {
-        inventario.widget.Table.emptyTable(this.getGrid());
+        this.getGrid().getTableModel().setData([]);
       }
       else
       {
@@ -905,7 +929,7 @@ qx.Class.define("inventario.widget.Table2",
           var data = new Array();
           this._addEmptyRows(data, this.getRowsNum(), this.getColsNum());
           this.setGridData(data);
-          inventario.widget.Table.setRenderers(this.getGrid(), data[0]);
+          this._setRenderers(data[0]);
           this.getGrid().getTableModel().setData(data);
         }
       }
@@ -950,7 +974,7 @@ qx.Class.define("inventario.widget.Table2",
         {
           if (sm.isSelectedIndex(i) && !this.isEmpty(data, i))
           {
-            inventario.widget.Table.removeRow(this.getGrid(), i);
+            this.getGrid().getTableModel().removeRows(i, 1);
 
             // si se borra una fila y si se reconce filas vacias se tiene que agregar una fila vacia
             if (this.getUseEmptyTable()) this.addEmptyRow();

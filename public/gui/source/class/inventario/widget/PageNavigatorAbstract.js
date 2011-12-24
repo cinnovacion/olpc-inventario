@@ -221,7 +221,7 @@ qx.Class.define("inventario.widget.PageNavigatorAbstract",
 
         if (datos["rows"].length > 0)
         {
-          inventario.widget.Table.setRenderers(this.table, datos["rows"][0]);
+          this.table.setRenderers(datos["rows"][0]);
           this.table.getTableModel().setData(datos["rows"]);
         }
 
