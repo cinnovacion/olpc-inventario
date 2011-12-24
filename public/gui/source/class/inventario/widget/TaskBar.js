@@ -141,7 +141,7 @@ qx.Class.define("inventario.widget.TaskBar",
 
       button.addListener("execute", function()
       {
-        abstractWindow.show();
+        abstractWindow.restore();
 
         var part = this.getPart();
         var icons = part.getChildren();

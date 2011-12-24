@@ -44,6 +44,21 @@ qx.Class.define("inventario.widget.Window",
       this.center();
     });
 
+    /*
+     * Windows do not get destroyed (by default) upon close by qooxdoo.
+     * With many multiple-instance windows we do want to destroy most
+     * instances.
+     * Users of this code can opt-out of automatic destroy-on-close with
+     * the destroyOnClose property, however they must then be sure to destroy
+     * the window when it is no longer needed.
+     * Additionally, if a user creates a window but it is never opened,
+     * the calling code must take care of destroying it.
+     */
+    this.addListenerOnce("close", function(e) {
+      if (this.getDestroyOnClose())
+        this.destroy();
+    }, this);
+
     this.setLayout(new qx.ui.layout.VBox(10));
     this.setShowClose(true);
     this.setShowMaximize(false);
@@ -60,6 +75,11 @@ qx.Class.define("inventario.widget.Window",
       check    : "Object",
       init     : null,
       nullable : true
+    },
+    destroyOnClose :
+    {
+      check    : "Boolean",
+      init     : true
     }
   }
 });

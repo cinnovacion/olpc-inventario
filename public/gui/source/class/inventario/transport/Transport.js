@@ -212,19 +212,13 @@ qx.Class.define("inventario.transport.Transport",
       return statusWin;
     },
 
-    processingImage : null,
-
     /**
      * getProcessingImage
      *
      * @return {qx.ui.basic.Image} TODOC
      */
     getProcessingImage : function() {
-      if (!inventario.transport.Transport.processingImage) {
-        inventario.transport.Transport.processingImage = new qx.ui.basic.Image("inventario/22/wait.gif");
-      }
-
-      return inventario.transport.Transport.processingImage;
+      return inventario.transport.Transport.processingImage = new qx.ui.basic.Image("inventario/22/wait.gif");
     }
   }
 });
