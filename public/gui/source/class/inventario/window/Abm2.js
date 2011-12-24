@@ -66,6 +66,7 @@ qx.Class.define("inventario.window.Abm2",
   {
     this.base(arguments, page);
     this.prepared = false;
+    this._number_format = null;
 
     this._searchMode = false;
 
@@ -86,6 +87,10 @@ qx.Class.define("inventario.window.Abm2",
     this.setExtraButtons(new Array());
 
     this.setQueryComponents({});
+  },
+
+  destruct : function() {
+    this._disposeObjects("_number_format");
   },
 
   properties :
@@ -523,6 +528,7 @@ qx.Class.define("inventario.window.Abm2",
       var nf = new qx.util.format.NumberFormat();
       nf.setMaximumFractionDigits(0);
       s.setNumberFormat(nf);
+      this._number_format = nf;
       this.setFilasSpinner(s);
 
       /*
