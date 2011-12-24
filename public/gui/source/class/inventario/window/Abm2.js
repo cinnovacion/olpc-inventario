@@ -439,7 +439,7 @@ qx.Class.define("inventario.window.Abm2",
     launch : function()
     {
       if (this.prepared) {
-        this._doShow();
+        this.open();
 
         if (this.getRefreshOnShow()) {
           this._navegar();
@@ -468,32 +468,6 @@ qx.Class.define("inventario.window.Abm2",
       if (huboCambios) {
         this._navegar();
       }
-    },
-
-    _doShow : function()
-    {
-      var mainVBox = this.getVbox();
-      mainVBox.add(this._buildCommandToolBar(true));
-      mainVBox.add(this.getVerticalBox());
-
-      /*
-                   * Cuando se carga el Abm lo normal es querer buscar...
-                   */
-
-      this.getSearchTextField().addListener("appear", function() {
-        this.getSearchTextField().focus();
-      }, this);
-
-      this.setCaption(this.getTitle());
-
-    /* {@crodas} Little hook to setScope, to update to the new scope on ASAP  {{{ */
-        var scope = inventario.window.Abm2SetScope.getInstance();
-        scope.addListener("changeScope", function(q) { 
-            this.setVista("scope_" + q.getData());
-        }, this);
-    /* }}} */
-
-      this.open();
     },
 
     _createInputs : function()
@@ -975,7 +949,10 @@ qx.Class.define("inventario.window.Abm2",
 
       // label to display number of results
       var labelBox = new qx.ui.container.Composite(new qx.ui.layout.HBox(30));
-      this.setBoxCurrentPage(labelBox);
+      this._page_label = new qx.ui.basic.Label();
+      this._num_results_label = new qx.ui.basic.Label();
+      labelBox.add(this._page_label);
+      labelBox.add(this._num_results_label);
       inferiorBox.add(labelBox);
 
       vbox.add(inferiorBox, { flex : 1 });
@@ -1128,9 +1105,29 @@ qx.Class.define("inventario.window.Abm2",
         this.getLastButton().setEnabled(true);
       }
 
-      this.prepared = true;
+      var mainVBox = this.getVbox();
+      mainVBox.add(this._buildCommandToolBar(true));
+      mainVBox.add(this.getVerticalBox());
 
-      this._doShow();
+      /*
+                   * Cuando se carga el Abm lo normal es querer buscar...
+                   */
+
+      this.getSearchTextField().addListener("appear", function() {
+        this.getSearchTextField().focus();
+      }, this);
+
+      this.setCaption(this.getTitle());
+
+    /* {@crodas} Little hook to setScope, to update to the new scope on ASAP  {{{ */
+        var scope = inventario.window.Abm2SetScope.getInstance();
+        scope.addListener("changeScope", function(q) { 
+            this.setVista("scope_" + q.getData());
+        }, this);
+    /* }}} */
+
+      this.prepared = true;
+      this.open();
     },
 
     /**
@@ -1403,11 +1400,13 @@ qx.Class.define("inventario.window.Abm2",
 
     _showPageNumber : function()
     {
-      var cadena = qx.locale.Manager.tr("Displaying Results page: ") + this._pages + qx.locale.Manager.tr(" of ") + this._numPages;
-      var cadena2 = qx.locale.Manager.tr("Number of results found: ") + this.getResults();
-      this.getBoxCurrentPage().removeAll();
-      this.getBoxCurrentPage().add(new qx.ui.basic.Label(cadena2));
-      this.getBoxCurrentPage().add(new qx.ui.basic.Label(cadena));
+      var str = this.tr("Displaying results page %1 of %2");
+      str = qx.lang.String.format(str, [this._pages, this._numPages]);
+      this._page_label.setValue(str);
+
+      str = this.tr("Number of results found: %1");
+      str = qx.lang.String.format(str, [this.getResults()]);
+      this._num_results_label.setValue(str);
     },
 
     getDataHashQuery : function()
