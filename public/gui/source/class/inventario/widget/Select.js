@@ -68,6 +68,7 @@ qx.Class.define("inventario.widget.Select",
 
       var url = inventario.widget.Url.getUrl(this.getUrl());
       var abm = new inventario.window.Abm2(null, url);
+      abm.setDestroyOnClose(false);
       abm.setCaption(tituloVentana);
       abm.setHeight(450);
       abm.setWidth(800);
@@ -104,6 +105,14 @@ qx.Class.define("inventario.widget.Select",
     catch(e)
     {
       inventario.window.Mensaje.mensaje(e);
+    }
+  },
+
+  destruct : function() {
+    var abm = this.getAbm();
+    if (abm != null) {
+      this.setAbm(null);
+      abm.destroy();
     }
   },
 
