@@ -86,12 +86,11 @@ qx.Class.define("inventario.window.WelcomeInfo",
         var spotlight    = new qx.ui.container.Stack();
         var container    = new qx.ui.container.Composite(new qx.ui.layout.VBox(5));
         container.add(new qx.ui.basic.Label(qx.locale.Manager.tr("Quick access")));
+        autocomplete.setAutocompleteElements(this.getMenuElements());
+        container.add(autocomplete);
         spotlight.setMaxWidth(200);
         spotlight.setAlignX('right');
         spotlight.setAlignY('top');
-        autocomplete.setContainer(container);
-        autocomplete.setAutocompleteElements(this.getMenuElements());
-        autocomplete.show();
         spotlight.add(container);
         return spotlight;
     }
