@@ -31,6 +31,7 @@ qx.Class.define("inventario.widget.Autocomplete",
     this.__textfield.addListener("changeValue", this._onChange, this);
     this.__textfield.addListener("keypress", this._onTextKeypress, this);
     this.__list.addListener("keypress", this._onListKeypress, this);
+    this.__list.addListener("disappear", this._onListDisappear, this);
   },
 
   properties:
@@ -98,12 +99,26 @@ qx.Class.define("inventario.widget.Autocomplete",
       this.__lastKey = select[0].getModel();
     },
 
+    _clearListElements : function(e) {
+      // Remove children from list in reverse order to avoid issues with
+      // in-place array modification
+      var children = this.__list.getChildren();
+      for (var i = children.length - 1; i >= 0; i--) {
+        var child = children[i];
+        this.__list.removeAt(i);
+        child.dispose();
+      }
+    },
+
+    _onListDisappear : function(e) {
+      this._clearListElements();
+    },
+
     _onChange: function(e) {
       var data    = this.getAutocompleteElements();
       var rawData = [];
       var text    = this.__textfield.getValue().toLowerCase();
-
-      this.__list.removeAll();
+      this._clearListElements();
 
       for (var i in data)
         if (data[i].label.toLowerCase().match(text))
