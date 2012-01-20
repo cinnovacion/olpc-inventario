@@ -57,6 +57,10 @@ qx.Class.define("inventario.widget.PeopleMover",
     this._showPlaces(); /* initial state */
   },
 
+  destruct : function() {
+    this._disposeObjects("_placeSelector", "_peopleSelector");
+  },
+
   statics :
   {
     launch : function(page)
@@ -240,7 +244,15 @@ qx.Class.define("inventario.widget.PeopleMover",
       this._nextButton.setEnabled(true);
       this._addComment.setValue(true);
 
-      this._studentsBox.removeAll();
+      // Remove children from box in reverse order to avoid issues with
+      // in-place array modification
+      var children = this._studentsBox.getChildren();
+      for (var i = children.length - 1; i >= 0; i--) {
+        var child = children[i];
+        this._studentsBox.removeAt(i);
+        child.dispose();
+      }
+
       for (var idx in this._people) {
         var student = this._people[idx];
         var checkbox = new qx.ui.form.CheckBox(student.text);
