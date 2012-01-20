@@ -160,6 +160,12 @@ qx.Class.define("inventario.widget.ApplicationLauncher",
           };
 
           break;
+
+        case "barcode_scan":
+          execute = function() {
+            inventario.window.BarcodeScanForm.launch(this._page, node.options);
+          };
+          break;
       }
 
       var menuButton = new qx.ui.menu.Button(node.label, node.image, command, menu);

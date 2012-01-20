@@ -136,23 +136,8 @@ class AssignmentsController < SearchController
     @output["articles"].push( { :label => "Laptops" , :id => "laptop" } )
   end
 
-  def new_mass_assignment
-
-    @output["window_title"] = _("Mass assignment")
-    @output["fields"] = []
-
-    h = { "label" => _("Note"), "datatype" => "label", "text" => _("This form is for creating <b>assignments</b> of laptops in mass. For each assignment you wish to create, scan the barcode of the person and the barcode (serial number) of the laptop.") }
-    @output["fields"].push(h)
-
-    h = { "label" => "", "datatype" => "dynamic_barcode_scan_form", "mode" => "assignation" }
-    @output["fields"].push(h)
-  end
-
-  def save_mass_assignment
-    datos = JSON.parse(params[:payload])
-    form_fields = datos["fields"].reverse
-
-    deliveries = form_fields.pop
+  def saveMassAssignment
+    deliveries = JSON.parse(params[:deliveries])
 
     Assignment.transaction do
       deliveries.each { |delivery|

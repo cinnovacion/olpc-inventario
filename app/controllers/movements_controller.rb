@@ -167,29 +167,9 @@ class MovementsController < SearchController
     @output["articles"].push( { :label => "Laptops" , :id => "laptop" } )
   end
 
-  def new_mass_delivery
-
-    @output["window_title"] = _("Movement by lot")
-    @output["fields"] = []
-
-    h = { "label" => _("Note"), "datatype" => "label", "text" => _("This form is for creating <b>movements</b> of laptops in mass. For each movement you wish to create, scan the barcode of the person and the barcode (serial number) of the laptop.") }
-    @output["fields"].push(h)
-
-    id = MovementType.find_by_internal_tag("entrega_alumno").id
-    movement_types = buildSelectHash2(MovementType, id, "description", false, [])
-    h = { "label" => _("Reason"), "datatype" => "combobox", "options" => movement_types }
-    @output["fields"].push(h)
-
-    h = { "label" => "", "datatype" => "dynamic_barcode_scan_form", "mode" => "movement" }
-    @output["fields"].push(h)
-  end
-
-  def save_mass_delivery
-    datos = JSON.parse(params[:payload])
-    form_fields = datos["fields"].reverse
-
-    movement_type_id = form_fields.pop
-    deliveries = form_fields.pop
+  def saveMassMovement
+    deliveries = JSON.parse(params[:deliveries])
+    movement_type_id = params[:movement_type]
 
     Movement.transaction do
       deliveries.each { |delivery|

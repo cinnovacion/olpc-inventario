@@ -267,21 +267,18 @@ class PeopleController < SearchController
 
   ##
   # Methods for Dynamic Delivery Form.
-  def studentsAmount
+  def peopleAmount
     place_id = params[:place_id].to_i
     with_filter = (params[:withFilter] == "true")
-    assignation_mode = (params[:mode] == "assignation")
+    assignation_mode = (params[:mode] == "assignment")
 
-    student_profile_id = Profile.find_by_internal_tag("student").id
-
-    performs = Perform
+    performs = Perform.where(:place_id => place_id)
 
     if assignation_mode
       performs = performs.includes(:person => :laptops_assigned)
     else
       performs = performs.includes(:person => :laptops)
     end
-    performs = performs.where(:place_id => place_id, :profile_id => student_profile_id)
 
     amount = 0
     performs.each { |perform|

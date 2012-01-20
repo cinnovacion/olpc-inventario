@@ -75,4 +75,10 @@ class MovementTypesController < SearchController
     @output["msg"] = _("Elements deleted.")
   end
 
+  def getTypes
+    id = MovementType.find_by_internal_tag("entrega_alumno").id
+    types = buildSelectHash2(MovementType, id, "description", false, [])
+    @output["types"] = types
+  end
+
 end
