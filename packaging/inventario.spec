@@ -49,9 +49,6 @@ rm -f $RPM_BUILD_ROOT/var/%{name}/log/*
 # kill packaging 
 rm -rf $RPM_BUILD_ROOT/var/%{name}/packaging
 
-# kill Gemfile.lock so that it is generated on first run
-rm -f $RPM_BUILD_ROOT/var/inventario/Gemfile.lock
-
 # kill migrations
 #rm -f $RPM_BUILD_ROOT/var/%{name}/db/migrate/*
 
@@ -106,7 +103,6 @@ fi
 %attr(-,apache,apache) /var/%{name}/config/environment.rb
 /var/%{name}/config.ru
 /var/%{name}/COPYING
-/var/%{name}/Gemfile
 /var/%{name}/README
 /var/%{name}/db
 /var/%{name}/doc
