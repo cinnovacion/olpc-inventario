@@ -156,6 +156,7 @@ class ProblemSolutionsController < SearchController
     raise _("Editing not allowed in this window.") if datos["id"]
     ProblemSolution.register_change(attribs, rep_dev_srl, bank_deposits_data)
 
+    @output["msg"] = _("Solution saved.")
     true
   end
 

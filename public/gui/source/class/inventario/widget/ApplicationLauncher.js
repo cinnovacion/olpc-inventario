@@ -101,7 +101,9 @@ qx.Class.define("inventario.widget.ApplicationLauncher",
 
         case "abmform":
             execute = function() {
-                inventario.window.Abm2Extensions.launchAbmForm(node.label, node.options.option, this);
+              var options = inventario.widget.Url.getUrl(node.options.option);
+              var form = new inventario.window.AbmForm(null, options.addUrl, options.saveUrl);
+              form.launch();
             };
           break;
 

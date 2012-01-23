@@ -34,69 +34,8 @@ qx.Class.define("inventario.window.Abm2Extensions",
       abm2.setShowModifyButton(options.modify);
       abm2.setShowDetailsButton(options.details);
       abm2.setShowDeleteButton(options.destroy);
-
-      for (var i in options.custom) {
-        abm2.getToolBarButtons().push(inventario.window.Abm2Extensions.customAbmFormButton(options.custom[i], context, abm2));
-      }
-
+      abm2.addCustomButtons(options.custom);
       abm2.launch();
-    },
-
-    launchAbmForm : function(label, option_name, context)
-    {
-        var options = inventario.widget.Url.getUrl(option_name)
-        var f = inventario.window.Abm2Extensions.getAbmFormFunction(options, context);
-	    f.call();
-    },
-
-    customAbmFormButton : function(options, context, abm2)
-    {
-	var f = inventario.window.Abm2Extensions.getAbmFormFunction(options, context, abm2);
-
-	var button =
-	    {
-		type            : "button",
-		icon            : options.icon,
-		text            : options.text,
-		callBackFunc    : f,
-		callBackContext : context
-	    };
-
-	return button;
-    }, 
-
-   getAbmFormFunction : function(options, context, abm2) {
-
-      var saveCallback = function(newData, remoteData)
-      {
-        var msg = options.msg;
-
-        if (typeof remoteData.msg != "undefined") {
-          msg = remoteData.msg;
-        }
-
-        inventario.window.Mensaje.mensaje(msg);
-
-        if (options.refresh_abm) {
-          abm2._navegar();
-        }
-      };
-
-      var f = function()
-      {
-        var hbox = new qx.ui.container.Composite(new qx.ui.layout.HBox(20));
-        var mass_add_form = new inventario.window.AbmForm(null, {});
-        mass_add_form.setSaveCallback(saveCallback);
-        mass_add_form.setSaveCallbackObj(context);
-        mass_add_form.setInitialDataUrl(options.addUrl);
-        mass_add_form.setSaveUrl(options.saveUrl);
-        mass_add_form.setPage(hbox);
-        mass_add_form.setCloseAfterInsert(true);
-        mass_add_form.launch();
-      };
-
-      return f;
-   }
-
+    }
   }
 });

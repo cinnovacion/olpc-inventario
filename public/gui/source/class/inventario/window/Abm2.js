@@ -84,8 +84,6 @@ qx.Class.define("inventario.window.Abm2",
 
     if (typeof (title) != "undefined") this.setTitle(title);
 
-    this.setExtraButtons(new Array());
-
     this.setQueryComponents({});
   },
 
@@ -329,62 +327,6 @@ qx.Class.define("inventario.window.Abm2",
       init  : true
     },
 
-    /* KU 2007-03-26 nuevo, properties
-     *  DEPREACTED: usar getExtraButtons()
-     */
-    withArrayButton :
-    {
-      check : "Boolean",
-      init  : false
-    },
-
-    arrayButtonLen :
-    {
-      check    : "Number",
-      init     : null,
-      nullable : true
-    },
-
-    arrayButton :
-    {
-      check    : "Object",
-      init     : null,
-      nullable : true
-    },
-
-    arrayButtonUsesSelected :
-    {
-      check    : "Object",
-      init     : null,
-      nullable : true
-    },
-
-    arrayButtonText :
-    {
-      check : "Object",
-      init  : qx.locale.Manager.tr("Add")
-    },
-
-    arrayButtonIcon :
-    {
-      check : "Object",
-      init  : "qx/icon/Tango/16/actions/zoom-in.png"
-    },
-
-    arrayButtonCallBack :
-    {
-      check    : "Object",
-      init     : null,
-      nullable : true
-    },
-
-    arrayButtonCallBackContext :
-    {
-      check    : "Object",
-      init     : null,
-      nullable : true
-    },
-
     /* Guardar el box donde tengo que colocar el laberl referente al numero de pagina que se esta viendo */
     boxCurrentPage :
     {
@@ -398,14 +340,6 @@ qx.Class.define("inventario.window.Abm2",
     {
       check : "Number",
       init  : 0
-    },
-
-    /* Vector de hashes con configuraciones de botones */
-    extraButtons :
-    {
-      check    : "Object",
-      init     : null,
-      nullable : true
     },
 
     showExcelExportButton :
@@ -424,12 +358,6 @@ qx.Class.define("inventario.window.Abm2",
     {
       check : "String",
       init  : qx.locale.Manager.tr("Listing")
-    },
-
-    abmFormCloseAfterInsert :
-    {
-      check : "Boolean",
-      init  : true
     }
   },
 
@@ -613,113 +541,6 @@ qx.Class.define("inventario.window.Abm2",
 
         this.getToolBarButtons().push(h);
         this.getToolBarButtons().push({ type : "separator" });
-      }
-
-      /* KU 2007-03-26 nuevo, properties
-                   *   DEPRECATED: usar getExtraButtons()
-                   */
-
-      if (this.getWithArrayButton())
-      {
-        try
-        {
-          var len = this.getArrayButtonLen();
-
-          for (var i=0; i<len; i++)
-          {
-            var t = this.getArrayButtonText()[i];
-            var icon = "aisa/image/22/" + this.getArrayButtonIcon()[i] + ".png";
-            var boton = new qx.ui.toolbar.Button(t, icon);
-            boton.setUserData("i", i);
-            boton.setUserData("self", this);
-
-            boton.addListener("execute", function(e)
-            {
-              var i = this.getUserData("i");
-              var self = this.getUserData("self");
-              var context = self;
-              var f = self.getArrayButtonCallBack()[i];
-              var filasSeleccionadas = self.getResultsGrid().getSelected2(null, true);
-
-              /* Por default todo el mundo necesita que una fila este seleccionada p/ que se llame al callback de su boton */
-
-              var len_seleccion = (self.getArrayButtonUsesSelected() ? self.getArrayButtonUsesSelected().length : 0);
-              var necesita_seleccion = (len_seleccion == 0 || self.getArrayButtonUsesSelected()[i]);
-
-              if (necesita_seleccion && filasSeleccionadas.length == 0) {
-                inventario.window.Mensaje.mensaje(qx.locale.Manager.tr("You must select at least one row."));
-              }
-              else
-              {
-                if (self.getArrayButtonCallBackContext()) context = self.getArrayButtonCallBackContext()[i];
-                f.call(context, filasSeleccionadas);
-              }
-            },
-            boton);
-
-            var h =
-            {
-              type            : "toolBarButton",
-              object          : boton,
-              callBackContext : this
-            };
-
-            this.getToolBarButtons().push(h);
-            this.getToolBarButtons().push({ type : "separator" });
-          }
-        }
-        catch(e)
-        {
-          inventario.window.Mensaje.mensaje("Abm2 withArrayButton :" + e.toString());
-        }
-      }
-
-      /*
-                   *  Botones varios
-                   */
-
-      if (this.getExtraButtons().length > 0)
-      {
-        var len = this.getExtraButtons().length;
-
-        for (var i=0; i<len; i++)
-        {
-          var button_config = this.getExtraButtons()[i];
-          var h = {};
-          h["text"] = button_config["button_text"];
-          h["icon"] = button_config["button_icon"];
-          h["callBackContext"] = this;
-          var priv_data = {};
-          priv_data["uses_selected"] = button_config["uses_selected"];
-          priv_data["callback"] = button_config["callback"];
-          priv_data["callback_ctxt"] = button_config["callback_context"];
-          h["priv_data"] = priv_data;
-
-          var f = function(e)
-          {
-            var but = e.getTarget();
-            var f = but.getUserData("callback");
-            var filasSeleccionadas = this.getResultsGrid().getSelected2(null, true);
-
-            var necesita_seleccion = but.getUserData("uses_selected");
-
-            if (necesita_seleccion && filasSeleccionadas.length == 0) {
-              inventario.window.Mensaje.mensaje(qx.locale.Manager.tr("You must select at least one row."));
-            }
-            else
-            {
-              var context = (but.getUserData("callback_context") ? but.getUserData("callback_context") : this);
-              f.call(context, filasSeleccionadas);
-            }
-          };
-
-          h["callBackFunc"] = f;
-          h["type"] = "button";
-          h["accel_keyboard"] = button_config["accel_keyboard"];
-
-          this.getToolBarButtons().push(h);
-          this.getToolBarButtons().push({ type : "separator" });
-        }
       }
 
       if (this.getWithChooseButton())
@@ -1225,7 +1046,9 @@ qx.Class.define("inventario.window.Abm2",
      */
     _addRow : function(editRow, details)
     {
-      var add_form = new inventario.window.AbmForm(null, {});
+      var dataUrl = this.getAddUrl();
+      var saveUrl = this.getSaveUrl();
+      var add_form = new inventario.window.AbmForm(null, dataUrl, saveUrl);
 
       if (typeof (editRow) == "object")
       {
@@ -1249,20 +1072,12 @@ qx.Class.define("inventario.window.Abm2",
       add_form.setDetails(details);
       add_form.setSaveCallback(this._addRowHandler);
       add_form.setSaveCallbackObj(this);
-      var url = this.getAddUrl();
-      add_form.setInitialDataUrl(url);
-      var url = this.getSaveUrl();
-      add_form.setSaveUrl(url);
       add_form.setVista(this.getVista());
-      add_form.setCloseAfterInsert(this.getAbmFormCloseAfterInsert());
       add_form.launch();
     },
 
     _addRowHandler : function(filaAgregada, remoteData)
     {
-      var msg = (remoteData["msg"] ? remoteData["msg"] : qx.locale.Manager.tr(" Added row "));
-      inventario.window.Mensaje.mensaje(msg);
-
       if (remoteData["id"])
       {
         // no se para que sirve esta variable, dsp se tendria que sacar
@@ -1709,6 +1524,33 @@ qx.Class.define("inventario.window.Abm2",
         this._numPages = 0;  // cantidad de paginas en el listado
         this.setQueryComponents({});
         this._saveData(true);
+    },
+
+    _addCustomButton : function(btn) {
+      var f = function() {
+        var form = new inventario.window.AbmForm(null, btn.addUrl, btn.saveUrl);
+        if (btn.refresh_abm)
+          form.addListener("disappear", function(e) {
+              this._navegar();
+            }, this);
+        form.launch();
+      };
+
+      var h =
+      {
+        type            : "button",
+        icon            : btn.icon,
+        text            : btn.text,
+        callBackFunc    : f,
+        callBackContext : this
+      };
+
+      this.getToolBarButtons().push(h);
+    },
+
+    addCustomButtons : function(buttons) {
+      for (var i in buttons)
+        this._addCustomButton(buttons[i]);
     }
   }
 });

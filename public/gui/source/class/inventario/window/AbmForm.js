@@ -28,24 +28,18 @@ qx.Class.define("inventario.window.AbmForm",
 {
   extend : inventario.window.AbstractWindow,
 
-  construct : function(page, oMethods) {
+  construct : function(page, initialDataUrl, saveUrl) {
     inventario.window.AbstractWindow.call(this, page);
 
     this.prepared = false;
 
     this.setEditIds(new Array());
 
-    try {
-      if (oMethods.initialDataUrl) {
-        this.setInitialDataUrl(oMethods.initialDataUrl);
-      }
+    if (initialDataUrl != undefined)
+      this.setInitialDataUrl(initialDataUrl);
 
-      if (oMethods.saveUrl) {
-        this.setSaveUrl(oMethods.saveUrl);
-      }
-    } catch(e) {
-      alert(qx.locale.Manager.tr("Missing parameter in urls hash! ") + e);
-    }
+    if (saveUrl != undefined)
+      this.setSaveUrl(saveUrl);
   },
 
   properties : {
@@ -57,12 +51,6 @@ qx.Class.define("inventario.window.AbmForm",
     },
 
     showCloseButton :
-    {
-      check : "Boolean",
-      init  : true
-    },
-
-    closeAfterInsert :
     {
       check : "Boolean",
       init  : true
@@ -364,27 +352,6 @@ qx.Class.define("inventario.window.AbmForm",
 
       this.prepared = true;
       this.open();
-    },
-
-    saveData : function(callback_func, callback_obj)
-    {
-      var fields = this._formFields;
-      var editing = false;
-      var id = this.getEditRow();
-      var ids = this.getEditIds();
-
-      if (parseInt(id) > 0 || ids.length > 0) {
-        editing = true;
-      }
-
-      this.setSaveCallback(callback_func);
-      this.setSaveCallbackObj(callback_obj);
-
-      if (ids.length == 0) {
-        this._saveFormData(editing, fields, id);
-      } else {
-        this._saveFormData(editing, fields, ids);
-      }
     },
 
     _buildButtonsHbox : function()
@@ -865,9 +832,7 @@ qx.Class.define("inventario.window.AbmForm",
             }
 
             this._saveCallback(null, this.data["fields"]);
-
-            if (this.getCloseAfterInsert())
-              this.close();
+            this.close();
           }
           else
           {
@@ -916,9 +881,7 @@ qx.Class.define("inventario.window.AbmForm",
     _saveFormDataResp : function(remoteData, handleParams)
     {
       this._saveCallback(remoteData, this.data["fields"]);
-
-      if (this.getCloseAfterInsert())
-        this.close();
+      this.close();
 
       if (this.getClearFormFieldsAfterSave()) {
         this._clearFormFields();
@@ -933,6 +896,9 @@ qx.Class.define("inventario.window.AbmForm",
     {
       var f = this.getSaveCallback();
       var obj = this.getSaveCallbackObj();
+
+      if (remoteData["msg"])
+        inventario.window.Mensaje.mensaje(remoteData["msg"]);
 
       if (f) {
         obj = (obj ? obj : this);
@@ -1006,16 +972,14 @@ qx.Class.define("inventario.window.AbmForm",
 
         tableObj.getAddButton().addListener("execute", function(e)
         {
-          var add_form = new inventario.window.AbmForm(null, {});
+          var url = this.getUserData("add_form_url");
+          var add_form = new inventario.window.AbmForm(null, url);
           add_form.setAskConfirmationOnClose(false);
 
           /* No establezco el callback...
 	   * Lo delego (al asociar una tabla al nuevo AbmForm) p/ el momento de obtener los datos */
 
           add_form.setUserData("table_obj", this.getUserData("tableObje"));
-          add_form.setSaveColsMapping();
-          var url = this.getUserData("add_form_url");
-          add_form.setInitialDataUrl(url);
           add_form.launch();
         }, this);
 
