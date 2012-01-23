@@ -153,7 +153,7 @@ class ApplicationController < ActionController::Base
   def json_access_response(msg)
     @output["result"] = "Error"
     @output["msg"] =  msg
-    render :text => @output.to_json
+    render :json => @output
   end
 
   ###
@@ -188,7 +188,7 @@ class ApplicationController < ActionController::Base
     if @check_authentication && !session[:user_id]
       @output["result"] = "Error"
       @output["msg"] =  _("You are not authenticated")
-      render :text => @output.to_json
+      render :json => @output
       return false
     else
       @output["result"] = "ok"
@@ -328,7 +328,7 @@ class ApplicationController < ActionController::Base
       end
     end
 
-    render :text => @output.to_json
+    render :json => @output
   end
 
   ###
