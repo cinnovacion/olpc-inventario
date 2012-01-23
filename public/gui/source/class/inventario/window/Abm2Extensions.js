@@ -28,8 +28,7 @@ qx.Class.define("inventario.window.Abm2Extensions",
   {
     launch : function(label, options, context)
     {
-      var abm2 = new inventario.window.Abm2(null, inventario.widget.Url.getUrl(options.option), label);
-      abm2.setPage(context._page);
+      var abm2 = new inventario.window.Abm2(inventario.widget.Url.getUrl(options.option), label);
       abm2.setShowAddButton(options.add);
       abm2.setShowModifyButton(options.modify);
       abm2.setShowDetailsButton(options.details);

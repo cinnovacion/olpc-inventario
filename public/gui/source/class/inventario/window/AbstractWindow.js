@@ -32,7 +32,7 @@ qx.Class.define("inventario.window.AbstractWindow",
 {
   extend : inventario.widget.Window,
 
-  construct : function(page, title, icon)
+  construct : function(title, icon)
   {
     this.base(arguments, title, icon);
     this.setModal(false);
@@ -43,9 +43,6 @@ qx.Class.define("inventario.window.AbstractWindow",
     // minimize to the application taskbar
     this.addListener("minimize", this._minimize_cb, this);
 
-    if (page)
-      this.setPage(page);
-
     var o = new Array();
     this.setToolBarButtons(o);
 
@@ -55,13 +52,6 @@ qx.Class.define("inventario.window.AbstractWindow",
 
   properties :
   {
-    page :
-    {
-      check    : "Object",
-      init     : null,
-      nullable : true
-    },
-
     toolBarButtons :
     {
       check    : "Object",

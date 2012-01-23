@@ -67,7 +67,7 @@ qx.Class.define("inventario.widget.Select",
       /* Crear Abm */
 
       var url = inventario.widget.Url.getUrl(this.getUrl());
-      var abm = new inventario.window.Abm2(null, url);
+      var abm = new inventario.window.Abm2(url);
       abm.setDestroyOnClose(false);
       abm.setCaption(tituloVentana);
       abm.setHeight(450);

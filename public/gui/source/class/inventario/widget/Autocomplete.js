@@ -7,7 +7,7 @@ qx.Class.define("inventario.widget.Autocomplete",
 {
   extend : qx.ui.container.Composite,
 
-  construct: function(page)
+  construct: function()
   {
     this.base(arguments, new qx.ui.layout.VBox(5));
     this.__textfield = new qx.ui.form.TextField();

@@ -24,9 +24,9 @@ qx.Class.define("inventario.window.Mensaje",
 {
   extend : inventario.window.AbstractWindow,
 
-  construct : function(page)
+  construct : function()
   {
-    inventario.window.AbstractWindow.call(this, page);
+    this.base(arguments);
     this.setAskConfirmationOnClose(false);
     this._prepared = false;
   },

@@ -21,9 +21,9 @@ qx.Class.define("inventario.widget.PeopleMover",
 {
   extend : inventario.window.AbstractWindow,
 
-  construct : function(page)
+  construct : function()
   {
-    this.base(arguments, page, qx.locale.Manager.tr("Move people"));
+    this.base(arguments, qx.locale.Manager.tr("Move people"));
     this._state = inventario.widget.PeopleMover.states.PLACES
     this._people = []
 
@@ -63,12 +63,6 @@ qx.Class.define("inventario.widget.PeopleMover",
 
   statics :
   {
-    launch : function(page)
-    {
-      var mover = new inventario.widget.PeopleMover(page);
-      mover.open();
-    },
-
     states : { PLACES: 0, PEOPLE: 1 }
   },
 

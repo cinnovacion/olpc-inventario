@@ -19,19 +19,11 @@ qx.Class.define("inventario.widget.ScriptRunner",
 {
   extend : inventario.window.AbstractWindow,
 
-  construct : function(page)
+  construct : function()
   {
-    this.base(arguments, page, qx.locale.Manager.tr("Run Script"));
+    this.base(arguments, qx.locale.Manager.tr("Run Script"));
     this._comboBox = null;
     this._getList();
-  },
-
-  statics :
-  {
-    launch : function(page)
-    {
-      var scriptRunner = new inventario.widget.ScriptRunner(page);
-    }
   },
 
   properties :

@@ -47,7 +47,6 @@
  * 6) deleteUrl: eliminar elemento
  *
  *
- * @param page {}  Puede ser null
  * @param oMethods {Hash}  hash de configuracion {searchUrl,initialDataUrl,...}
  * @return void
  */
@@ -62,9 +61,9 @@ qx.Class.define("inventario.window.Abm2",
 {
   extend : inventario.window.AbstractWindow,
 
-  construct : function(page, oMethods, title)
+  construct : function(oMethods, title)
   {
-    this.base(arguments, page);
+    this.base(arguments);
     this.prepared = false;
     this._number_format = null;
 
@@ -1048,7 +1047,7 @@ qx.Class.define("inventario.window.Abm2",
     {
       var dataUrl = this.getAddUrl();
       var saveUrl = this.getSaveUrl();
-      var add_form = new inventario.window.AbmForm(null, dataUrl, saveUrl);
+      var add_form = new inventario.window.AbmForm(dataUrl, saveUrl);
 
       if (typeof (editRow) == "object")
       {
@@ -1528,7 +1527,7 @@ qx.Class.define("inventario.window.Abm2",
 
     _addCustomButton : function(btn) {
       var f = function() {
-        var form = new inventario.window.AbmForm(null, btn.addUrl, btn.saveUrl);
+        var form = new inventario.window.AbmForm(btn.addUrl, btn.saveUrl);
         if (btn.refresh_abm)
           form.addListener("disappear", function(e) {
               this._navegar();

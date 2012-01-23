@@ -50,7 +50,6 @@ qx.Class.define("inventario.window.Abm2SetScope",
                 return;
             }
             this.__visible = true;
-            this.setPage(page);
             var o = new Array();
             this.setInputsOM(o);
             var o = new Array();

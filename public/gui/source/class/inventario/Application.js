@@ -106,7 +106,7 @@ qx.Class.define("inventario.Application",
       var taskbar = new inventario.widget.TaskBar();
       this.setTaskBar(taskbar);
 
-      var launcher = new inventario.widget.ApplicationLauncher(mainVbox);
+      var launcher = new inventario.widget.ApplicationLauncher();
       launcher.setContentRequestUrl("/sistema/gui_content");
       launcher.loadGuiContent();
       taskbar.addLeft(launcher);

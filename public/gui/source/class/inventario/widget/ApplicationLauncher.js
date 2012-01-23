@@ -29,12 +29,11 @@ qx.Class.define("inventario.widget.ApplicationLauncher",
 {
   extend : qx.ui.container.Composite,
 
-  construct : function(page)
+  construct : function()
   {
     try
     {
       qx.ui.container.Composite.call(this, new qx.ui.layout.HBox(3));
-      this._page = page;
     }
     catch(e)
     {
@@ -102,7 +101,7 @@ qx.Class.define("inventario.widget.ApplicationLauncher",
         case "abmform":
             execute = function() {
               var options = inventario.widget.Url.getUrl(node.options.option);
-              var form = new inventario.window.AbmForm(null, options.addUrl, options.saveUrl);
+              var form = new inventario.window.AbmForm(options.addUrl, options.saveUrl);
               form.launch();
             };
           break;
@@ -123,42 +122,42 @@ qx.Class.define("inventario.widget.ApplicationLauncher",
 
         case "node_tracker":
           execute = function() {
-            inventario.widget.NodeTracker.launch(this._page);
+            new inventario.widget.NodeTracker().launch();
           };
 
           break;
 
         case "data_importer":
           execute = function() {
-            inventario.widget.DataImporter.launch(this._page);
+            new inventario.widget.DataImporter().launch();
           };
 
           break;
 
         case "place_tool_box":
           execute = function() {
-            inventario.widget.PlaceCreationToolBox.launch(this._page);
+            new inventario.widget.PlaceCreationToolBox().open();
           };
 
           break;
 
         case "script_runner":
           execute = function() {
-            inventario.widget.ScriptRunner.launch(this._page);
+            new inventario.widget.ScriptRunner();
           };
 
           break;
 
         case "people_mover":
           execute = function() {
-            inventario.widget.PeopleMover.launch(this._page);
+            new inventario.widget.PeopleMover().open();
           };
 
           break;
 
         case "barcode_scan":
           execute = function() {
-            inventario.window.BarcodeScanForm.launch(this._page, node.options);
+            new inventario.window.BarcodeScanForm(node.options["mode"]).open();
           };
           break;
       }

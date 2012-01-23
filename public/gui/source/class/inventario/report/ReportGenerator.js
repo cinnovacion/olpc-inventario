@@ -29,7 +29,7 @@ qx.Class.define("inventario.report.ReportGenerator",
 
   construct : function(report_name, report_title)
   {
-    this.base(arguments, null, report_title);
+    this.base(arguments, report_title);
     this.setWidgetArray(new Array());
     this.setDataTypes(new Array());
 

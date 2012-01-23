@@ -39,7 +39,7 @@ qx.Class.define("inventario.widget.Popup",
     qx.core.Object.call(this);
 
     var url = inventario.widget.Url.getUrl(param);
-    var abm = new inventario.window.Abm2(null, url);
+    var abm = new inventario.window.Abm2(url);
     this.setAbm(abm);
     abm.setWithChooseButton(true);
     abm.setPaginated(true);

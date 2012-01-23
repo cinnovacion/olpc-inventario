@@ -23,18 +23,9 @@ qx.Class.define("inventario.widget.PlaceCreationToolBox",
 {
   extend : inventario.window.AbstractWindow,
 
-  construct : function(page) {
-    this.base(arguments, page, qx.locale.Manager.tr("Locations ToolBox"));
+  construct : function() {
+    this.base(arguments, qx.locale.Manager.tr("Locations ToolBox"));
     this._createLayout();
-  },
-
-  statics :
-  {
-    launch : function(page)
-    {
-      var PCToolBox = new inventario.widget.PlaceCreationToolBox(page);
-      PCToolBox.open();
-    }
   },
 
   properties :

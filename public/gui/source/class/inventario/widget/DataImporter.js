@@ -23,20 +23,11 @@ qx.Class.define("inventario.widget.DataImporter",
 {
   extend : inventario.window.AbstractWindow,
 
-  construct : function(page)
+  construct : function()
   {
-    this.base(arguments, page, qx.locale.Manager.tr("Data Importer"));
+    this.base(arguments, qx.locale.Manager.tr("Data Importer"));
     this._modelsCombo = null;
     this._formatsCombo = null;
-  },
-
-  statics :
-  {
-    launch : function(page)
-    {
-      var dataImport = new inventario.widget.DataImporter(page);
-      dataImport.launch();
-    }
   },
 
   properties :

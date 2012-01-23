@@ -20,8 +20,6 @@ qx.Class.define("inventario.transport.Transport",
 {
   extend : qx.core.Object,
 
-  construct : function(page) {},
-
   statics :
   {
     TRANSPORT_TIMEOUT : 20000,

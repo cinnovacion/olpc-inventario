@@ -21,11 +21,6 @@
 //
 //
 //
-/**
- * Constructor
- *
- * @param page {}  Puede ser null
- */
 qx.Class.define("inventario.widget.Table2",
 {
   extend : qx.ui.container.Composite,

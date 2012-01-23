@@ -22,21 +22,12 @@ qx.Class.define("inventario.widget.NodeTracker",
 {
   extend : inventario.window.AbstractWindow,
 
-  construct : function(page)
+  construct : function()
   {
-    this.base(arguments, page);
+    this.base(arguments);
     this._placesCombo = null;
     this._mapWidget = null;
     this._refreshText = null;
-  },
-
-  statics :
-  {
-    launch : function(page)
-    {
-      var nodes_state = new inventario.widget.NodeTracker(page);
-      nodes_state.launch();
-    }
   },
 
   properties :

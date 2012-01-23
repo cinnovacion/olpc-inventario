@@ -23,14 +23,14 @@ qx.Class.define("inventario.window.BarcodeScanForm",
 {
   extend : inventario.window.AbstractWindow,
 
-  construct : function(page, mode)
+  construct : function(mode)
   {
     if (mode == "assignment")
       var title = this.tr("Mass assignment by barcode");
     else
       var title = this.tr("Mass movement by barcode");
 
-    this.base(arguments, page, title);
+    this.base(arguments, title);
     this._vbox = new qx.ui.container.Composite(new qx.ui.layout.VBox(10));
     this.add(this._vbox);
     this._mode = mode;
@@ -97,11 +97,6 @@ qx.Class.define("inventario.window.BarcodeScanForm",
 
   statics :
   {
-    launch : function(page, options) {
-      var form = new inventario.window.BarcodeScanForm(page, options["mode"]);
-      form.open();
-    },
-
     states : { PLACE: 0, SCAN: 1 }
   },
 

@@ -28,8 +28,8 @@ qx.Class.define("inventario.window.AbmForm",
 {
   extend : inventario.window.AbstractWindow,
 
-  construct : function(page, initialDataUrl, saveUrl) {
-    inventario.window.AbstractWindow.call(this, page);
+  construct : function(initialDataUrl, saveUrl) {
+    this.base(arguments);
 
     this.prepared = false;
 
@@ -973,7 +973,7 @@ qx.Class.define("inventario.window.AbmForm",
         tableObj.getAddButton().addListener("execute", function(e)
         {
           var url = this.getUserData("add_form_url");
-          var add_form = new inventario.window.AbmForm(null, url);
+          var add_form = new inventario.window.AbmForm(url);
           add_form.setAskConfirmationOnClose(false);
 
           /* No establezco el callback...
