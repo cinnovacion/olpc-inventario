@@ -185,29 +185,6 @@ class SistemaController < ApplicationController
     attribs
   end
 
-  def genSchoolManagerOption
-    menu_option = genOption(_("Schools info"))
-    menu_option[:elements] = genSchoolManagerElements
-    menu_option
-  end
-
-  def genSchoolManagerElements
-    school_type_id = PlaceType.find_by_internal_tag("school").id
-    current_user.getRootPlaces().map { |root|
-      genSchoolsTree(root, school_type_id)
-    }
-  end
-
-  def genSchoolsTree(place, school_type_id)
-   if place.place_type_id == school_type_id
-     attribs = genElement(_("School ") + place.name, "school_manager", place.id)
-   else
-     attribs = genOption(place.name)
-     attribs[:elements] = place.places.map { |sub_place| genSchoolsTree(sub_place, school_type_id) }
-   end
-   attribs
-  end
-
   def getDeveloperMenu
     menu_option = genOption(_("Developer config options"))
     menu_option[:elements].push(genElement(_("Run code"), "script_runner"))
@@ -382,7 +359,6 @@ class SistemaController < ApplicationController
     menu_option[:elements].push(submenu)
     menu_option[:elements].push(getMenuDeploymentInform)
     menu_option[:elements].push(getMenuDeploymentConfig)
-    #menu_option[:elements].push(genSchoolManagerOption)
     menu_option
   end
 

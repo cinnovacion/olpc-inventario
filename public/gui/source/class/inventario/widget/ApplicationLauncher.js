@@ -128,13 +128,6 @@ qx.Class.define("inventario.widget.ApplicationLauncher",
 
           break;
 
-        case "school_manager":
-          execute = function() {
-            inventario.window.SchoolManager.launch(this._page, node.options, node.label);
-          };
-
-          break;
-
         case "data_importer":
           execute = function() {
             inventario.widget.DataImporter.launch(this._page);
