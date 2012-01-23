@@ -42,6 +42,7 @@ class ProblemSolutionsController < SearchController
 
   def simple_solution
     @output["window_title"] = _("Soluciones Simples")
+    @output["with_tabs"] = true
     @output["fields"] = Array.new
 
     h = { "label" => _("\#Report*"), "datatype" => "select", "options" => [], "option" => "problem_reports", "text_value" => true }
@@ -95,6 +96,7 @@ class ProblemSolutionsController < SearchController
   end
 
   def change_solution
+    @output["with_tabs"] = true
     @output["window_title"] = _("Laptop exchange")
     @output["verify_before_save"] = true
     @output["verify_save_url"] = "/problem_solutions/verify_change_solution"

@@ -55,7 +55,8 @@ class PlacesController < SearchController
     else
       p = nil
     end
-    
+
+    @output["with_tabs"] = true
     @output["fields"] = []
 
     h = { "label" => _("Name"), "datatype" => "textfield" }.merge( p ? {"value" => p.name } : {} )

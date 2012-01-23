@@ -33,6 +33,7 @@ class SolutionTypesController < SearchController
 
   def new
     @output["window_title"] = _("Solution types")
+    @output["with_tabs"] = true
 
     if params[:id]
       solution_type = SolutionType.find_by_id(params[:id])

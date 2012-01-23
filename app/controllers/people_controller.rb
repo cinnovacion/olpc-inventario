@@ -59,6 +59,7 @@ class PeopleController < SearchController
     end
     
     @output["fields"] = []
+    @output["with_tabs"] = true
 
     h = { "label" => _("Name"),"datatype" => "textfield" }.merge( p ? {"value" => p.name } : {} )
     @output["fields"].push(h)

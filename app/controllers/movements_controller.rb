@@ -197,6 +197,7 @@ class MovementsController < SearchController
 
     @output["window_title"] = _("Register handout")
     @output["fields"] = []
+    @output["with_tabs"] = true
 
     h = { "label" => "Note", "text" => _("Entries with a tick will cause a movement to be created for each laptop, to the current assignee of the laptop (shown)."), "datatype" => "label" }
     @output["fields"].push(h)

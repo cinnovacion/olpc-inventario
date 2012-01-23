@@ -222,6 +222,7 @@ qx.Class.define("inventario.window.AbmForm",
       var vbox = this.getVbox();
       var datos = remoteData["fields"];
       var len = datos.length;
+      var withTabs = false;
 
       this._editingFlag = false;
       this._formFields = new Array();
@@ -230,10 +231,18 @@ qx.Class.define("inventario.window.AbmForm",
       this._update_checkboxes = new Array();
       this.setDataInputObjects(new Array());
 
-      // Begin adding Tab support:
-      this._tabView = new qx.ui.tabview.TabView();
-      this._tabView.setWidth(500);
-      vbox.add(this._tabView);
+      if (remoteData["with_tabs"]) {
+        withTabs = true;
+        this._tabView = new qx.ui.tabview.TabView();
+        this._tabView.setWidth(500);
+        vbox.add(this._tabView);
+
+        var tab_page_title = remoteData.first_tab_title ? remoteData.first_tab_title : qx.locale.Manager.tr("Main");
+        var gl = this._buildTabPageWithGrid(tab_page_title);
+      } else {
+        var gl = this._buildGrid();
+        vbox.add(gl);
+      }
       // End.
 
       // TODO: take to _initParams()
@@ -288,13 +297,10 @@ qx.Class.define("inventario.window.AbmForm",
         this.setHeight(h);
       }
 
-      var tab_page_title = remoteData.first_tab_title ? remoteData.first_tab_title : qx.locale.Manager.tr("Main");
-      var gl = this._buildTabPageWithGrid(tab_page_title);
-
       var row_count = 0;
 
       for (var i=0; i<len; i++) {
-        if (datos[i].datatype == "tab_break") {
+        if (withTabs && datos[i].datatype == "tab_break") {
           gl = this._buildTabPageWithGrid(datos[i].title, datos[i].icon);
         } else {
           try {
@@ -386,12 +392,16 @@ qx.Class.define("inventario.window.AbmForm",
 
       var currentTab = new qx.ui.tabview.Page(tabTitle, icon);
       currentTab.setLayout(new qx.ui.layout.VBox());
-      var grid_lo = new qx.ui.layout.Grid(2, 0);
-      grid_lo.setColumnFlex(1, 3);
-      var gl = new qx.ui.container.Composite(grid_lo);
+      var gl = this._buildGrid();
       currentTab.add(gl);
       this._tabView.add(currentTab);
       return gl;
+    },
+
+    _buildGrid : function() {
+      var grid_lo = new qx.ui.layout.Grid(2, 0);
+      grid_lo.setColumnFlex(1, 3);
+      return new qx.ui.container.Composite(grid_lo);
     },
 
     _buildField : function(fieldData, readOnly) {
