@@ -61,7 +61,43 @@ class AssignmentsController < SearchController
     do_search(Assignment,{:include => @include_str })
   end
 
-  def new 
+  def details(id)
+    @output["window_title"] = _("Assignment details")
+    @output["fields"] = []
+
+    assignment = Assignment.includes(:laptop, :source_person, :destination_person).find(id)
+    if !assignment
+      raise _("Cannot find assignment.")
+    end
+
+    h = { "datatype" => "label", "label" => _("Assignment number:"), :text => assignment.id }
+    @output["fields"].push(h)
+
+    h = { "datatype" => "label", "label" => _("Assigned at:"), :text => assignment.getAssignmentDate + " " + assignment.getAssignmentTime }
+    @output["fields"].push(h)
+
+    h = { "label" => _("Laptop serial:"), :datatype => "abmform_details", :option => "laptops", :id => assignment.laptop_id, :text => assignment.laptop.serial_number }
+    @output["fields"].push(h)
+
+    if assignment.source_person
+      h = { "label" => _("Given by:"), :datatype => "abmform_details", :option => "personas", :id => assignment.source_person_id, :text => assignment.source_person.getFullName() }
+      @output["fields"].push(h)
+    end
+
+    if assignment.destination_person
+      h = { "label" => _("Assigned to:"), :datatype => "abmform_details", :option => "personas", :id => assignment.destination_person_id, :text => assignment.destination_person.getFullName() }
+      @output["fields"].push(h)
+    end
+
+    h = { "datatype" => "label", "label" => _("Comment:"), :text => assignment.comment }
+    @output["fields"].push(h)
+  end
+
+  def new
+    if params[:id]
+      details(params[:id])
+      return
+    end
 
     @output["window_title"] = _("Assign Laptop")
 

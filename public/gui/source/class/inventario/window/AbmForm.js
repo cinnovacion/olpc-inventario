@@ -426,7 +426,7 @@ qx.Class.define("inventario.window.AbmForm",
       switch(fieldData.datatype) {
         case "label":
           input = new qx.ui.basic.Label();
-          input.set({rich : true, value : fieldData.text})
+          input.set({rich : true, value : fieldData.text.toString()})
           break;
         case "date":
           input = new qx.ui.form.DateField();

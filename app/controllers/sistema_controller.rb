@@ -227,7 +227,7 @@ class SistemaController < ApplicationController
                                    "/assignments/save_single_mass_assignment", "add", _("Multiple assignment"), true)
 
     assignments[:elements].push(genElement(_("List assignments"), "abm2", 
-                                        genAbm2("assignments", true, false, false, false, [cButton1])))
+                                        genAbm2("assignments", true, false, true, false, [cButton1])))
     assignments[:elements].push(genElement(_("New assignment"), "abmform", genAbm2("assignments")))
     assignments[:elements].push(genElement(_("Mass assignment"), "barcode_scan", :mode => "assignment"))
     menu_option[:elements].push(assignments)
@@ -239,7 +239,7 @@ class SistemaController < ApplicationController
     cButton2 = genAbm2CustomButton("/movements/new_handout/0",
                                    "/movements/save_handout", "add", _("Register handout"), true)
     entregas[:elements].push(genElement(_("List movements"), "abm2", 
-                                        genAbm2("movimientos", true, false, false, false, [cButton1,cButton2])))
+                                        genAbm2("movimientos", true, false, true, false, [cButton1,cButton2])))
     entregas[:elements].push(genElement(_("New movement"), "abmform", genAbm2("movimientos")))
     entregas[:elements].push(genElement(_("Mass movement"), "barcode_scan", :mode => "movement"))
     menu_option[:elements].push(entregas)

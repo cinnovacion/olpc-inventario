@@ -73,7 +73,47 @@ class MovementsController < SearchController
     do_search(Movement,{:include => @include_str })
   end
 
-  def new 
+  def details(id)
+    @output["window_title"] = _("Movement details")
+    @output["fields"] = []
+
+    movement = Movement.includes(:movement_details, :source_person, :destination_person).find(id)
+    if !movement
+      raise _("Cannot find movement.")
+    end
+
+    h = { "datatype" => "label", "label" => _("Movement number:"), :text => movement.id }
+    @output["fields"].push(h)
+
+    h = { "datatype" => "label", "label" => _("Movement date:"), :text => movement.getMovementDate + " " + movement.getMovementTime }
+    @output["fields"].push(h)
+
+    h = { "datatype" => "label", "label" => _("Movement type:"), :text => movement.getMovementType }
+    @output["fields"].push(h)
+
+    details = movement.movement_details.first
+    h = { "label" => _("Laptop serial:"), :datatype => "abmform_details", :option => "laptops", :id => details.laptop_id, :text => details.serial_number }
+    @output["fields"].push(h)
+
+    if movement.source_person
+      h = { "label" => _("Given by:"), :datatype => "abmform_details", :option => "personas", :id => movement.source_person_id, :text => movement.source_person.getFullName() }
+      @output["fields"].push(h)
+    end
+
+    if movement.destination_person
+      h = { "label" => _("Received by:"), :datatype => "abmform_details", :option => "personas", :id => movement.destination_person_id, :text => movement.destination_person.getFullName() }
+      @output["fields"].push(h)
+    end
+
+    h = { "datatype" => "label", "label" => _("Comment:"), :text => movement.comment }
+    @output["fields"].push(h)
+  end
+
+  def new
+    if params[:id]
+      details(params[:id])
+      return
+    end
 
     @output["window_title"] = _("Laptop movement")
 
