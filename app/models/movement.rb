@@ -30,6 +30,8 @@
 require 'lib/fecha'
 
 class Movement < ActiveRecord::Base
+  acts_as_audited
+
   belongs_to :person_responsible, :class_name => "Person", :foreign_key => :responsible_person_id
   belongs_to :source_person, :class_name => "Person", :foreign_key => :source_person_id 
   belongs_to :destination_person, :class_name => "Person", :foreign_key => :destination_person_id

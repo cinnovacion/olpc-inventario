@@ -19,6 +19,8 @@
 require 'lib/fecha'
 
 class Assignment < ActiveRecord::Base
+  acts_as_audited
+
   belongs_to :source_person, :class_name => "Person", :foreign_key => :source_person_id 
   belongs_to :destination_person, :class_name => "Person", :foreign_key => :destination_person_id
   belongs_to :laptop, :class_name => "Laptop", :foreign_key => :laptop_id

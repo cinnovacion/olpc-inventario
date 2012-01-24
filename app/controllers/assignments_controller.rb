@@ -73,6 +73,12 @@ class AssignmentsController < SearchController
     h = { "datatype" => "label", "label" => _("Assignment number:"), :text => assignment.id }
     @output["fields"].push(h)
 
+    if assignment.audits and assignment.audits.first and assignment.audits.first.user
+      creator = assignment.audits.first.user.person
+      h = { "label" => _("Created by:"), :datatype => "abmform_details", :option => "personas", :id => creator.id, :text => creator.getFullName() }
+      @output["fields"].push(h)
+    end
+
     h = { "datatype" => "label", "label" => _("Assigned at:"), :text => assignment.getAssignmentDate + " " + assignment.getAssignmentTime }
     @output["fields"].push(h)
 

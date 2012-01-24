@@ -85,6 +85,12 @@ class MovementsController < SearchController
     h = { "datatype" => "label", "label" => _("Movement number:"), :text => movement.id }
     @output["fields"].push(h)
 
+    if movement.audits and movement.audits.first and movement.audits.first.user
+      creator = movement.audits.first.user.person
+      h = { "label" => _("Created by:"), :datatype => "abmform_details", :option => "personas", :id => creator.id, :text => creator.getFullName() }
+      @output["fields"].push(h)
+    end
+
     h = { "datatype" => "label", "label" => _("Movement date:"), :text => movement.getMovementDate + " " + movement.getMovementTime }
     @output["fields"].push(h)
 
