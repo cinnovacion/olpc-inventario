@@ -1198,6 +1198,71 @@ class PrintController < ApplicationController
     imprimir("people_laptops", "print/" + "people_laptops")
   end
 
+  def people_laptops_xls
+    print_params = JSON.parse(params[:print_params]).reverse
+    place_id = print_params.pop
+    root_place = Place.find_by_id(place_id)
+
+    file_name = Rails.root.join("/tmp/", Kernel.rand.to_s.split(".")[1] + ".xls").to_s
+    workbook = Spreadsheet::Excel.new(file_name)
+
+    stack = [root_place]
+    while(stack != [])
+      place = stack.pop
+      stack+= place.places.reverse
+
+      performs = Perform.where(:place_id => place.id)
+      performs = performs.includes({ :person => { :laptops_assigned => :status } })
+      performs = performs.order("people.lastname, people.name")
+      next if performs.count == 0
+
+      worksheet = workbook.add_worksheet
+      worksheet.write(0, 0, place.getName)
+      worksheet.write(1, 0, ["#", _("Name"), _("Document id"), _("Laptop"), _("Laptop status"), _("In hands"), _("Notes")])
+
+      row = 1
+      cnt = 0
+      performs.each { |perform|
+        cnt = cnt + 1
+        row = row + 1
+        person = perform.person
+        laptops = person.laptops_assigned
+
+        worksheet.write(row, 0, cnt)
+        worksheet.write(row, 1, person.getFullName)
+        worksheet.write(row, 2, person.id_document)
+
+        if person.notes and person.notes != ''
+          worksheet.write(row, 6, person.notes)
+        end
+
+        if laptops.length == 0
+          worksheet.write(row, 3, _("None"))
+        end
+        first = true
+        laptops.each { |laptop|
+          row = row + 1 if !first
+
+          if laptop.assignee == laptop.owner
+            delivered = _("Yes")
+          else
+            delivered = _("No")
+          end
+          status = (laptop.status.internal_tag != "activated") ? laptop.getStatus : nil
+          worksheet.write(row, 3, laptop.serial_number)
+          worksheet.write(row, 4, status)
+          worksheet.write(row, 5, delivered)
+
+          worksheet.write(row, 6, _("Person has multiple laptops!")) if !first
+          first = false
+        }
+      }
+    end
+
+    workbook.close
+    send_file(file_name,:filename => "people_laptops.xls",:type => "application/vnd.ms-excel",:stream => false )
+  end
+
   def people_documents
     print_params = JSON.parse(params[:print_params]).reverse
 

@@ -214,6 +214,12 @@ class ReportsController < SearchController
     @output["print_method"] = "people_laptops"
   end
 
+  def people_laptops_xls
+    @output["widgets"] = Array.new
+    @output["widgets"].push(hierarchy(""))
+    @output["print_method"] = "people_laptops_xls"
+  end
+
   def people_documents
     @output["widgets"] = Array.new
 

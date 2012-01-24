@@ -185,6 +185,7 @@ qx.Class.define("inventario.util.PrintManager",
                                                                               case "audit_report":
                                                                                 case "stock_status_report":
                                                                                 case "people_laptops":
+                                                                                case "people_laptops_xls":
                                                                                 case "people_documents":
                                                                                 case "laptops_uuids":
                                                                                 case "lot_information":
