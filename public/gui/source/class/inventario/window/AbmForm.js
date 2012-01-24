@@ -616,6 +616,19 @@ qx.Class.define("inventario.window.AbmForm",
 
           break;
 
+        case "abmform_details":
+          input = new qx.ui.basic.Label()
+          input.setRich(true);
+          input.setValue("<a href='#'>" + qx.bom.String.escape(fieldData.text) + "</a>");
+          input.addListener("activate", function(e) {
+            var options = inventario.widget.Url.getUrl(fieldData.option);
+            var form = new inventario.window.AbmForm(options.addUrl, options.saveUrl);
+            form.setDetails(true);
+            form.setEditRow(fieldData.id);
+            form.launch();
+          }, input);
+          break;
+
         case "table":
           var rows_num = (fieldData.rows_num ? fieldData.rows_num : 5);
           var width = (fieldData.width ? fieldData.width : 250);
@@ -763,7 +776,7 @@ qx.Class.define("inventario.window.AbmForm",
 	  fieldData.datatype != "map_locator" &&
       fieldData.datatype != "dynamic_barcode_scan_form" &&
       fieldData.datatype != "dynamic_delivery_form" &&
-      fieldData.datatype != "label") {
+      fieldData.datatype != "label" && fieldData.datatype != "abmform_details") {
 
         this._formFields.push(input);
 
