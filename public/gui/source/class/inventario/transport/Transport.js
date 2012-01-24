@@ -66,7 +66,7 @@ qx.Class.define("inventario.transport.Transport",
 
       form.addListenerOnce('completed', function(e)
       {
-        var response = this.getIframeHtmlContent();
+        var response = qx.lang.Json.parse(this.getIframeTextContent(), true);
         inventario.transport.Transport._callRemoteResp(response, params.handle, params.parametros, self);
       });
 
@@ -90,20 +90,15 @@ qx.Class.define("inventario.transport.Transport",
     doCallRemote : function(params, self) {
       params.data = params.data == null ? {} : params.data;
       var http_method = (qx.lang.Object.isEmpty(params.data) ? "GET" : "POST");
-      var req = new qx.io.remote.Request(params.url, http_method);
+      var req = new qx.io.request.Xhr(params.url, http_method);
 
       req.setTimeout(inventario.transport.Transport.TRANSPORT_TIMEOUT);
 
-      if (!params.async) req.setAsynchronous(true);
-      else req.setAsynchronous(false);
+      if (!params.async) req.setAsync(true);
+      else req.setAsync(false);
 
-      req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-
-      if (params.data) {
-        for (var k in params.data) {
-          req.setFormField(k, params.data[k]);
-        }
-      }
+      if (params.data)
+        req.setRequestData(params.data);
 
       var statusWin = inventario.transport.Transport.getStatusWin();
 
@@ -111,16 +106,17 @@ qx.Class.define("inventario.transport.Transport",
         statusWin.close();
       };
 
-      req.addListener("sending", function(e) {
-        statusWin.getUserData("message_text").setLabel(qx.locale.Manager.tr("Sending request..."));
+      req.addListener("readyStateChange", function(e) {
+        var state = this.getReadyState();
+        if (state == qx.bom.request.Xhr.OPENED)
+          statusWin.getUserData("message_text").setLabel(qx.locale.Manager.tr("Sending request..."));
+        else if (state == qx.bom.request.Xhr.HEADERS_RECEIVED || state == qx.bom.request.Xhr.LOADING)
+          statusWin.getUserData("message_text").setLabel(qx.locale.Manager.tr("Receiving data..."));
       });
 
-      req.addListener("receiving", function(e) {
-        statusWin.getUserData("message_text").setLabel(qx.locale.Manager.tr("Receiving data..."));
-      });
-
-      req.addListener("aborted", function(e)
+      req.addListener("abort", function(e)
       {
+        req.dispose();
         statusWin.getUserData("message_text").setLabel(qx.locale.Manager.tr("Aborted your order..."));
 
         setTimeout(_finish_cb, 2000);
@@ -128,20 +124,23 @@ qx.Class.define("inventario.transport.Transport",
 
       req.addListener("timeout", function(e)
       {
+        req.dispose();
         statusWin.getUserData("message_text").setLabel(qx.locale.Manager.tr("Timed out, try again..."));
         setTimeout(_finish_cb, 2000);
       });
 
-      req.addListener("failed", function(e)
+      req.addListener("fail", function(e)
       {
+        req.dispose();
         statusWin.getUserData("message_text").setLabel(qx.locale.Manager.tr("Failure on your order..."));
         setTimeout(_finish_cb, 2000);
       });
 
-      req.addListener("completed", function(e)
+      req.addListener("success", function(e)
       {
         statusWin.close();
-        inventario.transport.Transport._callRemoteResp(e, params.handle, params.parametros, self);
+        inventario.transport.Transport._callRemoteResp(this.getResponse(), params.handle, params.parametros, self);
+        this.dispose();
       });
 
       try {
@@ -152,18 +151,8 @@ qx.Class.define("inventario.transport.Transport",
       }
     },
 
-    _callRemoteResp : function(e, f_callback, f_params, self)
+    _callRemoteResp : function(datos, f_callback, f_params, self)
     {
-        var c;
-
-        if (typeof (e) == "object") {
-          c = e.getContent();
-        } else {
-          c = e;
-        }
-
-        var datos = qx.lang.Json.parse(c, true);
-
         if (datos["result"] == "ok") {
           f_callback.call(self, datos, f_params);
         } else {
