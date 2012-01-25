@@ -34,6 +34,10 @@ qx.Class.define("inventario.widget.Autocomplete",
     this.__list.addListener("disappear", this._onListDisappear, this);
   },
 
+  destruct : function() {
+    this._disposeObjects("__popup");
+  },
+
   properties:
   {
     autocompleteElements :
