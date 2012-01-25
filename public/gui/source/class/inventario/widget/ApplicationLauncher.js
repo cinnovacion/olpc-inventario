@@ -120,6 +120,12 @@ qx.Class.define("inventario.widget.ApplicationLauncher",
 
           break;
 
+        case "barcode_report":
+          execute = function() {
+            new inventario.window.BarcodeReport().open();
+          };
+          break;
+
         case "node_tracker":
           execute = function() {
             new inventario.widget.NodeTracker().launch();

@@ -6,41 +6,58 @@
 </head>
 
 <body>
-<% color = 1 %>
-<% all_times = 0 %>
-<% @all_data.each { |data| %>
-
+<% if @box_labels == "short" %>
   <% j = 0%>
-  <% data[:codes].each { |place| %>
-
-    <% color += 1%>
-    <% data[:times][j].times do %>
-      <CENTER><B><U><font size="4" color = <%= color%2 == 0 ? "black" : "grey" %> > <%= place[:title] -%> (<%= data[:times][j]%>) </font></U></B></CENTER>
-    <% end %>
-    <% all_times += data[:times][j] %>
-
+  <% @data.each { |place| %>
     <% j += 1%>
+    <% place[:boxes].length.times do %>
+      <CENTER><B><U><font size="4" color = <%= j%2 == 1 ? "black" : "grey" %> ><%= place[:title] -%> (<%= place[:boxes].length %>)</font></U></B></CENTER>
+    <% end %>
   <% } %>
-<% } %>
+  <!-- PAGE BREAK -->
+<% end %>
 
-<% fits = 25 %>
-<% if all_times%fits != 0%>
-<% left = fits - all_times%fits %>
-<% left.times do %>
-  <img src="/images/hack2.png" height=35 width=250><br>
+<% if @box_labels == "detailed" %>
+  <% @data.each { |place| %>
+    <% j = 0%>
+    <% num_boxes = place[:boxes].length %>
+    <% place[:boxes].each { |box| %>
+      <% j += 1%>
+      <h1><%= place[:title] %></h1>
+      <h3><%= _("Box #{j} of #{num_boxes}") %></h3>
+      <% count = box.length %>
+      <h3><%= _("#{count} laptops") %></h3>
+      <br><br>
+      <ol><font size="26">
+      <% box.each { |student| %>
+        <li><%= student[:full_name] %><br><br></li>
+      <% } %>
+      </font></ol>
+      <!-- PAGE BREAK -->
+    <% } %>
+  <% } %>
 <% end %>
-<% end %>
+
 
 <% color = 1 %>
-<% @all_data.each { |data| %>
+<% @data.each { |place| %>
 
-<% data[:codes].each { |place| %>
+<% if @laptop_name_labels %>
+  <% place[:boxes].each { |box| %>
+    <% box.each { |student| %>
+      <%= student[:full_name] %><br><br>
+    <% } %>
+  <% } %>
+  <br><br>
+<% end %>
 
 <% color += 1 %>
 <table align="center" border="4" bordercolor = <%= color%2 == 0 ? "black" : "grey" %> border-style = <%= color%2 == 0 ? "solid" : "dotted" %> >
 
 <% i = 0 %>
-<% place[:students].each { |student| %>
+<% place[:boxes].each { |box| %>
+<% box.each { |student| %>
+
    <% if i % @num_of_cols == 0 %>
    <tr>
    <% end %>
@@ -55,14 +72,13 @@
      </tr>
    <% end %>
 
-<% 
-  i += 1
-  }
+<% i += 1 %>
+<% } %>
+<% } %>
 %>
 
-</table>
+</table><br>
 
-<% } %>
 <% } %>
 </body>
 </html>

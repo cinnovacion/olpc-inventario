@@ -1458,15 +1458,12 @@ class PrintController < ApplicationController
   def barcodes
     max_place_length = 45
     max_name_length = 26
-
-    print_params = JSON.parse(params[:print_params]).reverse
-
-    places_ids = print_params.pop
+    print_params = JSON.parse(params[:print_params])
+    filters = print_params["laptop_filter"]
 
     root_places = []
-    places = Place.find_all_by_id(places_ids)
+    places = Place.find_all_by_id(print_params["places"])
     places.each { |root|
-
       isRoot = true
       places.each { |place|
         isRoot = false if root != place && place.getDescendantsIds.include?(root.id)
@@ -1475,76 +1472,62 @@ class PrintController < ApplicationController
       root_places.push(root) if isRoot
     }
 
-    filters = print_params.pop
-
-    profiles_ids = print_params.pop
-
+    @box_labels = print_params["box_labels"]
+    @laptop_name_labels = !print_params["laptop_names"].nil?
     @num_of_cols = 3
-    @all_data = Array.new
+    @data = Array.new
     root_places.each { |root_place|
-
-      data = Hash.new
-      data[:codes] = Array.new
-      data[:times]  = Array.new
 
       stack = [root_place]
       while(stack != [])
-
         current_place = stack.pop
-        if current_place
 
-          place_info = Hash.new
-          place_info[:title] = current_place.getName
-          fixed_place_name = place_info[:title]
+        place_info = Hash.new
+        fixed_place_name = current_place.getName
 
-          if fixed_place_name.length > max_place_length:
-            fixed_place_name = "..." + fixed_place_name.mb_chars[-max_place_length..-1].to_s
-            place_info[:title] = fixed_place_name
-          end
+        if fixed_place_name.length > max_place_length:
+          fixed_place_name = "..." + fixed_place_name.mb_chars[-max_place_length..-1].to_s
+        end
+        place_info[:title] = fixed_place_name
 
-          place_info[:students] = Array.new
+        students = Array.new
 
-          performs = Perform.includes({:person => :laptops}, :place, :profile)
-          performs = performs.where(:place_id => current_place.id)
-          performs = performs.where('profiles.id' => profiles_ids)
-          performs.order("people.lastname, people.name").each { |perform|
-
-            person = perform.person
-            laptops = person.laptops
-            laptops_assigned = person.laptops_assigned
-            print_barcode = ((filters.include?("with") and laptops != []) or
-                             (filters.include?("with_out") and laptops == []) or
-                             (filters.include?("with_assigned") and laptops_assigned != []) or
-                             (filters.include?("with_out_assigned") and laptops_assigned == []))
-            if print_barcode
-              student = Hash.new
-              fixed_person_name = person.getFullName
-              if fixed_person_name.length > max_name_length:
-                fixed_person_name = fixed_person_name.mb_chars[0..max_name_length].to_s + "..."
-              end
-
-              student[:name] = fixed_person_name
-              student[:place] = fixed_place_name
-              student[:barcode] = person.getBarcode
-
-              place_info[:students].push(student)
+        performs = Perform.includes({:person => :laptops}, :place, :profile)
+        performs = performs.where(:place_id => current_place.id)
+        performs = performs.where('profiles.internal_tag' => print_params["profile_filter"])
+        performs.order("people.lastname, people.name").each { |perform|
+          person = perform.person
+          laptops = person.laptops
+          laptops_assigned = person.laptops_assigned
+          print_barcode = ((filters.include?("with") and laptops != []) or
+                           (filters.include?("with_out") and laptops == []) or
+                           (filters.include?("with_assigned") and laptops_assigned != []) or
+                           (filters.include?("with_out_assigned") and laptops_assigned == []))
+          if print_barcode
+            student = Hash.new
+            fixed_person_name = person.getFullName
+            if fixed_person_name.length > max_name_length:
+              fixed_person_name = fixed_person_name.mb_chars[0..max_name_length].to_s + "..."
             end
-          }
 
-          laptops_num = place_info[:students].length
-          if laptops_num > 0
-
-            data[:codes].push(place_info)
-            times = laptops_num%5==0 ? (laptops_num/5) : ((laptops_num/5)+1)
-            data[:times].push(times)
+            student[:full_name] = person.getFullName
+            student[:name] = fixed_person_name
+            student[:place] = fixed_place_name
+            student[:barcode] = person.getBarcode
+            students.push(student)
           end
+        }
+
+        place_info[:boxes] = Array.new
+        i = 0
+        while students[i] do
+          place_info[:boxes].push(students[i, 5])
+          i += 5
         end
 
+        @data.push(place_info)
         stack+= current_place.places.reverse
-
       end
-      
-      @all_data.push(data)
     }
 
     imprimir("codigos-usuarios", "print/" + "barcodes", {}, true)

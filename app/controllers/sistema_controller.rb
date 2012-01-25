@@ -267,7 +267,7 @@ class SistemaController < ApplicationController
     menu_option[:elements].push(genElement(_("Lendings"), "report", genReport("lendings")))
     menu_option[:elements].push(genElement(_("Laptops per status"), "report", genReport("statuses_distribution")))
     menu_option[:elements].push(genElement(_("Registry of status changes"), "report", genReport("status_changes")))
-    menu_option[:elements].push(genElement(_("Print barcodes"), "report", genReport("barcodes")))
+    menu_option[:elements].push(genElement(_("Print barcodes"), "barcode_report"))
     menu_option[:elements].push(genElement(_("Print lot receipt"), "report", genReport("lots_labels")))
     #menu_option[:elements].push(genElement("Distribucion por localidad*?", "report", genReport("laptops_per_tree")))
     menu_option[:elements].push(genElement(_("Posible errors and inconsistencies"), "report", genReport("possible_mistakes")))
