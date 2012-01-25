@@ -9,3 +9,4 @@ end
 APP_CONFIG["name"] = 'OLPC Inventario' if APP_CONFIG["name"].nil?
 APP_CONFIG["enable_movement_type_checking"] = true if APP_CONFIG["enable_movement_type_checking"].nil?
 APP_CONFIG["repairs_require_deposits"] = true if APP_CONFIG["repairs_require_deposits"].nil?
+APP_CONFIG["overpack_boxes"] = false if APP_CONFIG["overpack_boxes"].nil?

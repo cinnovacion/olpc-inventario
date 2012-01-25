@@ -11,3 +11,8 @@ name: MyProject Inventario
 # Whether laptop repairs require bank deposits in order to be carried out.
 # Default true
 #repairs_require_deposits: true
+
+# When producing barcodes/physical box labels, whether to pack 6 laptops into
+# a box if it would avoid having boxes with only 1 or 2 laptops at the end.
+# Default false.
+#overpack_boxes: false

@@ -1519,10 +1519,32 @@ class PrintController < ApplicationController
         }
 
         place_info[:boxes] = Array.new
+
+        # If the overpack option is enabled, we try to avoid having the last
+        # box with only 1 or 2 laptops by packing those last laptops into
+        # earlier boxes (meaning that some boxes will have 6 laptops).
+        #
+        # 7 laptops is a special case, as we would have 2 left over we would
+        # try to overpack 2 boxes, but as we are only dealing with 2 boxes
+        # either way it doesn't make sense: we should fall back and accept
+        # one box of 5 and one box of 2 (rather than 6+1).
+        if APP_CONFIG["overpack_boxes"] and students.length != 7
+          overpack_boxes = students.length % 5
+          overpack_boxes = 0 if overpack_boxes > 2
+        else
+          overpack_boxes = 0
+        end
+
         i = 0
         while students[i] do
-          place_info[:boxes].push(students[i, 5])
-          i += 5
+          to_pack = 5
+          if overpack_boxes > 0
+            overpack_boxes -= 1
+            to_pack += 1
+          end
+
+          place_info[:boxes].push(students[i, to_pack])
+          i += to_pack
         end
 
         @data.push(place_info)
