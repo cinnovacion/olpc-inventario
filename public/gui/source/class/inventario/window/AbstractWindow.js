@@ -183,7 +183,7 @@ qx.Class.define("inventario.window.AbstractWindow",
 
     _minimize_cb : function()
     {
-      var taskbar = inventario.widget.TaskBar.getInstance();
+      var taskbar = inventario.Application.appInstance.getTaskBar();
       taskbar.minimize(this);
     },
 

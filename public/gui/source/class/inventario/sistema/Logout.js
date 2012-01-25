@@ -20,7 +20,6 @@
 // Paraguay Educa 2009
 qx.Class.define("inventario.sistema.Logout",
 {
-  type : "singleton",
   extend : qx.ui.container.Composite,
 
   /*

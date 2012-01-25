@@ -31,13 +31,14 @@ qx.Class.define("inventario.widget.Layout",
      */
     removeChilds : function(widget)
     {
-      try {
-        var c = widget.getChildren();
-
-        if (c && c.length > 0) {
-          widget.removeAll();
-        }
-      } catch(e) {}
+      // Remove children in reverse order to avoid issues with
+      // in-place array modification
+      var children = widget.getChildren();
+      for (var i = children.length - 1; i >= 0; i--) {
+        var child = children[i];
+        widget.removeAt(i);
+        child.dispose();
+      }
     }
   }
 });

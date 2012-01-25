@@ -21,7 +21,6 @@
 
 qx.Class.define("inventario.widget.TaskBar",
 {
-  type : "singleton",
   extend : qx.ui.container.Composite,
 
   construct : function()
@@ -98,21 +97,6 @@ qx.Class.define("inventario.widget.TaskBar",
       if (part) {
         part.add(widget);
       }
-    },
-
-    clearIt : function()
-    {
-      var part = this.getLeftPart();
-      if (part) {
-        part.removeAll();
-      }
-
-      part = this.getRightPart();
-      if (part) {
-        part.removeAll();
-      }
-
-      this.getPart().removeAll();
     },
 
     addWidget : function(widget)

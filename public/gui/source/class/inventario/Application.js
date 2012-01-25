@@ -32,6 +32,12 @@ qx.Class.define("inventario.Application",
     {
       check : "String",
       init  : ""
+    },
+
+    taskBar :
+    {
+      check : "Object",
+      init : null
     }
   },
 
@@ -97,15 +103,15 @@ qx.Class.define("inventario.Application",
       mainVbox.setBackgroundColor('#FFFFFF');
 
       // Main toolbar that will act as a taskbar.
-      var taskbar = inventario.widget.TaskBar.getInstance();
-      taskbar.clearIt();
+      var taskbar = new inventario.widget.TaskBar();
+      this.setTaskBar(taskbar);
 
       var launcher = new inventario.widget.ApplicationLauncher(mainVbox);
       launcher.setContentRequestUrl("/sistema/gui_content");
       launcher.loadGuiContent();
       taskbar.addLeft(launcher);
 
-      var logout = inventario.sistema.Logout.getInstance();
+      var logout = new inventario.sistema.Logout();
       taskbar.addRight(logout);
 
       var layout = new qx.ui.layout.VBox();
