@@ -27,7 +27,7 @@ qx.Class.define("inventario.widget.MultipleHierarchySelection",
     try
     {
       qx.ui.container.Composite.call(this, new qx.ui.layout.VBox(3));
-      var hbox = new qx.ui.container.Composite(new qx.ui.layout.HBox(3));
+      var hbox = new qx.ui.container.Composite(new qx.ui.layout.HBox());
       var hbox2 = new qx.ui.container.Composite(new qx.ui.layout.HBox(3));
 
       var hierarchy = new inventario.widget.HierarchyOnDemand(null, opts);
@@ -37,6 +37,8 @@ qx.Class.define("inventario.widget.MultipleHierarchySelection",
       {
         list.setWidth(opts.width);
         list.setHeight(opts.height);
+      } else {
+        list.setMinWidth(200);
       }
 
       list.setScrollbarX("on");
@@ -49,7 +51,7 @@ qx.Class.define("inventario.widget.MultipleHierarchySelection",
       // var testButton = new qx.ui.form.Button("test");
       // testButton.addListener("execute", function () { alert(this.getValues().toString()); }, this);
       hbox.add(hierarchy);
-      hbox.add(list);
+      hbox.add(list, {flex: 1});
 
       hbox2.add(addButton);
       hbox2.add(removeButton);
