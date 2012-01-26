@@ -96,15 +96,15 @@ class Place < ActiveRecord::Base
     place = Place.find_by_id(place_id)
     return ret if not place
 
-    places_ids = place.getDescendantsIds + [place_id] + place.getAncestorsIds
+    places_ids = place.getDescendantsIds + [place_id]
     people_ids = Perform.find_all_by_place_id(places_ids).collect(&:person_id)
 
     cond_v = "serial_number is not NULL and serial_number != \"\""
     cond_v += " and uuid is not NULL and uuid != \"\""
     cond_v += " and status_id is not NULL and statuses.internal_tag = \"activated\""
-    cond_v += " and owner_id in (?)"
+    cond_v += " and (owner_id in (?) or assignee_id in (?))"
 
-    Laptop.where(cond_v, people_ids).includes(:status).each { |laptop|
+    Laptop.where(cond_v, people_ids, people_ids).includes(:status).each { |laptop|
       ret.push({ :serial_number => laptop.serial_number, :uuid => laptop.uuid })
     }
 
