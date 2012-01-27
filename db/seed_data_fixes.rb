@@ -63,6 +63,23 @@ class SeedDataFixes
     true
   end
 
+  def fix_profile_permissions
+    # Profile permissions were previously attempted to be added by migrations,
+    # but the migrations were wrong and did not add anything.
+    # As we may be dealing with existing installations, we cannot add these
+    # permissions through seed_data (as we cannot reserve id numbers).
+    # Add them here.
+    permissions = []
+    permissions.push({ "name" => "Nodes", "methods" => [ "show", "up", "down"] })
+    Profile.find_by_internal_tag("extern_system").register_update({}, permissions)
+
+    permissions = []
+    permissions.push({ "name" => "People", "methods" => [ "search", "do_search","search_options", "new" ] } )
+    permissions.push({ "name" => "Laptops", "methods" => [ "search", "do_search","search_options", "new" ] } )
+    permissions.push({ "name" => "Places", "methods" => [ "search", "do_search","search_options", "new" ] } )
+    Profile.find_by_internal_tag("guest").register_update({}, permissions)
+  end
+
 end
 
 fixes = SeedDataFixes.new

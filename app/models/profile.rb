@@ -79,9 +79,9 @@ class Profile < ActiveRecord::Base
     controller_tree
   end
 
-  def self.register(attribs, permissions, register)
+  def self.register(attribs, permissions, register=nil)
 
-   raise _("You do not have the sufficient level of access") if !(register.profile.access_level > attribs[:access_level].to_i)
+   raise _("You do not have the sufficient level of access") if register and !(register.profile.access_level > attribs[:access_level].to_i)
 
     Profile.transaction do
       profile = Profile.new(attribs)
@@ -92,9 +92,9 @@ class Profile < ActiveRecord::Base
     end
   end
 
-  def register_update(attribs, permissions, register)
+  def register_update(attribs, permissions, register=nil)
 
-   raise _("You do not have the sufficient level of access") if !(register.profile.owns(self))
+   raise _("You do not have the sufficient level of access") if register and !(register.profile.owns(self))
 
     Profile.transaction do
       if self.update_attributes!(attribs)
