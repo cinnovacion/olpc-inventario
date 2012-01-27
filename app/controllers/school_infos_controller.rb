@@ -53,7 +53,7 @@ class SchoolInfosController < SearchController
     h.merge!( schoolInfo && schoolInfo.place ? {"dataHash" => schoolInfo.place.getElementsHash } : {} )
     @output["fields"].push(h)
 
-    h = { "label" => _("Lease duration"), "datatype" => "textfield" }.merge( schoolInfo ? {"value" => schoolInfo.getDuration.to_s } : {} )
+    h = { "label" => _("Lease duration (seconds)"), "datatype" => "textfield" }.merge( schoolInfo ? {"value" => schoolInfo.getDuration.to_s } : {} )
     @output["fields"].push(h)
 
     h = { "label" => _("Hostname"), "datatype" => "textfield" }.merge( schoolInfo ? {"value" => schoolInfo.getHostname } : {} )
