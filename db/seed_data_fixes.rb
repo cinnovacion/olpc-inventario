@@ -71,6 +71,7 @@ class SeedDataFixes
     # Add them here.
     permissions = []
     permissions.push({ "name" => "Nodes", "methods" => [ "show", "up", "down"] })
+    permissions.push({ "name" => "Places", "methods" => [ "schools_leases" ] } )
     Profile.find_by_internal_tag("extern_system").register_update({}, permissions)
 
     permissions = []
