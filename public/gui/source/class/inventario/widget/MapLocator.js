@@ -149,8 +149,10 @@ qx.Class.define("inventario.widget.MapLocator",
     {
       var key = remoteData.values.google_api_key != null ? remoteData.values.google_api_key : "";
       var url = remoteData.values.google_api_url != null ? remoteData.values.google_api_url : "";
-      this.setGoogleApiUrl(url + key);
-      this._insertGoogleApi();
+      if (key.length > 0) {
+        this.setGoogleApiUrl(url + key);
+        this._insertGoogleApi();
+      }
     },
 
     _insertGoogleApi : function()

@@ -15,5 +15,5 @@
   create_if_not_exists(User, { :id => "1", :usuario => "admin", :password =>  Digest::SHA1.hexdigest("admin"), :person_id => root_person.id})
 
   create_if_not_exists(DefaultValue, { :id => "1", :key => "google_api_url", :value => "http://www.google.com/jsapi?key=" })
-  create_if_not_exists(DefaultValue, { :id => "2", :key => "google_api_key", :value => "ABCDEFG" })
+  create_if_not_exists(DefaultValue, { :id => "2", :key => "google_api_key", :value => "" })
 
