@@ -117,18 +117,6 @@ qx.Class.define("inventario.widget.MapLocator",
       init  : []
     },
 
-    width :
-    {
-      check : "Number",
-      init  : 320
-    },
-
-    height :
-    {
-      check : "Number",
-      init  : 120
-    },
-
     // Qooxdoo Objects.
     verticalBox :
     {
