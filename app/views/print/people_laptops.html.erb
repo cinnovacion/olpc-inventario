@@ -39,7 +39,11 @@
 
    <% if m[:type] == 'person_notes' %>
    <td align="left"></td>
-   <td colspan=4><font size="0.5"><%= _("Notes: %s") % m[:notes].gsub(/\r?\n/, "<br />") %></font></td>
+   <td colspan=4><font size="0.5"><%= _("Notes:") %> 
+
+   <% m[:notes].each_line do |line| %>
+      <%= line %><br />
+   <% end %>
    <% end %>
 
 </tr>
