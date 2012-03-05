@@ -39,9 +39,9 @@ qx.Class.define("inventario.window.BarcodeReport",
 
     var filters = [
       { label: this.tr("With laptops in hands"), cb_name: "with", checked: true },
-      { label: this.tr("Without laptops in hands"), cb_name: "with_out", checked: true },
+      { label: this.tr("Without laptops in hands"), cb_name: "without", checked: true },
       { label: this.tr("With laptops assigned"), cb_name: "with_assigned", checked: true },
-      { label: this.tr("Without laptops assigned"), cb_name: "with_out_laptops_assigned", checked: true }
+      { label: this.tr("Without laptops assigned"), cb_name: "without_assigned", checked: true }
     ];
     this._laptop_filter = new inventario.widget.CheckboxSelector(this.tr("Filters"), filters, 1);
     vbox.add(this._laptop_filter);

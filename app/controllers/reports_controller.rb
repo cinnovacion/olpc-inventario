@@ -176,9 +176,9 @@ class ReportsController < SearchController
 
     cb_options = Array.new
     cb_options.push( { :label => _("With laptops in hands"), :cb_name => "with",:checked => true } )
-    cb_options.push( { :label => _("Without laptops in hands"), :cb_name => "with_out",:checked => true } )
+    cb_options.push( { :label => _("Without laptops in hands"), :cb_name => "without",:checked => true } )
     cb_options.push( { :label => _("With laptops assigned"), :cb_name => "with_assigned",:checked => true } )
-    cb_options.push( { :label => _("Without laptops assigned"), :cb_name => "with_out_assigned",:checked => true } )
+    cb_options.push( { :label => _("Without laptops assigned"), :cb_name => "without_assigned",:checked => true } )
     @output["widgets"].push(checkBoxSelector("Filters", cb_options))
 
     profiles = Profile.find(:all, :conditions => ["profiles.internal_tag in (?)", ["student", "teacher"]])

@@ -1500,9 +1500,9 @@ class PrintController < ApplicationController
           laptops = person.laptops
           laptops_assigned = person.laptops_assigned
           print_barcode = ((filters.include?("with") and laptops != []) or
-                           (filters.include?("with_out") and laptops == []) or
+                           (filters.include?("without") and laptops == []) or
                            (filters.include?("with_assigned") and laptops_assigned != []) or
-                           (filters.include?("with_out_assigned") and laptops_assigned == []))
+                           (filters.include?("without_assigned") and laptops_assigned == []))
           if print_barcode
             student = Hash.new
             fixed_person_name = person.getFullName
