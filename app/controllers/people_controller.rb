@@ -34,6 +34,8 @@ class PeopleController < SearchController
 
   attr_accessor :include_str
 
+  LAPTOPS_LIMIT = 5
+
   def initialize
     super
     @include_str = [:profiles]
@@ -119,6 +121,48 @@ class PeopleController < SearchController
     h = {"label" => "", "datatype" => "dyntable", :widths => [320,160], "options" => options}
     h.merge!( p ? {"data" => dataGrid } : {} )
     @output["fields"].push(h)
+
+    if p
+      assigned = Laptop.where(:assignee_id => p.id)
+      assigned_count = assigned.count
+      assigned = assigned.limit(LAPTOPS_LIMIT)
+      in_hands = Laptop.where(:owner_id => p.id)
+      in_hands_count = in_hands.count
+      in_hands = in_hands.limit(LAPTOPS_LIMIT)
+    else
+      assigned = []
+      assigned_count = 0
+      in_hands = []
+      in_hands_count = 0
+    end
+
+    if assigned.any? or in_hands.any?
+      h = { "datatype" => "tab_break", "title" => _("Laptops") }
+      @output["fields"].push(h)
+    end
+
+    assigned.each { |laptop|
+      h = { "label" => _("Laptop assigned:"), :datatype => "abmform_details", :option => "laptops", :id => laptop.id, :text => laptop.serial_number }
+      @output["fields"].push(h)
+    }
+
+    if assigned_count > LAPTOPS_LIMIT:
+      extra = assigned_count - LAPTOPS_LIMIT
+      h = { :datatype => "label", :text => _("%d more laptops not shown") % extra }
+      @output["fields"].push(h)
+    end
+
+    in_hands.each { |laptop|
+      h = { "label" => _("Laptop in hands:"), :datatype => "abmform_details", :option => "laptops", :id => laptop.id, :text => laptop.serial_number }
+      @output["fields"].push(h)
+    }
+
+    if in_hands_count > LAPTOPS_LIMIT:
+      extra = in_hands_count - LAPTOPS_LIMIT
+      h = { :datatype => "label", :text => _("%d more laptops not shown") % extra }
+      @output["fields"].push(h)
+    end
+
    ###end
 
     # DrillDown Info
