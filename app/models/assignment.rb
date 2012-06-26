@@ -16,7 +16,7 @@
 # 
 #   
 
-require 'lib/fecha'
+require 'fecha'
 
 class Assignment < ActiveRecord::Base
   acts_as_audited
@@ -58,7 +58,7 @@ class Assignment < ActiveRecord::Base
       m.source_person_id = lapObj.assignee_id
       m.laptop_id = lapObj.id
 
-      if attribs[:id_document] and attribs[:id_document] != "":
+      if attribs[:id_document] and attribs[:id_document] != ""
         personObj = Person.find_by_id_document(attribs[:id_document])
         if !personObj
           raise _("Couldn't find person with document ID %s") % attribs[:id_document]

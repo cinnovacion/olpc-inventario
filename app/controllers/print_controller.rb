@@ -27,8 +27,8 @@
 # - the imprimir function could be called automatically by an 'after' hook
 #
 
-require 'lib/fecha'
-require 'lib/py_educa_graph'
+require 'fecha'
+require 'py_educa_graph'
 
 class PrintController < ApplicationController
 
@@ -808,11 +808,11 @@ class PrintController < ApplicationController
       location = ""
       owner = laptop.owner
       assignee = laptop.assignee
-      if owner:
+      if owner
         location += _("In hands of %s (%s), %s") % [owner.getFullName, owner.getIdDoc, owner.place.getName]
         location += "<br>"
       end
-      if assignee:
+      if assignee
         location += _("Assigned to %s (%s), %s") % [assignee.getFullName, assignee.getIdDoc, assignee.place.getName]
         location += "<br>"
       end
@@ -1180,7 +1180,7 @@ class PrintController < ApplicationController
         laptops.each { |laptop|
           delivered = laptop.assignee == laptop.owner
           status = (laptop.status.internal_tag != "activated") ? laptop.getStatus : nil
-          if first:
+          if first
             entries.push({:type => "person", :name => person.getFullName(), :doc_id => person.id_document, :laptop_sn => laptop.serial_number, :status => status, :delivered => delivered})
           else
             entries.push({:type => "multiple", :laptop_sn => laptop.serial_number, :status => status, :delivered => delivered})
@@ -1485,7 +1485,7 @@ class PrintController < ApplicationController
         place_info = Hash.new
         fixed_place_name = current_place.getName
 
-        if fixed_place_name.length > max_place_length:
+        if fixed_place_name.length > max_place_length
           fixed_place_name = "..." + fixed_place_name.mb_chars[-max_place_length..-1].to_s
         end
         place_info[:title] = fixed_place_name
@@ -1506,7 +1506,7 @@ class PrintController < ApplicationController
           if print_barcode
             student = Hash.new
             fixed_person_name = person.getFullName
-            if fixed_person_name.length > max_name_length:
+            if fixed_person_name.length > max_name_length
               fixed_person_name = fixed_person_name.mb_chars[0..max_name_length].to_s + "..."
             end
 

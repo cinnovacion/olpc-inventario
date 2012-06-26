@@ -5,7 +5,7 @@
 # For Paraguay Educa OLPC project 2009
 #
 
-require 'lib/constraint_generator'
+require 'constraint_generator'
 
 def run_file(filepath)
   require filepath

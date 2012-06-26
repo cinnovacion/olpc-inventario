@@ -1,3 +1,5 @@
+# encoding: UTF-8
+#
 #     Copyright Paraguay Educa 2009
 #
 #     This program is free software: you can redistribute it and/or modify
@@ -29,7 +31,7 @@
 # 2009
 # # #
 
-require 'lib/fecha'
+require 'fecha'
 
 class SearchController < ApplicationController
   around_filter :rpc_block

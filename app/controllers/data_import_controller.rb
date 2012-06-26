@@ -21,7 +21,7 @@
 # 2009
 # # #
 
-require 'lib/read_file'
+require 'read_file'
 
 class DataImportController < ApplicationController
   around_filter :rpc_block

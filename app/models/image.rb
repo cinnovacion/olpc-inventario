@@ -21,7 +21,7 @@
 # 2009
 # # #
 
-require 'lib/fecha'
+require 'fecha'
 
 class Image < ActiveRecord::Base
   has_many :people

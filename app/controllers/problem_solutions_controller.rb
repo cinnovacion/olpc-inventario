@@ -21,7 +21,7 @@
 # 2009
 # # #
 
-require 'lib/fecha'
+require 'fecha'
 
 class ProblemSolutionsController < SearchController
   attr_accessor :include_str

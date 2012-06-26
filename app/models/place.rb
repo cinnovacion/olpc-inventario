@@ -375,7 +375,7 @@ class Place < ActiveRecord::Base
 
 
   def buildMatrix(node, matrix, label_column = 0, count_column = 9)
-    if node[:count] > 0 or node[:count_assigned] > 0:
+    if node[:count] > 0 or node[:count_assigned] > 0
       v = Array.new
       v[label_column] = node[:place_name] 
       v[count_column] = node[:count]
@@ -608,7 +608,7 @@ class Place < ActiveRecord::Base
   def getProblemReports(which = nil) 
     ret = ProblemReport.where(:place_id => self.getDescendantsIds.push(self.id))
     
-    if which:
+    if which
         ret = ret.where(:solved => (which != :open))
     end
 

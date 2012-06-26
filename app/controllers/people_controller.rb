@@ -27,7 +27,7 @@
 # 2009
 # # #
 
-require 'lib/fecha'
+require 'fecha'
                                                                           
 class PeopleController < SearchController
   skip_filter :rpc_block, :only => [ :show, :update, :requestStudents ]
@@ -146,7 +146,7 @@ class PeopleController < SearchController
       @output["fields"].push(h)
     }
 
-    if assigned_count > LAPTOPS_LIMIT:
+    if assigned_count > LAPTOPS_LIMIT
       extra = assigned_count - LAPTOPS_LIMIT
       h = { :datatype => "label", :text => _("%d more laptops not shown") % extra }
       @output["fields"].push(h)
@@ -157,7 +157,7 @@ class PeopleController < SearchController
       @output["fields"].push(h)
     }
 
-    if in_hands_count > LAPTOPS_LIMIT:
+    if in_hands_count > LAPTOPS_LIMIT
       extra = in_hands_count - LAPTOPS_LIMIT
       h = { :datatype => "label", :text => _("%d more laptops not shown") % extra }
       @output["fields"].push(h)

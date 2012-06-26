@@ -21,7 +21,7 @@
 # 2009
 # # #
 
-require 'lib/fecha'
+require 'fecha'
 
 class ShipmentsController < SearchController
 

@@ -27,7 +27,7 @@
 # 2009
 # # #
 
-require 'lib/fecha'
+require 'fecha'
 
 class Movement < ActiveRecord::Base
   acts_as_audited
