@@ -41,9 +41,10 @@
    <td align="left"></td>
    <td colspan=4><font size="0.5"><%= _("Notes:") %> 
 
-   <% m[:notes].each_line do |line| %>
-      <%= line %><br />
-   <% end %>
+   <% m[:notes].split(/\r?\n/).each { |line| %>
+     <%= line %><br />
+   <% } %>
+   </td>
    <% end %>
 
 </tr>
