@@ -56,11 +56,11 @@ msgstr ""
 msgid "Check username entry"
 msgstr ""
 
-#: inventario/sistema/Logout.js:39
+#: inventario/sistema/Logout.js:38
 msgid "Logout"
 msgstr ""
 
-#: inventario/sistema/Logout.js:69
+#: inventario/sistema/Logout.js:68
 msgid "Are you sure you want to exit the system?"
 msgstr ""
 
@@ -177,63 +177,63 @@ msgstr ""
 msgid "See: "
 msgstr ""
 
-#: inventario/widget/MapLocator.js:406
+#: inventario/widget/MapLocator.js:396
 msgid "Type:"
 msgstr ""
 
-#: inventario/widget/MapLocator.js:410
+#: inventario/widget/MapLocator.js:400
 msgid "Node:"
 msgstr ""
 
-#: inventario/widget/MapLocator.js:413
+#: inventario/widget/MapLocator.js:403
 msgid "Latitude:"
 msgstr ""
 
-#: inventario/widget/MapLocator.js:416
+#: inventario/widget/MapLocator.js:406
 msgid "Longitude"
 msgstr ""
 
-#: inventario/widget/MapLocator.js:419
+#: inventario/widget/MapLocator.js:409
 msgid "Height"
 msgstr ""
 
-#: inventario/widget/MapLocator.js:422
+#: inventario/widget/MapLocator.js:412
 msgid "Ip Address"
 msgstr ""
 
-#: inventario/widget/MapLocator.js:425
+#: inventario/widget/MapLocator.js:415
 msgid "Add Node"
 msgstr ""
 
-#: inventario/widget/MapLocator.js:438
+#: inventario/widget/MapLocator.js:428
 msgid "Delete Node"
 msgstr ""
 
-#: inventario/widget/MapLocator.js:448
+#: inventario/widget/MapLocator.js:438
 msgid "Update"
 msgstr ""
 
-#: inventario/widget/MapLocator.js:466
+#: inventario/widget/MapLocator.js:456
 msgid "Cannot upgrade a newly created node."
 msgstr ""
 
-#: inventario/widget/MapLocator.js:471
+#: inventario/widget/MapLocator.js:461
 msgid "Nothing to update."
 msgstr ""
 
-#: inventario/widget/MapLocator.js:631
+#: inventario/widget/MapLocator.js:621
 msgid " has been updated."
 msgstr ""
 
-#: inventario/widget/MapLocator.js:631
+#: inventario/widget/MapLocator.js:621
 msgid "The node "
 msgstr ""
 
-#: inventario/widget/MapLocator.js:649
+#: inventario/widget/MapLocator.js:639
 msgid "Auto-refresh requires read-only mode."
 msgstr ""
 
-#: inventario/widget/MapLocator.js:660
+#: inventario/widget/MapLocator.js:650
 msgid "The minimum update time of 10 seconds."
 msgstr ""
 
@@ -788,12 +788,6 @@ msgstr ""
 msgid "Quick access"
 msgstr ""
 
-#~ msgid " is selected"
-#~ msgstr ""
-
-#~ msgid "Row "
-#~ msgstr ""
-
 #~ msgid " Added row "
 #~ msgstr ""
 
@@ -801,6 +795,9 @@ msgstr ""
 #~ msgstr ""
 
 #~ msgid " and document number "
+#~ msgstr ""
+
+#~ msgid " is selected"
 #~ msgstr ""
 
 #~ msgid " no recibio igual numero de parametros q columnas"
@@ -857,15 +854,6 @@ msgstr ""
 #~ msgid "Grades"
 #~ msgstr ""
 
-#~ msgid "Teachers"
-#~ msgstr ""
-
-#~ msgid "Students"
-#~ msgstr ""
-
-#~ msgid "Servers"
-#~ msgstr ""
-
 #~ msgid "Map"
 #~ msgstr ""
 
@@ -879,6 +867,18 @@ msgstr ""
 #~ msgstr ""
 
 #~ msgid "Parties"
+#~ msgstr ""
+
+#~ msgid "Row "
+#~ msgstr ""
+
+#~ msgid "Servers"
+#~ msgstr ""
+
+#~ msgid "Students"
+#~ msgstr ""
+
+#~ msgid "Teachers"
 #~ msgstr ""
 
 #~ msgid "The selected item is a Person."

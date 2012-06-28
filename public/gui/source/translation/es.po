@@ -56,11 +56,11 @@ msgstr "Compruebe la contraseña"
 msgid "Check username entry"
 msgstr "Compruebe el nombre de usuario"
 
-#: inventario/sistema/Logout.js:39
+#: inventario/sistema/Logout.js:38
 msgid "Logout"
 msgstr "Cerrar sessión"
 
-#: inventario/sistema/Logout.js:69
+#: inventario/sistema/Logout.js:68
 msgid "Are you sure you want to exit the system?"
 msgstr "¿Esta usted seguro que quiere salir el sistema?"
 
@@ -177,63 +177,63 @@ msgstr "No conozco el tipo de datos"
 msgid "See: "
 msgstr "Vea:"
 
-#: inventario/widget/MapLocator.js:406
+#: inventario/widget/MapLocator.js:396
 msgid "Type:"
 msgstr "Tipo:"
 
-#: inventario/widget/MapLocator.js:410
+#: inventario/widget/MapLocator.js:400
 msgid "Node:"
 msgstr "Nodo:"
 
-#: inventario/widget/MapLocator.js:413
+#: inventario/widget/MapLocator.js:403
 msgid "Latitude:"
 msgstr "Latitude:"
 
-#: inventario/widget/MapLocator.js:416
+#: inventario/widget/MapLocator.js:406
 msgid "Longitude"
 msgstr "Longitude"
 
-#: inventario/widget/MapLocator.js:419
+#: inventario/widget/MapLocator.js:409
 msgid "Height"
 msgstr "Altura"
 
-#: inventario/widget/MapLocator.js:422
+#: inventario/widget/MapLocator.js:412
 msgid "Ip Address"
 msgstr "Dirección de IP"
 
-#: inventario/widget/MapLocator.js:425
+#: inventario/widget/MapLocator.js:415
 msgid "Add Node"
 msgstr "Agregue Nodo"
 
-#: inventario/widget/MapLocator.js:438
+#: inventario/widget/MapLocator.js:428
 msgid "Delete Node"
 msgstr "Cancelación de Nodo"
 
-#: inventario/widget/MapLocator.js:448
+#: inventario/widget/MapLocator.js:438
 msgid "Update"
 msgstr "Actualización"
 
-#: inventario/widget/MapLocator.js:466
+#: inventario/widget/MapLocator.js:456
 msgid "Cannot upgrade a newly created node."
 msgstr "No puede aumentar el nodo creado recientemente."
 
-#: inventario/widget/MapLocator.js:471
+#: inventario/widget/MapLocator.js:461
 msgid "Nothing to update."
 msgstr "Nada para actualizar"
 
-#: inventario/widget/MapLocator.js:631
+#: inventario/widget/MapLocator.js:621
 msgid " has been updated."
 msgstr " ha sido actualizado"
 
-#: inventario/widget/MapLocator.js:631
+#: inventario/widget/MapLocator.js:621
 msgid "The node "
 msgstr "El nodo"
 
-#: inventario/widget/MapLocator.js:649
+#: inventario/widget/MapLocator.js:639
 msgid "Auto-refresh requires read-only mode."
 msgstr "Auto-restaure requiere modo inalterable."
 
-#: inventario/widget/MapLocator.js:660
+#: inventario/widget/MapLocator.js:650
 msgid "The minimum update time of 10 seconds."
 msgstr "El tiempo mínimo de actualización es de 10 segundos."
 
@@ -530,7 +530,7 @@ msgstr "Anterior"
 
 #: inventario/window/Abm2.js:460
 msgid "Last Page"
-msgstr "Ulitma página"
+msgstr "Última página"
 
 #: inventario/window/Abm2.js:477
 msgid "Export"
@@ -787,4 +787,3 @@ msgstr "Mas info."
 #: inventario/window/WelcomeInfo.js:88
 msgid "Quick access"
 msgstr "Acceso rápido"
-
