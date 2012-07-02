@@ -211,6 +211,13 @@ class ReportsController < SearchController
   def people_laptops
     @output["widgets"] = Array.new
     @output["widgets"].push(hierarchy(""))
+
+    cb_options = Array.new
+    cb_options.push({ :text => _("All people"), :value => "all" })
+    cb_options.push({ :text => _("Only people with laptops assigned"), :value => "only_people_with_laptops" })
+    cb_options.push({ :text => _("Only people without laptops assigned"), :value => "only_people_without_laptops" })
+    @output["widgets"].push(comboBoxSelector(_("Include:"), cb_options, 250))
+
     @output["print_method"] = "people_laptops"
   end
 

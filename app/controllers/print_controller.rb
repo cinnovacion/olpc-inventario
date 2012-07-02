@@ -1155,6 +1155,8 @@ class PrintController < ApplicationController
     place_id = print_params.pop
     root_place = Place.find_by_id(place_id)
 
+    include_filter = print_params.pop
+
     @titulo = _("People of %s and their laptops") % root_place.getName
     @columnas = ["#", _("Name"), _("Document id"), _("Laptop"), _("In hands")]
     @datos = []
@@ -1167,6 +1169,11 @@ class PrintController < ApplicationController
       performs = Perform.where(:place_id => place.id)
       performs = performs.includes({ :person => { :laptops_assigned => :status } })
       performs = performs.order("people.lastname, people.name")
+      if include_filter == "only_people_with_laptops"
+        performs = performs.where("laptops.id IS NOT NULL")
+      elsif include_filter == "only_people_without_laptops"
+        performs = performs.where("laptops.id IS NULL")
+      end
       next if performs.count == 0
 
       entries = []
