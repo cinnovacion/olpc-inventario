@@ -249,6 +249,12 @@ class ReportsController < SearchController
     cb_options.push({ :text => _("Physical owner"), :value => "physical" })
     @output["widgets"].push(comboBoxSelector(_("Generate by"), cb_options))
 
+    cb_options = Array.new
+    cb_options.push({ :text => _("All people"), :value => "all" })
+    cb_options.push({ :text => _("Students only"), :value => "only_students" })
+    cb_options.push({ :text => _("Teachers only"), :value => "only_teachers" })
+    @output["widgets"].push(comboBoxSelector(_("Include:"), cb_options))
+
     @output["print_method"] = "laptops_uuids"
   end
 

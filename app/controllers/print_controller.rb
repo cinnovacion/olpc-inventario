@@ -1315,10 +1315,22 @@ class PrintController < ApplicationController
     raise _("Invalid Criteria") if relate[criteria].nil?
     relation = relate[criteria]
 
+    include_people = print_params.pop
+    raise _("Invalid filter") if include_people.nil?
+
     buffer = ""
 
     places_ids = root_place.getDescendantsIds + [root_place.id]
-    people_ids = Perform.find_all_by_place_id(places_ids).collect(&:person_id)
+    people_ids = Perform
+    if include_people == "only_teachers"
+      people_ids = people_ids.includes(:profile)
+      people_ids = people_ids.where("profiles.internal_tag" => "teacher")
+    elsif include_people == "only_students"
+      people_ids = people_ids.includes(:profile)
+      people_ids = people_ids.where("profiles.internal_tag" => "student")
+    end
+    people_ids = people_ids.find_all_by_place_id(places_ids)
+    people_ids = people_ids.collect(&:person_id)
 
     laptops = Laptop.includes(:status)
     laptops = laptops.where("serial_number is not NULL and serial_number != \"\"")
