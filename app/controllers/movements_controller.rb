@@ -239,68 +239,32 @@ class MovementsController < SearchController
     @output["msg"] = _("The movements have been registered.")
   end
 
-  def new_handout
-
-    @output["window_title"] = _("Register handout")
-    @output["fields"] = []
-    @output["with_tabs"] = true
-
-    h = { "label" => "Note", "text" => _("Entries with a tick will cause a movement to be created for each laptop, to the current assignee of the laptop (shown)."), "datatype" => "label" }
-    @output["fields"].push(h)
-
-    id = MovementType.find_by_internal_tag("entrega_alumno").id
-    movement_types = buildSelectHash2(MovementType, id, "description", false, [])
-    h = { "label" => _("Reason"), "datatype" => "combobox", "options" => movement_types }
-    @output["fields"].push(h)
-
-    h = { "label" => "Laptops", "datatype" => "dynamic_delivery_form" }
-    @output["fields"].push(h)
-
-    h = { "label" => _("Observation"),"datatype" => "textfield" }
-    @output["fields"].push(h)
-
-    h = { "datatype" => "tab_break", "title" => _("By serial") }
-    @output["fields"].push(h)
-
-    h = { "label" => "Note", "text" => _("Use this form to mark laptops as handed out. For each laptop, a movement will be created, from the current owner to the respective assignee."), "datatype" => "label" }
-    @output["fields"].push(h)
-
-    h = { "label" => "Note", "text" => _("Fill in the \"Reason\" and \"Observation\" fields on the Main tab of this window."), "datatype" => "label" }
-    @output["fields"].push(h)
-
-    h = { "label" => _("Laptops"), "datatype" => "textarea","width" => 250, "height" => 50 }
-    @output["fields"].push(h)
-
-  end
-
-  def save_handout
+  def registerHandout
     datos = JSON.parse(params[:payload])
-    form_fields = datos["fields"].reverse
     laptops = []
     not_recognised = []
 
-    movement_type_id = form_fields.pop
-    laptops_dyn = form_fields.pop
-    observation = form_fields.pop.strip
-    laptops_txt = form_fields.pop
-    if observation == ""
-      observation = _("Laptop handout")
+    movement_type_id = datos["movement_type"]
+    to_register = datos["to_register"]
+    comment = datos["comment"]
+    if comment.nil? or comment == ""
+      comment = _("Laptop handout")
     end
 
     attribs = Hash.new
     attribs[:movement_type_id] = movement_type_id 
-    attribs[:comment] = observation
+    attribs[:comment] = comment
 
-    if laptops_dyn
-      laptops += laptops_dyn
+    if to_register.respond_to?("each")
+      laptops = to_register
+    else
+      laptops = []
+      to_register.split(" ").each { |serial|
+        laptops.push(serial.upcase)
+      }
     end
 
-    laptops_txt.split(" ").each { |serial|
-      serial.strip!
-      next if serial == ""
-      laptops.push(serial.upcase)
-    }
-
+    count = 0
     laptops.each { |serial|
       laptop = Laptop.find_by_serial_number(serial, :include => :assignee)
       if laptop
@@ -312,12 +276,13 @@ class MovementsController < SearchController
         attribs[:id_document] = laptop.getAssigneeIdDoc()
         attribs[:serial_number_laptop] = serial
         Movement.register(attribs)
+        count = count + 1
       else
         not_recognised.push(serial)
       end
     }
 
-    @output["msg"] = _("The movements have been registered.")
+    @output["msg"] = _("#{count} movements have been registered.")
     if not_recognised != []
       @output["msg"]+= "." + _("The following laptops weren't recognized ")
       @output["msg"]+= "("+not_recognised.join(',')+")"

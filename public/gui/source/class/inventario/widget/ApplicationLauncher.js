@@ -161,6 +161,13 @@ qx.Class.define("inventario.widget.ApplicationLauncher",
 
           break;
 
+        case "register_handout":
+          execute = function() {
+            new inventario.window.RegisterHandout().open();
+          };
+
+          break;
+
         case "barcode_scan":
           execute = function() {
             new inventario.window.BarcodeScanForm(node.options["mode"]).open();

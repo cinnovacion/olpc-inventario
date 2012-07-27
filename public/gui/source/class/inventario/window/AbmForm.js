@@ -498,13 +498,6 @@ qx.Class.define("inventario.window.AbmForm",
 
           break;
 
-        case "dynamic_delivery_form":
-          input = new inventario.widget.DynamicDeliveryForm(fieldData.mode);
-          input.launch();
-          this._formFields.push(input);
-          this.getDataInputObjects().push(input);
-          break;
-
         case "coords_text_field":
           input = new inventario.widget.CoordsTextField(fieldData.value ? fieldData.value.toString() : "");
           break;
