@@ -43,12 +43,16 @@
 <% @data.each { |place| %>
 
 <% if @laptop_name_labels %>
+  <div align="center">
+  <table border=1 width=300>
   <% place[:boxes].each { |box| %>
     <% box.each { |student| %>
-      <%= student[:full_name] %><br><br>
+      <tr height=30><td align=center>
+      <b><%= student[:full_name] %></b>
+      </td></tr>
     <% } %>
   <% } %>
-  <br><br>
+  </table></div><br><br>
 <% end %>
 
 <% color += 1 %>
