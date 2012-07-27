@@ -144,7 +144,7 @@ msgstr ""
 msgid "Data Importer"
 msgstr ""
 
-#: inventario/widget/DataImporter.js:85 inventario/window/AbmForm.js:692
+#: inventario/widget/DataImporter.js:85 inventario/window/AbmForm.js:685
 msgid "Browse"
 msgstr ""
 
@@ -258,7 +258,8 @@ msgstr ""
 msgid "Add comment to person notes"
 msgstr ""
 
-#: inventario/widget/PeopleMover.js:47 inventario/window/BarcodeScanForm.js:56
+#: inventario/widget/PeopleMover.js:47 inventario/window/RegisterHandout.js:33
+#: inventario/window/BarcodeScanForm.js:56
 msgid "Back"
 msgstr ""
 
@@ -285,6 +286,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: inventario/widget/PeopleMover.js:225
+#: inventario/window/RegisterHandout.js:37
 #: inventario/window/BarcodeScanForm.js:340 inventario/window/Abm2.js:453
 msgid "Next"
 msgstr ""
@@ -487,7 +489,7 @@ msgstr ""
 msgid "Unlike"
 msgstr ""
 
-#: inventario/widget/SearchAdvanced.js:137 inventario/widget/Select.js:40
+#: inventario/widget/Select.js:40 inventario/widget/SearchAdvanced.js:137
 #: inventario/window/Abm2.js:110 inventario/window/Abm2.js:217
 msgid "Search"
 msgstr ""
@@ -636,27 +638,27 @@ msgstr ""
 msgid "Close"
 msgstr ""
 
-#: inventario/window/AbmForm.js:817
+#: inventario/window/AbmForm.js:810
 msgid "You must check at least one field"
 msgstr ""
 
-#: inventario/window/AbmForm.js:828
+#: inventario/window/AbmForm.js:821
 msgid "These changes will be applied to these "
 msgstr ""
 
-#: inventario/window/AbmForm.js:829
+#: inventario/window/AbmForm.js:822
 msgid " records. Are you sure?"
 msgstr ""
 
-#: inventario/window/AbmForm.js:832
+#: inventario/window/AbmForm.js:825
 msgid "Save changes?"
 msgstr ""
 
-#: inventario/window/AbmForm.js:835
+#: inventario/window/AbmForm.js:828
 msgid "Create?"
 msgstr ""
 
-#: inventario/window/AbmForm.js:971
+#: inventario/window/AbmForm.js:964
 msgid "Config error. in getDataFromForm"
 msgstr ""
 
@@ -782,6 +784,56 @@ msgstr ""
 
 #: inventario/window/Mensaje.js:208
 msgid "More info."
+msgstr ""
+
+#: inventario/window/RegisterHandout.js:22
+msgid "Register handout"
+msgstr ""
+
+#: inventario/window/RegisterHandout.js:97
+msgid "Use this form to mark laptops as handed out. For each laptop, a movement will be created, from the current owner to the respective assignee."
+msgstr ""
+
+#: inventario/window/RegisterHandout.js:101
+msgid "Movement type:"
+msgstr ""
+
+#: inventario/window/RegisterHandout.js:106
+msgid "Comment:"
+msgstr ""
+
+#: inventario/window/RegisterHandout.js:111
+msgid "Register handout:"
+msgstr ""
+
+#: inventario/window/RegisterHandout.js:115
+msgid "By place"
+msgstr ""
+
+#: inventario/window/RegisterHandout.js:120
+msgid "By laptop serial numbers"
+msgstr ""
+
+#: inventario/window/RegisterHandout.js:131
+msgid "Select the place where the handout will be registered."
+msgstr ""
+
+#: inventario/window/RegisterHandout.js:141
+msgid "Enter the serial numbers of the laptops for which handout should be registered."
+msgstr ""
+
+#: inventario/window/RegisterHandout.js:152
+msgid "Entries with a tick will cause a movement to be created for each laptop, to the current assignee of the laptop (shown)."
+msgstr ""
+
+#: inventario/window/RegisterHandout.js:219
+msgid "Register %1 handout in %2?"
+msgid_plural "Register %1 handouts in %2?"
+msgstr[0] ""
+msgstr[1] ""
+
+#: inventario/window/RegisterHandout.js:228
+msgid "Register handout from serial numbers?"
 msgstr ""
 
 #: inventario/window/WelcomeInfo.js:88
