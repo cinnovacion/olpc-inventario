@@ -142,16 +142,12 @@
 	Status.transaction do
 
 		create_if_not_exists(Status, {:internal_tag => "dead", :abbrev => "DOA", :id => "1", :description => "Dead on arrival"})
-		create_if_not_exists(Status, {:internal_tag => "deactivated", :abbrev => "DA", :id => "2", :description => "Desactivado"})
-		create_if_not_exists(Status, {:internal_tag => "activated", :abbrev => "A", :id => "3", :description => "Activado"})
+		create_if_not_exists(Status, {:internal_tag => "deactivated", :abbrev => "D", :id => "2", :description => "En desuso"})
+		create_if_not_exists(Status, {:internal_tag => "activated", :abbrev => "U", :id => "3", :description => "En uso"})
 		create_if_not_exists(Status, {:internal_tag => "on_repair", :abbrev => "ER", :id => "4", :description => "En reparacion"})
 		create_if_not_exists(Status, {:internal_tag => "repaired", :abbrev => "R", :id => "5", :description => "Reparado"})
 		create_if_not_exists(Status, {:internal_tag => "stolen", :abbrev => "S", :id => "6", :description => "Robado"})
-		create_if_not_exists(Status, {:internal_tag => "stolen_deactivated", :abbrev => "SDA", :id => "7", :description => "Robado Desactivado"})
 		create_if_not_exists(Status, {:internal_tag => "lost", :abbrev => "L", :id => "8", :description => "Perdido"})
-		create_if_not_exists(Status, {:internal_tag => "lost_deactivated", :abbrev => "LDA", :id => "9", :description => "Perdido Desactivado"})
-		create_if_not_exists(Status, {:internal_tag => "available", :abbrev => "AV", :id => "10", :description => "Disponible"})
-		create_if_not_exists(Status, {:internal_tag => "used", :abbrev => "US", :id => "11", :description => "En uso"})
 		create_if_not_exists(Status, {:internal_tag => "broken", :abbrev => "B", :id => "12", :description => "Roto"})
 		create_if_not_exists(Status, {:internal_tag => "ripped", :abbrev => "RIP", :id => "13", :description => "Desensamblado"})
 	end

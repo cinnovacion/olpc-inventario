@@ -114,7 +114,7 @@ class LaptopsController < SearchController
   end
 
   def reportStolenLaptops
-    stolen_status = Status.find_by_internal_tag("stolen_deactivated")
+    stolen_status = Status.find_by_internal_tag("stolen")
     stolen_laptops =  params[:hash][:stolen_laptops]
     hostname = params[:hash][:hostname]
     place = SchoolInfo.find_by_server_hostname(hostname).place

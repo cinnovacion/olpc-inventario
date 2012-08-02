@@ -109,7 +109,7 @@ class Laptop < ActiveRecord::Base
 
   def self.getBlackList
     laptops = Laptop.includes(:status)
-    laptops = laptops.where("statuses.internal_tag in (?)",["stolen","stolen_deactivated"])
+    laptops = laptops.where("statuses.internal_tag = \"stolen\"")
     black_list = laptops.map { |laptop| 
       {:serial_number => laptop.getSerialNumber } 
     }

@@ -1861,7 +1861,6 @@ class PrintController < ApplicationController
   def statuses_distribution
     print_params = JSON.parse(params[:print_params]).reverse
     statuses = Status.includes(:laptops => {:owner => :performs})
-    statuses = statuses.where("statuses.internal_tag not in (?)", ["used", "broken", "available"])
 
     root_place_id = print_params.pop.to_i
     if root_place_id != -1
