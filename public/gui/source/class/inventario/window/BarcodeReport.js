@@ -79,14 +79,25 @@ qx.Class.define("inventario.window.BarcodeReport",
     this._box_labels_detailed.setModel("detailed");
     this._box_labels_group.add(this._box_labels_detailed);
     
-    this._generate_button = new qx.ui.form.Button(this.tr("Generate"),
-                                                  "inventario/22/adobe-reader.png");
-    this._generate_button.addListener("execute", this._generate_cb, this);
-    this.getVbox().add(this._generate_button);
+    var hbox = new qx.ui.container.Composite(new qx.ui.layout.HBox());
+    hbox.getLayout().setSpacing(30);
+    this.getVbox().add(hbox);
+
+    button = new qx.ui.form.Button(this.tr("Generate (PDF)"), "inventario/22/adobe-reader.png");
+    button.setUserData("print_format", "pdf");
+    button.addListener("execute", this._generate_cb, this);
+    hbox.add(button);
+
+    button = new qx.ui.form.Button(this.tr("Generate (HTML)"));
+    button.setUserData("print_format", "html");
+    button.addListener("execute", this._generate_cb, this);
+    hbox.add(button);
   },
 
   members : {
     _generate_cb : function(e) {
+      var widget = e.getTarget();
+
       var params = {
         places: this._place_selector.getValues(),
         laptop_filter: this._laptop_filter.getSelectedParts(),
@@ -97,10 +108,13 @@ qx.Class.define("inventario.window.BarcodeReport",
       if (this._print_laptop_names.getValue())
         params["laptop_names"] = 1;
 
-      var opts = { print_params: qx.lang.Json.stringify(params) };
-      var iframe = inventario.util.PrintManager.print("barcodes", opts);
-      var document = inventario.Application.appInstance.getRoot();
-      document.add(iframe, { bottom: 1, right: 1 });
+      var opts = {
+        print_params: qx.lang.Json.stringify(params),
+        print_format: widget.getUserData("print_format"),
+      };
+      var url = inventario.util.PrintManager.getPrintUrl("barcodes");
+      var printUrl = url + inventario.transport.Transport.buildParamStr(opts, true);
+      window.open(printUrl, '__new');
     }
   }
 });

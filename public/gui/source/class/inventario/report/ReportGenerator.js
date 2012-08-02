@@ -30,6 +30,7 @@ qx.Class.define("inventario.report.ReportGenerator",
   construct : function(report_name, report_title)
   {
     this.base(arguments, report_title);
+    this._print_formats = ["pdf", "html"];
     this.setWidgetArray(new Array());
     this.setDataTypes(new Array());
 
@@ -40,10 +41,6 @@ qx.Class.define("inventario.report.ReportGenerator",
       alert(qx.locale.Manager.tr("I need to know what report to generate!"));
       return;
     }
-
-    var b = new qx.ui.form.Button(qx.locale.Manager.tr("Generate"), "inventario/22/adobe-reader.png");
-    b.addListener("execute", this._generate_cb, this);
-    this.setGenerateButton(b);
   },
 
   properties :
@@ -55,13 +52,6 @@ qx.Class.define("inventario.report.ReportGenerator",
     },
 
     verticalBox : { check : "Object" },
-
-    generateButton :
-    {
-      check    : "Object",
-      init     : null,
-      nullable : true
-    },
 
     widgetArray :
     {
@@ -110,10 +100,19 @@ qx.Class.define("inventario.report.ReportGenerator",
         vbox.add(v[k]);
 
       // button
-      var hbox = new qx.ui.container.Composite(new qx.ui.layout.HBox(30));
-      hbox.add(new qx.ui.core.Spacer(30, 40), { flex : 2 });
-      hbox.add(this.getGenerateButton(), { flex : 1 });
-      hbox.add(new qx.ui.core.Spacer(30, 40), { flex : 2 });
+      var hbox = new qx.ui.container.Composite(new qx.ui.layout.HBox(20));
+      for (var idx in this._print_formats) {
+        var fmt = this._print_formats[idx];
+        var str = qx.lang.String.format(this.tr("Generate (%1)"), [fmt.toUpperCase()]);
+
+        var b = new qx.ui.form.Button(str);
+        b.addListener("execute", this._generate_cb, this);
+        b.setUserData("print_format", fmt);
+        if (fmt == "pdf")
+          b.setIcon("inventario/22/adobe-reader.png");
+
+        hbox.add(b);
+      }
 
       vbox.add(hbox);
     },
@@ -131,6 +130,9 @@ qx.Class.define("inventario.report.ReportGenerator",
 
     _loadInitialDataResp : function(remoteData, params)
     {
+      if (remoteData["print_formats"] != null)
+        this._print_formats = remoteData["print_formats"];
+
       this.setPrintMethod(remoteData["print_method"]);
 
       for (var w in remoteData["widgets"])
@@ -143,18 +145,17 @@ qx.Class.define("inventario.report.ReportGenerator",
       this.open();
     },
 
-    _generate_cb : function()
+    _generate_cb : function(event, widget)
     {
+      var widget = event.getTarget();
       var params = this._getReportParams();
-      var hopts = { print_params : qx.lang.Json.stringify(params) };
-      var iframe = inventario.util.PrintManager.print(this.getPrintMethod(), hopts);
-      var document = inventario.Application.appInstance.getRoot();
-
-      document.add(iframe,
-      {
-        bottom : 1,
-        right  : 1
-      });
+      var hopts = {
+        print_params : qx.lang.Json.stringify(params),
+        print_format: widget.getUserData("print_format")
+      };
+      var url = inventario.util.PrintManager.getPrintUrl(this.getPrintMethod());
+      var printUrl = url + inventario.transport.Transport.buildParamStr(hopts, true);
+      window.open(printUrl, '__new');
     },
 
     _createWidget : function(widgetDef)

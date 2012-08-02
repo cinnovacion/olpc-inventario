@@ -218,13 +218,8 @@ class ReportsController < SearchController
     cb_options.push({ :text => _("Only people without laptops assigned"), :value => "only_people_without_laptops" })
     @output["widgets"].push(comboBoxSelector(_("Include:"), cb_options, 250))
 
+    @output["print_formats"] = ["pdf", "xls", "html"]
     @output["print_method"] = "people_laptops"
-  end
-
-  def people_laptops_xls
-    @output["widgets"] = Array.new
-    @output["widgets"].push(hierarchy(""))
-    @output["print_method"] = "people_laptops_xls"
   end
 
   def people_documents
@@ -237,10 +232,12 @@ class ReportsController < SearchController
     cb_options.push({ :label => _("Fake Document ID"), :cb_name => "fake", :checked => true })
     @output["widgets"].push(checkBoxSelector(_("Document ID"), cb_options))
 
+    @output["print_formats"] = ["xls"]
     @output["print_method"] = "people_documents"
   end
 
   def laptops_uuids
+    @output["print_formats"] = ["txt"]
     @output["widgets"] = Array.new
     @output["widgets"].push(hierarchy(""))
 
@@ -440,6 +437,7 @@ class ReportsController < SearchController
 
   def laptops_check
     @output["widgets"] = Array.new
+    @output["print_formats"] = ["xls"]
     @output["print_method"] = "laptops_check"
   end
 

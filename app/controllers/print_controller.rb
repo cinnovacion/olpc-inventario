@@ -78,7 +78,7 @@ class PrintController < ApplicationController
       }
     }
 
-    imprimir("lot_information", "print/" + "report")
+    print(params, "lot_information")
   end
 
   def stock_status_report
@@ -111,7 +111,7 @@ class PrintController < ApplicationController
       @datos.push([part_type.getDescription, values[true], values[false], values[true]-values[false]])
     }
 
-    imprimir("stock_status_report", "print/" + "report")
+    print(params, "stock_status_report")
   end
 
   def audit_report
@@ -149,7 +149,7 @@ class PrintController < ApplicationController
       }
     }
 
-    imprimir("Audit_report", "print/" + "report")
+    print(params, "Audit_report")
   end
 
   def average_solved_time
@@ -191,7 +191,7 @@ class PrintController < ApplicationController
       [_("Avg"), time_acum.to_f/time_count.to_f]
     ]
 
-    imprimir(_("Average time"), "print/" + "report")
+    print(params, _("Average time"))
   end
 
   def laptops_problems_recurrence
@@ -234,7 +234,7 @@ class PrintController < ApplicationController
 
     graph_data.push({ :name => _("Values"), :value => results })
     @image_name = "/" + PyEducaGraph::createLine(graph_data, "Recurrences (inclusive)", graph_labels)
-    imprimir(_("Recurrence problems"), "print/" + "report")
+    print(params, _("Recurrence problems"))
   end
 
   def is_hardware_dist
@@ -277,7 +277,7 @@ class PrintController < ApplicationController
     graph_data.push({ :name => _("Software"), :value => software_percent.to_f })
 
     @image_name = "/" + PyEducaGraph::createPie(graph_data, _("Distribution"))
-    imprimir("distribution_hardware_software", "print/" + "report")
+    print(params, "distribution_hardware_software")
   end
 
   def problems_time_distribution
@@ -392,7 +392,7 @@ class PrintController < ApplicationController
 
 
     @image_name = "/" + PyEducaGraph::createLine(graph_data, _("Average trend"), graph_labels)
-    imprimir("problems_time_distribution", "print/" + "report")
+    print(params, "problems_time_distribution")
   end
 
   def deposits
@@ -435,7 +435,7 @@ class PrintController < ApplicationController
       }
     }
 
-    imprimir("deposits", "print/" + "report")
+    print(params, "deposits")
   end
 
   def problems_and_deposits
@@ -506,7 +506,7 @@ class PrintController < ApplicationController
       row_count += 1  
     }
 
-    imprimir("problems_and_deposits", "print/" + "report")
+    print(params, "problems_and_deposits")
   end
 
   def students_ids_distro
@@ -596,7 +596,7 @@ class PrintController < ApplicationController
     end
 
     @image_name = "/" + PyEducaGraph::createBar(graph_data, _("Graph"), { :min => 0, :max => 100 })
-    imprimir("students_ids_distro", "print/" + "report")
+    print(params, "students_ids_distro")
   end
 
   def serials_per_places
@@ -631,7 +631,7 @@ class PrintController < ApplicationController
       }
     }
 
-    imprimir("serials_per_places", "print/" + "report")
+    print(params, "serials_per_places")
   end
 
   def online_time_statistics
@@ -790,7 +790,7 @@ class PrintController < ApplicationController
     @datos.sort! { |a,b| a[3] < b[3] ? 1 : -1 }
 
     @image_name = "/" + PyEducaGraph::createBar(graph_data, _("Percentages"), { :min => 0, :max => 100 })
-    imprimir("online_time_statistics", "print/" + "report")
+    print(params, "online_time_statistics")
   end
 
   def where_are_these_laptops
@@ -833,7 +833,7 @@ class PrintController < ApplicationController
     @titulo += "<br><font size=\"1\">" + _("NITS (Not in the system)") + "</font>" if laptops_not_found != []
     @columnas = [_("Laptop"), _("Person and location"), _("Status")]
 
-    imprimir("where_are_these_laptops", "print/" + "report")
+    print(params, "where_are_these_laptops")
   end
 
   def used_parts_per_person
@@ -931,7 +931,7 @@ class PrintController < ApplicationController
 
     @datos.sort! { |a,b| a[sort_index].send(sort_op, b[sort_index]) ? 1 : -1 }
 
-    imprimir("used_part_per_person", "print/" + "report")
+    print(params, "used_part_per_person")
   end
 
   def problems_per_grade
@@ -1003,7 +1003,7 @@ class PrintController < ApplicationController
     @datos.sort! { |a,b| a[1].to_i < b[1].to_i ? 1 : -1 }
 
     @image_name = "/" + PyEducaGraph::createBar(graph_data, _("Distribution"))
-    imprimir("problems_per_grade", "print/" + "report")
+    print(params, "problems_per_grade")
   end
 
   def problems_per_school
@@ -1077,7 +1077,7 @@ class PrintController < ApplicationController
     @datos.sort! { |a,b| a[sort_criteria].to_f < b[sort_criteria].to_f ? 1 : -1 }
 
     @image_name = "/" + PyEducaGraph::createPie(graph_data,_("Distribution (absolute)"))
-    imprimir("problems_per_place", "print/" + "report")
+    print(params, "problems_per_place")
   end
 
   def registered_laptops
@@ -1124,7 +1124,7 @@ class PrintController < ApplicationController
 
     end
 
-    imprimir("registered_laptops_status", "print/" + "hashes_array")
+    print(params, "registered_laptops_status", "print/hashes_array")
   end
 
   def printable_delivery
@@ -1146,7 +1146,7 @@ class PrintController < ApplicationController
       @data.push(h)
     }
 
-    imprimir("printable_delivery", "print/" + "printable_delivery")
+    print(params, "printable_delivery", "print/printable_delivery")
   end
 
   def people_laptops
@@ -1156,6 +1156,11 @@ class PrintController < ApplicationController
     root_place = Place.find_by_id(place_id)
 
     include_filter = print_params.pop
+
+    if params[:print_format] == "xls"
+      people_laptops_xls root_place, include_filter
+      return
+    end
 
     @titulo = _("People of %s and their laptops") % root_place.getName
     @columnas = ["#", _("Name"), _("Document id"), _("Laptop"), _("In hands")]
@@ -1202,14 +1207,10 @@ class PrintController < ApplicationController
 
       @datos.push({:name => place.getName, :data => entries})
     end
-    imprimir("people_laptops", "print/" + "people_laptops")
+    print(params, "people_laptops", "print/people_laptops")
   end
 
-  def people_laptops_xls
-    print_params = JSON.parse(params[:print_params]).reverse
-    place_id = print_params.pop
-    root_place = Place.find_by_id(place_id)
-
+  def people_laptops_xls(root_place, include_filter)
     file_name = Rails.root.join("/tmp/", Kernel.rand.to_s.split(".")[1] + ".xls").to_s
     workbook = Spreadsheet::Excel.new(file_name)
 
@@ -1221,6 +1222,11 @@ class PrintController < ApplicationController
       performs = Perform.where(:place_id => place.id)
       performs = performs.includes({ :person => { :laptops_assigned => :status } })
       performs = performs.order("people.lastname, people.name")
+      if include_filter == "only_people_with_laptops"
+        performs = performs.where("laptops.id IS NOT NULL")
+      elsif include_filter == "only_people_without_laptops"
+        performs = performs.where("laptops.id IS NULL")
+      end
       next if performs.count == 0
 
       worksheet = workbook.add_worksheet
@@ -1415,7 +1421,7 @@ class PrintController < ApplicationController
     end
     @datos.push([print_str,"","",""])
 
-    imprimir("possible_mistakes", "print/" + "report")
+    print(params, "possible_mistakes")
   end
 
   def laptops_per_tree
@@ -1450,7 +1456,7 @@ class PrintController < ApplicationController
     @datos.sort! { |a,b| a[2] < b[2] ? 1 : -1 }
 
     @image_name = "/" + PyEducaGraph::createPie(graph_data,@titulo)
-    imprimir("laptops_per_tree", "print/" + "report")
+    print(params, "laptops_per_tree")
   end
 
   def lots_labels
@@ -1471,7 +1477,7 @@ class PrintController < ApplicationController
       @math_total += sub_total
     }
 
-    imprimir("lotes", "print/" + "lots_labels")
+    print(params, "lotes", "print/lots_labels")
   end
 
   def barcodes
@@ -1571,7 +1577,7 @@ class PrintController < ApplicationController
       end
     }
 
-    imprimir("codigos-usuarios", "print/" + "barcodes", {}, true)
+    print(params, "codigos-usuarios", "print/barcodes")
   end
 
   ####
@@ -1622,7 +1628,7 @@ class PrintController < ApplicationController
       }
     }
 
-    imprimir("movements", "print/" + "report")
+    print(params, "movements")
   end
 
   ###
@@ -1676,7 +1682,7 @@ class PrintController < ApplicationController
 
     @image_name = "/" + PyEducaGraph::createPie(graph_data,@titulo)
 
-    imprimir("movement_types", "print/" + "report")
+    print(params, "movement_types")
   end
 
   ##
@@ -1709,7 +1715,7 @@ class PrintController < ApplicationController
       a.push(d.getDestinationPerson())
       a
     }
-    imprimir("movements", "print/" + "report")
+    print(params, "movements")
   end
 
   ##
@@ -1734,7 +1740,7 @@ class PrintController < ApplicationController
 
     @titulo = _("Laptops per owner")
     @columnas = [_("Person"), _("Quantity")]
-    imprimir("laptops", "print/" + "report")
+    print(params, "laptops")
   end
 
   ##
@@ -1764,7 +1770,7 @@ class PrintController < ApplicationController
     # Sort by count in descending order
     @datos.sort! { |a,b| a[1] >= b[1] ?  -1  : 1 }
 
-    imprimir("laptops", "print/" + "report")
+    print(params, "laptops")
   end
 
   ##
@@ -1798,7 +1804,7 @@ class PrintController < ApplicationController
     # Sort by count in descending order
     @datos.sort! { |a,b| a[1] >= b[1] ?  -1  : 1 }
 
-    imprimir("laptops", "print/" + "report")
+    print(params, "laptops")
   end
  
   ##
@@ -1846,7 +1852,7 @@ class PrintController < ApplicationController
       }
     }
 
-    imprimir("prestamos", "print/" + "report")
+    print(params, "prestamos")
   end
 
   ###
@@ -1888,7 +1894,7 @@ class PrintController < ApplicationController
     # TODO: this should be conditional
     @image_name = "/" + PyEducaGraph::createPie(graph_data, @titulo)
  
-    imprimir("statuses_distribution", "print/" + "report")
+    print(params, "statuses_distribution")
   end
 
   ###
@@ -1911,7 +1917,7 @@ class PrintController < ApplicationController
       @datos.push([sc.getDate(),sc.getPreviousState(),sc.getNewState(),sc.getPart(),sc.getSerial()])
     }
 
-    imprimir("cambios_de_estado", "print/" + "report")
+    print(params, "cambios_de_estado")
   end
 
   ###
@@ -1928,7 +1934,7 @@ class PrintController < ApplicationController
     @comment = _("The penultimate column shows the number of laptops physically in the place (or in a sub-place).<br>The final column shows the number of laptops assigned to that place (or a sub-place).")
     @date = Fecha.getFecha()
 
-    imprimir("laptops_por_tipo_localidad", "print/" + "laptops_per_place_type")
+    print(params, "laptops_por_tipo_localidad", "print/laptops_per_place_type")
   end
 
   ###
@@ -2017,7 +2023,7 @@ class PrintController < ApplicationController
     }
 
     @image_name = "/" + PyEducaGraph::createLine(graph_data, _("Timeline"), graph_labels)
-    imprimir("repuestos_utilizados", "print/" + "report")
+    print(params, "repuestos_utilizados")
   end
 
   def problems_per_type
@@ -2052,7 +2058,7 @@ class PrintController < ApplicationController
     @datos.sort! { |a,b| a[1] >= b[1] ?  -1  : 1 }
 
     @image_name = "/" + PyEducaGraph::createPie(graph_data, _("Distribution"))
-    imprimir("problemas_por_tipo", "print/" + "report")
+    print(params, "problemas_por_tipo")
   end
 
   def laptops_check
@@ -2081,19 +2087,26 @@ class PrintController < ApplicationController
   end
 
   private
-  
+
+  def print(params, filename, template = "print/report", options = {})
+    fmt = params[:print_format]
+    if fmt == "pdf"
+      print_pdf(filename, template, options)
+    else
+      render :template => template, :layout => false
+    end
+  end
 
   ###
   # Generate the PDF
   #
-  #  opciones(Hash):
+  #  options(Hash):
   #   :margen_superior
   #   :margen_inferior
   #   :margen_izquierdo
   #   :margen_derecho
   #
-  def imprimir(pdf_filename,template_file,opciones = Hash.new, output_pdf = true)
-
+  def print_pdf(filename, template, options = Hash.new)
     # necessary for RoR >= 2.1.x
     begin 
      add_variables_to_assigns
@@ -2110,19 +2123,18 @@ class PrintController < ApplicationController
     letra = "sans"
 
     footer_str = "..."
-    if opciones.length > 0
-      margen_superior = opciones[:margen_superior] if opciones[:margen_superior]
-      margen_inferior = opciones[:margen_inferior] if opciones[:margen_inferior]
-      margen_izquierdo = opciones[:margen_izquierdo] if opciones[:margen_izquierdo]
-      margen_derecho = opciones[:margen_derecho] if opciones[:margen_derecho]
-      letra = opciones[:letra] if opciones[:letra]
-      if opciones[:mostrar_nro_pagina]
+    if options.length > 0
+      margen_superior = options[:margen_superior] if options[:margen_superior]
+      margen_inferior = options[:margen_inferior] if options[:margen_inferior]
+      margen_izquierdo = options[:margen_izquierdo] if options[:margen_izquierdo]
+      margen_derecho = options[:margen_derecho] if options[:margen_derecho]
+      letra = options[:letra] if options[:letra]
+      if options[:mostrar_nro_pagina]
         footer_str = "1.."
       else
         footer_str = "..."
       end
     end
-
     
     open_arg = "#{htmldoc_env}; iconv -f UTF-8 -t iso-8859-1 | htmldoc --header ... --footer #{footer_str} "
     open_arg += "--charset iso-8859-1 "
@@ -2131,15 +2143,13 @@ class PrintController < ApplicationController
     open_arg += "-t pdf --path \".;http://#{request.env["HTTP_HOST"]}\" --webpage -"
 
     begin
-      if output_pdf
-        generator = IO.popen(open_arg, "w+")
-        # FIXME: we should test if we are in Windows and included the following method call
-        # generator.binmode
-        generator.puts render_to_string(:template => template_file, :layout => false)
-        generator.close_write
+      generator = IO.popen(open_arg, "w+")
+      # FIXME: we should test if we are in Windows and included the following method call
+      # generator.binmode
+      generator.puts render_to_string(:template => template, :layout => false)
+      generator.close_write
 
-        send_data(generator.read, :filename => pdf_filename + ".pdf", :type => "application/pdf") 
-      end
+      send_data(generator.read, :filename => filename + ".pdf", :type => "application/pdf") 
     rescue
       logger.error("error!!!!!!!!" + $!)
     end
