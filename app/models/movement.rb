@@ -62,39 +62,6 @@ class Movement < ActiveRecord::Base
     ret
   end
 
-  
-  ###
-  # Statistics 
-  #
-  def self.getNumberOf(what)
-    mt = nil
-
-    case what
-    when "for_repair"
-      itag = "reparacion"
-    when "repaired"
-      itag = "reparacion_finalizada"
-    when "developer"
-      itag = "uso_desarrollador"
-    when "loaned"
-      itag = "prestamo"
-    when "teachers"
-      itag = "entrega_docente"
-    when "students"
-      itag = "entrega_alumno"
-    when "formadores"
-      itag = "entrega_formador"
-    when "returned"
-      itag = "devolucion"
-    when "first_boot_problem"
-      itag = "devolucion_problema_tecnico_entrega" 
-    end
-
-    mt = MovementType.find_by_internal_tag itag
-    
-    self.count(:conditions => ["movement_type_id = ?", mt.id])
-  end
-
   def self.for_device(device, to_person, movement_type_tag)
 
     movement_type = MovementType.find_by_internal_tag(movement_type_tag)
