@@ -96,7 +96,7 @@ class Place < ActiveRecord::Base
     place = Place.find_by_id(place_id)
     return ret if not place
 
-    places_ids = place.getDescendantsIds + [place_id]
+    places_ids = place.getDescendantsIds + [place_id] + place.getAncestorsIds
     people_ids = Perform.find_all_by_place_id(places_ids).collect(&:person_id)
 
     cond_v = "serial_number is not NULL and serial_number != \"\""
