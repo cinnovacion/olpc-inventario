@@ -58,9 +58,7 @@
 		create_if_not_exists(MovementType, {:internal_tag => "uso_desarrollador", :id => "9", :description => "Uso Desarrollador", :is_delivery => "true"})
 		create_if_not_exists(MovementType, {:internal_tag => "prestamo", :id => "10", :description => "Prestamo", :is_delivery => "true"})
 		create_if_not_exists(MovementType, {:internal_tag => "devolucion", :id => "11", :description => "Devolucion", :is_delivery => "false"})
-		create_if_not_exists(MovementType, {:internal_tag => "entrega_docente", :id => "12", :description => "Entrega Docente", :is_delivery => "true"})
-		create_if_not_exists(MovementType, {:internal_tag => "entrega_alumno", :id => "13", :description => "Entrega Alumno", :is_delivery => "true"})
-		create_if_not_exists(MovementType, {:internal_tag => "entrega_formador", :id => "14", :description => "Entrega Formador", :is_delivery => "true"})
+		create_if_not_exists(MovementType, {:internal_tag => "entrega_alumno", :id => "13", :description => "Entrega", :is_delivery => "true"})
 		create_if_not_exists(MovementType, {:internal_tag => "devolucion_problema_tecnico_entrega", :id => "15", :description => "Devolucion Problema Técnico en Entrega", :is_delivery => "false"})
 		create_if_not_exists(MovementType, {:internal_tag => "transfer", :id => "16", :description => "Transferencia", :is_delivery => "false"})
 	end
