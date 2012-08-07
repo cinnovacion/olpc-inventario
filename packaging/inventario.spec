@@ -1,6 +1,6 @@
 # spec file for our tracking, monitoring and support web app
 Name: inventario		
-Version: 0.5.0
+Version: 0.6.0
 Release: 1
 Vendor: Paraguay Educa
 Summary: This (Ruby on Rails based) web app lets you track laptops given out, status of networks and support tickets.
@@ -8,7 +8,7 @@ Group:	Applications/Internet
 License: GPL	
 URL: http://git.paraguayeduca.org/gitweb/projects/inventario.git
 Source0: %{name}-%{version}.tar.gz
-Requires: ruby(abi) = 1.8, crontabs, rubygems, rubygem-activesupport, rubygem-activeresource, rubygem-rails, mysql-server, htmldoc, httpd, ruby-mysql, ruby-json, rubygem-gruff, rubygem-spreadsheet-excel, rubygem-parseexcel, rubygem-gbarcode, logrotate, rubygem-fast_gettext, rubygem-mysql2, rubygem-will_paginate
+Requires: ruby(abi) = 1.9.1, crontabs, rubygems, rubygem-activesupport, rubygem-activeresource, rubygem-rails, mysql-server, htmldoc, httpd, ruby-mysql, rubygem-json, rubygem-gruff, rubygem-spreadsheet-excel, rubygem-parseexcel, rubygem-gbarcode, logrotate, rubygem-fast_gettext, rubygem-mysql2, rubygem-will_paginate, rubygem-locale, rubygem-gettext
 
 # acts_as_audited gemspec needs this
 Requires: git
