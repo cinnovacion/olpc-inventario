@@ -83,7 +83,7 @@ qx.Class.define("inventario.window.BarcodeReport",
     hbox.getLayout().setSpacing(30);
     this.getVbox().add(hbox);
 
-    button = new qx.ui.form.Button(this.tr("Generate (PDF)"), "inventario/22/adobe-reader.png");
+    var button = new qx.ui.form.Button(this.tr("Generate (PDF)"), "inventario/22/adobe-reader.png");
     button.setUserData("print_format", "pdf");
     button.addListener("execute", this._generate_cb, this);
     hbox.add(button);
@@ -110,7 +110,7 @@ qx.Class.define("inventario.window.BarcodeReport",
 
       var opts = {
         print_params: qx.lang.Json.stringify(params),
-        print_format: widget.getUserData("print_format"),
+        print_format: widget.getUserData("print_format")
       };
       var url = inventario.util.PrintManager.getPrintUrl("barcodes");
       var printUrl = url + inventario.transport.Transport.buildParamStr(opts, true);
