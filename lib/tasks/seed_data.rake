@@ -18,10 +18,10 @@ namespace :seed_data do
 
     if ConstraintGenerator.all_tables == []
 
-      run_file("db/initial_schema.rb")
+      run_file("./db/initial_schema.rb")
       puts "db/initial_schema.rb file, loaded!"
 
-      run_file("db/initial_constraints.rb")
+      run_file("./db/initial_constraints.rb")
       puts "db/initial_constraints.rb file, loaded!"
     end
 
@@ -34,7 +34,7 @@ namespace :seed_data do
 
   task(:setup => :environment) do
 
-    run_file("db/seeds.rb")
+    run_file("./db/seeds.rb")
     puts "db/seeds.rb file, loaded!"
   end
 
@@ -75,7 +75,7 @@ namespace :seed_data do
 
   task(:fix => :environment) do
 
-    run_file("db/seed_data_fixes.rb")
+    run_file("./db/seed_data_fixes.rb")
     puts "db/seed_data_fixes.rb ran perfectly!"
   end
 
