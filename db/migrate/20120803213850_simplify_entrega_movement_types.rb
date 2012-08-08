@@ -6,6 +6,7 @@ class SimplifyEntregaMovementTypes < ActiveRecord::Migration
     # tag "entrega_alumno" for now.
 
     entrega_type = MovementType.find_by_internal_tag("entrega_alumno")
+    return if entrega_type.nil?
 
     mt = MovementType.find_by_internal_tag("entrega_docente")
     if mt

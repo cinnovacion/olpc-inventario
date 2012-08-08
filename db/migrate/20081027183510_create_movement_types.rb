@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 class CreateMovementTypes < ActiveRecord::Migration
   def self.up
     create_table :movement_types do |t|

@@ -2,6 +2,11 @@ class ReworkLaptopStatus < ActiveRecord::Migration
   def self.migrate_status(old_status_tag, new_status_tag)
     status = Status.find_by_internal_tag(old_status_tag)
     new_status = Status.find_by_internal_tag(new_status_tag)
+
+    if status.nil? or new_status.nil?
+      return
+    end
+
     Laptop.find_all_by_status_id(status.id).each { |laptop|
       laptop.status_id = new_status.id
       laptop.save!
@@ -39,8 +44,7 @@ class ReworkLaptopStatus < ActiveRecord::Migration
     # of the status: the laptop is available but not being used, so no
     # activations should be generated for it.
     status = Status.find_by_internal_tag("deactivated")
-    status.description = "En desuso"
-    status.save!
+    status.update_attributes(:description => "En desuso") if !status.nil?
 
     # rename Activado to En uso
     # After a lot of discussion we think this much better reflects the use
@@ -49,8 +53,7 @@ class ReworkLaptopStatus < ActiveRecord::Migration
     # received an activation and activated itself, though, thats kind of out
     # of scope of inventario).
     status = Status.find_by_internal_tag("activated")
-    status.description = "En uso"
-    status.save!
+    status.update_attributes(:description => "En uso") if !status.nil?
   end
 
   def self.down

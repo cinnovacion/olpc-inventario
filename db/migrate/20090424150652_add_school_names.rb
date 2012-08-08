@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 class AddSchoolNames < ActiveRecord::Migration
   def self.up
     school_list = [
