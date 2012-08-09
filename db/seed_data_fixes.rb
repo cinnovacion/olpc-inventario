@@ -84,5 +84,4 @@ class SeedDataFixes
 end
 
 fixes = SeedDataFixes.new
-fixes.methods.each { |method| fixes.send(method) if method.match("^fix_") }
-
+fixes.methods.each { |method| fixes.send(method) if method.to_s.match("^fix_") }
