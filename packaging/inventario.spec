@@ -73,7 +73,7 @@ fi
 cp /var/%{name}/config/database.yml.example /var/%{name}/config/database.yml
 
 # try to create DB, if it doesnt exist
-mysql -u root -e 'create database if not exists inventario;' > /dev/null 2>&1 || true
+mysql -u root -e 'create database if not exists inventario character set utf8mb4;' > /dev/null 2>&1 || true
 
 # load initial database
 cd /var/%{name}
