@@ -558,4 +558,15 @@ ActiveRecord::Schema.define(:version => 20091001211021) do
 
   add_index "users", ["person_id"], :name => "users_person_id_fk"
 
+  # This would normally be created by ActiveRecord, in
+  # initialize_schema_migrations_table
+  # However, AR creates the version field with a 255 character limit, which
+  # we can't use as an index when running as utf8mb4. Create it with a shorter
+  # length.
+  create_table "schema_migrations", :force => true do |t|
+    t.string :version, :null => false, :limit => 100
+  end
+
+  add_index "schema_migrations", :version, :unique => true, :name => "unique_schema_migrations"
+
 end
