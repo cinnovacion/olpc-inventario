@@ -1,179 +1,146 @@
 # -*- coding: utf-8 -*-
-  
-  #####
-  #  Basic methods
-  #
-  def create_if_not_exists(tClass, attrHash)
 
-    object = tClass.find_by_id(attrHash[:id])
-    if !object
+EventType.transaction do
+  EventType.find_or_create_by_internal_tag("stolen_laptop_activity", :name => "Laptop Robada", :description => "Se detecto el intento de activacion de una de las laptops robadas en el School Server")
+  EventType.find_or_create_by_internal_tag("node_down", :name => "Nodo Caido", :description => "Un nodo entro en estado de inactividad")
+  EventType.find_or_create_by_internal_tag("node_up", :name => "Nodo Arriba", :description => "Un nodo de red entro en estado de actividad")
+end
 
-      object = tClass.new
-      attrHash.keys.each { |key|
-   
-        object.send("#{key}=", attrHash[key])
-      }
+LaptopConfig.transaction do
 
-      object.save!
-    end
+  LaptopConfig.find_or_create_by_key("build_version", :value => "767", :resource_name => "", :description => "Version SO")
+  LaptopConfig.find_or_create_by_key("model_id", :value => "1", :resource_name => "", :description => "Modelo")
+  LaptopConfig.find_or_create_by_key("shipment_id", :value => "1", :resource_name => "", :description => "Cargamento")
+  LaptopConfig.find_or_create_by_key("person_id", :value => "3", :resource_name => "personas", :description => "En manos de")
+  LaptopConfig.find_or_create_by_key("place_id", :value => "3", :resource_name => "", :description => "Localidad")
+end
 
-    object
-  end
+Model.transaction do
+  Model.find_or_create_by_name("XO-1", :created_at => "2008-10-27", :description => "Estas son las primeras XOs, de material rugoso, verde y blanca")
+  Model.find_or_create_by_name("XO-2", :created_at => "2008-11-10", :description => "Esta va a estar disponible en el 2009")
+  Model.find_or_create_by_name("XO-1 (B2)", :created_at => "2009-09-23", :description => "Modelos de laptop lisa")
+  Model.find_or_create_by_name("XO-1.5", :created_at => "2010-07-23", :description => "XO-1.5 laptop con VIA CPU")
+  Model.find_or_create_by_name("XO-1.75", :created_at => "2010-07-23", :description => "XO-1.75 laptop con ARM CPU")
+  Model.find_or_create_by_name("XO-3", :created_at => "2010-07-23", :description => "XO-3 tablet")
+end
 
+MovementType.transaction do
+  MovementType.find_or_create_by_internal_tag("reparacion", :description => "Reparacion o Verificacion", :is_delivery => "false")
+  MovementType.find_or_create_by_internal_tag("reparacion_finalizada", :description => "Reparacion Finalizada - Devolucion Propietario", :is_delivery => "false")
+  MovementType.find_or_create_by_internal_tag("verificacion_finalizada", :description => "Verificacion Finalizada - Devolucion Propietario", :is_delivery => "false")
+  MovementType.find_or_create_by_internal_tag("uso_desarrollador", :description => "Uso Desarrollador", :is_delivery => "true")
+  MovementType.find_or_create_by_internal_tag("prestamo", :description => "Prestamo", :is_delivery => "true")
+  MovementType.find_or_create_by_internal_tag("devolucion", :description => "Devolucion", :is_delivery => "false")
+  MovementType.find_or_create_by_internal_tag("entrega_alumno", :description => "Entrega", :is_delivery => "true")
+  MovementType.find_or_create_by_internal_tag("devolucion_problema_tecnico_entrega", :description => "Devolucion Problema Técnico en Entrega", :is_delivery => "false")
+  MovementType.find_or_create_by_internal_tag("transfer", :description => "Transferencia", :is_delivery => "false")
+end
 
-	######
-	#  Seeding Data
-	#	
-	EventType.transaction do
+NodeType.transaction do
+  NodeType.find_or_create_by_internal_tag("center", :name => "Centro", :description => "Indica el punto inicial en el cual se enfoca el mapa.")
+  NodeType.find_or_create_by_internal_tag("ap", :name => "Access Point", :description => "Punto de accesso a red inalambrica.")
+  NodeType.find_or_create_by_internal_tag("server", :name => "Servidor", :description => "Servidor de la escuela.")
+  NodeType.find_or_create_by_internal_tag("tower", :name => "Torre", :description => "Torre del ISP para distribucion wimax.")
+  NodeType.find_or_create_by_internal_tag("ap_down", :name => "Access Point Abajo", :description => "Access Point que actualmente no esta en servicio.")
+  NodeType.find_or_create_by_internal_tag("server_down", :name => "Servidor Abajo", :description => "Servidor de la escuela que actualmente no esta en servicio.")
+end
 
-		create_if_not_exists(EventType, {:name => "Laptop Robada", :internal_tag => "stolen_laptop_activity", :id => "1", :description => "Se detecto el intento de activacion de una de las laptops robadas en el School Server"})
-		create_if_not_exists(EventType, {:name => "Nodo Caido", :internal_tag => "node_down", :id => "2", :description => "Un nodo entro en estado de inactividad"})
-		create_if_not_exists(EventType, {:name => "Nodo Arriba", :internal_tag => "node_up", :id => "3", :description => "Un nodo de red entro en estado de actividad"})
-	end
+Notification.transaction do
+  Notification.find_or_create_by_internal_tag("problem_report", :name => "Problema reportado", :description => "Un problema ha sido reportado", :active => "true")
+  Notification.find_or_create_by_internal_tag("problem_solution", :name => "Problema Solucionado", :description => "Un problema ha sido solucionado", :active => "true")
+  Notification.find_or_create_by_internal_tag("node_down", :name => "Nodo Abajo", :description => "Un Nodo ha dejado de funcionar", :active => "true")
+  Notification.find_or_create_by_internal_tag("node_up", :name => "Nodo Arriba", :description => "Un Nodo ha vuelto a funcionar", :active => "true")
+end
 
-	LaptopConfig.transaction do
+PartType.transaction do
+  PartType.find_or_create_by_internal_tag("laptop", :cost => "", :description => "Laptop")
+  PartType.find_or_create_by_internal_tag("battery", :cost => "", :description => "Bateria")
+  PartType.find_or_create_by_internal_tag("charger", :cost => "", :description => "Cargador")
+  PartType.find_or_create_by_internal_tag("screen", :cost => "", :description => "Pantalla")
+  PartType.find_or_create_by_internal_tag("keyboard", :cost => "", :description => "Teclado")
+  PartType.find_or_create_by_internal_tag("antenna", :cost => "", :description => "Antena")
+end
 
-		create_if_not_exists(LaptopConfig, {:id => "1", :value => "767", :resource_name => "", :description => "Version SO", :key => "build_version"})
-		create_if_not_exists(LaptopConfig, {:id => "2", :value => "1", :resource_name => "", :description => "Modelo", :key => "model_id"})
-		create_if_not_exists(LaptopConfig, {:id => "3", :value => "1", :resource_name => "", :description => "Cargamento", :key => "shipment_id"})
-		create_if_not_exists(LaptopConfig, {:id => "4", :value => "3", :resource_name => "personas", :description => "En manos de", :key => "person_id"})
-		create_if_not_exists(LaptopConfig, {:id => "5", :value => "3", :resource_name => "", :description => "Localidad", :key => "place_id"})
-	end
+Profile.transaction do
+  Profile.find_or_create_by_internal_tag("developer", :access_level => "600", :description => "Desarrollador")
+  Profile.find_or_create_by_internal_tag("root", :access_level => "500", :description => "Administrador")
+  Profile.find_or_create_by_internal_tag("technician", :access_level => "300", :description => "Tecnico")
+  Profile.find_or_create_by_internal_tag("educator", :access_level => "0", :description => "Formador")
+  Profile.find_or_create_by_internal_tag("teacher", :access_level => "200", :description => "Maestro")
+  Profile.find_or_create_by_internal_tag("volunteer", :access_level => "0", :description => "Voluntario")
+  Profile.find_or_create_by_internal_tag("student", :access_level => "100", :description => "Estudiante")
+  Profile.find_or_create_by_internal_tag("director", :access_level => "300", :description => "Director")
+  Profile.find_or_create_by_internal_tag("electric_technician", :access_level => "0", :description => "Electricista")
+  Profile.find_or_create_by_internal_tag("guardian", :access_level => "0", :description => "Custodio")
+  Profile.find_or_create_by_internal_tag("guest", :access_level => "0", :description => "Invitado")
+  Profile.find_or_create_by_internal_tag("extern_system", :access_level => "0", :description => "Extern System")
+  Profile.find_or_create_by_internal_tag("network_control", :access_level => "0", :description => "NetworkControl")
+  Profile.find_or_create_by_internal_tag("netmonitor", :access_level => "0", :description => "NetworkMonitor")
+  Profile.find_or_create_by_internal_tag("laptop_register", :access_level => "0", :description => "LaptopRegister")
+  Profile.find_or_create_by_internal_tag("education_team", :access_level => "0", :description => "EducationTeam")
+  Profile.find_or_create_by_internal_tag("visitor", :access_level => "0", :description => "Visitante")
+  Profile.find_or_create_by_internal_tag("lobbiest", :access_level => "0", :description => "Receptor")
+  Profile.find_or_create_by_internal_tag("default", :access_level => "0", :description => "defecto")
+end
 
-	Model.transaction do
+PlaceType.transaction do
+  PlaceType.find_or_create_by_internal_tag("country", :name => "Pais")
+  PlaceType.find_or_create_by_internal_tag("state", :name => "Departamento")
+  PlaceType.find_or_create_by_internal_tag("city", :name => "Ciudad")
+  PlaceType.find_or_create_by_internal_tag("school", :name => "Escuela")
+  PlaceType.find_or_create_by_internal_tag("first_grade", :name => "Primer Grado")
+  PlaceType.find_or_create_by_internal_tag("second_grade", :name => "Segundo Grado")
+  PlaceType.find_or_create_by_internal_tag("third_grade", :name => "Tercer Grado")
+  PlaceType.find_or_create_by_internal_tag("fourth_grade", :name => "Cuarto Grado")
+  PlaceType.find_or_create_by_internal_tag("fifth_grade", :name => "Quinto Grado")
+  PlaceType.find_or_create_by_internal_tag("sixth_grade", :name => "Sexto Grado")
+  PlaceType.find_or_create_by_internal_tag("section", :name => "Seccion")
+  PlaceType.find_or_create_by_internal_tag("shift", :name => "Turno")
+  PlaceType.find_or_create_by_internal_tag("special", :name => "Educacion Especial")
+  PlaceType.find_or_create_by_internal_tag("kinder", :name => "Preescolar")
+  PlaceType.find_or_create_by_internal_tag("institution", :name => "Institucion")
+  PlaceType.find_or_create_by_internal_tag("seventh_grade", :name => "Septimo grado")
+  PlaceType.find_or_create_by_internal_tag("eighth_grade", :name => "Octavo grado")
+  PlaceType.find_or_create_by_internal_tag("ninth_grade", :name => "Noveno grado")
+  PlaceType.find_or_create_by_internal_tag("root", :name => "Root")
+end
 
-		create_if_not_exists(Model, {:name => "XO-1", :created_at => "2008-10-27", :id => "1", :description => "Estas son las primeras XOs, de material rugoso, verde y blanca"})
-		create_if_not_exists(Model, {:name => "XO-2", :created_at => "2008-11-10", :id => "2", :description => "Esta va a estar disponible en el 2009"})
-		create_if_not_exists(Model, {:name => "XO-1 (B2)", :created_at => "2009-09-23", :id => "3", :description => "Modelos de laptop lisa"})
-		create_if_not_exists(Model, {:name => "XO-1.5", :created_at => "2010-07-23", :id => "4", :description => "XO-1.5 laptop con VIA CPU"})
-		create_if_not_exists(Model, {:name => "XO-1.75", :created_at => "2010-07-23", :id => "5", :description => "XO-1.75 laptop con ARM CPU"})
-		create_if_not_exists(Model, {:name => "XO-3", :created_at => "2010-07-23", :id => "6", :description => "XO-3 tablet"})
-	end
+Status.transaction do
+  Status.find_or_create_by_internal_tag("dead", :abbrev => "DOA", :description => "Dead on arrival")
+  Status.find_or_create_by_internal_tag("deactivated", :abbrev => "D", :description => "En desuso")
+  Status.find_or_create_by_internal_tag("activated", :abbrev => "U", :description => "En uso")
+  Status.find_or_create_by_internal_tag("on_repair", :abbrev => "ER", :description => "En reparacion")
+  Status.find_or_create_by_internal_tag("repaired", :abbrev => "R", :description => "Reparado")
+  Status.find_or_create_by_internal_tag("stolen", :abbrev => "S", :description => "Robado")
+  Status.find_or_create_by_internal_tag("lost", :abbrev => "L", :description => "Perdido")
+  Status.find_or_create_by_internal_tag("broken", :abbrev => "B", :description => "Roto")
+  Status.find_or_create_by_internal_tag("ripped", :abbrev => "RIP", :description => "Desensamblado")
+end
 
-	MovementType.transaction do
+PartMovementType.transaction do
+  PartMovementType.find_or_create_by_internal_tag("new_part_in", :name => "Entrada por compra", :direction => true)
+  PartMovementType.find_or_create_by_internal_tag("part_replacement_out", :name => "Salida como repuesto", :direction => false)
+  PartMovementType.find_or_create_by_internal_tag("part_transfered_out", :name => "Salida por transferencia", :direction => false)
+  PartMovementType.find_or_create_by_internal_tag("part_transfered_in", :name => "Entrada por transferencia", :direction => true)
+end
 
-		create_if_not_exists(MovementType, {:internal_tag => "reparacion", :id => "6", :description => "Reparacion o Verificacion", :is_delivery => "false"})
-		create_if_not_exists(MovementType, {:internal_tag => "reparacion_finalizada", :id => "7", :description => "Reparacion Finalizada - Devolucion Propietario", :is_delivery => "false"})
-		create_if_not_exists(MovementType, {:internal_tag => "verificacion_finalizada", :id => "8", :description => "Verificacion Finalizada - Devolucion Propietario", :is_delivery => "false"})
-		create_if_not_exists(MovementType, {:internal_tag => "uso_desarrollador", :id => "9", :description => "Uso Desarrollador", :is_delivery => "true"})
-		create_if_not_exists(MovementType, {:internal_tag => "prestamo", :id => "10", :description => "Prestamo", :is_delivery => "true"})
-		create_if_not_exists(MovementType, {:internal_tag => "devolucion", :id => "11", :description => "Devolucion", :is_delivery => "false"})
-		create_if_not_exists(MovementType, {:internal_tag => "entrega_alumno", :id => "13", :description => "Entrega", :is_delivery => "true"})
-		create_if_not_exists(MovementType, {:internal_tag => "devolucion_problema_tecnico_entrega", :id => "15", :description => "Devolucion Problema Técnico en Entrega", :is_delivery => "false"})
-		create_if_not_exists(MovementType, {:internal_tag => "transfer", :id => "16", :description => "Transferencia", :is_delivery => "false"})
-	end
+#####
+# Application specific Data, (Non-trivial-data)
+#
+require "digest/sha1"
 
-	NodeType.transaction do
+if !Place.exists?
+  root_type = PlaceType.find_by_internal_tag("root")
+  root_place = Place.create(:name => "Rootland", :description => "Root System Place", :place_type_id => root_type.id)
 
-		create_if_not_exists(NodeType, {:name => "Centro", :internal_tag => "center", :id => "1", :description => "Indica el punto inicial en el cual se enfoca el mapa."})
-		create_if_not_exists(NodeType, {:name => "Access Point", :internal_tag => "ap", :id => "2", :description => "Punto de accesso a red inalambrica."})
-		create_if_not_exists(NodeType, {:name => "Servidor", :internal_tag => "server", :id => "3", :description => "Servidor de la escuela."})
-		create_if_not_exists(NodeType, {:name => "Torre", :internal_tag => "tower", :id => "4", :description => "Torre del ISP para distribucion wimax."})
-		create_if_not_exists(NodeType, {:name => "Access Point Abajo", :internal_tag => "ap_down", :id => "5", :description => "Access Point que actualmente no esta en servicio."})
-		create_if_not_exists(NodeType, {:name => "Servidor Abajo", :internal_tag => "server_down", :id => "6", :description => "Servidor de la escuela que actualmente no esta en servicio."})
-	end
-
-	Notification.transaction do
-
-		create_if_not_exists(Notification, {:name => "Problema reportado", :internal_tag => "problem_report", :id => "1", :description => "Un problema ha sido reportado", :active => "true"})
-		create_if_not_exists(Notification, {:name => "Problema Solucionado", :internal_tag => "problem_solution", :id => "2", :description => "Un problema ha sido solucionado", :active => "true"})
-		create_if_not_exists(Notification, {:name => "Nodo Abajo", :internal_tag => "node_down", :id => "3", :description => "Un Nodo ha dejado de funcionar", :active => "true"})
-		create_if_not_exists(Notification, {:name => "Nodo Arriba", :internal_tag => "node_up", :id => "4", :description => "Un Nodo ha vuelto a funcionar", :active => "true"})
-	end
-
-	PartType.transaction do
-
-		create_if_not_exists(PartType, {:cost => "", :internal_tag => "laptop", :id => "1", :description => "Laptop"})
-		create_if_not_exists(PartType, {:cost => "", :internal_tag => "battery", :id => "2", :description => "Bateria"})
-		create_if_not_exists(PartType, {:cost => "", :internal_tag => "charger", :id => "3", :description => "Cargador"})
-		create_if_not_exists(PartType, {:cost => "", :internal_tag => "screen", :id => "4", :description => "Pantalla"})
-		create_if_not_exists(PartType, {:cost => "", :internal_tag => "keyboard", :id => "5", :description => "Teclado"})
-		create_if_not_exists(PartType, {:cost => "", :internal_tag => "antenna", :id => "6", :description => "Antena"})
-	end
-
-	Profile.transaction do
-
-		create_if_not_exists(Profile, {:access_level => "600", :internal_tag => "developer", :id => "1", :description => "Desarrollador"})
-		create_if_not_exists(Profile, {:access_level => "500", :internal_tag => "root", :id => "2", :description => "Administrador"})
-		create_if_not_exists(Profile, {:access_level => "300", :internal_tag => "technician", :id => "3", :description => "Tecnico"})
-		create_if_not_exists(Profile, {:access_level => "0", :internal_tag => "educator", :id => "4", :description => "Formador"})
-		create_if_not_exists(Profile, {:access_level => "200", :internal_tag => "teacher", :id => "5", :description => "Maestro"})
-		create_if_not_exists(Profile, {:access_level => "0", :internal_tag => "volunteer", :id => "6", :description => "Voluntario"})
-		create_if_not_exists(Profile, {:access_level => "100", :internal_tag => "student", :id => "7", :description => "Estudiante"})
-		create_if_not_exists(Profile, {:access_level => "300", :internal_tag => "director", :id => "8", :description => "Director"})
-		create_if_not_exists(Profile, {:access_level => "0", :internal_tag => "electric_technician", :id => "9", :description => "Electricista"})
-		create_if_not_exists(Profile, {:access_level => "0", :internal_tag => "guardian", :id => "10", :description => "Custodio"})
-		create_if_not_exists(Profile, {:access_level => "0", :internal_tag => "guest", :id => "12", :description => "Invitado"})
-		create_if_not_exists(Profile, {:access_level => "0", :internal_tag => "extern_system", :id => "13", :description => "Extern System"})
-		create_if_not_exists(Profile, {:access_level => "0", :internal_tag => "network_control", :id => "14", :description => "NetworkControl"})
-		create_if_not_exists(Profile, {:access_level => "0", :internal_tag => "netmonitor", :id => "15", :description => "NetworkMonitor"})
-		create_if_not_exists(Profile, {:access_level => "0", :internal_tag => "laptop_register", :id => "16", :description => "LaptopRegister"})
-		create_if_not_exists(Profile, {:access_level => "0", :internal_tag => "education_team", :id => "17", :description => "EducationTeam"})
-		create_if_not_exists(Profile, {:access_level => "0", :internal_tag => "visitor", :id => "18", :description => "Visitante"})
-		create_if_not_exists(Profile, {:access_level => "0", :internal_tag => "lobbiest", :id => "19", :description => "Receptor"})
-		create_if_not_exists(Profile, {:access_level => "0", :internal_tag => "default", :id => "20", :description => "defecto"})
-	end
-
-	PlaceType.transaction do
-
-		create_if_not_exists(PlaceType, {:name => "Pais", :internal_tag => "country", :id => "1"})
-		create_if_not_exists(PlaceType, {:name => "Departamento", :internal_tag => "state", :id => "2"})
-		create_if_not_exists(PlaceType, {:name => "Ciudad", :internal_tag => "city", :id => "3"})
-		create_if_not_exists(PlaceType, {:name => "Escuela", :internal_tag => "school", :id => "4"})
-		create_if_not_exists(PlaceType, {:name => "Primer Grado", :internal_tag => "first_grade", :id => "5"})
-		create_if_not_exists(PlaceType, {:name => "Segundo Grado", :internal_tag => "second_grade", :id => "6"})
-		create_if_not_exists(PlaceType, {:name => "Tercer Grado", :internal_tag => "third_grade", :id => "7"})
-		create_if_not_exists(PlaceType, {:name => "Cuarto Grado", :internal_tag => "fourth_grade", :id => "8"})
-		create_if_not_exists(PlaceType, {:name => "Quinto Grado", :internal_tag => "fifth_grade", :id => "9"})
-		create_if_not_exists(PlaceType, {:name => "Sexto Grado", :internal_tag => "sixth_grade", :id => "10"})
-		create_if_not_exists(PlaceType, {:name => "Seccion", :internal_tag => "section", :id => "11"})
-		create_if_not_exists(PlaceType, {:name => "Turno", :internal_tag => "shift", :id => "12"})
-		create_if_not_exists(PlaceType, {:name => "Educacion Especial", :internal_tag => "special", :id => "13"})
-		create_if_not_exists(PlaceType, {:name => "Preescolar", :internal_tag => "kinder", :id => "14"})
-		create_if_not_exists(PlaceType, {:name => "Institucion", :internal_tag => "institution", :id => "15"})
-		create_if_not_exists(PlaceType, {:name => "Septimo grado", :internal_tag => "seventh_grade", :id => "16"})
-		create_if_not_exists(PlaceType, {:name => "Octavo grado", :internal_tag => "eighth_grade", :id => "17"})
-		create_if_not_exists(PlaceType, {:name => "Noveno grado", :internal_tag => "ninth_grade", :id => "18"})
-		create_if_not_exists(PlaceType, {:name => "Root", :internal_tag => "root", :id => "19"})
-	end
-
-	Status.transaction do
-
-		create_if_not_exists(Status, {:internal_tag => "dead", :abbrev => "DOA", :id => "1", :description => "Dead on arrival"})
-		create_if_not_exists(Status, {:internal_tag => "deactivated", :abbrev => "D", :id => "2", :description => "En desuso"})
-		create_if_not_exists(Status, {:internal_tag => "activated", :abbrev => "U", :id => "3", :description => "En uso"})
-		create_if_not_exists(Status, {:internal_tag => "on_repair", :abbrev => "ER", :id => "4", :description => "En reparacion"})
-		create_if_not_exists(Status, {:internal_tag => "repaired", :abbrev => "R", :id => "5", :description => "Reparado"})
-		create_if_not_exists(Status, {:internal_tag => "stolen", :abbrev => "S", :id => "6", :description => "Robado"})
-		create_if_not_exists(Status, {:internal_tag => "lost", :abbrev => "L", :id => "8", :description => "Perdido"})
-		create_if_not_exists(Status, {:internal_tag => "broken", :abbrev => "B", :id => "12", :description => "Roto"})
-		create_if_not_exists(Status, {:internal_tag => "ripped", :abbrev => "RIP", :id => "13", :description => "Desensamblado"})
-	end
-
-  PartMovementType.transaction do
-  
-    create_if_not_exists(PartMovementType, {:name => "Entrada por compra", :internal_tag => "new_part_in", :direction => true})
-    create_if_not_exists(PartMovementType, {:name => "Salida como repuesto", :internal_tag => "part_replacement_out", :direction => false})
-    create_if_not_exists(PartMovementType, {:name => "Salida por transferencia", :internal_tag => "part_transfered_out", :direction => false})
-    create_if_not_exists(PartMovementType, {:name => "Entrada por transferencia", :internal_tag => "part_transfered_in", :direction => true})
-  end
-  
-  #####
-  # Application specific Data, (Non-trivial-data)
-  #
-  require "digest/sha1"
-
-  root_place = create_if_not_exists(Place, {:id => "1", :name => "Rootland", :description => "Root System Place", :place_type_id => "19"})
-  create_if_not_exists(Node, { :id => "1", :name => "RootLand", :lat => "-25.289453059491", :lng => "-57.5725463032722", :node_type_id => "1", :place_id => "1", :zoom => 19 })
-
-  root_person = create_if_not_exists(Person, {:id => "1", :name => "System", :lastname => "Root", :id_document => "0", :email => "sistema@paraguayeduca.org" })
+  Node.create(:name => "RootLand", :lat => "-25.289453059491", :lng => "-57.5725463032722", :node_type_id => "1", :place_id => "1", :zoom => 19)
+  Person.create(:name => "System", :lastname => "Root", :id_document => "0", :email => "sistema@paraguayeduca.org")
 
   devel_profile = Profile.find_by_internal_tag("developer")
-  create_if_not_exists(Perform, { :id => "1", :person_id => root_person.id, :place_id => root_place.id, :profile_id => devel_profile.id })
+  Perform.create(:person_id => Person.first.id, :place_id => root_place.id, :profile_id => devel_profile.id)
+  User.find_or_create_by_usuario("admin", :password => Digest::SHA1.hexdigest("admin"), :person_id => 1)
+end
 
-  create_if_not_exists(User, { :id => "1", :usuario => "admin", :password =>  Digest::SHA1.hexdigest("admin"), :person_id => root_person.id})
-
-  create_if_not_exists(DefaultValue, { :id => "1", :key => "google_api_url", :value => "http://www.google.com/jsapi?key=" })
-  create_if_not_exists(DefaultValue, { :id => "2", :key => "google_api_key", :value => "ABCDEFG" })
-  create_if_not_exists(DefaultValue, { :id => "3", :key => "lang", :value => "es" })
-
+DefaultValue.find_or_create_by_key("google_api_url", :value => "http://www.google.com/jsapi?key=")
+DefaultValue.find_or_create_by_key("google_api_key", :value => "ABCDEFG")
+DefaultValue.find_or_create_by_key("lang", :value => "es")
