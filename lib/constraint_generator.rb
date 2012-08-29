@@ -16,7 +16,8 @@ class ConstraintGenerator
     append_script(output, "lib/constraint_generator_ext.rb")
    
     output.write("\n\t######\n\t#  Structural Constraints\n\t#\n")
-    all_tables.each { |table|
+    connection = ActiveRecord::Base.connection
+    connection.tables.each { |table|
 
       find_constraints(table).each { |constraint|
 
@@ -25,22 +26,6 @@ class ConstraintGenerator
     }
 
     output.close
-  end
-
-  #####
-  #  Gets all the tables from the current database
-  #
-  def self.all_tables
-
-    tables = Array.new
-
-    results = ActiveRecord::Base.connection.execute("show tables")
-    while (row = results.fetch_row) do
-
-      tables.push(row[0])
-    end
-
-    tables
   end
 
   private
@@ -52,12 +37,11 @@ class ConstraintGenerator
     list = Array.new
 
     results = ActiveRecord::Base.connection.execute("select * from information_schema.key_column_usage where table_schema = schema() and table_name = \"#{table}\"")
-    while (row = results.fetch_row) do
-
+    results.each { |row|
       table = row[10]
       foreign_key = row[6]
       list.push({ :table => table, :foreign_key => foreign_key }) if table && foreign_key
-    end
+    }
  
     list
   end

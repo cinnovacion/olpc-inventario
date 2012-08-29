@@ -16,8 +16,8 @@ namespace :seed_data do
 
   task(:install => :environment) do
 
-    if ConstraintGenerator.all_tables == []
-
+    connection = ActiveRecord::Base.connection
+    if connection.tables == []
       run_file("./db/initial_schema.rb")
       puts "db/initial_schema.rb file, loaded!"
 
