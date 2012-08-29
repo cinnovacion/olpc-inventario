@@ -13,7 +13,7 @@
 <% i += 1 if ['person', 'person_no_laptop'].include?(m[:type]) %>
 <% bg_attr = i%2 == 1 ? "bgcolor='#dedede'" : "" %>
 
-<tr <%= bg_attr -%> >
+<tr <%= raw(bg_attr) -%> >
    <% if m[:type] == 'person' %>
    <td align="center"><font size=1><%= i %></font></td>
    <td align="center"><font size=1><%= m[:name] %></font></td>

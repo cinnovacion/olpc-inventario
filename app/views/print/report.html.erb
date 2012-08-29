@@ -19,7 +19,7 @@
 
 <% bg_attr = i%2 == 0 ? "bgcolor='#dedede'" : "" %> 
 
-<tr <%= bg_attr -%> >
+<tr <%= raw(bg_attr) -%> >
    <%m.each { |d| %>
    <td align="center" ><font size= <%= @fontsize ? @fontsize.to_s : "1"-%> ><%= raw(d) -%></font></td>
    <% } %>
