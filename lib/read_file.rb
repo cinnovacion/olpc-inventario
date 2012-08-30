@@ -23,7 +23,6 @@
 # 2009
 # # #
 
-require "parseexcel"
 require 'tempfile'
 
 module ReadFile
@@ -43,7 +42,7 @@ module ReadFile
    _laptop_serial = 3
 
     Laptop.transaction do
-      Spreadsheet::ParseExcel.parse(filename).worksheet(worksheet).each { |row|
+      Spreadsheet.open(filename).worksheet(worksheet).each { |row|
         next if row == nil
         dataArray = row.map { |cell| cell ? cell.to_s('utf-8') : "" }
 
@@ -192,7 +191,7 @@ module ReadFile
 
     Person.transaction do
     #There we go!
-    Spreadsheet::ParseExcel.parse(filename).worksheet(worksheet).each { |row|
+    Spreadsheet.open(filename).worksheet(worksheet).each { |row|
       next if row == nil
       dataArray = row.map() { |c| c ? c.to_s('utf-8') : "" }
 
@@ -281,7 +280,7 @@ module ReadFile
     _laptop_sn = 4
 
    Person.transaction do
-     Spreadsheet::ParseExcel.parse(filename).worksheet(worksheet).each { |row|
+     Spreadsheet.open(filename).worksheet(worksheet).each { |row|
        next if row == nil
        dataArray = row.map() { |c| c ? c.to_s('utf-8') : "" }
 
@@ -340,7 +339,7 @@ module ReadFile
 
   #Loads from xls files and returns a list.
   def self.fromXls(filename,worksheet=0)
-    wb = Spreadsheet::ParseExcel.parse(filename)
+    wb = Spreadsheet.open(filename)
     rows = wb.worksheet(worksheet).map() { |r| r }.compact
     grid = rows.map() { |r| r.map() { |c| c.to_s('utf-8')}.compact rescue nil }
   end

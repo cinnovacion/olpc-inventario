@@ -22,8 +22,6 @@
 # # #
                    
 require "iconv"                                                       
-require "spreadsheet/excel"
-include Spreadsheet
 
 class FormatManager < ActiveRecord::Base
 
@@ -33,28 +31,27 @@ class FormatManager < ActiveRecord::Base
   #  - genera una planilla de excel a partir de la matriz @datos
   #
   def self.generarExcel2(datos, titulos = [])
-
     # jugando con fuego.. puede haber carrera...
-    file_name = Rails.root.join("/tmp/", Kernel.rand.to_s.split(".")[1] + ".xls").to_s
-    workbook = Excel.new(file_name)
-    worksheet = workbook.add_worksheet
+    workbook = Spreadsheet::Workbook.new
+    worksheet = workbook.create_worksheet
 
     # titulos 
     if titulos.length == 0
       filaTmp = datos.length > 0 ? datos[0] : []
       filaTmp.length.times { |i| titulos.push("Columna #{i+1}") }
     end
-    worksheet.write(0, 0,titulos)
+    worksheet.row(0).replace(titulos)
 
     # filas
     cnt = 1
     datos.each { |fila|
       self.clean_row(fila)
-      worksheet.write(cnt, 0, fila)
+      worksheet.row(cnt).replace(fila)
       cnt += 1
     }
-    workbook.close
 
+    file_name = Rails.root.join("/tmp/", Kernel.rand.to_s.split(".")[1] + ".xls").to_s
+    workbook.write file_name
     return file_name
   end
 

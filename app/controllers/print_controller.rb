@@ -1211,8 +1211,7 @@ class PrintController < ApplicationController
   end
 
   def people_laptops_xls(root_place, include_filter)
-    file_name = Rails.root.join("/tmp/", Kernel.rand.to_s.split(".")[1] + ".xls").to_s
-    workbook = Spreadsheet::Excel.new(file_name)
+    workbook = Spreadsheet::Workbook.new
 
     stack = [root_place]
     while(stack != [])
@@ -1229,32 +1228,34 @@ class PrintController < ApplicationController
       end
       next if performs.count == 0
 
-      worksheet = workbook.add_worksheet
-      worksheet.write(0, 0, place.getName)
-      worksheet.write(1, 0, ["#", _("Name"), _("Document id"), _("Laptop"), _("Laptop status"), _("In hands"), _("Notes")])
+      worksheet = workbook.create_worksheet(:name => place.name)
+      worksheet[0, 0] = place.getName
+      worksheet.row(1).push("#", _("Name"), _("Document id"), _("Laptop"), _("Laptop status"), _("In hands"), _("Notes"))
 
-      row = 1
+      row_num = 1
       cnt = 0
       performs.each { |perform|
         cnt = cnt + 1
-        row = row + 1
+        row_num = row_num + 1
+        row = worksheet.row(row_num)
         person = perform.person
         laptops = person.laptops_assigned
 
-        worksheet.write(row, 0, cnt)
-        worksheet.write(row, 1, person.getFullName)
-        worksheet.write(row, 2, person.id_document)
+        row.push(cnt)
+        row.push(person.getFullName)
+        row.push(person.id_document)
 
         if person.notes and person.notes != ''
-          worksheet.write(row, 6, person.notes)
+          row[6] = person.notes
         end
 
         if laptops.length == 0
-          worksheet.write(row, 3, _("None"))
+          row[3] = _("None")
         end
         first = true
         laptops.each { |laptop|
-          row = row + 1 if !first
+          row_num = row_num + 1 if !first
+          row = worksheet.row(row_num)
 
           if laptop.assignee == laptop.owner
             delivered = _("Yes")
@@ -1262,17 +1263,18 @@ class PrintController < ApplicationController
             delivered = _("No")
           end
           status = (laptop.status.internal_tag != "activated") ? laptop.getStatus : nil
-          worksheet.write(row, 3, laptop.serial_number)
-          worksheet.write(row, 4, status)
-          worksheet.write(row, 5, delivered)
+          row[3] = laptop.serial_number
+          row[4] = status
+          row[5] = delivered
 
-          worksheet.write(row, 6, _("Person has multiple laptops!")) if !first
+          row[6] = _("Person has multiple laptops!") if !first
           first = false
         }
       }
     end
 
-    workbook.close
+    file_name = Rails.root.join("/tmp/", Kernel.rand.to_s.split(".")[1] + ".xls").to_s
+    workbook.write file_name
     send_file(file_name,:filename => "people_laptops.xls",:type => "application/vnd.ms-excel",:stream => false )
   end
 
