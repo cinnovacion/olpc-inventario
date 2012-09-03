@@ -44,7 +44,7 @@ module ReadFile
     Laptop.transaction do
       Spreadsheet.open(filename).worksheet(worksheet).each { |row|
         next if row == nil
-        dataArray = row.map { |cell| cell ? cell.to_s('utf-8') : "" }
+        dataArray = row.map { |cell| cell ? cell.to_s : "" }
 
         #First we check if the shipment exists, else we created it.
         shipment = Shipment.find_by_shipment_number(dataArray[_shipment])
@@ -193,7 +193,7 @@ module ReadFile
     #There we go!
     Spreadsheet.open(filename).worksheet(worksheet).each { |row|
       next if row == nil
-      dataArray = row.map() { |c| c ? c.to_s('utf-8') : "" }
+      dataArray = row.map() { |c| c ? c.to_s : "" }
 
       name = dataArray[_name].to_s.strip
       lastname = dataArray[_lastname].to_s.strip
@@ -282,7 +282,7 @@ module ReadFile
    Person.transaction do
      Spreadsheet.open(filename).worksheet(worksheet).each { |row|
        next if row == nil
-       dataArray = row.map() { |c| c ? c.to_s('utf-8') : "" }
+       dataArray = row.map() { |c| c ? c.to_s : "" }
 
        name = dataArray[_name].to_s.strip
        lastname = dataArray[_lastname].to_s.strip
@@ -341,7 +341,7 @@ module ReadFile
   def self.fromXls(filename,worksheet=0)
     wb = Spreadsheet.open(filename)
     rows = wb.worksheet(worksheet).map() { |r| r }.compact
-    grid = rows.map() { |r| r.map() { |c| c.to_s('utf-8')}.compact rescue nil }
+    grid = rows.map() { |r| r.map() { |c| c.to_s}.compact rescue nil }
   end
 
   #Loads from plain text file and returns a list
