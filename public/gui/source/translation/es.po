@@ -11,18 +11,17 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: inventario/report/ReportGenerator.js:40
+#: inventario/report/ReportGenerator.js:41
 msgid "I need to know what report to generate!"
 msgstr "!Necesito saber que informe generar!"
 
-#: inventario/report/ReportGenerator.js:44
-#: inventario/window/BarcodeReport.js:82
-msgid "Generate"
-msgstr "Generar"
-
-#: inventario/report/ReportGenerator.js:82
+#: inventario/report/ReportGenerator.js:72
 msgid "Report"
 msgstr "Reporte"
+
+#: inventario/report/ReportGenerator.js:106
+msgid "Generate (%1)"
+msgstr "Generar (%1)"
 
 #: inventario/sistema/Login.js:116 inventario/sistema/Login.js:156
 msgid "Welcome to the system"
@@ -58,7 +57,7 @@ msgstr "Compruebe el nombre de usuario"
 
 #: inventario/sistema/Logout.js:38
 msgid "Logout"
-msgstr "Cerrar sessión"
+msgstr "Cerrar sesión"
 
 #: inventario/sistema/Logout.js:68
 msgid "Are you sure you want to exit the system?"
@@ -104,11 +103,11 @@ msgstr "Fallo en su orden... "
 msgid "Processing your request..."
 msgstr "Procesando su petición..."
 
-#: inventario/util/PrintManager.js:198
+#: inventario/util/PrintManager.js:131
 msgid " not set to print even"
 msgstr "no puesto para imprimir"
 
-#: inventario/util/PrintManager.js:198
+#: inventario/util/PrintManager.js:131
 msgid "The document "
 msgstr "El documento"
 
@@ -168,7 +167,7 @@ msgstr " Hasta:"
 msgid "do not know the datatype : "
 msgstr "no conozco el datatype:"
 
-#: inventario/widget/Form.js:328
+#: inventario/widget/Form.js:326
 msgid "I don't know the data type "
 msgstr "No conozco el tipo de datos"
 
@@ -722,6 +721,14 @@ msgstr "Breves"
 msgid "Detailed"
 msgstr "Detalladas"
 
+#: inventario/window/BarcodeReport.js:86
+msgid "Generate (PDF)"
+msgstr "Generar (PDF)"
+
+#: inventario/window/BarcodeReport.js:91
+msgid "Generate (HTML)"
+msgstr "Generar (HTML)"
+
 #: inventario/window/BarcodeScanForm.js:29
 msgid "Mass assignment by barcode"
 msgstr "Asignación masiva por código de barra"
@@ -829,8 +836,8 @@ msgstr "Entradas con un check causarán la creación de un movimiento para cada 
 #: inventario/window/RegisterHandout.js:219
 msgid "Register %1 handout in %2?"
 msgid_plural "Register %1 handouts in %2?"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Registrar %1 entrega en %2?"
+msgstr[1] "Registrar %1 entregas en %2?"
 
 #: inventario/window/RegisterHandout.js:228
 msgid "Register handout from serial numbers?"
@@ -839,3 +846,6 @@ msgstr "Registrar entrega con los números de seriales?"
 #: inventario/window/WelcomeInfo.js:88
 msgid "Quick access"
 msgstr "Acceso rápido"
+
+#~ msgid "Generate"
+#~ msgstr "Generar"

@@ -11,17 +11,16 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: inventario/report/ReportGenerator.js:40
+#: inventario/report/ReportGenerator.js:41
 msgid "I need to know what report to generate!"
 msgstr ""
 
-#: inventario/report/ReportGenerator.js:44
-#: inventario/window/BarcodeReport.js:82
-msgid "Generate"
+#: inventario/report/ReportGenerator.js:72
+msgid "Report"
 msgstr ""
 
-#: inventario/report/ReportGenerator.js:82
-msgid "Report"
+#: inventario/report/ReportGenerator.js:106
+msgid "Generate (%1)"
 msgstr ""
 
 #: inventario/sistema/Login.js:116 inventario/sistema/Login.js:156
@@ -104,11 +103,11 @@ msgstr ""
 msgid "Processing your request..."
 msgstr ""
 
-#: inventario/util/PrintManager.js:198
+#: inventario/util/PrintManager.js:131
 msgid " not set to print even"
 msgstr ""
 
-#: inventario/util/PrintManager.js:198
+#: inventario/util/PrintManager.js:131
 msgid "The document "
 msgstr ""
 
@@ -168,7 +167,7 @@ msgstr ""
 msgid "do not know the datatype : "
 msgstr ""
 
-#: inventario/widget/Form.js:328
+#: inventario/widget/Form.js:326
 msgid "I don't know the data type "
 msgstr ""
 
@@ -722,6 +721,14 @@ msgstr ""
 msgid "Detailed"
 msgstr ""
 
+#: inventario/window/BarcodeReport.js:86
+msgid "Generate (PDF)"
+msgstr ""
+
+#: inventario/window/BarcodeReport.js:91
+msgid "Generate (HTML)"
+msgstr ""
+
 #: inventario/window/BarcodeScanForm.js:29
 msgid "Mass assignment by barcode"
 msgstr ""
@@ -901,6 +908,9 @@ msgstr ""
 #~ msgstr ""
 
 #~ msgid "General Information"
+#~ msgstr ""
+
+#~ msgid "Generate"
 #~ msgstr ""
 
 #~ msgid "Grades"
