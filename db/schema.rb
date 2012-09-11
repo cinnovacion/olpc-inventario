@@ -1,37 +1,51 @@
-# This file is auto-generated from the current state of the database. Instead of editing this file, 
-# please use the migrations feature of Active Record to incrementally modify your database, and
-# then regenerate this schema definition.
+# encoding: UTF-8
+# This file is auto-generated from the current state of the database. Instead
+# of editing this file, please use the migrations feature of Active Record to
+# incrementally modify your database, and then regenerate this schema definition.
 #
-# Note that this schema.rb definition is the authoritative source for your database schema. If you need
-# to create the application database on another system, you should be using db:schema:load, not running
-# all the migrations from scratch. The latter is a flawed and unsustainable approach (the more migrations
+# Note that this schema.rb definition is the authoritative source for your
+# database schema. If you need to create the application database on another
+# system, you should be using db:schema:load, not running all the migrations
+# from scratch. The latter is a flawed and unsustainable approach (the more migrations
 # you'll amass, the slower it'll run and the greater likelihood for issues).
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20091001211021) do
+ActiveRecord::Schema.define(:version => 20120821224805) do
 
-  create_table "activations", :force => true do |t|
+  create_table "assignments", :force => true do |t|
     t.date    "created_at"
-    t.date    "date_activated_at"
-    t.time    "time_activated_at"
-    t.string  "comment"
+    t.date    "date_assigned"
+    t.time    "time_assigned"
+    t.integer "source_person_id"
+    t.integer "destination_person_id"
     t.integer "laptop_id"
-    t.integer "person_activated_id"
+    t.text    "comment"
   end
 
-  add_index "activations", ["laptop_id"], :name => "activations_laptop_id_fk"
-  add_index "activations", ["person_activated_id"], :name => "activations_person_activated_id_fk"
+  add_index "assignments", ["destination_person_id"], :name => "assignments_destination_person_id_fk"
+  add_index "assignments", ["laptop_id"], :name => "assignments_laptop_id_fk"
+  add_index "assignments", ["source_person_id"], :name => "assignments_source_person_id_fk"
 
-  create_table "answers", :force => true do |t|
-    t.integer "quiz_id"
-    t.integer "person_id"
-    t.date    "created_at"
-    t.date    "answered_at"
+  create_table "audits", :force => true do |t|
+    t.integer  "auditable_id"
+    t.string   "auditable_type",   :limit => 100
+    t.integer  "user_id"
+    t.string   "user_type",        :limit => 100
+    t.string   "username",         :limit => 100
+    t.string   "action",           :limit => 100
+    t.text     "audited_changes"
+    t.integer  "version",                         :default => 0
+    t.datetime "created_at"
+    t.string   "comment"
+    t.string   "remote_address"
+    t.integer  "association_id"
+    t.string   "association_type", :limit => 100
   end
 
-  add_index "answers", ["person_id"], :name => "answers_person_id_fk"
-  add_index "answers", ["quiz_id"], :name => "answers_quiz_id_fk"
+  add_index "audits", ["auditable_id", "auditable_type"], :name => "auditable_index"
+  add_index "audits", ["created_at"], :name => "index_audits_on_created_at"
+  add_index "audits", ["user_id", "user_type"], :name => "user_index"
 
   create_table "bank_deposits", :force => true do |t|
     t.integer "problem_solution_id"
@@ -44,93 +58,8 @@ ActiveRecord::Schema.define(:version => 20091001211021) do
 
   add_index "bank_deposits", ["problem_solution_id"], :name => "bank_deposits_problem_solution_id_fk"
 
-  create_table "batteries", :force => true do |t|
-    t.string  "serial_number",       :limit => 100
-    t.date    "created_at"
-    t.integer "owner_id"
-    t.integer "shipment_arrival_id"
-    t.string  "box_serial_number",   :limit => 100
-    t.integer "box_id"
-    t.integer "status_id"
-  end
-
-  add_index "batteries", ["box_id"], :name => "batteries_box_id_fk"
-  add_index "batteries", ["owner_id"], :name => "batteries_owner_id_fk"
-  add_index "batteries", ["shipment_arrival_id"], :name => "batteries_shipment_arrival_id_fk"
-  add_index "batteries", ["status_id"], :name => "batteries_status_id_fk"
-
-  create_table "box_movement_details", :force => true do |t|
-    t.integer "box_movement_id"
-    t.integer "box_id"
-  end
-
-  add_index "box_movement_details", ["box_id"], :name => "box_movement_details_box_id_fk"
-  add_index "box_movement_details", ["box_movement_id"], :name => "box_movement_details_box_movement_id_fk"
-
-  create_table "box_movements", :force => true do |t|
-    t.date    "created_at"
-    t.date    "date_moved_at"
-    t.time    "time_moved_at"
-    t.integer "src_place_id"
-    t.integer "src_person_id"
-    t.integer "dst_place_id"
-    t.integer "dst_person_id"
-    t.integer "authorized_person_id"
-  end
-
-  add_index "box_movements", ["authorized_person_id"], :name => "box_movements_authorized_person_id_fk"
-  add_index "box_movements", ["dst_person_id"], :name => "box_movements_dst_person_id_fk"
-  add_index "box_movements", ["dst_place_id"], :name => "box_movements_dst_place_id_fk"
-  add_index "box_movements", ["src_person_id"], :name => "box_movements_src_person_id_fk"
-  add_index "box_movements", ["src_place_id"], :name => "box_movements_src_place_id_fk"
-
-  create_table "boxes", :force => true do |t|
-    t.integer "shipment_id"
-    t.integer "place_id"
-    t.string  "serial_number", :limit => 100
-  end
-
-  add_index "boxes", ["place_id"], :name => "boxes_place_id_fk"
-  add_index "boxes", ["shipment_id"], :name => "boxes_shipment_id_fk"
-
-  create_table "chargers", :force => true do |t|
-    t.string  "serial_number",       :limit => 100
-    t.date    "created_at"
-    t.integer "owner_id"
-    t.integer "shipment_arrival_id"
-    t.string  "box_serial_number",   :limit => 100
-    t.integer "box_id"
-    t.integer "status_id"
-  end
-
-  add_index "chargers", ["box_id"], :name => "chargers_box_id_fk"
-  add_index "chargers", ["owner_id"], :name => "chargers_owner_id_fk"
-  add_index "chargers", ["shipment_arrival_id"], :name => "chargers_shipment_arrival_id_fk"
-  add_index "chargers", ["status_id"], :name => "chargers_status_id_fk"
-
-  create_table "choices", :force => true do |t|
-    t.integer "answer_id"
-    t.integer "question_id"
-    t.integer "option_id"
-    t.string  "comment"
-  end
-
-  add_index "choices", ["answer_id"], :name => "choices_answer_id_fk"
-  add_index "choices", ["option_id"], :name => "choices_option_id_fk"
-  add_index "choices", ["question_id"], :name => "choices_question_id_fk"
-
   create_table "controllers", :force => true do |t|
     t.string "name", :limit => 100
-  end
-
-  create_table "copia", :force => true do |t|
-    t.string  "serial_number",       :limit => 100
-    t.date    "created_at"
-    t.string  "build_version",       :limit => 100
-    t.integer "model_id"
-    t.integer "shipment_arrival_id"
-    t.integer "activation_id"
-    t.integer "owner_id"
   end
 
   create_table "default_values", :force => true do |t|
@@ -184,15 +113,14 @@ ActiveRecord::Schema.define(:version => 20091001211021) do
     t.integer "model_id"
     t.integer "shipment_arrival_id"
     t.integer "owner_id"
-    t.string  "box_serial_number",    :limit => 100
-    t.integer "box_id"
     t.integer "status_id"
     t.string  "uuid"
     t.boolean "registered",                          :default => false
     t.date    "last_activation_date"
+    t.integer "assignee_id"
   end
 
-  add_index "laptops", ["box_id"], :name => "laptops_box_id_fk"
+  add_index "laptops", ["assignee_id"], :name => "laptops_assignee_id_fk"
   add_index "laptops", ["model_id"], :name => "laptops_model_id_fk"
   add_index "laptops", ["owner_id"], :name => "laptops_owner_id_fk"
   add_index "laptops", ["status_id"], :name => "laptops_status_id_fk"
@@ -216,15 +144,11 @@ ActiveRecord::Schema.define(:version => 20091001211021) do
   create_table "movement_details", :force => true do |t|
     t.integer "movement_id"
     t.integer "laptop_id"
-    t.integer "battery_id"
-    t.integer "charger_id"
     t.string  "description",   :limit => 100
     t.string  "serial_number", :limit => 100
     t.boolean "returned",                     :default => false
   end
 
-  add_index "movement_details", ["battery_id"], :name => "movement_details_battery_id_fk"
-  add_index "movement_details", ["charger_id"], :name => "movement_details_charger_id_fk"
   add_index "movement_details", ["laptop_id"], :name => "movement_details_laptop_id_fk"
   add_index "movement_details", ["movement_id"], :name => "movement_details_movement_id_fk"
 
@@ -305,36 +229,32 @@ ActiveRecord::Schema.define(:version => 20091001211021) do
   add_index "notifications_pools", ["notification_id"], :name => "notifications_pools_notification_id_fk"
   add_index "notifications_pools", ["place_id"], :name => "notifications_pools_place_id_fk"
 
-  create_table "options", :force => true do |t|
-    t.string  "option"
-    t.boolean "correct",     :default => false
-    t.integer "question_id"
+  create_table "part_movement_types", :force => true do |t|
+    t.string  "name",         :limit => 100
+    t.string  "description"
+    t.string  "internal_tag", :limit => 100
+    t.boolean "direction",                   :default => false
   end
 
-  add_index "options", ["question_id"], :name => "options_question_id_fk"
+  create_table "part_movements", :force => true do |t|
+    t.integer  "part_movement_type_id"
+    t.integer  "part_type_id"
+    t.integer  "amount"
+    t.integer  "place_id"
+    t.integer  "person_id"
+    t.datetime "created_at"
+  end
+
+  add_index "part_movements", ["part_movement_type_id"], :name => "part_movements_part_movement_type_id_fk"
+  add_index "part_movements", ["part_type_id"], :name => "part_movements_part_type_id_fk"
+  add_index "part_movements", ["person_id"], :name => "part_movements_person_id_fk"
+  add_index "part_movements", ["place_id"], :name => "part_movements_place_id_fk"
 
   create_table "part_types", :force => true do |t|
     t.string  "description"
     t.string  "internal_tag", :limit => 100
     t.integer "cost"
   end
-
-  create_table "parts", :force => true do |t|
-    t.integer "status_id"
-    t.integer "owner_id"
-    t.integer "part_type_id"
-    t.integer "laptop_id"
-    t.integer "battery_id"
-    t.integer "charger_id"
-    t.string  "on_device_serial", :limit => 100
-  end
-
-  add_index "parts", ["battery_id"], :name => "parts_battery_id_fk"
-  add_index "parts", ["charger_id"], :name => "parts_charger_id_fk"
-  add_index "parts", ["laptop_id"], :name => "parts_laptop_id_fk"
-  add_index "parts", ["owner_id"], :name => "parts_owner_id_fk"
-  add_index "parts", ["part_type_id"], :name => "parts_part_type_id_fk"
-  add_index "parts", ["status_id"], :name => "parts_status_id_fk"
 
   create_table "people", :force => true do |t|
     t.date    "created_at"
@@ -345,21 +265,15 @@ ActiveRecord::Schema.define(:version => 20091001211021) do
     t.string  "phone",                  :limit => 100
     t.string  "cell_phone",             :limit => 100
     t.string  "email",                  :limit => 100
-    t.integer "place_id"
     t.string  "position",               :limit => 50
     t.string  "school_name",            :limit => 50
     t.integer "image_id"
     t.string  "barcode"
     t.date    "id_document_created_at"
+    t.string  "notes"
   end
 
   add_index "people", ["image_id"], :name => "people_image_id_fk"
-  add_index "people", ["place_id"], :name => "people_place_id_fk"
-
-  create_table "people_profiles", :id => false, :force => true do |t|
-    t.integer "person_id"
-    t.integer "profile_id"
-  end
 
   create_table "performs", :force => true do |t|
     t.integer "person_id"
@@ -427,23 +341,21 @@ ActiveRecord::Schema.define(:version => 20091001211021) do
   create_table "problem_solutions", :force => true do |t|
     t.date    "created_at"
     t.integer "solved_by_person_id"
-    t.integer "src_part_id"
-    t.integer "dst_part_id"
     t.string  "comment"
     t.integer "problem_report_id"
     t.integer "solution_type_id"
   end
 
-  add_index "problem_solutions", ["dst_part_id"], :name => "problem_solutions_dst_part_id_fk"
+  add_index "problem_solutions", ["problem_report_id"], :name => "problem_solutions_problem_report_id_fk"
   add_index "problem_solutions", ["solution_type_id"], :name => "problem_solutions_solution_type_id_fk"
   add_index "problem_solutions", ["solved_by_person_id"], :name => "problem_solutions_solved_by_person_id_fk"
-  add_index "problem_solutions", ["src_part_id"], :name => "problem_solutions_src_part_id_fk"
 
   create_table "problem_types", :force => true do |t|
-    t.string "description"
-    t.string "internal_tag",  :limit => 100
-    t.string "name",          :limit => 100
-    t.string "extended_info"
+    t.string  "description"
+    t.string  "internal_tag",  :limit => 100
+    t.string  "name",          :limit => 100
+    t.string  "extended_info"
+    t.boolean "is_hardware",                  :default => false
   end
 
   create_table "profiles", :force => true do |t|
@@ -451,31 +363,6 @@ ActiveRecord::Schema.define(:version => 20091001211021) do
     t.string  "internal_tag", :limit => 100
     t.integer "access_level",                :default => 0
   end
-
-  create_table "questions", :force => true do |t|
-    t.string  "question"
-    t.integer "quiz_id"
-  end
-
-  add_index "questions", ["quiz_id"], :name => "questions_quiz_id_fk"
-
-  create_table "quizzes", :force => true do |t|
-    t.string  "title"
-    t.date    "created_at"
-    t.integer "person_id"
-  end
-
-  add_index "quizzes", ["person_id"], :name => "quizzes_person_id_fk"
-
-  create_table "relationships", :force => true do |t|
-    t.integer "person_id"
-    t.integer "to_person_id"
-    t.integer "profile_id"
-  end
-
-  add_index "relationships", ["person_id"], :name => "relationships_person_id_fk"
-  add_index "relationships", ["profile_id"], :name => "relationships_profile_id_fk"
-  add_index "relationships", ["to_person_id"], :name => "relationships_to_person_id_fk"
 
   create_table "school_infos", :force => true do |t|
     t.integer "place_id"
@@ -497,7 +384,7 @@ ActiveRecord::Schema.define(:version => 20091001211021) do
   add_index "section_details", ["place_id"], :name => "section_details_place_id_fk"
 
   create_table "sessions", :force => true do |t|
-    t.string   "session_id", :null => false
+    t.string   "session_id", :limit => 100, :null => false
     t.text     "data"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -513,15 +400,20 @@ ActiveRecord::Schema.define(:version => 20091001211021) do
     t.string "shipment_number"
   end
 
-  create_table "solution_types", :force => true do |t|
-    t.string  "name",          :limit => 100
-    t.string  "description"
-    t.string  "extended_info"
-    t.string  "internal_tag",  :limit => 100
-    t.integer "part_type_id"
+  create_table "solution_type_part_types", :force => true do |t|
+    t.integer "solution_type_id", :null => false
+    t.integer "part_type_id",     :null => false
   end
 
-  add_index "solution_types", ["part_type_id"], :name => "solution_types_part_type_id_fk"
+  add_index "solution_type_part_types", ["part_type_id"], :name => "solution_type_part_types_part_type_id_fk"
+  add_index "solution_type_part_types", ["solution_type_id"], :name => "solution_type_part_types_solution_type_id_fk"
+
+  create_table "solution_types", :force => true do |t|
+    t.string "name",          :limit => 100
+    t.string "description"
+    t.string "extended_info"
+    t.string "internal_tag",  :limit => 100
+  end
 
   create_table "status_changes", :force => true do |t|
     t.integer "previous_state_id"
@@ -545,11 +437,6 @@ ActiveRecord::Schema.define(:version => 20091001211021) do
     t.string "internal_tag", :limit => 100
   end
 
-  create_table "teaches", :force => true do |t|
-    t.integer "person_id"
-    t.integer "place_id"
-  end
-
   create_table "users", :force => true do |t|
     t.string  "usuario",   :limit => 40
     t.string  "clave",     :limit => 40
@@ -558,15 +445,77 @@ ActiveRecord::Schema.define(:version => 20091001211021) do
 
   add_index "users", ["person_id"], :name => "users_person_id_fk"
 
-  # This would normally be created by ActiveRecord, in
-  # initialize_schema_migrations_table
-  # However, AR creates the version field with a 255 character limit, which
-  # we can't use as an index when running as utf8mb4. Create it with a shorter
-  # length.
-  create_table "schema_migrations", :force => true do |t|
-    t.string :version, :null => false, :limit => 100
-  end
+  add_foreign_key "bank_deposits", "problem_solutions", :name => "bank_deposits_problem_solution_id_fk"
 
-  add_index "schema_migrations", :version, :unique => true, :name => "unique_schema_migrations"
+  add_foreign_key "events", "places", :name => "events_place_id_fk"
+
+  add_foreign_key "laptop_details", "laptops", :name => "laptop_details_laptop_id_fk"
+  add_foreign_key "laptop_details", "people", :name => "laptop_details_person_id_fk"
+  add_foreign_key "laptop_details", "section_details", :name => "laptop_details_section_detail_id_fk"
+
+  add_foreign_key "laptops", "models", :name => "laptops_model_id_fk"
+  add_foreign_key "laptops", "people", :name => "laptops_owner_id_fk", :column => "owner_id"
+  add_foreign_key "laptops", "statuses", :name => "laptops_status_id_fk"
+
+  add_foreign_key "lots", "people", :name => "lots_person_id_fk"
+
+  add_foreign_key "movement_details", "laptops", :name => "movement_details_laptop_id_fk"
+  add_foreign_key "movement_details", "movements", :name => "movement_details_movement_id_fk"
+
+  add_foreign_key "movements", "movement_types", :name => "movements_movement_type_id_fk"
+  add_foreign_key "movements", "people", :name => "movements_destination_person_id_fk", :column => "destination_person_id"
+  add_foreign_key "movements", "people", :name => "movements_responsible_person_id_fk", :column => "responsible_person_id"
+  add_foreign_key "movements", "people", :name => "movements_source_person_id_fk", :column => "source_person_id"
+
+  add_foreign_key "node_types", "images", :name => "node_types_image_id_fk"
+
+  add_foreign_key "nodes", "node_types", :name => "nodes_node_type_id_fk"
+  add_foreign_key "nodes", "places", :name => "nodes_place_id_fk"
+
+  add_foreign_key "notification_subscribers", "notifications", :name => "notification_subscribers_notification_id_fk"
+  add_foreign_key "notification_subscribers", "people", :name => "notification_subscribers_person_id_fk"
+
+  add_foreign_key "notifications_pools", "notifications", :name => "notifications_pools_notification_id_fk"
+  add_foreign_key "notifications_pools", "places", :name => "notifications_pools_place_id_fk"
+
+  add_foreign_key "part_movements", "part_movement_types", :name => "part_movements_part_movement_type_id_fk"
+  add_foreign_key "part_movements", "part_types", :name => "part_movements_part_type_id_fk"
+  add_foreign_key "part_movements", "people", :name => "part_movements_person_id_fk"
+  add_foreign_key "part_movements", "places", :name => "part_movements_place_id_fk"
+
+  add_foreign_key "people", "images", :name => "people_image_id_fk"
+
+  add_foreign_key "performs", "people", :name => "performs_person_id_fk"
+  add_foreign_key "performs", "places", :name => "performs_place_id_fk"
+  add_foreign_key "performs", "profiles", :name => "performs_profile_id_fk"
+
+  add_foreign_key "permissions", "controllers", :name => "permissions_controller_id_fk"
+
+  add_foreign_key "place_dependencies", "places", :name => "place_dependencies_ancestor_id_fk", :column => "ancestor_id"
+  add_foreign_key "place_dependencies", "places", :name => "place_dependencies_descendant_id_fk", :column => "descendant_id"
+
+  add_foreign_key "places", "place_types", :name => "places_place_type_id_fk"
+  add_foreign_key "places", "places", :name => "places_place_id_fk"
+
+  add_foreign_key "problem_reports", "people", :name => "problem_reports_owner_id_fk", :column => "owner_id"
+  add_foreign_key "problem_reports", "places", :name => "problem_reports_place_id_fk"
+
+  add_foreign_key "problem_solutions", "people", :name => "problem_solutions_solved_by_person_id_fk", :column => "solved_by_person_id"
+  add_foreign_key "problem_solutions", "problem_reports", :name => "problem_solutions_problem_report_id_fk"
+  add_foreign_key "problem_solutions", "solution_types", :name => "problem_solutions_solution_type_id_fk"
+
+  add_foreign_key "school_infos", "places", :name => "school_infos_place_id_fk"
+
+  add_foreign_key "section_details", "lots", :name => "section_details_lot_id_fk"
+  add_foreign_key "section_details", "places", :name => "section_details_place_id_fk"
+
+  add_foreign_key "solution_type_part_types", "part_types", :name => "solution_type_part_types_part_type_id_fk"
+  add_foreign_key "solution_type_part_types", "solution_types", :name => "solution_type_part_types_solution_type_id_fk"
+
+  add_foreign_key "status_changes", "laptops", :name => "status_changes_laptop_id_fk"
+  add_foreign_key "status_changes", "statuses", :name => "status_changes_new_state_id_fk", :column => "new_state_id"
+  add_foreign_key "status_changes", "statuses", :name => "status_changes_previous_state_id_fk", :column => "previous_state_id"
+
+  add_foreign_key "users", "people", :name => "users_person_id_fk"
 
 end

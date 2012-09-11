@@ -8,12 +8,12 @@ namespace :utf8_migration do
     # This was how inventario installations funtioned by default before v0.6.0.
 
     connection = ActiveRecord::Base.connection
-    connection.execute "ALTER DATABASE #{connection.current_database} CHARACTER SET utf8mb4"
+    connection.execute "ALTER DATABASE #{connection.current_database} CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci"
 
     connection.execute "SET foreign_key_checks = 0;"
     tables = connection.tables.each { |table|
       puts "Examine table #{table}"
-      connection.execute "ALTER TABLE #{table} CHARACTER SET utf8mb4"
+      connection.execute "ALTER TABLE #{table} CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci"
 
       connection.columns(table).each{ |column|
         next if ![:string, :text].include?(column.type)
@@ -25,7 +25,7 @@ namespace :utf8_migration do
         end
         puts "Migrating #{column.sql_type} column #{name}"
         connection.execute "ALTER TABLE #{table} MODIFY `#{name}` #{tmptype};"
-        connection.execute "ALTER TABLE #{table} MODIFY `#{name}` #{column.sql_type} CHARACTER SET utf8mb4;"
+        connection.execute "ALTER TABLE #{table} MODIFY `#{name}` #{column.sql_type} CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
       }
     }
 

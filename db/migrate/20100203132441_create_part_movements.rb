@@ -1,5 +1,4 @@
 class CreatePartMovements < ActiveRecord::Migration
-  extend DbUtil
   def self.up
     create_table :part_movements do |t|
       t.integer :part_movement_type_id
@@ -10,10 +9,10 @@ class CreatePartMovements < ActiveRecord::Migration
       t.datetime :created_at
     end
 
-    createConstraint("part_movements", "part_movement_type_id", "part_movement_types")
-    createConstraint("part_movements", "part_type_id", "part_types")
-    createConstraint("part_movements", "place_id", "places")
-    createConstraint("part_movements", "person_id", "people")
+    add_foreign_key :part_movements, :part_movement_types
+    add_foreign_key :part_movements, :part_types
+    add_foreign_key :part_movements, :people
+    add_foreign_key :part_movements, :places
   end
 
   def self.down

@@ -7,6 +7,5 @@ public/build
 *.swp
 qooxdoo-*-sdk.zip
 public/system/barcodes
-db/schema.rb
 config/inventario.yml
 public/gui/source/script

@@ -40,6 +40,7 @@ require 'gruff'
 require 'spreadsheet'
 require 'will_paginate'
 require 'fast_gettext'
+require 'foreigner'
 
 # Locally packaged gems
 $LOAD_PATH << './vendor/gems/acts_as_audited-2.0.0/lib'

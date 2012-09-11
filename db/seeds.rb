@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
 
+require "digest/sha1"
+
+# SEED DATA
+
 EventType.transaction do
   EventType.find_or_create_by_internal_tag("stolen_laptop_activity", :name => "Laptop Robada", :description => "Se detecto el intento de activacion de una de las laptops robadas en el School Server")
   EventType.find_or_create_by_internal_tag("node_down", :name => "Nodo Caido", :description => "Un nodo entro en estado de inactividad")
@@ -7,7 +11,6 @@ EventType.transaction do
 end
 
 LaptopConfig.transaction do
-
   LaptopConfig.find_or_create_by_key("build_version", :value => "767", :resource_name => "", :description => "Version SO")
   LaptopConfig.find_or_create_by_key("model_id", :value => "1", :resource_name => "", :description => "Modelo")
   LaptopConfig.find_or_create_by_key("shipment_id", :value => "1", :resource_name => "", :description => "Cargamento")
@@ -124,10 +127,7 @@ PartMovementType.transaction do
   PartMovementType.find_or_create_by_internal_tag("part_transfered_in", :name => "Entrada por transferencia", :direction => true)
 end
 
-#####
-# Application specific Data, (Non-trivial-data)
-#
-require "digest/sha1"
+# INITIAL SETTINGS/ACCOUNTS
 
 if !Place.exists?
   root_type = PlaceType.find_by_internal_tag("root")
@@ -144,3 +144,6 @@ end
 DefaultValue.find_or_create_by_key("google_api_url", :value => "http://www.google.com/jsapi?key=")
 DefaultValue.find_or_create_by_key("google_api_key", :value => "ABCDEFG")
 DefaultValue.find_or_create_by_key("lang", :value => "es")
+
+# FIXES FOR EXISTING DATA
+require './db/existing_data_fixes.rb'

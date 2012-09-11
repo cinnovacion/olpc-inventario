@@ -8,7 +8,7 @@ Group:	Applications/Internet
 License: GPL	
 URL: http://git.paraguayeduca.org/gitweb/projects/inventario.git
 Source0: %{name}-%{version}.tar.gz
-Requires: ruby(abi) = 1.9.1, crontabs, rubygems, rubygem-activesupport, rubygem-activeresource, rubygem-rails, mysql-server, htmldoc, httpd, ruby-mysql, rubygem-json, rubygem-gruff, rubygem-spreadsheet, rubygem-gbarcode, logrotate, rubygem-fast_gettext, rubygem-mysql2, rubygem-will_paginate, rubygem-locale, rubygem-gettext
+Requires: ruby(abi) = 1.9.1, crontabs, rubygems, rubygem-activesupport, rubygem-activeresource, rubygem-rails, mysql-server, htmldoc, httpd, ruby-mysql, rubygem-json, rubygem-gruff, rubygem-spreadsheet, rubygem-gbarcode, logrotate, rubygem-fast_gettext, rubygem-mysql2, rubygem-will_paginate, rubygem-locale, rubygem-gettext, rubygem-foreigner
 
 # acts_as_audited gemspec needs this
 Requires: git
@@ -72,22 +72,12 @@ fi
 # copy database config template
 cp /var/%{name}/config/database.yml.example /var/%{name}/config/database.yml
 
-# try to create DB, if it doesnt exist
-mysql -u root -e 'create database if not exists inventario character set utf8mb4;' > /dev/null 2>&1 || true
-
-# load initial database
-cd /var/%{name}
-if [ -f /var/%{name}/config/database.yml ] ; then
-  # initial tables def
-  rake seed_data:install
-  # migrations
-  rake db:migrate
-  # initial data
-  rake seed_data:setup
-  # idemptently fixes data errors (and cleanups) 
-  rake seed_data:fix
+existing_db=$(mysql -u root -e "show databases like 'inventario'")
+if [ $? = "0" -a -z "$existing_db" ]; then
+  rake db:setup
 else
-  echo "No suitable database config file was found. You will have to create config/database.yml and then run rake seed_data:seed "
+  rake db:migrate
+  rake db:seed
 fi
 
 %postun
