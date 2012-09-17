@@ -311,6 +311,10 @@ class PlacesController < SearchController
       else
         t = Time.now
         t += info.getDuration * 3600 * 24
+
+        # Avoid leases expiring at the weekend
+        t += 3600 * 24 * 2 if t.saturday?
+        t += 3600 * 24 if t.sunday?
       end
 
       expiry = Time.local(t.year, t.month, t.day, 6, 0) # leases should expire at 6am
