@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120821224805) do
+ActiveRecord::Schema.define(:version => 20120917212530) do
 
   create_table "assignments", :force => true do |t|
     t.date    "created_at"
@@ -371,6 +371,7 @@ ActiveRecord::Schema.define(:version => 20120821224805) do
     t.string  "wan_ip_address"
     t.string  "wan_netmask"
     t.string  "wan_gateway"
+    t.date    "lease_expiry"
   end
 
   add_index "school_infos", ["place_id"], :name => "school_infos_place_id_fk"
@@ -384,7 +385,7 @@ ActiveRecord::Schema.define(:version => 20120821224805) do
   add_index "section_details", ["place_id"], :name => "section_details_place_id_fk"
 
   create_table "sessions", :force => true do |t|
-    t.string   "session_id", :limit => 100, :null => false
+    t.string   "session_id", :limit => 100
     t.text     "data"
     t.datetime "created_at"
     t.datetime "updated_at"

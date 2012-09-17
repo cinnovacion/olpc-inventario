@@ -49,11 +49,17 @@ class SchoolInfosController < SearchController
     
     @output["fields"] = []
 
+    h = { "label" => _("Note"), "datatype" => "label", :text => _("Enter a value for either lease expiry date or lease duration, not both.") }
+    @output["fields"].push(h)
+
     h = { "label" => _("School"), "datatype" => "hierarchy_on_demand", "options" => { "width" => 380, "height" => 120 }}
     h.merge!( schoolInfo && schoolInfo.place ? {"dataHash" => schoolInfo.place.getElementsHash } : {} )
     @output["fields"].push(h)
 
-    h = { "label" => _("Lease duration (seconds)"), "datatype" => "textfield" }.merge( schoolInfo ? {"value" => schoolInfo.getDuration.to_s } : {} )
+    h = { "label" => _("Lease duration (days)"), "datatype" => "textfield" }.merge( schoolInfo ? {"value" => schoolInfo.getDuration.to_s } : {} )
+    @output["fields"].push(h)
+
+    h = { "label" => _("Lease expiry date"), "datatype" => "date" }.merge( schoolInfo ? {"value" => schoolInfo.getExpiry } : {} )
     @output["fields"].push(h)
 
     h = { "label" => _("Hostname"), "datatype" => "textfield" }.merge( schoolInfo ? {"value" => schoolInfo.getHostname } : {} )
@@ -76,7 +82,8 @@ class SchoolInfosController < SearchController
 
     attribs = Hash.new
     attribs[:place_id] = data_fields.pop
-    attribs[:lease_duration] = data_fields.pop.to_i
+    attribs[:lease_duration] = data_fields.pop
+    attribs[:lease_expiry] = data_fields.pop
     attribs[:server_hostname] = data_fields.pop
     attribs[:wan_ip_address] = data_fields.pop
     attribs[:wan_netmask] = data_fields.pop
@@ -84,7 +91,7 @@ class SchoolInfosController < SearchController
 
     if datos["id"]
       schoolInfo = SchoolInfo.find_by_id(datos["id"])
-      schoolInfo.update_attributes(attribs)
+      schoolInfo.update_attributes!(attribs)
     else
       SchoolInfo.create!(attribs)
     end
