@@ -36,7 +36,7 @@ class SchoolInfo < ActiveRecord::Base
 
     ret[:columnas] = [ 
      {:name => _("Id"), :key => "school_infos.id", :related_attribute => "id", :width => 50},
-     {:name => _("Place"), :key => "places.description", :related_attribute => "getPlaceDescription", :width => 100},
+     {:name => _("Place"), :key => "places.description", :related_attribute => "getPlaceName", :width => 100},
      {:name => _("Activation expiry"),:key => "school_infos.lease_duration", :related_attribute => "getLeaseInfo()", :width => 100},
      {:name => _("Hostname"), :key => "school_infos.server_hostname", :related_attribute => "getHostname()", :width => 100},
      {:name => _("Address"), :key => "school_infos.wan_ip_address", :related_attribute => "getIpAddress()", :width => 100},
@@ -47,8 +47,8 @@ class SchoolInfo < ActiveRecord::Base
     ret
   end
 
-  def getPlaceDescription
-    self.place_id ? self.place.getDescription : ""
+  def getPlaceName
+    self.place_id ? self.place.getName : ""
   end
 
   def getDuration
