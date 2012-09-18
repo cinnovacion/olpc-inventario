@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120917212530) do
+ActiveRecord::Schema.define(:version => 20120917225541) do
 
   create_table "assignments", :force => true do |t|
     t.date    "created_at"
@@ -87,13 +87,6 @@ ActiveRecord::Schema.define(:version => 20120917212530) do
     t.date   "created_at"
     t.string "name",       :limit => 100
     t.binary "file",       :limit => 16777215
-  end
-
-  create_table "laptop_configs", :force => true do |t|
-    t.string "key",           :limit => 100
-    t.string "value",         :limit => 100
-    t.string "description",   :limit => 100
-    t.string "resource_name", :limit => 100
   end
 
   create_table "laptop_details", :force => true do |t|

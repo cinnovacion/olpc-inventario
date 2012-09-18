@@ -10,14 +10,6 @@ EventType.transaction do
   EventType.find_or_create_by_internal_tag("node_up", :name => "Nodo Arriba", :description => "Un nodo de red entro en estado de actividad")
 end
 
-LaptopConfig.transaction do
-  LaptopConfig.find_or_create_by_key("build_version", :value => "767", :resource_name => "", :description => "Version SO")
-  LaptopConfig.find_or_create_by_key("model_id", :value => "1", :resource_name => "", :description => "Modelo")
-  LaptopConfig.find_or_create_by_key("shipment_id", :value => "1", :resource_name => "", :description => "Cargamento")
-  LaptopConfig.find_or_create_by_key("person_id", :value => "3", :resource_name => "personas", :description => "En manos de")
-  LaptopConfig.find_or_create_by_key("place_id", :value => "3", :resource_name => "", :description => "Localidad")
-end
-
 Model.transaction do
   Model.find_or_create_by_name("XO-1", :created_at => "2008-10-27", :description => "Estas son las primeras XOs, de material rugoso, verde y blanca")
   Model.find_or_create_by_name("XO-2", :created_at => "2008-11-10", :description => "Esta va a estar disponible en el 2009")

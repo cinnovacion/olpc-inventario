@@ -284,7 +284,6 @@ class SistemaController < ApplicationController
     menu_option[:elements].push(getMenuListAndCreate("modelos", _("Laptop models")))
     menu_option[:elements].push(getMenuListAndCreate("movement_types", _("Movement types")))
     menu_option[:elements].push(getMenuListAndCreate("statuses", _("Status types")))
-    menu_option[:elements].push(getMenuListAndCreate("laptop_configs", _("Laptop (default) values")))
     menu_option[:elements].push(getMenuListAndCreate("shipments", _("Shipments")))
     menu_option
   end

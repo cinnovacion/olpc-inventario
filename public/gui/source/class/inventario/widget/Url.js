@@ -97,10 +97,6 @@ qx.Class.define("inventario.widget.Url",
           ret = inventario.widget.Url.MOVEMENT_TYPES;
           break;
 
-        case "laptop_configs":
-          ret = inventario.widget.Url.LAPTOP_CONFIGS;
-          break;
-
         case "box_movements":
           ret = inventario.widget.Url.BOX_MOVEMENTS;
           break;
@@ -326,16 +322,6 @@ qx.Class.define("inventario.widget.Url",
       deleteUrl      : "/movement_types/delete",
       searchUrl      : "/movement_types/search",
       initialDataUrl : "/movement_types/search_options"
-    },
-
-    LAPTOP_CONFIGS :
-    {
-      listUrl        : "/laptop_configs/search",
-      addUrl         : "/laptop_configs/new",
-      saveUrl        : "/laptop_configs/save",
-      deleteUrl      : "/laptop_configs/delete",
-      searchUrl      : "/laptop_configs/search",
-      initialDataUrl : "/laptop_configs/search_options"
     },
 
     BOXES :
