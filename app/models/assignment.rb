@@ -54,7 +54,7 @@ class Assignment < ActiveRecord::Base
 
       m = Assignment.new
       
-      lapObj = Laptop.find_by_serial_number(attribs[:serial_number_laptop])
+      lapObj = Laptop.includes(:status).find_by_serial_number(attribs[:serial_number_laptop])
       m.source_person_id = lapObj.assignee_id
       m.laptop_id = lapObj.id
 
@@ -70,6 +70,11 @@ class Assignment < ActiveRecord::Base
 
       m.comment = attribs[:comment]
       m.save!
+
+      # Move laptop out of "En desuso" for new assignments
+      if m.destination_person_id and lapObj.status.internal_tag == "deactivated"
+        lapObj.status = Status.find_by_internal_tag("activated")
+      end
 
       #Updating assignee
       lapObj.assignee_id = m.destination_person_id
