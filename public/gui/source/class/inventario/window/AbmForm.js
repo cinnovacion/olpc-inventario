@@ -432,11 +432,11 @@ qx.Class.define("inventario.window.AbmForm",
           input = new qx.ui.form.DateField();
 
           if (fieldData.value) {
-            // Expected format: dd-mm-yyyy
+            // Expected format: yyyy-mm-dd
             var tmpV = fieldData.value.split("-");
-            var _year = tmpV[2];
+            var _year = tmpV[0];
             var _month = Number(tmpV[1]) - 1;
-            var _date = tmpV[0];
+            var _date = tmpV[2];
             input.setValue(new Date(_year, _month, _date));
           }
 
