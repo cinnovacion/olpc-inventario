@@ -195,7 +195,7 @@ class SearchController < ApplicationController
           begin
             #It would be nice to use obj.send(...) But in getColumnas some strings 
             #include "()" which breaks the send call.
-            newCol = eval("obj." + c[:related_attribute])
+            newCol = eval("obj." + c[:related_attribute] + ".to_s")
             newCol =  "" if newCol == nil
           rescue
             newCol =  ""
