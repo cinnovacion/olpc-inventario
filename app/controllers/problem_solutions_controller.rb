@@ -136,7 +136,7 @@ class ProblemSolutionsController < SearchController
       raise _("The operation can't be completed, the provided data doesn't exist in the system.") 
     end
 
-    str_vars = [owner_laptop.getSerialNumber, replacement_laptop_srl]
+    str_vars = [owner_laptop.serial_number, replacement_laptop_srl]
     msg = "Are you sure you want to replace the laptop %s with %s, " % str_vars
     str_vars = [problem_report_id, problem_report.problem_type.getName]
     msg += "as a solution for problem number %s (%s)?" % str_vars

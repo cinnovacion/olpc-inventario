@@ -36,7 +36,7 @@ class Assignment < ActiveRecord::Base
      {:name => _("Assignment Nbr"),:key => "assignments.id",:related_attribute => "id", :width => 50},
      {:name => _("Assignment Date"),:key => "assignments.date_assigned",:related_attribute => "getAssignmentDate()", :width => 90},
      {:name => _("Assignment Time"),:key => "assignments.time_assigned",:related_attribute => "getAssignmentTime()", :width => 90},
-     {:name => _("Laptop serial"),:key => "laptops.serial_number",:related_attribute => "getSerialNumber()", :width => 180},
+     {:name => _("Laptop serial"),:key => "laptops.serial_number",:related_attribute => "laptop.serial_number", :width => 180},
      {:name => _("Given by"),:key => "people.name",:related_attribute => "getSourcePerson()", :width => 180},
      {:name => _("Given by (Doc ID)"),:key => "people.id_document",:related_attribute => "getSourcePersonIdDoc()", :width => 180},
      {:name => _("Received by"),:key => "destination_people_assignments.name",:related_attribute => "getDestinationPerson()", :width => 180},
@@ -87,10 +87,6 @@ class Assignment < ActiveRecord::Base
     self.created_at = self.date_assigned = self.time_assigned = Time.now
   end
 
-  def getSerialNumber()
-    self.laptop.serial_number
-  end
- 
   def getAssignmentDate()
     self.date_assigned.to_s
   end

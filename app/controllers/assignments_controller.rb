@@ -192,7 +192,7 @@ class AssignmentsController < SearchController
 
         attribs = Hash.new
         attribs[:id_document] = person.getIdDoc()
-        attribs[:serial_number_laptop] = laptop.getSerialNumber()
+        attribs[:serial_number_laptop] = laptop.serial_number
         attribs[:comment] = _("Laptops assigned with the massive delivery form.")
         Assignment.register(attribs)
       }

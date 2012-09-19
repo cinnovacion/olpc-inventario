@@ -69,7 +69,7 @@ class Movement < ActiveRecord::Base
     attribs = Hash.new
     attribs[:id_document] = to_person.getIdDoc()
     attribs[:movement_type_id] = movement_type.id
-    attribs[serial_sym] = device.getSerialNumber()
+    attribs[serial_sym] = device.serial_number
     attribs[:comment] = _("Delivery from the CATS module")
     Movement.register(attribs)
   end
@@ -193,7 +193,7 @@ class Movement < ActiveRecord::Base
   end
 
   def getLaptopSerial()
-    (self.movement_details && self.movement_details.first) ? self.movement_details.first.laptop.getSerialNumber : ""
+    (self.movement_details && self.movement_details.first) ? self.movement_details.first.laptop.serial_number : ""
   end
 
   ##

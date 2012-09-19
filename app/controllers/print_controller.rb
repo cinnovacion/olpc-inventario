@@ -74,7 +74,7 @@ class PrintController < ApplicationController
 
         owner = laptop_detail.person
         laptop = laptop_detail.laptop
-        @datos.push(["", "", owner.getFullName, owner.getIdDoc, laptop.getSerialNumber])
+        @datos.push(["", "", owner.getFullName, owner.getIdDoc, laptop.serial_number])
       }
     }
 
@@ -475,7 +475,7 @@ class PrintController < ApplicationController
               problem_type.name,
               owner.getFullName,
               place.getName,
-              laptop.getSerialNumber,
+              laptop.serial_number,
               problem_report.created_at.to_s,
               (problem_solution ? problem_solution.created_at.to_s : ""),
               (bank_deposits ? bank_deposits.map { |bank_deposit| bank_deposit.deposit }.join(",") : "" )
@@ -804,7 +804,7 @@ class PrintController < ApplicationController
     @datos = []
     found_laptops = []
     laptops.each { |laptop|
-      laptop_serial = laptop.getSerialNumber
+      laptop_serial = laptop.serial_number
       location = ""
       owner = laptop.owner
       assignee = laptop.assignee
@@ -817,7 +817,7 @@ class PrintController < ApplicationController
         location += "<br>"
       end
 
-      status_desc = laptop.getStatus()
+      status_desc = laptop.status.to_s
       @datos.push([laptop_serial, location, status_desc])
       found_laptops.push(laptop_serial)
 
@@ -1111,7 +1111,7 @@ class PrintController < ApplicationController
            laptops.each { |laptop|
       
              if filters.include?(laptop.registered)
-               place_hash[:sub_array].push([person_name, person.id_document, person.profile.description, laptop.getSerialNumber, laptop.getRegistered])
+               place_hash[:sub_array].push([person_name, person.id_document, person.profile.description, laptop.serial_number, laptop.getRegistered])
              end
            }
         end
@@ -1140,7 +1140,7 @@ class PrintController < ApplicationController
       h = Hash.new
       h[:id] = movement.id
       h[:parts] = movement.movement_details.map { |detail|
-        { :part => "Laptop", :serial => detail.getSerialNumber }
+        { :part => "Laptop", :serial => detail.serial_number }
       }
       h[:person] = movement.getDestinationPerson
       @data.push(h)
@@ -1191,7 +1191,7 @@ class PrintController < ApplicationController
         end
         laptops.each { |laptop|
           delivered = laptop.assignee == laptop.owner
-          status = (laptop.status.internal_tag != "activated") ? laptop.getStatus : nil
+          status = (laptop.status.internal_tag != "activated") ? laptop.status.to_s : nil
           if first
             entries.push({:type => "person", :name => person.getFullName(), :doc_id => person.id_document, :laptop_sn => laptop.serial_number, :status => status, :delivered => delivered})
           else
@@ -1262,7 +1262,7 @@ class PrintController < ApplicationController
           else
             delivered = _("No")
           end
-          status = (laptop.status.internal_tag != "activated") ? laptop.getStatus : nil
+          status = (laptop.status.internal_tag != "activated") ? laptop.status.to_s : nil
           row[3] = laptop.serial_number
           row[4] = status
           row[5] = delivered
@@ -1622,7 +1622,7 @@ class PrintController < ApplicationController
                      md.movement_id,
                      m.getMovementDate(),
                      md.getDescription(),
-                     md.getSerialNumber(),
+                     md.serial_number,
                      m.getSourcePerson(),
                      m.getDestinationPerson(),
                      m.getMovementType()
@@ -1847,7 +1847,7 @@ class PrintController < ApplicationController
                      m.getDestinationPerson(),
                      m.getReturnDate(),
                      md.getDescription(),
-                     md.getSerialNumber(),
+                     md.serial_number,
                      md.getReturned()
                     ])
         counter+=1

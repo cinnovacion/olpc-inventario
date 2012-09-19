@@ -60,7 +60,7 @@ class ProblemReportsController < SearchController
     @output["fields"].push(h)
 
     id = problem_report ? problem_report.laptop_id : -1
-    laptop = buildSelectHashSingle(Laptop, id, "getSerialNumber()")
+    laptop = buildSelectHashSingle(Laptop, id, "serial_number")
     h = { "label" => _("Laptop"), "datatype" => "select", "options" => laptop, :option => "laptops", "text_value" => true }
     @output["fields"].push(h)
 

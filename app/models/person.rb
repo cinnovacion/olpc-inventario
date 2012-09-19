@@ -232,10 +232,12 @@ class Person < ActiveRecord::Base
     self.created_at.to_s
   end
 
+
   def getFullName()
     self.name and self.lastname ? self.name.to_s + " " + self.lastname.to_s : ""
   end
 
+  alias_method :to_s, :getFullName
 
   def getName()
     self.name

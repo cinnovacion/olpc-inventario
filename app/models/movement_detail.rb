@@ -43,7 +43,7 @@ class MovementDetail < ActiveRecord::Base
     ret[:columnas] = [ 
                       {:name => _("Equipment Type"),:key => "movement_details.description", :related_attribute => "getDescription()", 
                         :width => 120},
-                      {:name => _("Serial Nbr."),:key => "movement_details.serial_number",:related_attribute => "getSerialNumber()", 
+                      {:name => _("Serial Nbr."),:key => "movement_details.serial_number",:related_attribute => "serial_number", 
                         :width => 120},
                       {:name => _("Movement Reason"),:key => "movement_types.description", :related_attribute => "getMovementTypeDesc()", 
                         :width => 120},
@@ -60,15 +60,11 @@ class MovementDetail < ActiveRecord::Base
 
   def sync_laptop_details
     self.description = laptop.getDescription()
-    self.serial_number = laptop.getSerialNumber()
+    self.serial_number = laptop.serial_number
   end
 
   def do_after_save
     self.checkReturned2 if self.movement.movement_type.is_return?
-  end
-
-  def getSerialNumber()
-    self.serial_number
   end
 
   def getMovementTypeDesc()

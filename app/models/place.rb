@@ -618,7 +618,7 @@ class Place < ActiveRecord::Base
   def getLaptopSerials
    laptops = Laptop.includes(:owner => :performs)
    laptops = laptops.where("performs.place_id in (?)", self.getDescendantsIds.push(self.id))
-   laptops.map { |laptop| laptop.getSerialNumber }
+   laptops.map { |laptop| laptop.serial_number }
   end
 
   ###

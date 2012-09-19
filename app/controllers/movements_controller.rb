@@ -230,7 +230,7 @@ class MovementsController < SearchController
           attribs = Hash.new
           attribs[:id_document] = person.getIdDoc()
           attribs[:movement_type_id] = movement_type_id
-          attribs[:serial_number_laptop] = laptop.getSerialNumber()
+          attribs[:serial_number_laptop] = laptop.serial_number
           attribs[:comment] = _("Laptops moved out with the mass movement form.")
           Movement.register(attribs)
         end

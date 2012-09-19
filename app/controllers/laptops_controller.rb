@@ -124,7 +124,7 @@ class LaptopsController < SearchController
         if laptop
           laptop.status_id = stolen_status.id
           laptop.save
-          Event.register("stolen_laptop_activity", hostname, { :serial_number => laptop.getSerialNumber }.to_json, place.id)
+          Event.register("stolen_laptop_activity", hostname, { :serial_number => laptop.serial_number }.to_json, place.id)
         end
       }
     end

@@ -95,7 +95,7 @@ class ProblemReport < ActiveRecord::Base
   end
 
    def getLaptopSerialNumber
-     self.laptop_id ? self.laptop.getSerialNumber : ""
+     self.laptop_id ? self.laptop.serial_number : ""
    end
 
    def getDate

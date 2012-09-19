@@ -108,7 +108,7 @@ class StatusChange < ActiveRecord::Base
   # Laptop's serial number
   #
   def getLaptopSerial()
-    self.laptop.getSerialNumber()
+    self.laptop.serial_number
   end
 
   ##

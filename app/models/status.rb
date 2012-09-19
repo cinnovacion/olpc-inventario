@@ -59,6 +59,10 @@ class Status < ActiveRecord::Base
 		self.description
 	end
 
+  def to_s
+    self.description
+  end
+
 	def getAbbreviation()
 		self.abbrev
 	end
