@@ -41,7 +41,6 @@ class Laptop < ActiveRecord::Base
 
   validates_presence_of :serial_number, :message => N_("You must provide the serial number")
   validates_uniqueness_of :serial_number, :message => N_("Laptop Serial Number can not be repeated")
-  validates_presence_of :status_id, :message => N_("You must provide the State")
   validates_presence_of :owner_id, :message => N_("You must provide the Owner")
 
   before_save { |laptop| laptop.serial_number.upcase! }

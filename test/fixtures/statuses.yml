@@ -1,7 +1,7 @@
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+deactivated:
+    description: En desuso
+    internal_tag: deactivated
 
-# one:
-#   column: value
-#
-# two:
-#   column: value
+activated:
+    description: En uso
+    internal_tag: activated
