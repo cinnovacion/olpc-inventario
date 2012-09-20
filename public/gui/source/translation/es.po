@@ -846,6 +846,3 @@ msgstr "Registrar entrega con los números de seriales?"
 #: inventario/window/WelcomeInfo.js:88
 msgid "Quick access"
 msgstr "Acceso rápido"
-
-#~ msgid "Generate"
-#~ msgstr "Generar"
