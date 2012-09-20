@@ -1,6 +1,6 @@
 # spec file for our tracking, monitoring and support web app
 Name: inventario		
-Version: 0.6.3
+Version: 0.6.4
 Release: 1
 Vendor: Paraguay Educa
 Summary: This (Ruby on Rails based) web app lets you track laptops given out, status of networks and support tickets.
@@ -72,6 +72,7 @@ fi
 # copy database config template
 cp /var/%{name}/config/database.yml.example /var/%{name}/config/database.yml
 
+cd /var/%{name}
 existing_db=$(mysql -u root -e "show databases like 'inventario'")
 if [ $? = "0" -a -z "$existing_db" ]; then
   rake db:setup
