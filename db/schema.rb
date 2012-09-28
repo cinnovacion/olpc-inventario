@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120917225541) do
+ActiveRecord::Schema.define(:version => 20120928220157) do
 
   create_table "assignments", :force => true do |t|
     t.date    "created_at"
@@ -438,6 +438,10 @@ ActiveRecord::Schema.define(:version => 20120917225541) do
   end
 
   add_index "users", ["person_id"], :name => "users_person_id_fk"
+
+  add_foreign_key "assignments", "laptops", :name => "assignments_laptop_id_fk"
+  add_foreign_key "assignments", "people", :name => "assignments_destination_person_id_fk", :column => "destination_person_id"
+  add_foreign_key "assignments", "people", :name => "assignments_source_person_id_fk", :column => "source_person_id"
 
   add_foreign_key "bank_deposits", "problem_solutions", :name => "bank_deposits_problem_solution_id_fk"
 
