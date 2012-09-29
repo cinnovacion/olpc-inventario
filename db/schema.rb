@@ -11,10 +11,9 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120928220157) do
+ActiveRecord::Schema.define(:version => 20120929163908) do
 
   create_table "assignments", :force => true do |t|
-    t.date    "created_at"
     t.date    "date_assigned"
     t.time    "time_assigned"
     t.integer "source_person_id"

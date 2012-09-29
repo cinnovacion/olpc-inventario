@@ -25,23 +25,22 @@ class Assignment < ActiveRecord::Base
   belongs_to :destination_person, :class_name => "Person", :foreign_key => :destination_person_id
   belongs_to :laptop, :class_name => "Laptop", :foreign_key => :laptop_id
 
-  
   validates_presence_of :laptop_id, :message => N_("Please specify a laptop.")
 
-  before_save :do_before_save
+  before_save { self.date_assigned = self.time_assigned = Time.now }
 
   def self.getColumnas()
     ret = Hash.new
     ret[:columnas] = [ 
      {:name => _("Assignment Nbr"),:key => "assignments.id",:related_attribute => "id", :width => 50},
-     {:name => _("Assignment Date"),:key => "assignments.date_assigned",:related_attribute => "getAssignmentDate()", :width => 90},
+     {:name => _("Assignment Date"),:key => "assignments.date_assigned",:related_attribute => "date_assigned", :width => 90},
      {:name => _("Assignment Time"),:key => "assignments.time_assigned",:related_attribute => "getAssignmentTime()", :width => 90},
      {:name => _("Laptop serial"),:key => "laptops.serial_number",:related_attribute => "laptop.serial_number", :width => 180},
-     {:name => _("Given by"),:key => "people.name",:related_attribute => "getSourcePerson()", :width => 180},
+     {:name => _("Given by"),:key => "people.name",:related_attribute => "source_person", :width => 180},
      {:name => _("Given by (Doc ID)"),:key => "people.id_document",:related_attribute => "getSourcePersonIdDoc()", :width => 180},
-     {:name => _("Received by"),:key => "destination_people_assignments.name",:related_attribute => "getDestinationPerson()", :width => 180},
+     {:name => _("Received by"),:key => "destination_people_assignments.name",:related_attribute => "destination_person", :width => 180},
      {:name => _("Received (Doc ID)"),:key => "destination_people_assignments.id_document",:related_attribute => "getDestinationPersonIdDoc()", :width => 180},
-     {:name => _("Comment"),:key => "assignments.comment",:related_attribute => "getComment()", :width => 160}
+     {:name => _("Comment"),:key => "assignments.comment",:related_attribute => "comment", :width => 160}
     ]
     ret[:sort_column] = 0
     ret
@@ -50,77 +49,44 @@ class Assignment < ActiveRecord::Base
   
   def self.register(attribs)
     Assignment.transaction do
-
-
       m = Assignment.new
-      
-      lapObj = Laptop.includes(:status).find_by_serial_number(attribs[:serial_number_laptop])
-      m.source_person_id = lapObj.assignee_id
-      m.laptop_id = lapObj.id
+
+      laptop = Laptop.includes(:status).find_by_serial_number(attribs[:serial_number_laptop])
+      m.source_person_id = laptop.assignee_id
+      m.laptop_id = laptop.id
 
       if attribs[:id_document] and attribs[:id_document] != ""
-        personObj = Person.find_by_id_document(attribs[:id_document])
-        if !personObj
+        person = Person.find_by_id_document(attribs[:id_document])
+        if !person
           raise _("Couldn't find person with document ID %s") % attribs[:id_document]
         end
-        m.destination_person_id = personObj.id
-      else
-        m.destination_person_id = nil
+        m.destination_person_id = person.id
       end
 
       m.comment = attribs[:comment]
       m.save!
 
       # Move laptop out of "En desuso" for new assignments
-      if m.destination_person_id and lapObj.status.internal_tag == "deactivated"
-        lapObj.status = Status.find_by_internal_tag("activated")
+      if m.destination_person_id and laptop.status.internal_tag == "deactivated"
+        laptop.status = Status.find_by_internal_tag("activated")
       end
 
-      #Updating assignee
-      lapObj.assignee_id = m.destination_person_id
-      lapObj.save!
-
+      # Update laptop assignee
+      laptop.assignee_id = m.destination_person_id
+      laptop.save!
     end
-  end
-
-  def do_before_save
-    self.created_at = self.date_assigned = self.time_assigned = Time.now
-  end
-
-  def getAssignmentDate()
-    self.date_assigned.to_s
   end
 
   def getAssignmentTime()
     Fecha::getHora(self.time_assigned)
   end
 
-  def getSourcePerson()
-    self.source_person ? self.source_person.getFullName() : ""
-  end
-
   def getSourcePersonIdDoc()
     self.source_person ? self.source_person.getIdDoc() : ""
   end
 
-  def getDestinationPerson()
-    self.destination_person ? self.destination_person.getFullName() : ""
-  end
-
   def getDestinationPersonIdDoc()
     self.destination_person ? self.destination_person.getIdDoc() : ""
-  end
-
-  def getComment()
-    self.comment
-  end
-
-  def getParts()
-    s = String.new
-    self.assignment_details.each { |p|
-      s+= "#{p.description},"
-    }
-    s
   end
 
   ###
@@ -140,5 +106,4 @@ class Assignment < ActiveRecord::Base
       yield
     end
   end
-
 end
