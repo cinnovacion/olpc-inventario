@@ -1228,7 +1228,7 @@ class PrintController < ApplicationController
       end
       next if performs.count == 0
 
-      worksheet = workbook.create_worksheet(:name => place.name)
+      worksheet = workbook.create_worksheet()
       worksheet[0, 0] = place.getName
       worksheet.row(1).push("#", _("Name"), _("Document id"), _("Laptop"), _("Laptop status"), _("In hands"), _("Notes"))
 
