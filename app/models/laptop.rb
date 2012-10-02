@@ -64,7 +64,7 @@ class Laptop < ActiveRecord::Base
                       {:name => _("Assigned to"),:key => "people.name",:related_attribute => "getAssignee", :width => 210},
                       {:name => _("Assignee Doc Id"),:key => "people.id_document",:related_attribute => "getAssigneeIdDoc", :width => 210},
                       {:name => _("Build Version"),:key => "laptops.build_version",:related_attribute => "build_version", :width => 120},
-                      {:name => _("Model"),:key => "models.name",:related_attribute => "getModelDescription", :width => 120},
+                      {:name => _("Model"),:key => "models.name",:related_attribute => "model", :width => 120},
                       {:name => _("State"),:key => "statuses.description",:related_attribute => "status", :width => 160},
                       {:name => _("UUID"),:key => "laptops.uuid",:related_attribute => "uuid", :width => 80},
                       {:name => _("Registered"), :key => "laptops.registered", :related_attribute => "getRegistered", :width => 50},
@@ -111,12 +111,8 @@ class Laptop < ActiveRecord::Base
     self.assignee ? self.assignee.getIdDoc() :  ""
   end
  
-  def getModelDescription()
-    self.model_id ? self.model.getName : ""
-  end
-
   def getDescription()
-    "Laptop " +  self.getModelDescription()
+    "Laptop " +  self.model.to_s
   end
 
   def getRegistered()
