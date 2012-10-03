@@ -32,7 +32,6 @@ module ReadFile
   #   :arrived_at, for shipment creation.
   #   :place_id, for shipment and box creation.
   #    And for laptop creation :
-  #     :build_version,
   #     :model_id,
   #     :owner_id
   def self.laptopsFromFile(filename, worksheet, dataHash)
@@ -73,7 +72,6 @@ module ReadFile
         #Now we start creating the laptop entry.
         attribs = Hash.new
         attribs[:serial_number] = dataArray[_laptop_serial]
-        attribs[:build_version] = dataHash[:build_version]
         attribs[:model_id] = dataHash[:model_id]
         attribs[:shipment_arrival_id] = shipment.id
         attribs[:owner_id] = dataHash[:owner_id]

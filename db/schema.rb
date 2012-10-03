@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120929163908) do
+ActiveRecord::Schema.define(:version => 20121001223229) do
 
   create_table "assignments", :force => true do |t|
     t.date    "date_assigned"
@@ -101,7 +101,6 @@ ActiveRecord::Schema.define(:version => 20120929163908) do
   create_table "laptops", :force => true do |t|
     t.string  "serial_number",        :limit => 100
     t.date    "created_at"
-    t.string  "build_version",        :limit => 100
     t.integer "model_id"
     t.integer "shipment_arrival_id"
     t.integer "owner_id"
@@ -393,6 +392,17 @@ ActiveRecord::Schema.define(:version => 20120929163908) do
     t.string "shipment_number"
   end
 
+  create_table "software_versions", :force => true do |t|
+    t.string   "vhash",       :limit => 64
+    t.string   "name",        :limit => 100
+    t.text     "description"
+    t.integer  "model_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "software_versions", ["model_id"], :name => "software_versions_model_id_fk"
+
   create_table "solution_type_part_types", :force => true do |t|
     t.integer "solution_type_id", :null => false
     t.integer "part_type_id",     :null => false
@@ -505,6 +515,8 @@ ActiveRecord::Schema.define(:version => 20120929163908) do
 
   add_foreign_key "section_details", "lots", :name => "section_details_lot_id_fk"
   add_foreign_key "section_details", "places", :name => "section_details_place_id_fk"
+
+  add_foreign_key "software_versions", "models", :name => "software_versions_model_id_fk"
 
   add_foreign_key "solution_type_part_types", "part_types", :name => "solution_type_part_types_part_type_id_fk"
   add_foreign_key "solution_type_part_types", "solution_types", :name => "solution_type_part_types_solution_type_id_fk"

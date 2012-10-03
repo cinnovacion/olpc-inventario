@@ -63,14 +63,13 @@ class Laptop < ActiveRecord::Base
                       {:name => _("Code Bar Owner"), :key => "people.barcode", :related_attribute => "owner.barcode", :width => 80},
                       {:name => _("Assigned to"),:key => "people.name",:related_attribute => "getAssignee", :width => 210},
                       {:name => _("Assignee Doc Id"),:key => "people.id_document",:related_attribute => "getAssigneeIdDoc", :width => 210},
-                      {:name => _("Build Version"),:key => "laptops.build_version",:related_attribute => "build_version", :width => 120},
                       {:name => _("Model"),:key => "models.name",:related_attribute => "model", :width => 120},
                       {:name => _("State"),:key => "statuses.description",:related_attribute => "status", :width => 160},
                       {:name => _("UUID"),:key => "laptops.uuid",:related_attribute => "uuid", :width => 80},
                       {:name => _("Registered"), :key => "laptops.registered", :related_attribute => "getRegistered", :width => 50},
                       {:name => _("Last activation"), :key => "laptops.last_activation_date", :related_attribute => "getLastActivation", :width => 100}
                      ]
-    ret[:columnas_visibles] = [false, false, true, true, true, false, true, true, false, false, true, false, false, false]
+    ret[:columnas_visibles] = [false, false, true, true, true, false, true, true, false, false, false, false, false]
     ret 
   end
 

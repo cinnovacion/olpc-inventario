@@ -282,6 +282,7 @@ class SistemaController < ApplicationController
   def getMenuInventoryConfig
     menu_option = genOption(_("Configuration"))
     menu_option[:elements].push(getMenuListAndCreate("modelos", _("Laptop models")))
+    menu_option[:elements].push(getMenuListAndCreate("software_versions", _("Software versions")))
     menu_option[:elements].push(getMenuListAndCreate("movement_types", _("Movement types")))
     menu_option[:elements].push(getMenuListAndCreate("statuses", _("Status types")))
     menu_option[:elements].push(getMenuListAndCreate("shipments", _("Shipments")))

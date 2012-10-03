@@ -197,6 +197,10 @@ qx.Class.define("inventario.widget.Url",
           ret = inventario.widget.Url.PART_MOVEMENTS;
           break;
 
+        case "software_versions":
+          ret = inventario.widget.Url.SOFTWARE_VERSIONS;
+          break;
+
         default:
           alert("erro : No existe " + param);
       }
@@ -582,6 +586,16 @@ qx.Class.define("inventario.widget.Url",
       deleteUrl      : "/part_movements/delete",
       searchUrl      : "/part_movements/search",
       initialDataUrl : "/part_movements/search_options"
+    },
+
+    SOFTWARE_VERSIONS :
+    {
+      listUrl        : "/software_versions/search",
+      addUrl         : "/software_versions/new",
+      saveUrl        : "/software_versions/save",
+      deleteUrl      : "/software_versions/delete",
+      searchUrl      : "/software_versions/search",
+      initialDataUrl : "/software_versions/search_options"
     }
   }
 });

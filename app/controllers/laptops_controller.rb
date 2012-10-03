@@ -71,7 +71,6 @@ class LaptopsController < SearchController
       dataHash[:arrived_at] = Time.now
       dataHash[:owner_id] = datos["fields"][4]
       dataHash[:place_id] = current_user.person.place.id
-      dataHash[:build_version] = datos["fields"][1]
       dataHash[:model_id] = datos["fields"][2]
       dataHash[:status_id] = datos["fields"][5]
       return ReadFile.laptopsFromFile(path, 0, dataHash)
@@ -80,7 +79,6 @@ class LaptopsController < SearchController
       data_fields = datos["fields"].reverse
 
       attribs[:serial_number] = getAbmFormValue(data_fields.pop)
-      attribs[:build_version] = getAbmFormValue(data_fields.pop)
       attribs[:model_id] = getAbmFormValue(data_fields.pop)
       attribs[:shipment_arrival_id] = getAbmFormValue(data_fields.pop)
 
@@ -161,9 +159,6 @@ class LaptopsController < SearchController
     h = { "label" => _("Serial Number"),"datatype" => "textfield" }.merge( p ? {"value" => p.serial_number } : {} )
     @output["fields"].push(h)
 
-    h = { "label" => _("OS version"),"datatype" => "textfield" }.merge( p ? {"value" => p.build_version } : {} )
-    @output["fields"].push(h)
-
     id = p ? p.model_id : -1
     modelos = buildSelectHash2(Model,id,"name",false,[])
     h = { "label" => _("Model"),"datatype" => "combobox","options" => modelos }
@@ -220,9 +215,6 @@ class LaptopsController < SearchController
     # User must check fields that where updated 
     @output["needs_update"] = true
 
-    h = { "label" => _("OS version"),"datatype" => "textfield" }.merge( p ? {"value" => p.build_version } : {} )
-    @output["fields"].push(h)
-
     id = p ? p.model_id : -1
     modelos = buildSelectHash2(Model,id,"name",false,[])
     h = { "label" => _("Model"),"datatype" => "combobox","options" => modelos }
@@ -247,11 +239,6 @@ class LaptopsController < SearchController
     data_fields = datos["fields"].reverse
 
     attribs = Hash.new
-
-    h = data_fields.pop
-    if h["updated"] ==  true
-      attribs[:build_version] = getAbmFormValue(h)
-    end
 
     h = data_fields.pop
     if h["updated"] ==  true
