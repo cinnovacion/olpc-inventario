@@ -22,20 +22,8 @@
 # # #
                                                                           
 class UsersController < SearchController
-  attr_accessor :include_str
-
   def initialize
-    super
-    @include_str = [:person]
-  end
-
-  def search
-    do_search(User, {:include => @include_str })
-  end
-
-  def search_options
-    crearColumnasCriterios(User)
-    do_search(User, {:include => @include_str })
+    super(:includes => :person)
   end
 
   def new

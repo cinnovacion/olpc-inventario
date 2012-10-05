@@ -18,16 +18,6 @@
 #
 
 class PartMovementTypesController < SearchController
-
-  def search
-    do_search(PartMovementType, nil)
-  end
-
-  def search_options
-    crearColumnasCriterios(PartMovementType)
-    do_search(PartMovementType, nil)
-  end
-
   def new
     
     part_movement_type = nil

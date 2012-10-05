@@ -19,6 +19,10 @@
 class AssignmentsController < SearchController
   skip_filter :rpc_block, :only => [ :show, :create, :update, :destroy, :index ]
 
+  def initialize
+    super(:includes => [:source_person, :destination_person, :laptop])
+  end
+
   def index
      render :xml => Assignment.all.to_xml
   end
@@ -43,22 +47,6 @@ class AssignmentsController < SearchController
   def destroy
     Assignment.destroy(params["id"])
     render :status => :ok
-  end
-
-  attr_accessor :include_str
-
-  def initialize
-    super 
-    @include_str = [:source_person, :destination_person, :laptop]
-  end
-
-  def search
-    do_search(Assignment,{:include => @include_str })
-  end
-
-  def search_options
-    crearColumnasCriterios(Assignment)
-    do_search(Assignment,{:include => @include_str })
   end
 
   def details(id)

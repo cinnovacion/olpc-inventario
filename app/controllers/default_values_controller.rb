@@ -20,22 +20,6 @@
 
 
 class DefaultValuesController < SearchController
-  attr_accessor :include_str
-
-  def initialize
-    super 
-    @include_str = []
-  end
-
-  def search
-    do_search(DefaultValue, { :include => @include_str })
-  end
-
-  def search_options
-    crearColumnasCriterios(DefaultValue)
-    do_search(DefaultValue, { :include => @include_str })
-  end
-
   def new
 
     value = nil

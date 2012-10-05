@@ -22,15 +22,6 @@
 # # #
                                                                        
 class ProblemTypesController < SearchController
-  def search
-    do_search(ProblemType,nil)
-  end
-
-  def search_options
-    crearColumnasCriterios(ProblemType)
-    do_search(ProblemType, nil)
-  end
-
   def new
     @output["window_title"] = _("Configuration of problem types")
 

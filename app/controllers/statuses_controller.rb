@@ -22,15 +22,6 @@
 # # #
                                                                         
 class StatusesController < SearchController
-  def search
-    do_search(Status,nil)
-  end
-
-  def search_options
-    crearColumnasCriterios(Status)
-    do_search(Status, nil)
-  end
-
   def new
     if params[:id]
       p = Status.find(params[:id])

@@ -32,24 +32,11 @@ require 'fecha'
 class PeopleController < SearchController
   skip_filter :rpc_block, :only => [ :show, :update, :requestStudents ]
 
-  attr_accessor :include_str
-
   LAPTOPS_LIMIT = 5
 
   def initialize
-    super
-    @include_str = [:profiles]
+    super(:includes => :profiles)
   end
-
-  def search
-    do_search(Person,{:include => @include_str })
-  end
-
-  def search_options
-    crearColumnasCriterios(Person)
-    do_search(Person, {:include => @include_str })
-  end
-
 
   def new
     

@@ -24,22 +24,6 @@
 require 'fecha'
 
 class LotsController < SearchController
-  attr_accessor :include_str
-
-  def initialize
-    super 
-    @include_str = []
-  end
-
-  def search
-    do_search(Lot, { :include => @include_str })
-  end
-
-  def search_options
-    crearColumnasCriterios(Lot)
-    do_search(Lot, { :include => @include_str })
-  end
-
   def new
     @output["fields"] = []
 

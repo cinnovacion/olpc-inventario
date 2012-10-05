@@ -22,15 +22,6 @@
 # # #
                                                                     
 class PartTypesController < SearchController
-  def search
-    do_search(PartType,nil)
-  end
-
-  def search_options
-    crearColumnasCriterios(PartType)
-    do_search(PartType, nil)
-  end
-
   def new
 
     @output["window_title"] = _("Part types")

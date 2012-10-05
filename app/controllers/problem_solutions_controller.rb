@@ -24,20 +24,8 @@
 require 'fecha'
 
 class ProblemSolutionsController < SearchController
-  attr_accessor :include_str
-
   def initialize
-    super
-    @include_str = [:solution_type, :solved_by_person]
-  end
-
-  def search
-    do_search(ProblemSolution,{:include => @include_str })
-  end
-
-  def search_options
-    crearColumnasCriterios(ProblemSolution)
-    do_search(ProblemSolution,{:include => @include_str })
+    super(:includes => [:solution_type, :solved_by_person])
   end
 
   def simple_solution

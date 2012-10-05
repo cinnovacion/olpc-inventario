@@ -32,15 +32,6 @@ class ImagesController < SearchController
   skip_filter :access_control, :only => [ :view, :view_by_name ]
   skip_filter :do_scoping, :only => [ :view, :view_by_name ]
 
-  def search
-    do_search(Image, nil)
-  end
-
-  def search_options
-    crearColumnasCriterios(Image)
-    do_search(Image, nil)
-  end
-
   def new
     @output["fields"] = []
 

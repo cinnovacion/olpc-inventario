@@ -23,16 +23,6 @@
                                                                          
 class EventsController < SearchController
   def initialize
-    super 
-    @include_str = [:event_type]
-  end
-
-  def search
-    do_search(Event,{ :include => @include_str })
-  end
-
-  def search_options
-    crearColumnasCriterios(Event)
-    do_search(Event,{ :include => @include_str })
+    super(:includes => :event_type)
   end
 end

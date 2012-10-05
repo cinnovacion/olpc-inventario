@@ -22,15 +22,6 @@
 # # #
                                                                       
 class SolutionTypesController < SearchController
-  def search
-    do_search(SolutionType, nil)
-  end
-
-  def search_options
-    crearColumnasCriterios(SolutionType)
-    do_search(SolutionType, nil)
-  end
-
   def new
     @output["window_title"] = _("Solution types")
     @output["with_tabs"] = true

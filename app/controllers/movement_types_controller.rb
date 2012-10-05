@@ -22,17 +22,6 @@
 # # #
                                                                         
 class MovementTypesController < SearchController
-
-  def search
-    do_search(MovementType,nil)
-  end
-
-  def search_options
-    crearColumnasCriterios(MovementType)
-    do_search(MovementType, nil)
-  end
-
-
   def new
     
     p = nil

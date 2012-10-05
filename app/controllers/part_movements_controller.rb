@@ -18,19 +18,9 @@
 #
 
 class PartMovementsController < SearchController
-
   def initialize
-    super 
-    @include_str = [:part_movement_type, :part_type, :person, :place]
-  end
-
-  def search
-    do_search(PartMovement, {:include => @include_str })
-  end
-
-  def search_options
-    crearColumnasCriterios(PartMovement)
-    do_search(PartMovement, {:include => @include_str })
+    includes = [:part_movement_type, :part_type, :person, :place]
+    super(:includes => includes)
   end
 
   def new 

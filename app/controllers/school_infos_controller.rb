@@ -22,22 +22,6 @@
 # # #
                                                                           
 class SchoolInfosController < SearchController
-  attr_accessor :include_str
-
-  def initialize
-    super 
-    @include_str = []
-  end
-
-  def search
-    do_search(SchoolInfo,{ :include => @include_str })
-  end
-
-  def search_options
-    crearColumnasCriterios(SchoolInfo)
-    do_search(SchoolInfo,{ :include => @include_str })
-  end
-
   def new
     
     if params[:id]

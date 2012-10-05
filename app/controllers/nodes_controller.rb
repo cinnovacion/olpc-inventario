@@ -22,8 +22,12 @@
 # # #
                                                                         
 class NodesController < SearchController
-
   skip_filter :rpc_block, :only => [:setInformation, :allNodesAt]
+
+  def initialize
+    super(:includes => :node_type)
+  end
+
   ##
   # Actions for remote node control and status update
   def setInformation
@@ -62,22 +66,6 @@ class NodesController < SearchController
     render :xml => nodes.to_xml
   end #
   #####
-
-  attr_accessor :include_str
-
-  def initialize
-    super 
-    @include_str = [:node_type]
-  end
-
-  def search
-    do_search(Node,{ :include => @include_str })
-  end
-
-  def search_options
-    crearColumnasCriterios(Node)
-    do_search(Node,{ :include => @include_str })
-  end
 
   def new
     @output["window_width"] = 650

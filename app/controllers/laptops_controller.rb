@@ -31,20 +31,9 @@ require 'read_file'
 
 class LaptopsController < SearchController
   skip_filter :rpc_block, :only => [:requestBlackList, :reportStolenLaptops, :reportActivatedLaptops]
-  attr_accessor :include_str
 
   def initialize
-    super 
-    @include_str = [:status,:shipment,:model]
-  end
-
-  def search
-    do_search(Laptop,{ :include => @include_str })
-  end
-
-  def search_options
-    crearColumnasCriterios(Laptop)
-    do_search(Laptop,{ :include => @include_str })
+    super(:includes => [:status, :shipment, :model])
   end
 
   def new

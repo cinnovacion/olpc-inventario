@@ -24,20 +24,8 @@
 require 'fecha'
 
 class NotificationSubscribersController < SearchController
-  attr_accessor :include_str
-
   def initialize
-    super 
-    @include_str = [:notification,:person]
-  end
-
-  def search
-    do_search(NotificationSubscriber,{:include => @include_str })
-  end
-
-  def search_options
-    crearColumnasCriterios(NotificationSubscriber)
-    do_search(NotificationSubscriber,{:include => @include_str })
+    super(:includes => [:notification,:person])
   end
 
   def new

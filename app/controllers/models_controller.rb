@@ -22,16 +22,6 @@
 # # #
                                                                           
 class ModelsController < SearchController
-
-  def search
-    do_search(Model,nil)
-  end
-
-  def search_options
-    crearColumnasCriterios(Model)
-    do_search(Model,nil)
-  end
-
   def new
     
     if params[:id]

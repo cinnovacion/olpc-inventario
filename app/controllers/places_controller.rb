@@ -30,22 +30,9 @@
 class PlacesController < SearchController
   skip_filter :rpc_block, :only => [ :requestSchools, :requestSections, :requestSectionName, :schools_leases, :findByHostname, :show, :reportLaptops]
 
-  attr_accessor :include_str
-
   def initialize
-    super 
-    @include_str = [:place_type]
+    super(:includes => :place_type)
   end
-
-  def search
-    do_search(Place,{ :include => @include_str })
-  end
-
-  def search_options
-    crearColumnasCriterios(Place)
-    do_search(Place,{ :include => @include_str })
-  end
-
 
   def new
     

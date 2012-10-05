@@ -14,16 +14,6 @@
 #     along with this program.  If not, see <http://www.gnu.org/licenses/>
 
 class SoftwareVersionsController < SearchController
-
-  def search
-    do_search(SoftwareVersion, nil)
-  end
-
-  def search_options
-    crearColumnasCriterios(SoftwareVersion)
-    do_search(SoftwareVersion, nil)
-  end
-
   def new
     if params[:id]
       version = SoftwareVersion.find(params[:id])

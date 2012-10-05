@@ -22,21 +22,8 @@
 # # #
                                                                       
 class ProblemReportsController < SearchController
-
-  attr_accessor :include_str
-
   def initialize
-    super
-    @include_str = [:problem_type, :person, :laptop]
-  end
-
-  def search
-    do_search(ProblemReport, {:include => @include_str })
-  end
-
-  def search_options
-    crearColumnasCriterios(ProblemReport)
-    do_search(ProblemReport, {:include => @include_str })
+    super(:includes => [:problem_type, :person, :laptop])
   end
 
   def new

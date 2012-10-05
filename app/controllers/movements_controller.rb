@@ -30,6 +30,11 @@
 class MovementsController < SearchController
   skip_filter :rpc_block, :only => [ :show, :create, :update, :destroy, :index ]
 
+  def initialize
+    includes = [:source_person, :destination_person, :movement_type, {:movement_details => :laptop}]
+    super(:includes => includes)
+  end
+
   def index
      all = Movement.find(:all)
      render :xml => all.to_xml
@@ -55,22 +60,6 @@ class MovementsController < SearchController
   def destroy
     Movement.destroy(params["id"])
     render :status => :ok
-  end
-
-  attr_accessor :include_str
-
-  def initialize
-    super 
-    @include_str = [:source_person, :destination_person, :movement_type, {:movement_details => :laptop}]
-  end
-
-  def search
-    do_search(Movement,{:include => @include_str })
-  end
-
-  def search_options
-    crearColumnasCriterios(Movement)
-    do_search(Movement,{:include => @include_str })
   end
 
   def details(id)

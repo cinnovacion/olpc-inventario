@@ -22,15 +22,6 @@
 # # #
                                                                           
 class PlaceTypesController < SearchController
-  def search
-    do_search(PlaceType, nil)
-  end
-
-  def search_options
-    crearColumnasCriterios(PlaceType)
-    do_search(PlaceType, nil)
-  end
-
   def new
     @output["fields"] = []
 

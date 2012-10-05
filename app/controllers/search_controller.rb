@@ -38,6 +38,25 @@ class SearchController < ApplicationController
   before_filter :set_vista
   attr_accessor :vista
 
+  def initialize(options = nil)
+    @search_includes = nil
+    if options and options[:includes]
+      @search_includes = options[:includes]
+    end
+
+    super()
+  end
+
+  def search
+    do_search
+  end
+
+  def search_options
+    clazz_ref = controller_name.classify.constantize
+    crearColumnasCriterios(clazz_ref)
+    do_search()
+  end
+
   #####
   # check if you would like to scope your models?
   #
@@ -52,14 +71,18 @@ class SearchController < ApplicationController
   ####
   # this method does the actual search of a Model's objects. 
   #
-  def do_search(clazz_ref,options)
-    @find_options = options ? options : {}
+  def do_search
+    @find_options = {}
+    clazz_ref = controller_name.classify.constantize
+
+    @find_options[:include] = @search_includes
+
     extract_client_options(clazz_ref)
     clients_conditions = extract_conditions()
 
     # merge the search conditions that come from the client request with those set
     # in the controller where do_search() was called. 
-    @search_conditions = merge_conditions(@find_options[:conditions], clients_conditions)
+    @search_conditions = clients_conditions
 
     # We need to ask the model what columns and what other conditions does it want. 
     @model_config = @vista == "" ? clazz_ref.getColumnas() : clazz_ref.getColumnas(@vista)

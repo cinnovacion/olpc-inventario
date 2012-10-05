@@ -22,20 +22,7 @@
 # # #
                                                                    
 class MovementDetailsController < SearchController
-  attr_accessor :include_str
-
   def initialize
-    super 
-    @include_str = [:laptop]
+    super(:includes => :laptop)
   end
-
-  def search
-    do_search(MovementDetail,{ :include => @include_str })
-  end
-
-  def search_options
-    crearColumnasCriterios(MovementDetail)
-    do_search(MovementDetail,{ :include => @include_str })
-  end
-
 end

@@ -22,21 +22,8 @@
 # # #
                                                                          
 class NodeTypesController < SearchController
-
-  attr_accessor :include_str
-
   def initialize
-    super
-    @include_str = [:image]
-  end
-
-  def search
-    do_search(NodeType, {:include => @include_str })
-  end
-
-  def search_options
-    crearColumnasCriterios(NodeType)
-    do_search(NodeType, {:include => @include_str })
+    super(:includes => :image)
   end
 
   def new

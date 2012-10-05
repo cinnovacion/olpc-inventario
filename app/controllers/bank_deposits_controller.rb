@@ -24,22 +24,6 @@
 require 'fecha'
 
 class BankDepositsController < SearchController
-  attr_accessor :include_str
-
-  def initialize
-    super 
-    @include_str = []
-  end
-
-  def search
-    do_search(BankDeposit, { :include => @include_str })
-  end
-
-  def search_options
-    crearColumnasCriterios(BankDeposit)
-    do_search(BankDeposit, { :include => @include_str })
-  end
-
   def new
 
     bank_deposit = nil

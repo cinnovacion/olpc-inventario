@@ -22,15 +22,6 @@
 # # #
                                                                          
 class NotificationsController < SearchController
-  def search
-    do_search(Notification,nil)
-  end
-
-  def search_options
-    crearColumnasCriterios(Notification)
-    do_search(Notification, nil)
-  end
-
   def new
 
     notification = nil

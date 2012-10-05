@@ -24,16 +24,6 @@
 require 'fecha'
 
 class ShipmentsController < SearchController
-
-  def search
-    do_search(Shipment,nil)
-  end
-
-  def search_options
-    crearColumnasCriterios(Shipment)
-    do_search(Shipment, nil)
-  end
-
   def new
     if params[:id]
       p = Shipment.find(params[:id])

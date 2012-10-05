@@ -22,12 +22,4 @@
 # # #
                                                                           
 class StatusChangesController < SearchController
-  def search
-    do_search(StatusChange,nil)
-  end
-  
-  def search_options
-    crearColumnasCriterios(StatusChange)
-    do_search(StatusChange, nil)
-  end
 end
