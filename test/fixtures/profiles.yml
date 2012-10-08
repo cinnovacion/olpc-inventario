@@ -1,7 +1,9 @@
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+developer:
+    description: Developer
+    internal_tag: developer
+    access_level: 600
 
-# one:
-#   column: value
-#
-# two:
-#   column: value
+admin:
+    description: Admin
+    internal_tag: root
+    access_level: 500

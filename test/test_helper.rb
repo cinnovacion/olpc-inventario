@@ -12,4 +12,30 @@ class ActiveSupport::TestCase
   def default_person
     Person.find_by_id_document('default')
   end
+
+  def response_result
+    dict = JSON.parse(@response.body)
+    return dict["result"]
+  end
+
+  def sc_save(id, attribs)
+    data = { "fields" => attribs }
+    if !id.nil?
+      data["id"] = id
+    end
+    post :save, :payload => data.to_json
+    assert_response :success
+    assert_equal "ok", response_result
+  end
+
+  def sc_delete(ids)
+    if !ids.respond_to?(:each)
+      ids = [ids]
+    end
+
+    post :delete, :payload => ids.to_json
+    assert_response :success
+    assert_equal "ok", response_result
+  end
+
 end
