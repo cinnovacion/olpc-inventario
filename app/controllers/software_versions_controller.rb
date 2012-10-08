@@ -15,52 +15,14 @@
 
 class SoftwareVersionsController < SearchController
   def new
-    if params[:id]
-      version = SoftwareVersion.find(params[:id])
-      @output["id"] = version.id
-    else
-      version = nil
-    end
-
-    @output["fields"] = []
+    version = prepare_form
 
     id = version ? version.model_id : -1
     models = buildSelectHash2(Model, id, "name", false, [])
-    h = { "label" => _("Laptop model"), "datatype" => "combobox", "options" => models }
-    @output["fields"].push(h)
+    form_combobox(version, "model_id", _("Laptop model"), models)
 
-    h = { "label" => _("Name"), "datatype" => "textfield" }.merge(version ? {"value" => version.name} : {})
-    @output["fields"].push(h)
-
-    h = { "label" => _("Description"), "datatype" => "textfield" }.merge(version ? {"value" => version.description} : {})
-    @output["fields"].push(h)
-
-    h = { "label" => _("Version hash"), "datatype" => "textfield" }.merge(version ? {"value" => version.vhash} : {})
-    @output["fields"].push(h)
-  end
-
-  def save
-    data = JSON.parse(params[:payload])
-    fields = data["fields"].reverse
-
-    attribs = Hash.new
-    attribs[:model_id] = fields.pop
-    attribs[:name] = fields.pop
-    attribs[:description] = fields.pop
-    attribs[:vhash] = fields.pop
-
-    if data["id"]
-      version = SoftwareVersion.find(data["id"]).update_attributes!(attribs)
-    else
-      SoftwareVersion.create!(attribs)
-    end
-
-    @output["msg"] = data["id"] ? _("Changes saved.") : _("Information added.")
-  end
-
-  def delete
-    ids = JSON.parse(params[:payload])
-    SoftwareVersion.destroy(ids)
-    @output["msg"] = "Elements deleted."
+    form_textfield(version, "name", _("Name"))
+    form_textfield(version, "description", _("Description"))
+    form_textfield(version, "vhash", _("Version hash"))
   end
 end

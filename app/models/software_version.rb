@@ -16,8 +16,14 @@
 class SoftwareVersion < ActiveRecord::Base
   belongs_to :model
 
+  attr_accessible :name, :vhash, :model_id, :description
+
   validates :name, :presence => true
   validates :vhash, :uniqueness => true, :allow_nil => true, :format => { :with => /[a-z0-9]{64}/ }
+
+  before_validation { |version|
+    version.vhash = nil if !version.vhash.nil? and version.vhash.empty?
+  }
 
   def self.getColumnas(vista = "")
     [ 

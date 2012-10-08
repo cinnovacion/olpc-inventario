@@ -39,6 +39,7 @@ class SearchController < ApplicationController
   attr_accessor :vista
 
   def initialize(options = nil)
+    @clazz_ref = controller_name.classify.constantize
     @search_includes = nil
     if options and options[:includes]
       @search_includes = options[:includes]
@@ -52,8 +53,7 @@ class SearchController < ApplicationController
   end
 
   def search_options
-    clazz_ref = controller_name.classify.constantize
-    crearColumnasCriterios(clazz_ref)
+    crearColumnasCriterios(@clazz_ref)
     do_search()
   end
 
@@ -73,11 +73,9 @@ class SearchController < ApplicationController
   #
   def do_search
     @find_options = {}
-    clazz_ref = controller_name.classify.constantize
-
     @find_options[:include] = @search_includes
 
-    extract_client_options(clazz_ref)
+    extract_client_options(@clazz_ref)
     clients_conditions = extract_conditions()
 
     # merge the search conditions that come from the client request with those set
@@ -85,7 +83,7 @@ class SearchController < ApplicationController
     @search_conditions = clients_conditions
 
     # We need to ask the model what columns and what other conditions does it want. 
-    @model_config = @vista == "" ? clazz_ref.getColumnas() : clazz_ref.getColumnas(@vista)
+    @model_config = @vista == "" ? @clazz_ref.getColumnas() : @clazz_ref.getColumnas(@vista)
 
     case @model_config.class.to_s
     when "Array"
@@ -96,15 +94,66 @@ class SearchController < ApplicationController
 
     @find_options.merge!( { :conditions => @search_conditions } ) if @search_conditions[0] != ""
 
-    returned_objects = clazz_ref.paginate(@find_options)
+    returned_objects = @clazz_ref.paginate(@find_options)
 
-    @output["rows"] = getDataToSend(clazz_ref, returned_objects)
+    @output["rows"] = getDataToSend(@clazz_ref, returned_objects)
     @output["results"] = returned_objects.total_entries
     @output["page_count"] = returned_objects.total_pages
     @output["fecha"] = Fecha::getFecha()
-    setup_choose_button_options(clazz_ref)
+    setup_choose_button_options(@clazz_ref)
   end
-  
+
+  def prepare_form
+    @output["fields"] = []
+    if params[:id]
+      object = @clazz_ref.find(params[:id])
+      @output["id"] = object.id
+      return object
+    end
+    nil
+  end
+
+  def form_field(object, name, datatype, extra_options)
+    options = {
+      :name => name,
+      :datatype => datatype
+    }
+
+    options[:value] = object.send(name) if !object.nil?
+
+    @output["fields"].push(options.merge(extra_options))
+  end
+
+  def form_combobox(object, name, label, values)
+    form_field(nil, name, "combobox", :label => label, :options => values)
+  end
+
+  def form_textfield(object, name, label)
+    form_field(object, name, "textfield", :label => label)
+  end
+
+  # Default save method: directly update the model with attribs from the
+  # payload.
+  def save
+    data = JSON.parse(params[:payload])
+    attribs = data["fields"]
+
+    if data["id"]
+      version = @clazz_ref.find(data["id"]).update_attributes!(attribs)
+    else
+      @clazz_ref.create!(attribs)
+    end
+
+    @output["msg"] = data["id"] ? _("Changes saved.") : _("Information added.")
+  end
+
+  # Default delete method: delete matching IDs
+  def delete
+    ids = JSON.parse(params[:payload])
+    @clazz_ref.destroy(ids)
+    @output["msg"] = "Elements deleted."
+  end
+
   private
 
   ####

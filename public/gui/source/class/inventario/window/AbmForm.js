@@ -127,13 +127,6 @@ qx.Class.define("inventario.window.AbmForm",
       nullable : true
     },
 
-    saveColsMapping :
-    {
-      check    : "Object",
-      init     : null,
-      nullable : true
-    },
-
     extraData :
     {
       check    : "Object",
@@ -278,13 +271,6 @@ qx.Class.define("inventario.window.AbmForm",
 
       if (remoteData["window_title"])
         this.setCaption(remoteData["window_title"]);
-
-      /*
-       * Si venimos de otro AbmForm tal vez tenga una manera especial de pasar los datos
-       */
-      if (remoteData["save_cols_mapping"]) {
-        this.setSaveColsMapping(remoteData["save_cols_mapping"]);
-      }
 
       /* HACK: until we learn to calc the size of the window automagically */
       if (remoteData["window_width"]) {
@@ -762,6 +748,9 @@ qx.Class.define("inventario.window.AbmForm",
           alert(fieldData.datatype);
       }
 
+      if (fieldData.name)
+        input.setUserData("name", fieldData.name);
+
       // FIXME: (please?)
       if (fieldData.datatype != "select" && fieldData.datatype != "table" && 
 	  fieldData.datatype != "uploadfield" && fieldData.datatype != "image" && 
@@ -837,15 +826,10 @@ qx.Class.define("inventario.window.AbmForm",
 
           if (url == "" || url == null) {
             /* Lets insert ourselve inside a table */
+            /* FIXME can this codepath be hit? */
             var table = this.getUserData("table_obj");
             this.setSaveCallback(this._addRow2Table);
             this.setSaveCallbackObj(this);
-
-            /* Si tenemos un mapa mapeamos regeneramos el vector de datos */
-
-            if (this.getSaveColsMapping()) {
-              this.data["fields"] = this._getDataFromForm(this.getSaveColsMapping(), fields);
-            }
 
             this._saveCallback(null, this.data["fields"]);
             this.close();
@@ -926,49 +910,6 @@ qx.Class.define("inventario.window.AbmForm",
     {
       var tableObj = this.getUserData("table_obj");
       tableObj.addRows([ newRow ], -1);
-    },
-
-    _getDataFromForm : function(colsMapping, fields)
-    {
-      var ret = new Array();
-      var len = colsMapping.length;
-      var v;
-
-      for (var i=0; i<len; i++)
-      {
-        var j = colsMapping[i]["pos"];
-        var input = fields[j];
-
-        if (input instanceof qx.ui.form.TextField) {
-          v = input.getValue();
-        }
-        else if (input instanceof qx.ui.form.SelectBox)
-        {
-          var s = input.getSelected();
-
-          if (colsMapping[i]["data"] == "text") {
-            v = input.getValue();
-          } else if (colsMapping[i]["data"] == "value") {
-            v = s.getValue();
-          }
-          else if (colsMapping[i]["data"] == "hash")
-          {
-            v =
-            {
-              value : s.getValue(),
-              text  : input.getValue()
-            };
-          }
-          else
-          {
-            alert(qx.locale.Manager.tr("Config error. in getDataFromForm"));
-          }
-        }
-
-        ret.push(v);
-      }
-
-      return ret;
     },
 
     _doAddHandlerTable : function(datos, tableObj)
@@ -1100,15 +1041,56 @@ qx.Class.define("inventario.window.AbmForm",
       this.close();
     },
 
+    _getArrayFromFields : function(fields, array)
+    {
+      var updated = false;
+
+      for (var i=0; i<fields.length; i++) {
+        var v = inventario.widget.Form.getInputValue(fields[i]);
+
+        if (fields[i].getUserData("number_with_format")) {
+          v = inventario.widget.Form.unFormatNumber(v);
+        }
+
+        // checkboxes: field updated?
+        if (this._update_checkboxes.length > 0) {
+          var h = {};
+          h["value"] = v;
+
+          h["updated"] = this._update_checkboxes[i].getChecked();
+
+          if (h["updated"]) {
+            updated = true;
+          }
+          array.push(h);
+        } else {
+          array.push(v);
+        }
+      }
+
+      return updated;
+    },
+
     _getDataFromFields : function(fields)
     {
       this.data = {};
-      this.data["fields"] = new Array();
       var updated = false;
+
+      // Deprecated ordered list of form values
+      if (!fields[0].getUserData("name")) {
+        var array = new Array();
+        updated = this._getArrayFromFields(fields, array);
+        this.data["fields"] = array;
+        return updated;
+      }
+
+      // Return dictionary of {name: value}
+      this.data["fields"] = {};
 
       for (var i=0; i<fields.length; i++)
       {
         var v = inventario.widget.Form.getInputValue(fields[i]);
+        var name = fields[i].getUserData("name");
 
         if (fields[i].getUserData("number_with_format")) {
           v = inventario.widget.Form.unFormatNumber(v);
@@ -1125,12 +1107,9 @@ qx.Class.define("inventario.window.AbmForm",
           if (h["updated"]) {
             updated = true;
           }
-
-          this.data["fields"].push(h);
-        }
-        else
-        {
-          this.data["fields"].push(v);
+          this.data["fields"][name] = h;
+        } else {
+          this.data["fields"][name] = v;
         }
       }
 
