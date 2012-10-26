@@ -1062,7 +1062,7 @@ class PrintController < ApplicationController
 
     h.keys.each { |place|
       name = place.getName
-      name += " (#{place.getDescription})"  if place.getDescription != ""
+      name += " (#{place.description})" if !place.description.nil?
 
       total_people = place.performing_people.length
       solved_problems = h[place][true]
@@ -1448,7 +1448,7 @@ class PrintController < ApplicationController
       }
 
       name = subPlace.name
-      name_str = subPlace.place_type.getName() + " " + name + " - " + subPlace.getDescription()
+      name_str = subPlace.place_type.getName() + " " + name + " - " + subPlace.description
       h = { :name => name_str, :value => sub_total }
       @datos.push([name_str, subPlace.description, sub_total])
       @grand_total += sub_total

@@ -76,7 +76,7 @@ class ProblemReport < ActiveRecord::Base
     extended_data = { 
                       _("Id:") => self.id,
                       _("subject") => self.problem_type.getName,
-                      _("Location:") => self.place.getName,
+                      _("Location:") => self.place,
                       _("Reported by:") => self.person.getFullName
                     }
    NotificationsPool.register("problem_report", extended_data, place)
@@ -119,13 +119,13 @@ class ProblemReport < ActiveRecord::Base
 
      if self.place 
        if self.place.place 
-         place_name = self.place.getParentPlace()
+         place_name = self.place.place
        else
-         place_name = self.place.getName()
+         place_name = self.place
        end
      end
 
-     place_name
+     place_name.to_s
    end
 
   ###

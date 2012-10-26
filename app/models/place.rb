@@ -13,22 +13,13 @@
 #     You should have received a copy of the GNU General Public License
 #     along with this program.  If not, see <http://www.gnu.org/licenses/>
 # 
-# 
-
-# # #
 # Author: Raúl Gutiérrez
 # E-mail Address: rgs@paraguayeduca.org
-# 2009
-# # #
-
-# # #
+#
 # Author: Martin Abente
 # E-mail Address:  (tincho_02@hotmail.com | mabente@paraguayeduca.org) 
-# 2009
-# # #
                                                                          
 class Place < ActiveRecord::Base
-
   acts_as_audited
 
   belongs_to :place
@@ -37,8 +28,8 @@ class Place < ActiveRecord::Base
   has_many :places
   has_many :performs
   has_many :people, :through => :performs, :source => :person
-  has_many :ancestor_dependencies, :foreign_key  => "descendant_id", :class_name => "PlaceDependency"
-  has_many :descendant_dependencies, :foreign_key  => "ancestor_id", :class_name => "PlaceDependency"
+  has_many :ancestor_dependencies, :foreign_key => "descendant_id", :class_name => "PlaceDependency"
+  has_many :descendant_dependencies, :foreign_key => "ancestor_id", :class_name => "PlaceDependency"
   has_many :descendants, :through => :descendant_dependencies, :source => :descendant
   has_many :ancestors, :through => :ancestor_dependencies, :source => :ancestor
   has_many :nodes
@@ -49,21 +40,18 @@ class Place < ActiveRecord::Base
   after_create :register_place_dependencies
   before_update :update_place_dependencies
   before_destroy :unregister_place_dependencies
-  
-  ###
-  # Listado
-  #
+
   def self.getColumnas(vista = "")
     ret = Hash.new
     
     ret[:columnas] = [ 
                       {:name => _("Id"),:key => "places.id",:related_attribute => "id", :width => 50},
                       {:name => _("Creation Date"),:key => "places.description", 
-                        :related_attribute => "getDate()", :width => 120},
-                      {:name => _("Name"),:key => "places.name",:related_attribute => "getName()", :width => 325},
-                      {:name => _("Description"),:key => "places.description",:related_attribute => "getDescription()",
+                        :related_attribute => "created_at", :width => 120},
+                      {:name => _("Name"),:key => "places.name",:related_attribute => "to_s", :width => 325},
+                      {:name => _("Description"),:key => "places.description",:related_attribute => "description",
                         :width => 150},
-                      {:name => _("Type"),:key => "place_types.name",:related_attribute => "getType()", :width => 100}
+                      {:name => _("Type"),:key => "place_types.name",:related_attribute => "place_type", :width => 100}
                      ]
 
     ret[:columnas_visibles] = [true, true, true, true, true]
@@ -86,10 +74,7 @@ class Place < ActiveRecord::Base
     ret
   end
 
-
-  ###
   # Returns list of serial_nums and uuids of all laptops in a place
-  #
   def self.getSerialsInfo(place_id)
     ret = Array.new
 
@@ -112,12 +97,9 @@ class Place < ActiveRecord::Base
   end
   
   def update_place_dependencies
-
     Place.send(:with_exclusive_scope) do
-
       father  = Place.find_by_id(self.place_id)    
       if father && father.calcAncestorsIds.push(self.place_id).include?(self.id)
-
         raise _("A child may not be the father nor the father the son.")
       end
 
@@ -159,30 +141,26 @@ class Place < ActiveRecord::Base
     }
   end
 
-  ###
   # Theres a lot of conflict between the users access
   # to the place objects, so i try to handle it them
   # all together here.
   def self.register(attribs, nodes, register)
-
     place_parent = Place.find_by_id(attribs[:place_id])
     raise _("No sufficient level of access!") if !(place_parent && register.place.owns(place_parent))
 
     Place.transaction do
-
       place = Place.new(attribs)
       if place.save!
         Node.doRegistering(nodes, place.id)
       end
+      place
     end
   end
  
   def register_update(attribs, nodes, register)
-
     raise _("No sufficient level of access!") if !(register.place.owns(self))
 
     Place.transaction do
-
       if self.place_id && !attribs[:place_id]
         attribs.delete(:place_id)
       end
@@ -201,21 +179,15 @@ class Place < ActiveRecord::Base
   end
 
   def self.unregister(places_ids, unregister)
-
-  to_be_destroy_places = Place.find_all_by_id(places_ids)
-  to_be_destroy_places.each { |place|
-    raise _("No sufficient level of access!") if !(unregister.place.owns(place))
-  }
-
-  Place.destroy(to_be_destroy_places)
-
+    to_be_destroy_places = Place.find_all_by_id(places_ids)
+    to_be_destroy_places.each { |place|
+      raise _("No sufficient level of access!") if !(unregister.place.owns(place))
+    }
+    Place.destroy(to_be_destroy_places)
   end
 
-  ###
   # Optimization functions for fast sub-trees recovery
-  #
   def update_family_tree_registry
-
     old_ancestors_places = self.getAncestorsPlaces
     self.unregister_from_ancestors
     
@@ -251,7 +223,6 @@ class Place < ActiveRecord::Base
   end
 
   def register_on_ancestors
-
     if !self.ancestors_ids
       self.setAncestorsIds
     end
@@ -265,7 +236,6 @@ class Place < ActiveRecord::Base
   end
 
   def unregister_from_ancestors
-
     self.getAncestorsPlaces.each { |ancestor_place|
       ancestor_place.removeDescendantsIds([self.id])
       ancestor_place.save!
@@ -276,7 +246,6 @@ class Place < ActiveRecord::Base
   end
 
   def setAncestorsIds(ancestors_ids = nil)
-
     if !ancestors_ids
       ancestors_ids = self.calcAncestorsIds
     end
@@ -307,7 +276,6 @@ class Place < ActiveRecord::Base
   end
 
   def setDescendantsIds(descendants_ids = nil)
-
     if !descendants_ids
       descendants_ids = self.calcDescendantsIds 
     end
@@ -340,9 +308,6 @@ class Place < ActiveRecord::Base
   # End of Optimizations
   ###
 
-  ###
-  #
-  #
   def getPartDistribution()
     ret = Hash.new
     ret[:place_name] = self.name
@@ -362,7 +327,6 @@ class Place < ActiveRecord::Base
     ret 
   end
 
-
   def getTreeDepth(root)
     max = 1
     v = Array.new
@@ -372,7 +336,6 @@ class Place < ActiveRecord::Base
     max += v.max if v.length > 0
     max
   end
-
 
   def buildMatrix(node, matrix, label_column = 0, count_column = 9)
     if node[:count] > 0 or node[:count_assigned] > 0
@@ -386,12 +349,7 @@ class Place < ActiveRecord::Base
     matrix
   end
   
-  def getDate()
-    self.created_at.to_s
-  end
-
   def getName
-
     ancestors = self.getAncestorsPlaces
     ancestors.sort! { |a,b|
 
@@ -400,18 +358,7 @@ class Place < ActiveRecord::Base
     ancestors.push(self).collect(&:name).join(':')
   end
 
-  def getDescription()
-    self.description ? self.description : ""
-  end
-
-  def getParentPlace()
-    self.place ? self.place.getName : ""
-  end
-
-  def getType()
-    return self.place_type.name if self.place_type
-    "Null"
-  end
+  alias_method :to_s, :getName
 
   def calcDescendantsIds
     list = []
@@ -425,7 +372,6 @@ class Place < ActiveRecord::Base
     list
   end
 
-  ###
   # Get place parents ids.
   def calcAncestorsIds
     parents_ids = []
@@ -437,7 +383,6 @@ class Place < ActiveRecord::Base
     parents_ids
   end
 
-  ###
   # Generates recursive hash-based representation
   # for the places in the systems for diferents
   # widgets on the GUI.
@@ -479,7 +424,6 @@ class Place < ActiveRecord::Base
   ###
   #  All functions for Google map qooxdoo widget.
   #
-
   def getMapNodes(node_type_ids = [])
     nodes = self.nodes
     if node_type_ids != []
@@ -500,7 +444,6 @@ class Place < ActiveRecord::Base
 
   # TODO: Needs performance boots.
   def getMapCenter(subNodes = false)
-
     retNode = nil
 
     self.nodes.each { |node|
@@ -607,11 +550,7 @@ class Place < ActiveRecord::Base
 
   def getProblemReports(which = nil) 
     ret = ProblemReport.where(:place_id => self.getDescendantsIds.push(self.id))
-    
-    if which
-        ret = ret.where(:solved => (which != :open))
-    end
-
+    ret = ret.where(:solved => (which != :open)) if which
     ret.length
   end
 
@@ -621,23 +560,19 @@ class Place < ActiveRecord::Base
    laptops.map { |laptop| laptop.serial_number }
   end
 
-  ###
   #  We define a simple order relationship between places
   def self.highest(places)
     places.sort { |a,b| a.getAncestorsIds.length > b.getAncestorsIds.length ? -1 : 1 }.pop
   end
 
-  ###
   #  There are many cases where is needed only the roots places from 
   #  a set of places.
   # TODO: Doing it in one query, using place_dependencies table
   def self.roots(places)
-
     "select count(*), descendant_id from place_dependencies group by descendant_id order by count(*) ASC;"
     roots = []
     places_ids = places.collect(&:id)
     places.each { |root_candidate|
-
       descendants_ids = places_ids - [root_candidate.id]
       ancestors_ids = root_candidate.getAncestorsIds #root_candidate.ancestors.collect(&:id) - [root_candidate.id]
 
@@ -647,7 +582,6 @@ class Place < ActiveRecord::Base
     roots
   end
 
-  ###
   #  A place owns another when its parent
   def owns(place)
     return true if self.getDescendantsIds.push(self.id).include?(place.id)
@@ -659,13 +593,10 @@ class Place < ActiveRecord::Base
 	people.where(:id => places_ids)
   end
 
-  ###
   # Sort places, WARNING: only for upper sub-tree hierarchies
   def self.sort(places)
     places.sort { |a,b|
-
       a.id == b.place_id ? -1 : b.getAncestorsIds.include?(a.id) ? -1 : 1
     }
   end
-
 end
