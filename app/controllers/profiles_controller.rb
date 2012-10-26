@@ -33,7 +33,7 @@ class ProfilesController < SearchController
     
     @output["fields"] = []
 
-    h = { "label" => _("Description"), "datatype" => "textfield" }.merge( profile ? {"value" => profile.getDescription } : {} )
+    h = { "label" => _("Description"), "datatype" => "textfield" }.merge( profile ? {"value" => profile.description } : {} )
     @output["fields"].push(h)
 
     h = { "label" => _("Internal Tag"), "datatype" => "textfield" }.merge( profile ? {"value" => profile.getInternalTag } : {} )

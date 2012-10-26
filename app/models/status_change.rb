@@ -92,7 +92,7 @@ class StatusChange < ActiveRecord::Base
   # Previous state
   #
   def getPreviousState()
-    return self.previous_state.getDescription() if self.previous_state_id
+    return self.previous_state.description if self.previous_state_id
     "null"
   end
 
@@ -100,7 +100,7 @@ class StatusChange < ActiveRecord::Base
   # New state
   #
   def getNewState()
-    return self.new_state.getDescription() if self.new_state_id
+    return self.new_state.description if self.new_state_id
     "null"
   end
 

@@ -41,7 +41,7 @@ class MovementDetail < ActiveRecord::Base
     ret = Hash.new
     
     ret[:columnas] = [ 
-                      {:name => _("Equipment Type"),:key => "movement_details.description", :related_attribute => "getDescription()", 
+                      {:name => _("Equipment Type"),:key => "movement_details.description", :related_attribute => "description()", 
                         :width => 120},
                       {:name => _("Serial Nbr."),:key => "movement_details.serial_number",:related_attribute => "serial_number", 
                         :width => 120},
@@ -75,10 +75,6 @@ class MovementDetail < ActiveRecord::Base
     self.movement.id
   end
   
-  def getDescription()
-    self.description
-  end
-
   def getMovementDate()
     self.movement.getMovementDate()
   end

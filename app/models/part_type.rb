@@ -29,7 +29,7 @@ class PartType < ActiveRecord::Base
   def self.getColumnas()
     [ 
      {:name => _("Id"),:key => "part_types.id",:related_attribute => "id", :width => 50},
-     {:name => _("Description"),:key => "part_types.description",:related_attribute => "getDescription()", :width => 250},
+     {:name => _("Description"),:key => "part_types.description",:related_attribute => "description()", :width => 250},
      {:name => _("Cost"), :key => "part_types.cost", :related_attribute => "getCost()", :width => 100},
      {:name => _("Internal Tag"),:key => "part_types.internal_tag",:related_attribute => "getInternalTag()", :width => 250}
     ]
@@ -40,10 +40,6 @@ class PartType < ActiveRecord::Base
     ret["desc_col"] = 1
     ret["id_col"] = 0
     ret
-  end
-
-  def getDescription()
-    self.description ? self.description : ""
   end
 
   def getInternalTag()

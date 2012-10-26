@@ -178,7 +178,7 @@ class LaptopsController < SearchController
     #@output["fields"].push(h)
 
     id = p && p.status ? p.status_id : Status.find_by_internal_tag("deactivated").id
-    statuses = buildSelectHash2(Status,id,"getDescription()",false,[])
+    statuses = buildSelectHash2(Status,id,"description",false,[])
     h = { "label" => _("Status"),"datatype" => "combobox","options" => statuses }
     @output["fields"].push(h)
 
@@ -218,7 +218,7 @@ class LaptopsController < SearchController
     #@output["fields"].push(h)
 
     id = p && p.status ? p.status_id : Status.find_by_internal_tag("deactivated").id
-    statuses = buildSelectHash2(Status,id,"getDescription()",false,[])
+    statuses = buildSelectHash2(Status,id,"description",false,[])
     h = { "label" => _("Status"), "datatype" => "combobox","options" => statuses }
     @output["fields"].push(h)
 

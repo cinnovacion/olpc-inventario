@@ -45,7 +45,7 @@ class Notification < ActiveRecord::Base
                       },
                       {:name => _("Description"),
                        :key => "notifications.description",
-                       :related_attribute => "getDescription()",
+                       :related_attribute => "description()",
                        :width => 255
                       },
                       {:name => _("Active"),
@@ -78,12 +78,6 @@ class Notification < ActiveRecord::Base
   # Nombre de la notificacion.
   def getName()
     self.name ? self.name : ""
-  end
-
-  ##
-  # Descripcion de la notificacion probablemente el mensaje.
-  def getDescription()
-    self.description ? self.description : ""
   end
 
   def getInternalTag()

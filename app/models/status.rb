@@ -41,7 +41,7 @@ class Status < ActiveRecord::Base
 				  {
 					:name => _("Description"),
 					:key => "statuses.description",
-					:related_attribute => "getDescription()",
+					:related_attribute => "description",
 					:width => 255
 				  },
 				  {
@@ -53,10 +53,6 @@ class Status < ActiveRecord::Base
 				 ]
 		ret[:columnas_visibles] = [false,true,true]
 		ret
-	end
-
-	def getDescription()
-		self.description
 	end
 
   def to_s

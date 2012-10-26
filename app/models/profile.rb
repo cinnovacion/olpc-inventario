@@ -35,7 +35,7 @@ class Profile < ActiveRecord::Base
     
     ret[:columnas] = [ 
                       {:name => _("Id"),:key => "profiles.id",:related_attribute => "id", :width => 50},
-                      {:name => _("Description"),:key => "profiles.description",:related_attribute => "getDescription()", :width => 140},
+                      {:name => _("Description"),:key => "profiles.description",:related_attribute => "description()", :width => 140},
                       {:name => _("Internal Tag"),:key => "profiles.internal_tag",:related_attribute => "getInternalTag()", :width => 140},
                       {:name => _("Access Level"),:key => "profiles.access_level",:related_attribute => "getAccessLevel()", :width => 140}
                      ]
@@ -53,10 +53,6 @@ class Profile < ActiveRecord::Base
     end
 
     ret
-  end
-
-  def getDescription()
-    self.description ? self.description : "?"
   end
 
   def getInternalTag()

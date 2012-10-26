@@ -35,7 +35,7 @@ class PartTypesController < SearchController
       type = nil
     end
 
-    h = { "label" => _("Name"), "datatype" => "textfield" }.merge( type ? {"value" => type.getDescription() } : {} )
+    h = { "label" => _("Name"), "datatype" => "textfield" }.merge( type ? {"value" => type.description() } : {} )
     @output["fields"].push(h)
 
     h = { "label" => _("Cost"), "datatype" => "textfield" }.merge( type ? {"value" => type.getCost() } : {} )

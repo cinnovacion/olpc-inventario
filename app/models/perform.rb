@@ -52,7 +52,7 @@ class Perform < ActiveRecord::Base
   end
 
   def getProfileDescription
-    self.profile_id ? self.profile.getDescription : ""
+    self.profile_id ? self.profile.description : ""
   end
 
   def self.alreadyExists?(person_id, place_id, profile_id)

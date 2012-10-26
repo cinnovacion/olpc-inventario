@@ -38,7 +38,7 @@ class SolutionTypesController < SearchController
     h = { "label" => _("Name"), "datatype" => "textfield" }.merge( solution_type ? {"value" => solution_type.getName } : {} )
     @output["fields"].push(h)
 
-    h = { "label" => _("Description"), "datatype" => "textarea" }.merge( solution_type ? {"value" => solution_type.getDescription } : {} )
+    h = { "label" => _("Description"), "datatype" => "textarea" }.merge( solution_type ? {"value" => solution_type.description } : {} )
     @output["fields"].push(h)
 
     h = { "label" => _("More info"), "datatype" => "textarea" }.merge( solution_type ? {"value" => solution_type.getExtInfo } : {} )
@@ -53,7 +53,7 @@ class SolutionTypesController < SearchController
     included_part_types = solution_type ? solution_type.part_types : []
     options = PartType.all.map { |part_type| 
       { 
-        :label => part_type.getDescription,
+        :label => part_type.description,
         :cb_name => part_type.id,
         :checked => included_part_types.include?(part_type) ? true : false
       }

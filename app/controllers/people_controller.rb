@@ -84,7 +84,7 @@ class PeopleController < SearchController
     h = { "label" => _("Personal image"), "datatype" => "uploadfield", :field_name => :fotocarnet }
     @output["fields"].push(h)
 
-    profiles = buildSelectHash2(Profile, -1, "getDescription()", false, [ "access_level < ?", current_user.person.profile.access_level])
+    profiles = buildSelectHash2(Profile, -1, "description", false, [ "access_level < ?", current_user.person.profile.access_level])
 
     h = { "datatype" => "tab_break", "title" => _("Roles") }
     @output["fields"].push(h)
@@ -95,7 +95,7 @@ class PeopleController < SearchController
     dataGrid = Perform.find_all_by_person_id(p.id).map { |perform|
       [
        { :value => perform.place_id, :text => perform.place.getName },
-       { :value => perform.profile_id, :text => perform.profile.getDescription }
+       { :value => perform.profile_id, :text => perform.profile.description }
       ]
     } if p
 

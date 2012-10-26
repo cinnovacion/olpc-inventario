@@ -56,7 +56,7 @@ class ReportsController < SearchController
     @output["widgets"].push(columnValueSelector(csv_fields))
 
     #Motivos posibles
-    cb_options = buildCheckHash(MovementType, "getDescription")
+    cb_options = buildCheckHash(MovementType, "description")
     @output["widgets"].push(checkBoxSelector(_("Reasons"), cb_options,3))
 
     # from person
@@ -157,7 +157,7 @@ class ReportsController < SearchController
     to = Fecha.usDate(Date.today.to_s)
     @output["widgets"] += multipleDataRange(since, to)
     @output["widgets"].push(hierarchy(_("Locations")))
-    @output["widgets"].push(checkBoxSelector(_("Parts"), buildCheckHash(PartType, "getDescription"), 6))
+    @output["widgets"].push(checkBoxSelector(_("Parts"), buildCheckHash(PartType, "description"), 6))
     @output["print_method"] = "parts_replaced"
   end
 
@@ -182,7 +182,7 @@ class ReportsController < SearchController
     @output["widgets"].push(checkBoxSelector("Filters", cb_options))
 
     profiles = Profile.find(:all, :conditions => ["profiles.internal_tag in (?)", ["student", "teacher"]])
-    options = buildCheckHash(Profile, "getDescription", true, profiles, profiles.collect(&:id))
+    options = buildCheckHash(Profile, "description", true, profiles, profiles.collect(&:id))
     @output["widgets"].push(checkBoxSelector(_("Profiles"), options, 1))
 
     @output["print_method"] = "barcodes"
@@ -311,8 +311,8 @@ class ReportsController < SearchController
     @output["widgets"].push(comboBoxSelector(_("Given to"), cb_options))
     @output["widgets"].push(comboBoxSelector(_("Group by"), buildSelectHash2(PlaceType, -1, "getName", false, ["internal_tag in (?)",["school","city"]])))
     @output["widgets"].push(hierarchy(_("From")))
-    @output["widgets"].push(checkBoxSelector(_("Parts"), buildCheckHash(PartType,"getDescription"),6))
-    cb_options = buildSelectHash2(PartType, -1, "getDescription", false)
+    @output["widgets"].push(checkBoxSelector(_("Parts"), buildCheckHash(PartType,"description"),6))
+    cb_options = buildSelectHash2(PartType, -1, "description", false)
     cb_options += [{ :text => _("Total"), :value => -1}, { :text => "Persona", :value => -2}]
     @output["widgets"].push(comboBoxSelector("Ordenar por", cb_options))
     cb_options = [{ :text => _("Descending"), :value => "DESC"}, { :text => _("Ascending"), :value => "ASC"}]

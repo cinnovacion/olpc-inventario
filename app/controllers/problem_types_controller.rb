@@ -37,7 +37,7 @@ class ProblemTypesController < SearchController
     h = { "label" => _("Name"), "datatype" => "textfield" }.merge( problem_type ? {"value" => problem_type.getName } : {} )
     @output["fields"].push(h)
 
-    h = { "label" => _("Description"), "datatype" => "textarea" }.merge( problem_type ? {"value" => problem_type.getDescription } : {} )
+    h = { "label" => _("Description"), "datatype" => "textarea" }.merge( problem_type ? {"value" => problem_type.description } : {} )
     @output["fields"].push(h)
 
     h = { "label" => _("More info"), "datatype" => "textarea" }.merge( problem_type ? {"value" => problem_type.getExtInfo } : {} )

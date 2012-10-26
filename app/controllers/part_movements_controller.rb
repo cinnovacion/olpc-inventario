@@ -40,7 +40,7 @@ class PartMovementsController < SearchController
     @output["fields"].push(h)
 
     id = part_movement ? part_movement.part_type.id : nil
-    part_types = buildSelectHash2(PartType, id, "getDescription", false, [])
+    part_types = buildSelectHash2(PartType, id, "description", false, [])
     h = { "label" => _("Part type"), "datatype" => "combobox", "options" => part_types }
     @output["fields"].push(h)
 
@@ -88,7 +88,7 @@ class PartMovementsController < SearchController
     @output["window_title"] = _("Transfer parts.")
     @output["fields"] = []
 
-    part_types = buildSelectHash2(PartType, -1, "getDescription", false, [])
+    part_types = buildSelectHash2(PartType, -1, "description", false, [])
     h = { "label" => _("Part type"), "datatype" => "combobox", "options" => part_types }
     @output["fields"].push(h)
 

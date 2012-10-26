@@ -71,7 +71,7 @@ class PartMovement < ActiveRecord::Base
   end
 
   def getPartTypeDescription
-    self.part_type ? self.part_type.getDescription : ""
+    self.part_type ? self.part_type.description : ""
   end
 
   def getAmount

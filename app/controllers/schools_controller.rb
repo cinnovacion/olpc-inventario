@@ -33,7 +33,7 @@ class SchoolsController < ApplicationController
 
     info.push({ :label => _("General info of the school"), :data => "" })
     info.push({:label => _("Number"), :data => school.name })
-    info.push({ :label => _("Name"), :data => school.getDescription })
+    info.push({ :label => _("Name"), :data => school.description })
 
     student_profile_id = Profile.find_by_internal_tag("student").id
     teacher_profile_id = Profile.find_by_internal_tag("teacher").id

@@ -35,7 +35,7 @@ class NotificationsController < SearchController
     h = { "label" => _("Name"), "datatype" => "textfield" }.merge( notification ? {"value" => notification.getName } : {} )
     @output["fields"].push(h)
 
-    h = { "label" => _("Description"), "datatype" => "textfield" }.merge( notification ? {"value" => notification.getDescription } : {} )
+    h = { "label" => _("Description"), "datatype" => "textfield" }.merge( notification ? {"value" => notification.description } : {} )
     @output["fields"].push(h)
 
     h = { "label" => _("Internal tag"), "datatype" => "textfield" }.merge( notification ? {"value" => notification.getInternalTag } : {} )

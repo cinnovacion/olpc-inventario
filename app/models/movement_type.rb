@@ -35,22 +35,13 @@ class MovementType < ActiveRecord::Base
     
     ret[:columnas] = [ 
                       {:name => _("Id"), :key => "movement_types.id", :related_attribute => "id", :width => 50},
-                      {:name => _("Descritpion"), :key => "movement_types.description", :related_attribute => "getDescription()", :width => 120},
+                      {:name => _("Descritpion"), :key => "movement_types.description", :related_attribute => "description()", :width => 120},
                       {:name => _("Delivery?"), :key => "movement_types.is_delivery", :related_attribute => "getIsDelivery()", :width => 50}                   
                      ]
 
     ret[:columnas_visibles] = [false, true]
 
     ret
-  end
-
-
-
-  ##
-  # Description
-  #
-  def getDescription()
-    self.description
   end
 
   def getIsDelivery()

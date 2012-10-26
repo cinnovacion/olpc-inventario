@@ -108,7 +108,7 @@ class PrintController < ApplicationController
     
     stock_status.keys.each { |part_type|
       values = stock_status[part_type]
-      @datos.push([part_type.getDescription, values[true], values[false], values[true]-values[false]])
+      @datos.push([part_type.description, values[true], values[false], values[true]-values[false]])
     }
 
     print(params, "stock_status_report")
@@ -891,7 +891,7 @@ class PrintController < ApplicationController
     }
 
     @titulo = _("Repair parts used")
-    @columnas = [_("Person"), _("Location") ] + part_types.map { |part| part.getDescription } + [_("Total")]
+    @columnas = [_("Person"), _("Location") ] + part_types.map { |part| part.description } + [_("Total")]
     @datos = []
 
     results.keys.each { |person|
@@ -919,7 +919,7 @@ class PrintController < ApplicationController
       else
         part_type = PartType.where("id = ? and id in (?)", sort_key, part_types.map { |part| part.id }).first
         if part_type
-          sort_index = @columnas.index(part_type.getDescription)
+          sort_index = @columnas.index(part_type.description)
         else
           raise _("Can't sort by that part.")
         end
@@ -1622,7 +1622,7 @@ class PrintController < ApplicationController
         @datos.push([
                      md.movement_id,
                      m.getMovementDate(),
-                     md.getDescription(),
+                     md.description,
                      md.serial_number,
                      m.getSourcePerson(),
                      m.getDestinationPerson(),
@@ -1674,11 +1674,11 @@ class PrintController < ApplicationController
         }
       }
 
-    h = { :name => mt.getDescription(), :value => laptops } 
+    h = { :name => mt.description, :value => laptops } 
     graph_data.push(h)
 
     v = []
-    v.push(mt.getDescription())
+    v.push(mt.description)
     v.push(laptops)
     @datos.push(v)
     }
@@ -1847,7 +1847,7 @@ class PrintController < ApplicationController
                      m.getSourcePerson(),
                      m.getDestinationPerson(),
                      m.getReturnDate(),
-                     md.getDescription(),
+                     md.description,
                      md.serial_number,
                      md.getReturned()
                     ])
@@ -1882,14 +1882,14 @@ class PrintController < ApplicationController
     statuses.each { |s|
       v = []
 
-      v.push(s.getDescription())
+      v.push(s.description)
       v.push(s.laptops.length)
       @datos.push(v)
 
       # save for graphing
       total = 0
       v[1..10].each { |i| total += i }
-      h = { :name => s.getDescription(), :value => total } 
+      h = { :name => s.description, :value => total } 
       graph_data.push(h)
     }
 
