@@ -12,52 +12,37 @@
 # 
 #     You should have received a copy of the GNU General Public License
 #     along with this program.  If not, see <http://www.gnu.org/licenses/>
-# 
-#  
-
-# # #
+#
 # Author: Martin Abente
 # E-mail Address:  (tincho_02@hotmail.com | mabente@paraguayeduca.org) 
-# 2009
-# # #
-                                                                        
+
 class PlaceType < ActiveRecord::Base
   has_many :places
 
-  validates_uniqueness_of :internal_tag, :message => N_("The tag must be unique")
+  validates :internal_tag, :name, presence: true
+  validates :internal_tag, uniqueness: { message: N_("The tag must be unique") }
+
+  attr_accessible :name, :internal_tag
 
   @@grades_list = ["first_grade", "second_grade", "third_grade", "fourth_grade", "fifth_grade", "sixth_grade", "seventh_grade", "eighth_grade","ninth_grade"]
 
   def self.getColumnas()
     [ 
-     {:name => _("Id"), :key => "place_types.id",:related_attribute => "id", :width => 50},
-     {:name => _("Location type"), :key => "place_types.name",:related_attribute => "getName()", :width => 250},
-     {:name => _("Internal Tag"),:key => "place_types.internal_tag",:related_attribute => "getInternalTag()", :width => 250}
+     {name: _("Id"), key: "place_types.id", related_attribute: "id", width: 50},
+     {name: _("Location type"), key: "place_types.name", related_attribute: "name", width: 250},
+     {name: _("Internal Tag"), key: "place_types.internal_tag", related_attribute: "internal_tag", width: 250}
     ]
   end
 
   def self.getChooseButtonColumns(vista = "")
-    ret = Hash.new
-    ret["desc_col"] = 1
-    ret["id_col"] = 0
-    ret
-  end
-
-  def getInternalTag()
-    self.internal_tag
-  end
-
-  def getName()
-    self.name.to_s
-  end
-
-  def self.getGradeTypes()
-    grades = ["kinder","special","first_grade","second_grade","third_grade","fourth_grade","fifth_grade","sixth_grade","seventh_grade", "eighth_grade","ninth_grade"]
-    list = []
-    PlaceType.find(:all).each { |type|
-      list.push(type.id) if grades.include? type.internal_tag
+    {
+      desc_col: 1,
+      id_col: 0,
     }
-    list
+  end
+
+  def to_s()
+    self.name
   end
 
   def self.nextGradeTag(current_grade_tag)
@@ -70,21 +55,17 @@ class PlaceType < ActiveRecord::Base
     up_grade_list = up_grade_list ? up_grade_list : []
 
     if up_grade_list.include?(current_year)
-
       raise _("This script can be run only once a year") 
     else
-
       up_grade_list.push(current_year)
     end
 
-    inc = [:place_type]
-    cond = ["place_types.internal_tag in (?)", @@grades_list[0..-2]]
-
     Place.transaction do
-      Place.find(:all, :conditions => cond, :include => inc).each { |place|
+      places = Place.includes(:place_type)
+      places = places.where("place_types.internal_tag in (?)", @@grades_list[0..-2])
+      places.each { |place|
         current_place_type = place.place_type
         next_place_type = PlaceType.find_by_internal_tag(nextGradeTag(current_place_type.internal_tag))
-
         raise _("Not present to the next grade %s") % current_place_type.internal_tag if !next_place_type
 
         place.name = next_place_type.name
@@ -96,5 +77,4 @@ class PlaceType < ActiveRecord::Base
     DefaultValue.setJsonValue("up_grades", up_grade_list)
     true
   end
-
 end

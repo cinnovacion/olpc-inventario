@@ -12,56 +12,16 @@
 # 
 #     You should have received a copy of the GNU General Public License
 #     along with this program.  If not, see <http://www.gnu.org/licenses/>
-# 
 #
-
-# # #
 # Author: Martin Abente
 # E-mail Address:  (tincho_02@hotmail.com | mabente@paraguayeduca.org) 
-# 2009
-# # #
-                                                                          
+
 class PlaceTypesController < SearchController
   def new
     @output["fields"] = []
+    type = prepare_form
 
-    if params[:id]
-      type = PlaceType.find_by_id(params[:id])
-      @output["id"] = type.id
-    else
-      type = nil
-    end
-
-    h = { "label" => _("Name"), "datatype" => "textfield" }.merge( type ? {"value" => type.getName } : {} )
-    @output["fields"].push(h)
-
-    h = { "label" => _("Internal tag"),"datatype" => "textfield" }.merge( type ? {"value" => type.getInternalTag } : {} )
-    @output["fields"].push(h)
-
+    form_textfield(type, "name", _("Name"))
+    form_textfield(type, "internal_tag", _("Internal tag"))
   end
-
-  def save
-    datos = JSON.parse(params[:payload])
-    data_fields = datos["fields"].reverse
-
-    attribs = Hash.new
-    attribs[:name] = data_fields.pop
-    attribs[:internal_tag] = data_fields.pop
-
-   if datos["id"]
-     type = PlaceType.find_by_id(datos["id"])
-     type.update_attributes(attribs)
-   else
-     PlaceType.create!(attribs)
-   end
-
-    @output["msg"] = datos["id"] ? _("Changes saved.") : _("Location type added.")
-  end
-
-  def delete
-    ids = JSON.parse(params[:payload])
-    PlaceType.destroy(ids)
-    @output["msg"] = "Elements deleted."
-  end
-
 end
