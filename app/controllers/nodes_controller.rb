@@ -79,7 +79,7 @@ class NodesController < SearchController
 
     @output["fields"] = []
 
-    h = { "label" => _("Name"),"datatype" => "textfield" }.merge( node ? {"value" => node.getName } : {} )
+    h = { "label" => _("Name"),"datatype" => "textfield" }.merge( node ? {"value" => node.name } : {} )
     @output["fields"].push(h)
 
     h = { "label" => _("Latitude"),"datatype" => "coords_text_field" }.merge( node ? {"value" => node.getLat } : {} )
@@ -101,7 +101,7 @@ class NodesController < SearchController
     @output["fields"].push(h)
 
     id = (node && node.node_type) ? node.node_type_id : -1
-    types = buildSelectHash2(NodeType,id,"getName",true,[])
+    types = buildSelectHash2(NodeType,id,"name",true,[])
     h = { "label" => _("Type"),"datatype" => "combobox","options" => types }
     @output["fields"].push(h)
 

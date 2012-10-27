@@ -75,7 +75,7 @@ class ProblemReport < ActiveRecord::Base
   def register_notifications
     extended_data = { 
                       _("Id:") => self.id,
-                      _("subject") => self.problem_type.getName,
+                      _("subject") => self.problem_type.name,
                       _("Location:") => self.place,
                       _("Reported by:") => self.person.getFullName
                     }
@@ -91,7 +91,7 @@ class ProblemReport < ActiveRecord::Base
   end
 
   def getProblemName
-    self.problem_type_id ? self.problem_type.getName : ""
+    self.problem_type_id ? self.problem_type.name : ""
   end
 
    def getLaptopSerialNumber

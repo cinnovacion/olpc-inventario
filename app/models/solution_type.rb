@@ -31,7 +31,7 @@ class SolutionType < ActiveRecord::Base
   def self.getColumnas()
     [ 
       {:name => _("Id"), :key => "solution_types.id", :related_attribute => "id", :width => 50},
-      {:name => _("Name"), :key => "solution_types.name", :related_attribute => "getName()", :width => 200},
+      {:name => _("Name"), :key => "solution_types.name", :related_attribute => "name", :width => 200},
       {:name => _("Description"), :key => "solution_types.description", :related_attribute => "description()", :width => 360},
       {:name => _("Tag"), :key => "solution_types.name", :related_attribute => "internal_tag", :width => 200},
       {:name => _("Requires part"), :key => "solution_types.part_type_id", :related_attribute => "getPartType()", :width => 200}
@@ -80,8 +80,8 @@ class SolutionType < ActiveRecord::Base
     }
   end
 
-  def getName
-    self.name ? self.name : ""
+  def to_s
+    self.name.to_s
   end
 
   def getExtInfo

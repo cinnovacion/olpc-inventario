@@ -25,9 +25,4 @@ class EventType < ActiveRecord::Base
   has_many :events
 
   validates_uniqueness_of :internal_tag, :message => N_("The tag must be unique")
-
-  def getName
-    self.name ? self.name : ""
-  end
-
 end

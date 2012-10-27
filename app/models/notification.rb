@@ -40,7 +40,7 @@ class Notification < ActiveRecord::Base
                       },
                       {:name => _("Name"),
                        :key => "notifications.name",
-                       :related_attribute => "getName()",
+                       :related_attribute => "name",
                        :width => 100
                       },
                       {:name => _("Description"),
@@ -72,12 +72,6 @@ class Notification < ActiveRecord::Base
     end
 
     ret
-  end
-
-  ##
-  # Nombre de la notificacion.
-  def getName()
-    self.name ? self.name : ""
   end
 
   ##

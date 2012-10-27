@@ -72,7 +72,7 @@ class NotificationSubscriber < ActiveRecord::Base
   ##
   # Se Obtiene el nombre de la notificacion.
   def getNotificationName()
-    self.notification.getName()
+    self.notification.name
   end
 
   ##

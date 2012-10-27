@@ -37,7 +37,7 @@ class NodeTypesController < SearchController
 
     @output["fields"] = []
 
-    h = { "label" => _("Name"),"datatype" => "textfield" }.merge( type ? {"value" => type.getName } : {} )
+    h = { "label" => _("Name"),"datatype" => "textfield" }.merge( type ? {"value" => type.name } : {} )
     @output["fields"].push(h)
 
     h = { "label" => _("Description"), "datatype" => "textarea", "width" => 250, "height" => 50 }.merge( type ? {"value" => type.description } : {} )

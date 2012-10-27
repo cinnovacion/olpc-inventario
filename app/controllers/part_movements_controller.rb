@@ -35,7 +35,7 @@ class PartMovementsController < SearchController
     @output["fields"] = []
 
     id = part_movement ? part_movement.part_movement_type.id : nil
-    part_movement_types = buildSelectHash2(PartMovementType, id, "getName", false, [])
+    part_movement_types = buildSelectHash2(PartMovementType, id, "name", false, [])
     h = { "label" => _("Movement type"), "datatype" => "combobox", "options" => part_movement_types }
     @output["fields"].push(h)
 

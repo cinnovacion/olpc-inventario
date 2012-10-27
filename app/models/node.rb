@@ -45,7 +45,7 @@ class Node < ActiveRecord::Base
 
     ret[:columnas] = [
                       {:name => _("Id"), :key => "nodes.id", :related_attribute => "id", :width => 50},
-                      {:name => _("Name"), :key => "nodes.name", :related_attribute => "getName()", :width => 100},
+                      {:name => _("Name"), :key => "nodes.name", :related_attribute => "name", :width => 100},
                       {:name => _("Latitude"), :key => "nodes.lat", :related_attribute => "getLat()", :width => 100},
                       {:name => _("Longitude"), :key => "nodes.lng", :related_attribute => "getLng()", :width => 100},
                       {:name => _("Height"), :key => "nodes.height", :related_attribute => "getHeight()", :width => 100},
@@ -152,7 +152,7 @@ class Node < ActiveRecord::Base
 
       if event_type && node_nature
 
-        extended_info = { :id => self.id, :name => self.getName, :type => node_nature }
+        extended_info = { :id => self.id, :name => self.name, :type => node_nature }
         info = extended_info.to_json
         Event.register(event_type, "system", info, self.place.id)
         NotificationsPool.register(event_type, extended_info.merge({ "subject" => self.place.getName }), place)
@@ -169,10 +169,6 @@ class Node < ActiveRecord::Base
 
   def getIpAddress()
     self.ip_address ? self.ip_address : ""
-  end
-
-  def getName()
-    self.name ? self.name : ""
   end
 
   def getLat()
@@ -196,7 +192,7 @@ class Node < ActiveRecord::Base
   end
 
   def getNodeTypeName()
-    self.node_type_id ? self.node_type.getName() : ""
+    self.node_type_id ? self.node_type.name : ""
   end
 
   def getZoom()
@@ -228,12 +224,12 @@ class Node < ActiveRecord::Base
   def nodefize()
     node_desc = {
       :id => self.id,
-      :name => self.getName(),
+      :name => self.name,
       :lat => self.getLat(),
       :lng => self.getLng(),
       :height => self.getHeight(),
       :zoom => self.getZoom(),
-      :type => self.node_type.getName(),
+      :type => self.node_type.name,
       :type_value => self.node_type.id,
       :icon => self.node_type.icon(),
       :ip_address => self.getIpAddress(),

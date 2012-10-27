@@ -42,7 +42,7 @@ class ProblemReportsController < SearchController
     @output["fields"] = []
 
     id = problem_report ? problem_report.problem_type_id : -1
-    problem_types = buildSelectHash2(ProblemType, id, "getName", false, [])
+    problem_types = buildSelectHash2(ProblemType, id, "name", false, [])
     h = { "label" => _("Problem"), "datatype" => "combobox", "options" => problem_types }
     @output["fields"].push(h)
 

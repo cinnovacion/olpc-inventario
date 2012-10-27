@@ -121,7 +121,7 @@ class ProblemSolution < ActiveRecord::Base
     extended_data = { 
                       _("Id of the solution:") => id,
                       _("Id of the problem:") => problem_report.id,
-                      _("Subject") => solution_type.getName,
+                      _("Subject") => solution_type.name,
                       _("Solved by:") => solved_by_person.getFullName
                     }
     NotificationsPool.register("problem_solution", extended_data, problem_report.place)
@@ -152,7 +152,7 @@ class ProblemSolution < ActiveRecord::Base
   end
 
   def getProblemType
-    self.problem_report.problem_type.getName
+    self.problem_report.problem_type.name
   end
 
   ###

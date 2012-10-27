@@ -67,7 +67,7 @@ class PartMovement < ActiveRecord::Base
   end
 
   def getPartMovementTypeName
-    self.part_movement_type ? self.part_movement_type.getName : ""
+    self.part_movement_type ? self.part_movement_type.name : ""
   end
 
   def getPartTypeDescription

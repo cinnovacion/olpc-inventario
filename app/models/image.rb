@@ -35,7 +35,7 @@ class Image < ActiveRecord::Base
   def self.getColumnas(vista = "")
     [ 
      {:name => _("Id"),:key => "images.id",:related_attribute => "id", :width => 120},
-     {:name => _("Name"),:key => "images.name",:related_attribute => "getImageName()", :width => 120}
+     {:name => _("Name"),:key => "images.name",:related_attribute => "name", :width => 120}
     ]
   end
 
@@ -61,10 +61,6 @@ class Image < ActiveRecord::Base
 
   def register_update(uploadfile)
     self.update_attributes(Image.genAttribs(uploadfile))
-  end
-
-  def getImageName()
-    self.name ? self.name : ""
   end
 
   def set_created_at

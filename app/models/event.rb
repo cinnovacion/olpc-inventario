@@ -56,7 +56,7 @@ class Event < ActiveRecord::Base
   end
 
   def getEventName
-    self.event_type_id ? self.event_type.getName : ""
+    self.event_type_id ? self.event_type.name : ""
   end
 
   def getCreatedAt

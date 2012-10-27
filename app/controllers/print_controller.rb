@@ -356,7 +356,7 @@ class PrintController < ApplicationController
     }
 
     results.keys.each { |problem_type| 
-      @datos.push([problem_type.getName,"", "", "", "", ""])
+      @datos.push([problem_type.name,"", "", "", "", ""])
       values = []
       sub_total = 0
       average = 0
@@ -386,7 +386,7 @@ class PrintController < ApplicationController
         graph_labels[index] = time_window.to_s
       }
     
-      graph_data.push({ :name => problem_type.getName, :value => values })
+      graph_data.push({ :name => problem_type.name, :value => values })
 
     }
 
@@ -780,7 +780,7 @@ class PrintController < ApplicationController
         off_time_hours = (off_time/hours).round 
       end
 
-      label = name+"::#{node.getName}"
+      label = name+"::#{node.name}"
       percent = ((time_hours.to_f/(time_hours+off_time_hours).to_f)*100).round
       @datos.push([label, time_hours, off_time_hours, percent])
       graph_data.push({ :name => label, :value => percent })
@@ -1448,7 +1448,7 @@ class PrintController < ApplicationController
       }
 
       name = subPlace.name
-      name_str = subPlace.place_type.getName() + " " + name + " - " + subPlace.description
+      name_str = subPlace.place_type.name + " " + name + " - " + subPlace.description
       h = { :name => name_str, :value => sub_total }
       @datos.push([name_str, subPlace.description, sub_total])
       @grand_total += sub_total
@@ -2052,7 +2052,7 @@ class PrintController < ApplicationController
 
     graph_data = Array.new
     types.each { |pt|
-      desc = pt.getName()
+      desc = pt.name
       amount = pt.problem_reports.length
       @datos.push([desc, amount])
       graph_data.push({ :name => desc, :value => amount })

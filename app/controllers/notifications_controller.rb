@@ -32,7 +32,7 @@ class NotificationsController < SearchController
 
     @output["fields"] = []
 
-    h = { "label" => _("Name"), "datatype" => "textfield" }.merge( notification ? {"value" => notification.getName } : {} )
+    h = { "label" => _("Name"), "datatype" => "textfield" }.merge( notification ? {"value" => notification.name } : {} )
     @output["fields"].push(h)
 
     h = { "label" => _("Description"), "datatype" => "textfield" }.merge( notification ? {"value" => notification.description } : {} )

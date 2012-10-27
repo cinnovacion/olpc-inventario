@@ -28,7 +28,7 @@ class PartMovementTypesController < SearchController
     
     @output["fields"] = []
 
-    h = { "label" => _("Name"), "datatype" => "textfield" }.merge( part_movement_type ? {"value" => part_movement_type.getName } : {} )
+    h = { "label" => _("Name"), "datatype" => "textfield" }.merge( part_movement_type ? {"value" => part_movement_type.name } : {} )
     @output["fields"].push(h)
 
     h = { "label" => _("Description"), "datatype" => "textfield" }.merge( part_movement_type ? {"value" => part_movement_type.description } : {} )

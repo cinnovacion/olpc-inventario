@@ -36,7 +36,7 @@ class ProblemSolutionsController < SearchController
     h = { "label" => _("\#Report*"), "datatype" => "select", "options" => [], "option" => "problem_reports", "text_value" => true }
     @output["fields"].push(h)
 
-    solution_types = buildSelectHash2(SolutionType, -1, "getName", false)
+    solution_types = buildSelectHash2(SolutionType, -1, "name", false)
     h = { "label" => _("Solution*"), "datatype" => "combobox", "options" => solution_types }
     @output["fields"].push(h)
 
@@ -126,7 +126,7 @@ class ProblemSolutionsController < SearchController
 
     str_vars = [owner_laptop.serial_number, replacement_laptop_srl]
     msg = "Are you sure you want to replace the laptop %s with %s, " % str_vars
-    str_vars = [problem_report_id, problem_report.problem_type.getName]
+    str_vars = [problem_report_id, problem_report.problem_type.name]
     msg += "as a solution for problem number %s (%s)?" % str_vars
 
     @output["obj_data"] =  msg

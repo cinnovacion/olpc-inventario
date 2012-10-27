@@ -53,7 +53,7 @@ class Notifier < ActionMailer::Base
     @message = notification.description
     @extended_data = extended_data.keys.map { |key| key.to_s+" "+extended_data[key].to_s }.join("<br>")
     headers["return-path"] = "sistema@paraguayeduca.org"
-    mail(:to => destinations, :subject => notification.getName + (extended_data["subject"] ? " [#{extended_data["subject"]}]" : ""))
+    mail(:to => destinations, :subject => notification.name + (extended_data["subject"] ? " [#{extended_data["subject"]}]" : ""))
   end
 
 end

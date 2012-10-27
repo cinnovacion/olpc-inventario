@@ -163,7 +163,7 @@ class PlacesController < SearchController
     if params[:nodes_only]
       pruneInc = [{:nodes => :node_type}]
       pruneCond = ["node_types.internal_tag = ?", "center"]
-      @output[:node_types] = buildCheckHash(NodeType,"getName")
+      @output[:node_types] = buildCheckHash(NodeType,"name")
     end
 
     if params[:refValue]

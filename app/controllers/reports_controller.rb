@@ -165,7 +165,7 @@ class ReportsController < SearchController
     @output["widgets"] = Array.new
     @output["widgets"].push(dateRange())
     @output["widgets"].push(hierarchy(_("Since")))
-    @output["widgets"].push(checkBoxSelector(_("Problems"), buildCheckHash(ProblemType, "getName"), 3))
+    @output["widgets"].push(checkBoxSelector(_("Problems"), buildCheckHash(ProblemType, "name"), 3))
     @output["print_method"] = "problems_per_type"
   end
 
@@ -279,9 +279,9 @@ class ReportsController < SearchController
   def problems_per_school
     @output["widgets"] = Array.new
     @output["widgets"].push(dateRange())
-    @output["widgets"].push(comboBoxSelector(_("Group by"), buildSelectHash2(PlaceType, -1, "getName", false, [])))
+    @output["widgets"].push(comboBoxSelector(_("Group by"), buildSelectHash2(PlaceType, -1, "name", false, [])))
     @output["widgets"].push(hierarchy(_("Since")))
-    @output["widgets"].push(checkBoxSelector(_("Problems"), buildCheckHash(ProblemType,"getName"),2))
+    @output["widgets"].push(checkBoxSelector(_("Problems"), buildCheckHash(ProblemType,"name"),2))
     cb_options = Array.new
     cb_options.push( { :label => _("Yes"), :cb_name => true,:checked => true } )
     cb_options.push( { :label => _("No"), :cb_name => false,:checked => true } )
@@ -301,7 +301,7 @@ class ReportsController < SearchController
     @output["widgets"] = Array.new
     @output["widgets"].push(dateRange())
     @output["widgets"].push(hierarchy(_("Belong to")))
-    @output["widgets"].push(checkBoxSelector(_("Problems"), buildCheckHash(ProblemType,"getName"),2))
+    @output["widgets"].push(checkBoxSelector(_("Problems"), buildCheckHash(ProblemType,"name"),2))
     @output["print_method"] = "problems_per_grade"
   end
 
@@ -309,7 +309,7 @@ class ReportsController < SearchController
     @output["widgets"] = Array.new
     cb_options = [{ :text => _("Owners"), :value => "owner" },{ :text => "Tecnicos", :value => "solved_by_person" }]
     @output["widgets"].push(comboBoxSelector(_("Given to"), cb_options))
-    @output["widgets"].push(comboBoxSelector(_("Group by"), buildSelectHash2(PlaceType, -1, "getName", false, ["internal_tag in (?)",["school","city"]])))
+    @output["widgets"].push(comboBoxSelector(_("Group by"), buildSelectHash2(PlaceType, -1, "name", false, ["internal_tag in (?)",["school","city"]])))
     @output["widgets"].push(hierarchy(_("From")))
     @output["widgets"].push(checkBoxSelector(_("Parts"), buildCheckHash(PartType,"description"),6))
     cb_options = buildSelectHash2(PartType, -1, "description", false)
@@ -379,8 +379,8 @@ class ReportsController < SearchController
     to = Fecha.usDate(Date.today.to_s)
     @output["widgets"] += multipleDataRange(since, to)
     @output["widgets"].push(hierarchy(""))
-    @output["widgets"].push(checkBoxSelector(_("Problems"),buildCheckHash(ProblemType,"getName"),5))
-    @output["widgets"].push(checkBoxSelector(_("Laptop models"),buildCheckHash(Model,"getName"),6))
+    @output["widgets"].push(checkBoxSelector(_("Problems"),buildCheckHash(ProblemType,"name"),5))
+    @output["widgets"].push(checkBoxSelector(_("Laptop models"),buildCheckHash(Model,"name"),6))
     @output["print_method"] = "problems_time_distribution"
   end
 

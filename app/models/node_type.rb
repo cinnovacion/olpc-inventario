@@ -31,7 +31,7 @@ class NodeType < ActiveRecord::Base
   def self.getColumnas(vista = "")
     [
      {:name => _("Id"), :key => "node_types.id", :related_attribute => "id", :width => 50},
-     {:name => _("Name"), :key => "node_types.name", :related_attribute => "getName()", :width => 100},
+     {:name => _("Name"), :key => "node_types.name", :related_attribute => "name", :width => 100},
      {:name => _("Description"), :key => "node_types.description", :related_attribute => "description", :width => 255},
      {:name => _("Tag"), :key => "node_types.internal_tag", :related_attribute => "internal_tag", :width => 100},
      {:name => _("Image"), :key => "images.name", :related_attribute => "getImageName()", :width => 100}
@@ -50,12 +50,8 @@ class NodeType < ActiveRecord::Base
     NodeType.find(:all, :conditions => ["internal_tag in (?)", type_tags]).map { |type| type.id }
   end
 
-  def getName()
-    self.name ? self.name : " "
-  end
-
   def getImageName()
-    self.image_id ? self.image.getName() : " "
+    self.image_id ? self.image.name : " "
   end
 
   def icon()

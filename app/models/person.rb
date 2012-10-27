@@ -73,7 +73,7 @@ class Person < ActiveRecord::Base
                       {:name => _("Id"),:key => "people.id",:related_attribute => "id", :width => 50},
                       {:name => _("Created at"),:key => "people.created_at",
                         :related_attribute => "getDate()", :width => 120},
-                      {:name => _("Name"),:key => "people.name",:related_attribute => "getName()", :width => 110},
+                      {:name => _("Name"),:key => "people.name",:related_attribute => "name", :width => 110},
                       {:name => _("Last name"),:key => "people.lastname", :related_attribute => "getLastName()", :width => 110}, 
                       {:name => _("Doc. Id."),:key => "people.id_document", :related_attribute => "getIdDoc()", 
                         :width => 100, :selected => true },
@@ -95,7 +95,7 @@ class Person < ActiveRecord::Base
     ret = Hash.new
     ret[:columnas] = [ 
                       {:name => _("Id"),:key => "people.id",:related_attribute => "id", :width => 50},
-                      {:name => _("Name"),:key => "people.name",:related_attribute => "getName()", :width => 110},
+                      {:name => _("Name"),:key => "people.name",:related_attribute => "name", :width => 110},
                       {:name => _("Last name"),:key => "people.lastname", :related_attribute => "getLastName()", :width => 110}, 
                       {:name => _("Email"),:key => "people.email", :related_attribute => "getEmail()", :width => 100}
                      ]
@@ -239,10 +239,6 @@ class Person < ActiveRecord::Base
 
   alias_method :to_s, :getFullName
 
-  def getName()
-    self.name
-  end
-
   def getLastName()
     self.lastname
   end
@@ -271,7 +267,7 @@ class Person < ActiveRecord::Base
 
 
   def getPlaceDesc() 
-    self.place.getName()
+    self.place.name()
   end
 
   def getIdDocCreatedAt()
