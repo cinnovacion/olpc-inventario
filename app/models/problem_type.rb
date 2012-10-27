@@ -31,7 +31,7 @@ class ProblemType < ActiveRecord::Base
      {:name => _("Id"), :key => "problem_types.id", :related_attribute => "id", :width => 50},
      {:name => _("Name"), :key => "problem_types.name", :related_attribute => "getName", :width => 100},
      {:name => _("Description"), :key => "problem_types.description", :related_attribute => "description()", :width => 360},
-     {:name => _("Internal Tag"),:key => "problem_types.internal_tag",:related_attribute => "getInternalTag()", :width => 100}
+     {:name => _("Internal Tag"),:key => "problem_types.internal_tag",:related_attribute => "internal_tag", :width => 100}
     ]
   end
 
@@ -42,9 +42,4 @@ class ProblemType < ActiveRecord::Base
   def getExtInfo
     self.extended_info ? self.extended_info : ""
   end
-
-  def getInternalTag()
-    self.internal_tag
-  end
-
 end

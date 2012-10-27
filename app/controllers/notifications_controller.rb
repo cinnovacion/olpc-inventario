@@ -38,7 +38,7 @@ class NotificationsController < SearchController
     h = { "label" => _("Description"), "datatype" => "textfield" }.merge( notification ? {"value" => notification.description } : {} )
     @output["fields"].push(h)
 
-    h = { "label" => _("Internal tag"), "datatype" => "textfield" }.merge( notification ? {"value" => notification.getInternalTag } : {} )
+    h = { "label" => _("Internal tag"), "datatype" => "textfield" }.merge( notification ? {"value" => notification.internal_tag } : {} )
     @output["fields"].push(h)
 
     options = buildBooleanSelectHash(notification ? notification.getActiveStatus() : true)

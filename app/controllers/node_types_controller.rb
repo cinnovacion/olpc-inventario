@@ -43,7 +43,7 @@ class NodeTypesController < SearchController
     h = { "label" => _("Description"), "datatype" => "textarea", "width" => 250, "height" => 50 }.merge( type ? {"value" => type.description } : {} )
     @output["fields"].push(h)
 
-    h = { "label" => _("Tag"), "datatype" => "textfield" }.merge( type ? {"value" => type.getInternalTag } : {} )
+    h = { "label" => _("Tag"), "datatype" => "textfield" }.merge( type ? {"value" => type.internal_tag } : {} )
     @output["fields"].push(h)
 
     if type and type.image

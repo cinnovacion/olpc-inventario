@@ -33,7 +33,7 @@ class NodeType < ActiveRecord::Base
      {:name => _("Id"), :key => "node_types.id", :related_attribute => "id", :width => 50},
      {:name => _("Name"), :key => "node_types.name", :related_attribute => "getName()", :width => 100},
      {:name => _("Description"), :key => "node_types.description", :related_attribute => "description", :width => 255},
-     {:name => _("Tag"), :key => "node_types.internal_tag", :related_attribute => "getInternalTag()", :width => 100},
+     {:name => _("Tag"), :key => "node_types.internal_tag", :related_attribute => "internal_tag", :width => 100},
      {:name => _("Image"), :key => "images.name", :related_attribute => "getImageName()", :width => 100}
     ]
   end
@@ -52,10 +52,6 @@ class NodeType < ActiveRecord::Base
 
   def getName()
     self.name ? self.name : " "
-  end
-
-  def getInternalTag()
-    self.internal_tag ? self.internal_tag : " "
   end
 
   def getImageName()

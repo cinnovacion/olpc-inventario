@@ -36,7 +36,7 @@ class ProfilesController < SearchController
     h = { "label" => _("Description"), "datatype" => "textfield" }.merge( profile ? {"value" => profile.description } : {} )
     @output["fields"].push(h)
 
-    h = { "label" => _("Internal Tag"), "datatype" => "textfield" }.merge( profile ? {"value" => profile.getInternalTag } : {} )
+    h = { "label" => _("Internal Tag"), "datatype" => "textfield" }.merge( profile ? {"value" => profile.internal_tag } : {} )
     @output["fields"].push(h)
 
     tree = Controller.refreshMethodsTree

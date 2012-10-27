@@ -41,7 +41,7 @@ class PartTypesController < SearchController
     h = { "label" => _("Cost"), "datatype" => "textfield" }.merge( type ? {"value" => type.getCost() } : {} )
     @output["fields"].push(h)
 
-    h = { "label" => _("Tag"), "datatype" => "textfield" }.merge( type ? {"value" => type.getInternalTag() } : {} )
+    h = { "label" => _("Tag"), "datatype" => "textfield" }.merge( type ? {"value" => type.internal_tag } : {} )
     @output["fields"].push(h)
 
   end

@@ -80,10 +80,6 @@ class Notification < ActiveRecord::Base
     self.name ? self.name : ""
   end
 
-  def getInternalTag()
-    self.internal_tag ? self.internal_tag : ""
-  end
-
   ##
   # Activo o no activo
   def getActiveStatus()

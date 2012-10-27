@@ -34,7 +34,7 @@ class PartMovementTypesController < SearchController
     h = { "label" => _("Description"), "datatype" => "textfield" }.merge( part_movement_type ? {"value" => part_movement_type.description } : {} )
     @output["fields"].push(h)
 
-    h = { "label" => _("Internal tag"), "datatype" => "textfield" }.merge( part_movement_type ? {"value" => part_movement_type.getInternalTag } : {} )
+    h = { "label" => _("Internal tag"), "datatype" => "textfield" }.merge( part_movement_type ? {"value" => part_movement_type.internal_tag } : {} )
     @output["fields"].push(h)
 
     direction = part_movement_type ? part_movement_type.direction ? true : false : false

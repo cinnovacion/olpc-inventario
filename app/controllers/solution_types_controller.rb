@@ -44,7 +44,7 @@ class SolutionTypesController < SearchController
     h = { "label" => _("More info"), "datatype" => "textarea" }.merge( solution_type ? {"value" => solution_type.getExtInfo } : {} )
     @output["fields"].push(h)
 
-    h = { "label" => _("Tag"), "datatype" => "textfield" }.merge( solution_type ? {"value" => solution_type.getInternalTag } : {} )
+    h = { "label" => _("Tag"), "datatype" => "textfield" }.merge( solution_type ? {"value" => solution_type.internal_tag } : {} )
     @output["fields"].push(h)
 
     h = { "datatype" => "tab_break", "title" => _("Required parts") }

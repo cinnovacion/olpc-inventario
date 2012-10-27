@@ -43,7 +43,7 @@ class ProblemTypesController < SearchController
     h = { "label" => _("More info"), "datatype" => "textarea" }.merge( problem_type ? {"value" => problem_type.getExtInfo } : {} )
     @output["fields"].push(h)
 
-    h = { "label" => _("Internal tag"), "datatype" => "textfield" }.merge( problem_type ? {"value" => problem_type.getInternalTag } : {} )
+    h = { "label" => _("Internal tag"), "datatype" => "textfield" }.merge( problem_type ? {"value" => problem_type.internal_tag } : {} )
     @output["fields"].push(h)
 
     yesSelected = problem_type ? problem_type.is_hardware : false
