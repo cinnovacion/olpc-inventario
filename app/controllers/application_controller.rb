@@ -151,7 +151,7 @@ class ApplicationController < ActionController::Base
   end
 
   def json_access_response(msg)
-    @output["result"] = "Error"
+    @output["result"] = "error"
     @output["msg"] =  msg
     render :json => @output
   end
@@ -186,7 +186,7 @@ class ApplicationController < ActionController::Base
     @output = {}
 
     if @check_authentication && !session[:user_id]
-      @output["result"] = "Error"
+      @output["result"] = "error"
       @output["msg"] =  _("You are not authenticated")
       render :json => @output
       return false
@@ -322,7 +322,7 @@ class ApplicationController < ActionController::Base
     rescue
       # HACK: no idea on how to handle this exception gracefully.
       if $!.class.to_s != "ActionView::MissingTemplate"
-        @output["result"] = "Error"
+        @output["result"] = "error"
         @output["msg"] = $!.to_s
         @output["codigo"] = $!.backtrace.join("\n")
       end
