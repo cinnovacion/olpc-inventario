@@ -29,9 +29,8 @@ class Assignment < ActiveRecord::Base
 
   before_save { self.date_assigned = self.time_assigned = Time.now }
 
-  def self.getColumnas()
-    ret = Hash.new
-    ret[:columnas] = [ 
+  def self.getColumnas() {
+    columnas: [
      {:name => _("Assignment Nbr"),:key => "assignments.id",:related_attribute => "id", :width => 50},
      {:name => _("Assignment Date"),:key => "assignments.date_assigned",:related_attribute => "date_assigned", :width => 90},
      {:name => _("Assignment Time"),:key => "assignments.time_assigned",:related_attribute => "getAssignmentTime()", :width => 90},
@@ -41,25 +40,21 @@ class Assignment < ActiveRecord::Base
      {:name => _("Received by"),:key => "destination_people_assignments.name",:related_attribute => "destination_person", :width => 180},
      {:name => _("Received (Doc ID)"),:key => "destination_people_assignments.id_document",:related_attribute => "getDestinationPersonIdDoc()", :width => 180},
      {:name => _("Comment"),:key => "assignments.comment",:related_attribute => "comment", :width => 160}
-    ]
-    ret[:sort_column] = 0
-    ret
-  end
+    ],
+    sort_column: 0
+  } end
 
-  
   def self.register(attribs)
+    attribs = attribs.with_indifferent_access
     Assignment.transaction do
-      m = Assignment.new
+      laptop = Laptop.includes(:status).find_by_serial_number!(attribs[:serial_number_laptop])
 
-      laptop = Laptop.includes(:status).find_by_serial_number(attribs[:serial_number_laptop])
+      m = Assignment.new
       m.source_person_id = laptop.assignee_id
       m.laptop_id = laptop.id
 
-      if attribs[:id_document] and attribs[:id_document] != ""
-        person = Person.find_by_id_document(attribs[:id_document])
-        if !person
-          raise _("Couldn't find person with document ID %s") % attribs[:id_document]
-        end
+      if attribs[:person_id] and attribs[:person_id] != ""
+        person = Person.find(attribs[:person_id])
         m.destination_person_id = person.id
       end
 
@@ -74,6 +69,7 @@ class Assignment < ActiveRecord::Base
       # Update laptop assignee
       laptop.assignee_id = m.destination_person_id
       laptop.save!
+      m
     end
   end
 
@@ -82,11 +78,11 @@ class Assignment < ActiveRecord::Base
   end
 
   def getSourcePersonIdDoc()
-    self.source_person ? self.source_person.getIdDoc() : ""
+    self.source_person ? self.source_person.id_document : ""
   end
 
   def getDestinationPersonIdDoc()
-    self.destination_person ? self.destination_person.getIdDoc() : ""
+    self.destination_person ? self.destination_person.id_document : ""
   end
 
   ###

@@ -255,7 +255,7 @@ module ReadFile
 
         assignment = Hash.new
         assignment[:serial_number_laptop] = laptop_sn
-        assignment[:id_document] = kid.id_document
+        assignment[:person_id] = kid.id
         assignment[:comment] = "From students import"
         Assignment.register(assignment)
       end

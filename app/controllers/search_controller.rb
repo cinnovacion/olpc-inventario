@@ -103,10 +103,12 @@ class SearchController < ApplicationController
     setup_choose_button_options(@clazz_ref)
   end
 
-  def prepare_form
+  def prepare_form(attribs = {})
     @output["fields"] = []
+    # Merge window_title
+    @output.merge(attribs)
     if params[:id]
-      object = @clazz_ref.find(params[:id])
+      object = @clazz_ref.includes(@search_includes).find(params[:id])
       @output["id"] = object.id
       return object
     end
@@ -130,6 +132,37 @@ class SearchController < ApplicationController
 
   def form_textfield(object, name, label)
     form_field(object, name, "textfield", :label => label)
+  end
+
+  def form_textarea(object, name, label, attribs = nil)
+    form_field(object, name, "textarea", attribs)
+  end
+
+  def form_select(name, option, label, options, attribs = {})
+    attribs[:label] = label
+    attribs[:options] = options
+    attribs[:option] = option
+    form_field(nil, name, "select", attribs)
+  end
+
+  def form_label(label, text)
+    label = {
+      datatype: "label",
+      label: label,
+      text: text
+    }
+    @output["fields"].push(label)
+  end
+
+  def form_details_link(label, option, id, text)
+    element = {
+      datatype: "abmform_details",
+      label: label,
+      option: option,
+      id: id,
+      text: text
+    }
+    @output["fields"].push(element)
   end
 
   # Default save method: directly update the model with attribs from the

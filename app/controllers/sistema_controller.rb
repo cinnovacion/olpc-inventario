@@ -223,7 +223,7 @@ class SistemaController < ApplicationController
 
     assignments = genOption(_("Assignments"))
 
-    cButton1 = genAbm2CustomButton("/assignments/single_mass_assignment/0",
+    cButton1 = genAbm2CustomButton("/assignments/single_mass_assignment",
                                    "/assignments/save_single_mass_assignment", "add", _("Multiple assignment"), true)
 
     assignments[:elements].push(genElement(_("List assignments"), "abm2", 

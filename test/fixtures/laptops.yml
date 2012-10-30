@@ -1,7 +1,12 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+SHC00000000:
+    serial_number: SHC00000000
+    model: xo1
+    owner: default
+    status: deactivated
 
-# one:
-#   column: value
-#
-# two:
-#   column: value
+SHC00000001:
+    serial_number: SHC00000001
+    model: xo1
+    owner: default
+    status: deactivated

@@ -13,19 +13,38 @@ class ActiveSupport::TestCase
     Person.find_by_id_document('default')
   end
 
-  def response_result
-    dict = JSON.parse(@response.body)
-    return dict["result"]
+  def root_place
+    Place.find_by_name("Rootland")
   end
 
-  def sc_save(id, attribs)
+  def response_dict
+    JSON.parse(@response.body)
+  end
+
+  def response_result
+    return response_dict["result"]
+  end
+
+  def sc_post(request, id, attribs)
     data = { "fields" => attribs }
     if !id.nil?
       data["id"] = id
     end
-    post :save, :payload => data.to_json
+    post request, :payload => data.to_json
     assert_response :success
+    if response_result == "error"
+      puts response_dict["msg"] if !response_dict["msg"].blank?
+      puts response_dict["codigo"] if !response_dict["codigo"].blank?
+    end
     assert_equal "ok", response_result
+  end
+
+  def sc_verify_save(id, attribs)
+    sc_post :verify_save, id, attribs
+  end
+
+  def sc_save(id, attribs)
+    sc_post :save, id, attribs
   end
 
   def sc_delete(ids)
