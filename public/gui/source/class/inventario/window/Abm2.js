@@ -1065,7 +1065,7 @@ qx.Class.define("inventario.window.Abm2",
       else
       {
         var editVal = (!editRow ? 0 : editRow);
-        add_form.setEditRow(editVal);
+        add_form.setEditRow(parseInt(editVal));
       }
 
       add_form.setDetails(details);

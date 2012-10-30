@@ -193,6 +193,9 @@ qx.Class.define("inventario.widget.Form",
     getInputValue : function(pInput, rich_output) {
       var v = "";
 
+      if (pInput instanceof inventario.widget.Select)
+        pInput = pInput.getComboBox();
+
       if (pInput instanceof qx.ui.form.PasswordField) {
         var string = pInput.getValue().toString();
 
@@ -245,7 +248,7 @@ qx.Class.define("inventario.widget.Form",
         else
         {
             var zSel = pInput.getSelection();
-            v = zSel.length > 0 ? zSel[0].getModel() : -1;
+            v = zSel.length > 0 ? zSel[0].getModel() : null;
 
             if (rich_output)
             {
@@ -289,19 +292,6 @@ qx.Class.define("inventario.widget.Form",
       else if (pInput instanceof inventario.widget.DynTable)
       {
         v = pInput.getTableData();  // ?
-      }
-      else if (pInput instanceof inventario.widget.Select)
-      {
-        var s = pInput.getComboBox().getChildrenContainer().getSelectedItem();
-        v = (s ? s.getValue() : -1);
-
-        if (rich_output)
-        {
-          var h = {};
-          h.text = pInput.getComboBox().getValue();
-          h.value = v;
-          v = h;
-        }
       } else if (pInput instanceof inventario.widget.Permissions) {
         v = pInput.getTreeValues();
       } else if (pInput instanceof inventario.widget.MapLocator) {
@@ -338,6 +328,9 @@ qx.Class.define("inventario.widget.Form",
 
       for (var i=0; i<len; i++) {
         var pInput = arrayInputs[i];
+
+        if (pInput instanceof inventario.widget.Select)
+          pInput = pInput.getComboBox();
 
         if (pInput instanceof qx.ui.form.TextField) {
           pInput.setValue("");

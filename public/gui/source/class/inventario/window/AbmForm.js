@@ -563,8 +563,6 @@ qx.Class.define("inventario.window.AbmForm",
             input.getComboBox().setUserData("text_value", true);
           }
 
-          this._formFields.push(input.getComboBox());
-
           this.getDataInputObjects().push(input);
 
           /* Verifico si el boton agregar del abm2 me pide un multiAbmForm */
@@ -752,7 +750,7 @@ qx.Class.define("inventario.window.AbmForm",
         input.setUserData("name", fieldData.name);
 
       // FIXME: (please?)
-      if (fieldData.datatype != "select" && fieldData.datatype != "table" && 
+      if (fieldData.datatype != "table" &&
 	  fieldData.datatype != "uploadfield" && fieldData.datatype != "image" && 
 	  fieldData.datatype != "dyntable" && fieldData.datatype != "permissions" && 
 	  fieldData.datatype != "map_locator" &&
