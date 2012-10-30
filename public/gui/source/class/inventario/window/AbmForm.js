@@ -462,8 +462,6 @@ qx.Class.define("inventario.window.AbmForm",
 
         case "permissions":
           input = new inventario.widget.Permissions(fieldData.tree);
-          this._formFields.push(input);
-          this.getDataInputObjects().push(input);
           break;
 
         case "map_locator":
@@ -478,10 +476,6 @@ qx.Class.define("inventario.window.AbmForm",
 
           input = new inventario.widget.MapLocator(placeId, readOnly, width, height, false);
           input.launch();
-
-          this._formFields.push(input);
-          this.getDataInputObjects().push(input);
-
           break;
 
         case "coords_text_field":
@@ -658,8 +652,6 @@ qx.Class.define("inventario.window.AbmForm",
           if (!this.getDetails())
             this._doAddHandlerTable(fieldData, input);
 
-          this._formFields.push(input);
-          this.getDataInputObjects().push(input);
           break;
 
         case "uploadfield":
@@ -711,9 +703,6 @@ qx.Class.define("inventario.window.AbmForm",
           if (fieldData.data)
             input.setTableData(fieldData.data);
 
-          this._formFields.push(input);
-          this.getDataInputObjects().push(input);
-
           break;
 
         case "drilldown_info":
@@ -749,15 +738,9 @@ qx.Class.define("inventario.window.AbmForm",
       if (fieldData.name)
         input.setUserData("name", fieldData.name);
 
-      // FIXME: (please?)
-      if (fieldData.datatype != "table" &&
-	  fieldData.datatype != "uploadfield" && fieldData.datatype != "image" && 
-	  fieldData.datatype != "dyntable" && fieldData.datatype != "permissions" && 
-	  fieldData.datatype != "map_locator" &&
-      fieldData.datatype != "dynamic_barcode_scan_form" &&
-      fieldData.datatype != "dynamic_delivery_form" &&
-      fieldData.datatype != "label" && fieldData.datatype != "abmform_details") {
-
+      // FIXME: make nicer?
+      if (fieldData.datatype != "uploadfield" && fieldData.datatype != "image" &&
+          fieldData.datatype != "label" && fieldData.datatype != "abmform_details") {
         this._formFields.push(input);
 
         /* Guardo tb. en una propiedad el input widget p/ poder acceder a el via el manejador de formulas de Table2.
