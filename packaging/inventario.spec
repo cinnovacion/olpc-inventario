@@ -8,7 +8,7 @@ Group:	Applications/Internet
 License: GPL	
 URL: http://git.paraguayeduca.org/gitweb/projects/inventario.git
 Source0: %{name}-%{version}.tar.gz
-Requires: ruby(abi) = 1.9.1, crontabs, rubygems, rubygem-activesupport, rubygem-activeresource, rubygem-rails, mysql-server, htmldoc, httpd, ruby-mysql, rubygem-json, rubygem-gruff, rubygem-spreadsheet, rubygem-gbarcode, logrotate, rubygem-fast_gettext, rubygem-mysql2, rubygem-will_paginate, rubygem-locale, rubygem-gettext, rubygem-foreigner
+Requires: ruby(abi) = 1.9.1, crontabs, rubygems, rubygem-activesupport, rubygem-activeresource, rubygem-rails, mysql-server, htmldoc, httpd, ruby-mysql, rubygem-json, rubygem-gruff, rubygem-spreadsheet, rubygem-gbarcode, logrotate, rubygem-gettext_i18n_rails, rubygem-mysql2, rubygem-will_paginate, rubygem-locale, rubygem-gettext, rubygem-foreigner
 
 # acts_as_audited gemspec needs this
 Requires: git

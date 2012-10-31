@@ -39,7 +39,7 @@ require 'gbarcode'
 require 'gruff'
 require 'spreadsheet'
 require 'will_paginate'
-require 'fast_gettext'
+require 'gettext_i18n_rails'
 require 'foreigner'
 
 # Locally packaged gems
