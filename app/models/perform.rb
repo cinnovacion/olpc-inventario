@@ -26,6 +26,7 @@ class Perform < ActiveRecord::Base
   belongs_to :place
   belongs_to :profile
 
+  validate :check_already_exists
   validates_presence_of :person_id, :message => N_("You must specify the person.")
   validates_presence_of :place_id, :message => N_("You must specify the place.")
   validates_presence_of :profile_id, :message => N_("You must specify the profile.")
@@ -35,24 +36,12 @@ class Perform < ActiveRecord::Base
 
     ret[:columnas] = [ 
                       {:name => _("Id"),:key => "performs.id", :related_attribute => "id", :width => 120},
-                      {:name => _("Person"),:key => "people.name", :related_attribute => "getPersonName", :width => 250},
-                      {:name => _("Location"),:key => "places.name", :related_attribute => "getPlaceName", :width => 250},
-                      {:name => _("Profile"),:key => "profile.description", :related_attribute => "getProfileDescription", :width => 250}
+                      {:name => _("Person"),:key => "people.name", :related_attribute => "person", :width => 250},
+                      {:name => _("Location"),:key => "places.name", :related_attribute => "place", :width => 250},
+                      {:name => _("Profile"),:key => "profile.description", :related_attribute => "profile", :width => 250}
                      ]
     ret[:columnas_visibles] = [true, true, true, true]
     ret
-  end
-
-  def getPersonaName
-    self.person_id ? self.person.getFullName : ""
-  end
-
-  def getPlaceName
-    self.place_id ? self.place.getName : ""
-  end
-
-  def getProfileDescription
-    self.profile_id ? self.profile.description : ""
   end
 
   def self.alreadyExists?(person_id, place_id, profile_id)
@@ -119,10 +108,8 @@ class Perform < ActiveRecord::Base
 
   end
 
-  protected
-
-  def validate
+ protected
+  def check_already_exists
     errors.add(:person, "This registry already exists") if Perform.alreadyExists?(self.person_id, self.place_id, self.profile_id)
   end
-
 end

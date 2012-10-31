@@ -131,4 +131,7 @@ class Profile < ActiveRecord::Base
     return true if self.access_level > profile.access_level
   end
 
+  def to_s
+    self.description
+  end
 end
