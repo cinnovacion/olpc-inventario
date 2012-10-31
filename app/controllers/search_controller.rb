@@ -138,11 +138,25 @@ class SearchController < ApplicationController
     form_field(object, name, "textarea", attribs)
   end
 
+  def form_date(object, name, label)
+    form_field(object, name, "date", label: label)
+  end
+
   def form_select(name, option, label, options, attribs = {})
     attribs[:label] = label
     attribs[:options] = options
     attribs[:option] = option
     form_field(nil, name, "select", attribs)
+  end
+
+  def form_place_selector(object, name, label, options)
+    # FIXME internal implementation quite inconsistent with other elements
+    # the options should just go in the main hash, and why can't we just pass
+    # a value as normal?
+    attribs = { label: label }
+    attribs[:options] = options if !options.blank?
+    attribs[:dataHash] = object.place.getElementsHash if !object.nil?
+    form_field(nil, name, "hierarchy_on_demand", attribs)
   end
 
   def form_label(label, text)

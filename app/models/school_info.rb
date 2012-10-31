@@ -12,18 +12,14 @@
 # 
 #     You should have received a copy of the GNU General Public License
 #     along with this program.  If not, see <http://www.gnu.org/licenses/>
-# 
-# 
-
-# # #
+#
 # Author: Martin Abente
 # E-mail Address:  (tincho_02@hotmail.com | mabente@paraguayeduca.org) 
-# 2009
-# # #
-                                                                         
+
 class SchoolInfo < ActiveRecord::Base
   belongs_to :place
   validate :expiry_or_duration
+  validates :place, presence: true
 
   def self.getColumnas(vista = "")
     ret = Hash.new
@@ -36,24 +32,21 @@ class SchoolInfo < ActiveRecord::Base
 
     ret[:columnas] = [ 
      {:name => _("Id"), :key => "school_infos.id", :related_attribute => "id", :width => 50},
-     {:name => _("Place"), :key => "places.description", :related_attribute => "getPlaceName", :width => 100},
-     {:name => _("Activation expiry"),:key => "school_infos.lease_duration", :related_attribute => "getLeaseInfo()", :width => 100},
-     {:name => _("Hostname"), :key => "school_infos.server_hostname", :related_attribute => "getHostname()", :width => 100},
-     {:name => _("Address"), :key => "school_infos.wan_ip_address", :related_attribute => "getIpAddress()", :width => 100},
-     {:name => _("Netmask"), :key => "school_infos.wan_netmask", :related_attribute => "getNetmask()", :width => 100},
-     {:name => _("Gateway"), :key => "school_infos.wan_gateway", :related_attribute => "getGateway()", :width => 100}
+     {:name => _("Place"), :key => "places.description", :related_attribute => "place", :width => 100},
+     {:name => _("Activation expiry"),:key => "school_infos.lease_duration", :related_attribute => "lease_info", :width => 100},
+     {:name => _("Hostname"), :key => "school_infos.server_hostname", :related_attribute => "server_hostname", :width => 100},
+     {:name => _("Address"), :key => "school_infos.wan_ip_address", :related_attribute => "wan_ip_address", :width => 100},
+     {:name => _("Netmask"), :key => "school_infos.wan_netmask", :related_attribute => "wan_netmask", :width => 100},
+     {:name => _("Gateway"), :key => "school_infos.wan_gateway", :related_attribute => "wan_gateway", :width => 100}
     ]
 
     ret
   end
 
-  def getPlaceName
-    self.place_id ? self.place.getName : ""
-  end
-
-  def getDuration
-    if self.lease_duration && self.lease_duration.to_i != 0
-      return self.lease_duration
+  # accessor override
+  def lease_duration
+    if self[:lease_duration] && self[:lease_duration] != 0
+      return self[:lease_duration]
     end
 
     if !self.lease_expiry
@@ -62,37 +55,12 @@ class SchoolInfo < ActiveRecord::Base
     end
   end
 
-  def getExpiry
-    self.lease_expiry ? self.lease_expiry : ""
+  def lease_info
+    duration = self.lease_duration
+    return self.lease_expiry if duration.nil?
+    return n_("%{num} day", "%{num} days", duration) % { num: duration }
   end
 
-  def getLeaseInfo
-    duration = self.getDuration
-    if duration.nil?
-      return self.lease_expiry
-    else
-      return n_("%{num} day", "%{num} days", self.lease_duration) % { :num => self.lease_duration }
-    end
-  end
-
-  def getHostname
-    self.server_hostname ? self.server_hostname : ""
-  end
-
-  def getIpAddress
-    self.wan_ip_address ? self.wan_ip_address : ""
-  end
-
-  def getNetmask
-    self.wan_netmask ? self.wan_netmask : ""
-  end
-
-  def getGateway
-    self.wan_gateway ? self.wan_gateway : ""
-  end 
-
-  ###
-  # Data Scope:
   # User with data scope can only access objects that are related to his
   # performing places and sub-places.
   def self.setScope(places_ids)

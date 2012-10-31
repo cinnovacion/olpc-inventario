@@ -293,11 +293,11 @@ class PlacesController < SearchController
     leases = Array.new
 
     schools.each { |info|
-      if info.getDuration.nil?
-        t = info.getExpiry
+      if info.lease_duration.nil?
+        t = info.lease_expiry
       else
         t = Time.now
-        t += info.getDuration * 3600 * 24
+        t += info.lease_duration * 3600 * 24
 
         # Avoid leases expiring at the weekend
         t += 3600 * 24 * 2 if t.saturday?
@@ -308,7 +308,7 @@ class PlacesController < SearchController
       expiry = expiry.utc.iso8601.gsub(":","").gsub("-","")
 
       h = Hash.new
-      h[:school_name] = info.getHostname()
+      h[:school_name] = info.server_hostname
       h[:serials_uuids] = Place.getSerialsInfo(info.place_id)
       h[:expiry_date] = expiry
 
