@@ -26,93 +26,6 @@
 require 'tempfile'
 
 module ReadFile
-
-  #Loads from a txt file the data provided by shipments arrival.
-  # dataHash must provide :
-  #   :arrived_at, for shipment creation.
-  #   :place_id, for shipment and box creation.
-  #    And for laptop creation :
-  #     :model_id,
-  #     :owner_id
-  def self.laptopsFromFile(filename, worksheet, dataHash)
-    
-   _shipment = 0
-   #_box_serial = 2
-   _laptop_serial = 3
-
-    Laptop.transaction do
-      Spreadsheet.open(filename).worksheet(worksheet).each { |row|
-        next if row == nil
-        dataArray = row.map { |cell| cell ? cell.to_s : "" }
-
-        #First we check if the shipment exists, else we created it.
-        shipment = Shipment.find_by_shipment_number(dataArray[_shipment])
-        if !shipment
-
-          attribs = Hash.new
-          attribs[:shipment_number] = dataArray[_shipment]
-          attribs[:arrived_at] = dataHash[:arrived_at]
-          attribs[:comment] = "##{dataArray[_shipment]} from script"
-          shipment = Shipment.new(attribs)
-          shipment.save!
-        end
-
-        #The we check for the box existance.
-        #box = Box.find_by_serial_number(dataArray[_box_serial])
-        #if !box
-
-          #attribs = Hash.new
-          #attribs[:serial_number] = dataArray[_box_serial]
-          #attribs[:shipment_id] = shipment.id
-          #attribs[:place_id] = dataHash[:place_id]
-          #box = Box.new(attribs)
-          #box.save!
-        #end
-
-        #Now we start creating the laptop entry.
-        attribs = Hash.new
-        attribs[:serial_number] = dataArray[_laptop_serial]
-        attribs[:model_id] = dataHash[:model_id]
-        attribs[:shipment_arrival_id] = shipment.id
-        attribs[:owner_id] = dataHash[:owner_id]
-        attribs[:status_id] = dataHash[:status_id]
-        #attribs[:box_serial_number] = dataArray[_box_serial]
-        #attribs[:box_id] = box.id
-        Laptop.create!(attribs)
-      }
-    end
-  end
-
-  #This going to frad from Daniel's uuids list and update uuid field.
-  def self.uuidFromFile(filename, separator)
-    File.open(filename).each { |row|
-      next if row == nil
-      dataArray = row.split(separator).map { |column| column.strip }
-      laptop = Laptop.find_by_serial_number(dataArray[0])
-      if laptop
-        laptop.uuid = dataArray[1]
-        laptop.save!
-      else
-        raise "#{dataArray[0]} is not a valid serial number."
-      end
-    }
-    nil
-  end
-
-  #This reads from that small python app i made incase everything goes wrong.
-  def self.laptopsFromPlanC(dataGrid,dataHash)
-    dataGrid.each { |dataArray|
-      attribs = Hash.new
-      attribs[:movement_type_id] = dataHash[:movement_type_id]
-      attribs[:id_document] = dataArray[3]
-      attribs[:serial_number_laptop] = dataArray[4]
-      attribs[:serial_number_battery] = dataArray[5]
-      attribs[:serial_number_charger] = dataArray[6]
-      attribs[:comment] = "Entrega desde el sistema planC a #{dataArray[1]} #{dataArray[2]} en #{dataArray[0]} el #{dataArray[7]}."
-      Movement.register(attribs)
-    }
-  end
-
   def self.titleize(str)
     # titleize doesn't handle multibyte chars well, so we provide our own
     # version
@@ -334,21 +247,4 @@ module ReadFile
     end
     path
   end
-
-  #Loads from xls files and returns a list.
-  def self.fromXls(filename,worksheet=0)
-    wb = Spreadsheet.open(filename)
-    rows = wb.worksheet(worksheet).map() { |r| r }.compact
-    grid = rows.map() { |r| r.map() { |c| c.to_s}.compact rescue nil }
-  end
-
-  #Loads from plain text file and returns a list
-  def self.fromPlainText(filename,separator)
-    File.open(filename).map { |row|
-      row.split(separator).map { |column|
-        column.strip
-      }
-    }
-  end
-
 end

@@ -5,3 +5,7 @@ deactivated:
 activated:
     description: En uso
     internal_tag: activated
+
+stolen:
+    description: Robado
+    internal_tag: stolen

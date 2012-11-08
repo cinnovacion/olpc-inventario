@@ -59,7 +59,7 @@ class DataImportController < ApplicationController
         when "teachers"
           ReadFile.teachersFromFile(path, 0, place_id, register) if path && place_id && register
         when "uuids"
-          ReadFile.uuidFromFile(path, /[ ,]/)
+          Laptop.import_uuids_from_csv(path)
       end
 
     else

@@ -208,23 +208,6 @@ class ApplicationController < ActionController::Base
     obj
   end
 
-
-  def getAbmFormValue(o)
-    if o.class == Hash
-      o["value"]
-    else
-      o
-    end
-  end
-
-  def ObtenerAtrib(objeto,obj_asociado,atributo,ret=" ")
-    o = eval("objeto." + obj_asociado)
-    if o
-      ret = eval("o." + atributo)
-    end
-    return ret
-  end
-
   #  Funciones para ACLs
   def current_user
     session[:user_id] ? User.find(session[:user_id]) : User.new

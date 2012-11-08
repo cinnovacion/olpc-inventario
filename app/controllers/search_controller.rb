@@ -105,10 +105,14 @@ class SearchController < ApplicationController
 
   def prepare_form(attribs = {})
     @output["fields"] = []
-    # Merge window_title
-    @output.merge(attribs)
+    @output["window_title"] = attribs[:window_title] if attribs[:window_title]
     if params[:id]
-      object = @clazz_ref.includes(@search_includes).find(params[:id])
+      if attribs[:relation]
+        object = attribs[:relation]
+      else
+        object = @clazz_ref
+      end
+      object = object.find(params[:id])
       @output["id"] = object.id
       return object
     end
@@ -175,6 +179,15 @@ class SearchController < ApplicationController
       option: option,
       id: id,
       text: text
+    }
+    @output["fields"].push(element)
+  end
+
+  def form_uploadfield(label, field_name)
+    element = {
+      datatype: "uploadfield",
+      label: label,
+      field_name: field_name
     }
     @output["fields"].push(element)
   end

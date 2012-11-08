@@ -37,15 +37,12 @@ class LaptopsController < SearchController
   end
 
   def new
-    @output["fields"] = []
-
     if params[:ids] 
       ids = JSON.parse(params[:ids])
       new_batch_edit(ids)
     else
       new_single_edit()
     end
-
   end
 	
   def save
@@ -54,45 +51,15 @@ class LaptopsController < SearchController
     if datos["ids"]
       modify_batch(datos)
     elsif params[:uploadfile] && params[:uploadfile] != ""
-      #path = ReadFile.fromParam(params[:uploadfile])
+      attribs = datos["fields"].with_indifferent_access
       path = params[:uploadfile].path
-      dataHash = Hash.new
-      dataHash[:arrived_at] = Time.now
-      dataHash[:owner_id] = datos["fields"][4]
-      dataHash[:place_id] = current_user.person.place.id
-      dataHash[:model_id] = datos["fields"][2]
-      dataHash[:status_id] = datos["fields"][5]
-      return ReadFile.laptopsFromFile(path, 0, dataHash)
+      attribs[:arrived_at] = Time.now
+      return Laptop.import_xls(path, attribs)
     else
-      attribs = Hash.new
-      data_fields = datos["fields"].reverse
-
-      attribs[:serial_number] = getAbmFormValue(data_fields.pop)
-      attribs[:model_id] = getAbmFormValue(data_fields.pop)
-      attribs[:shipment_arrival_id] = getAbmFormValue(data_fields.pop)
-
-      if datos["id"].nil?
-        attribs[:owner_id] = getAbmFormValue(data_fields.pop)
-      end
-
-      #attribs[:box_serial_number] = getAbmFormValue(data_fields.pop)
-      attribs[:status_id] = getAbmFormValue(data_fields.pop)
-      attribs[:uuid] = getAbmFormValue(data_fields.pop)
-
-      if datos["id"]
-        o = Laptop.find datos["id"]
-        o.update_attributes!(attribs)
-      else
-        Laptop.create!(attribs)
-      end
+      super
+      return
     end 
     @output["msg"] = datos["id"] || datos["ids"] ? _("Changes saved.") : _("Laptop added.")  
-  end
-
-  def delete
-    ids = JSON.parse(params[:payload])
-    Laptop.destroy(ids)
-    @output["msg"] = _("Elements deleted.")
   end
 
   def requestBlackList
@@ -119,14 +86,11 @@ class LaptopsController < SearchController
   end
 
   def reportActivatedLaptops
-
     laptops_info = params[:hash][:laptops_info]
 
     if laptops_info
-
       cond = ["laptops.serial_number in (?)", laptops_info.keys]
       Laptop.find(:all, :conditions => cond).each { |laptop|
-
         last_activation_date = laptops_info[laptop.serial_number]
         laptop.update_attributes({ :last_activation_date => last_activation_date })
       }
@@ -137,66 +101,45 @@ class LaptopsController < SearchController
 
   private
 
-  def new_single_edit()
-    if params[:id]
-      p = Laptop.includes(:owner, :assignee).find(params[:id])
-      @output["id"] = p.id
-    else
-      p = nil
-    end
-    
-    h = { "label" => _("Serial Number"),"datatype" => "textfield" }.merge( p ? {"value" => p.serial_number } : {} )
-    @output["fields"].push(h)
+  def new_single_edit
+    relation = Laptop.includes(:owner, :assignee)
+    laptop = prepare_form(relation: relation)
+    form_textfield(laptop, "serial_number", _("Serial Number"))
 
-    id = p ? p.model_id : -1
-    modelos = buildSelectHash2(Model,id,"name",false,[])
-    h = { "label" => _("Model"),"datatype" => "combobox","options" => modelos }
-    @output["fields"].push(h)
+    id = laptop ? laptop.model_id : -1
+    models = buildSelectHash2(Model, id, "name", false, [])
+    form_combobox(laptop, "model_id", _("Model"), models)
 
-    id =  p ? p.shipment_arrival_id : -1
-    shipments = buildSelectHash2(Shipment,id,"comment",false,[])
-    h = { "label" => _("Shipment"), "datatype" => "combobox","options" => shipments }
-    @output["fields"].push(h)
+    id = laptop ? laptop.shipment_arrival_id : -1
+    shipments = buildSelectHash2(Shipment, id, "comment", false, [])
+    form_combobox(laptop, "shipment_arrival_id", _("Shipment"), shipments)
 
-    if p and p.owner_id
-      h = { "label" => _("In hands of"), "datatype" => "abmform_details", "text" => p.owner.getFullName(), "id" => p.owner_id, :option => "personas" }
-      @output["fields"].push(h)
+    if laptop and laptop.owner_id
+      form_details_link(_("In hands of"), "personas", laptop.owner_id, laptop.owner.getFullName())
     end
 
-    if p and p.assignee_id
-      h = { "label" => _("Assigned to (final recipient)"), "datatype" => "abmform_details", "text" => p.assignee.getFullName(), "id" => p.assignee_id, :option => "personas" }
-      @output["fields"].push(h)
+    if laptop and laptop.assignee_id
+      form_details_link(_("Assigned to (final recipient)"), "personas", laptop.assignee_id, laptop.assignee.getFullName())
     end
 
-    if !p
+    if !laptop
       people = buildSelectHashSingle(Person, -1, "getFullName()")
-      h = { "label" => _("In hands of"),"datatype" => "select","options" => people, :option => "personas" }
-      @output["fields"].push(h)
+      form_select("owner_id", "personas", _("In hands of"), people)
     end
 
-    #h = { "label" => "Id Caja","datatype" => "textfield" }.merge( p ? {"value" => p.box_serial_number } : {} )
-    #@output["fields"].push(h)
+    id = laptop && laptop.status ? laptop.status_id : Status.find_by_internal_tag("deactivated").id
+    statuses = buildSelectHash2(Status, id, "description", false, [])
+    form_combobox(laptop, "status_id", _("Status"), statuses)
 
-    id = p && p.status ? p.status_id : Status.find_by_internal_tag("deactivated").id
-    statuses = buildSelectHash2(Status,id,"description",false,[])
-    h = { "label" => _("Status"),"datatype" => "combobox","options" => statuses }
-    @output["fields"].push(h)
+    form_textfield(laptop, "uuid", _("UUID"))
 
-    h = { "label" => _("UUID"),"datatype" => "textfield" }.merge( p ? {"value" => p.uuid } : {} )
-    @output["fields"].push(h)
-
-    if !p
-      h = { "label" => _("Load .xls"),"datatype" => "uploadfield", :field_name => :uploadfile }
-      @output["fields"].push(h)
-    end
-
+    form_uploadfield(_("Load .xls"), :uploadfile) if !p
   end
 
 
-  ###
   # We save the attributes of the first laptop (only). 
-  #
   def new_batch_edit(ids)
+    @output["fields"] = []
     p = Laptop.find(ids[0])
 
     @output["ids"] = ids 
@@ -205,58 +148,31 @@ class LaptopsController < SearchController
     @output["needs_update"] = true
 
     id = p ? p.model_id : -1
-    modelos = buildSelectHash2(Model,id,"name",false,[])
-    h = { "label" => _("Model"),"datatype" => "combobox","options" => modelos }
-    @output["fields"].push(h)
+    models = buildSelectHash2(Model, id, "name", false, [])
+    form_combobox(p, "model_id", _("Model"), models)
 
     id =  p ? p.shipment_arrival_id : -1
-    shipments = buildSelectHash2(Shipment,id,"comment",false,[])
-    h = { "label" => _("Shipment"),"datatype" => "combobox","options" => shipments }
-    @output["fields"].push(h)
-
-    #h = { "label" => "Id Caja","datatype" => "textfield" }.merge( p ? {"value" => p.box_serial_number } : {} )
-    #@output["fields"].push(h)
+    shipments = buildSelectHash2(Shipment, id, "comment", false, [])
+    form_combobox(p, "shipment_arrival_id", _("Shipment"), shipments)
 
     id = p && p.status ? p.status_id : Status.find_by_internal_tag("deactivated").id
-    statuses = buildSelectHash2(Status,id,"description",false,[])
-    h = { "label" => _("Status"), "datatype" => "combobox","options" => statuses }
-    @output["fields"].push(h)
-
+    statuses = buildSelectHash2(Status, id, "description", false, [])
+    form_combobox(p, "status_id", _("Status"), statuses)
   end
 
-  def modify_batch(datos)
-    data_fields = datos["fields"].reverse
-
+  def modify_batch(data)
+    fields = data["fields"]
     attribs = Hash.new
 
-    h = data_fields.pop
-    if h["updated"] ==  true
-      attribs[:model_id] = getAbmFormValue(h)
-    end
+    ["model_id", "shipment_arrival_id", "status_id"].each { |attr|
+      next unless fields.include?(attr) and fields[attr]["updated"]
+      attribs[attr] = fields[attr]["value"]
+    }
 
-    h = data_fields.pop
-    if h["updated"] ==  true
-      attribs[:shipment_arrival_id] = getAbmFormValue(h)
-    end
-
-    #h = data_fields.pop
-    #if h["updated"] ==  true
-      #attribs[:box_serial_number] = getAbmFormValue(h)
-    #end
-
-    h = data_fields.pop
-    if h["updated"] ==  true
-      attribs[:status_id] = getAbmFormValue(h)
-    end
-
-    objs = Laptop.find(datos["ids"])
     Laptop.transaction do
-      objs.each { |o|
-        o.update_attributes!(attribs)
+      Laptop.find(data["ids"]).each { |laptop|
+        laptop.update_attributes!(attribs)
       }
     end
-
-
   end
-
 end

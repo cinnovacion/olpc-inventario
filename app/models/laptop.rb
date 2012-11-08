@@ -12,21 +12,13 @@
 # 
 #     You should have received a copy of the GNU General Public License
 #     along with this program.  If not, see <http://www.gnu.org/licenses/>
-# 
-#   
-
-# # #
+#
 # Author: Raúl Gutiérrez
 # E-mail Address: rgs@paraguayeduca.org
-# 2009
-# # #
-
-# # #
+#
 # Author: Martin Abente
 # E-mail Address:  (tincho_02@hotmail.com | mabente@paraguayeduca.org) 
-# 2009
-# # #
-                                                                       
+
 class Laptop < ActiveRecord::Base
   acts_as_audited
 
@@ -48,8 +40,6 @@ class Laptop < ActiveRecord::Base
     laptop.created_at = Time.now
     laptop.status_id = Status.find_by_internal_tag("deactivated").id if !self.status_id 
   }
-
-  #TODO, register stock entrance after_create
 
   def self.getColumnas()
     ret = Hash.new
@@ -130,6 +120,50 @@ class Laptop < ActiveRecord::Base
     self.last_activation_date ? self.last_activation_date.to_s : _("Never")
   end
 
+  # Imports the Quanta production spreadsheet.
+  # attribs must provide :arrived_at, for shipment creation.
+  # And for laptop creation: model_id, owner_id, status_id
+  def self.import_xls(filename, attribs)
+   _shipment = 0
+   _laptop_serial = 3
+
+    Laptop.transaction do
+      Spreadsheet.open(filename).worksheet(0).each { |row|
+        next if row == nil
+        dataArray = row.map { |cell| cell ? cell.to_s : "" }
+
+        #First we check if the shipment exists, else we created it.
+        shipment = Shipment.find_by_shipment_number(dataArray[_shipment])
+        if !shipment
+          shipment = {
+            shipment_number: dataArray[_shipment],
+            arrived_at: attribs[:arrived_at],
+            comment: "##{dataArray[_shipment]} from mass import",
+          }
+          shipment = Shipment.create!(shipment)
+        end
+
+        laptop = {
+          serial_number: dataArray[_laptop_serial],
+          model_id: attribs[:model_id],
+          shipment_arrival_id: shipment.id,
+          owner_id: attribs[:owner_id],
+          status_id: attribs[:status_id]
+        }
+        Laptop.create!(laptop)
+      }
+    end
+  end
+
+  def self.import_uuids_from_csv(filename)
+    File.open(filename).each { |row|
+      next if row == nil
+      data = row.split(/[ ,]/).map { |column| column.strip }
+      laptop = Laptop.find_by_serial_number!(data[0])
+      laptop.update_attributes!(uuid: data[1])
+    }
+  end
+
   ###
   # Data Scope:
   # User with data scope can only access objects that are related to his
@@ -141,5 +175,4 @@ class Laptop < ActiveRecord::Base
       yield
     end
   end
-
 end

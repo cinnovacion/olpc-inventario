@@ -25,12 +25,15 @@ class ActiveSupport::TestCase
     return response_dict["result"]
   end
 
-  def sc_post(request, id, attribs)
+  def sc_post(request, ids, attribs, request_attribs = {})
     data = { "fields" => attribs }
-    if !id.nil?
-      data["id"] = id
+    if !ids.nil? and ids.respond_to?(:count)
+      data["ids"] = ids
+    else
+      data["id"] = ids
     end
-    post request, :payload => data.to_json
+    request_attribs = { payload: data.to_json }.merge(request_attribs)
+    post request, request_attribs
     assert_response :success
     if response_result == "error"
       puts response_dict["msg"] if !response_dict["msg"].blank?
