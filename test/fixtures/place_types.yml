@@ -1,3 +1,27 @@
 country:
     name: Country
     internal_tag: country
+
+school:
+    name: School
+    internal_tag: school
+
+shift:
+    name: Shift
+    internal_tag: shift
+
+section:
+    name: Section
+    internal_tag: section
+
+first_grade:
+    name: First grade
+    internal_tag: first_grade
+
+second_grade:
+    name: Second grade
+    internal_tag: second_grade
+
+third_grade:
+    name: Third grade
+    internal_tag: third_grade

@@ -12,16 +12,9 @@
 # 
 #     You should have received a copy of the GNU General Public License
 #     along with this program.  If not, see <http://www.gnu.org/licenses/>
-# 
-#    
-
-# # #
+#
 # Author: Martin Abente
 # E-mail Address:  (tincho_02@hotmail.com | mabente@paraguayeduca.org) 
-# 2009
-# # #
-
-require 'read_file'
 
 class DataImportController < ApplicationController
   around_filter :rpc_block
@@ -46,24 +39,19 @@ class DataImportController < ApplicationController
   end
 
   def import
+    raise _("Nothing to import") if params[:data].blank?
     
-    if params[:data]
-      #path = ReadFile.fromParam(params[:data])
-      path = params[:data].path
-      place_id = params[:place_id]
-      register = current_user.person
+    path = params[:data].path
+    place_id = params[:place_id]
+    register = current_user.person
 
-      case params[:model]
-        when "students"
-          ReadFile.kidsFromFile(path, 0, place_id, register) if path && place_id && register
-        when "teachers"
-          ReadFile.teachersFromFile(path, 0, place_id, register) if path && place_id && register
-        when "uuids"
-          Laptop.import_uuids_from_csv(path)
-      end
-
-    else
-      raise _("Nothing to import.")
+    case params[:model]
+      when "students"
+        Person.import_students_xls(path, place_id, register) if path && place_id && register
+      when "teachers"
+        Person.import_teachers_xls(path, place_id, register) if path && place_id && register
+      when "uuids"
+        Laptop.import_uuids_from_csv(path)
     end
     @output["msg"] = _("The file was imported correctly.")
   end

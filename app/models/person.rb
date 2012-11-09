@@ -1,3 +1,4 @@
+# encoding: UTF-8
 #     Copyright Paraguay Educa 2009
 #
 #     This program is free software: you can redistribute it and/or modify
@@ -13,22 +14,13 @@
 #     You should have received a copy of the GNU General Public License
 #     along with this program.  If not, see <http://www.gnu.org/licenses/>
 # 
-#    
-
-# # #
 # Author: Raúl Gutiérrez
 # E-mail Address: rgs@paraguayeduca.org
-# 2009
-# # #
-
-# # #
+#
 # Author: Martin Abente
 # E-mail Address:  (tincho_02@hotmail.com | mabente@paraguayeduca.org) 
-# 2009
-# # #
                                                                       
 class Person < ActiveRecord::Base
-
   acts_as_audited
 
   belongs_to :image
@@ -385,4 +377,177 @@ class Person < ActiveRecord::Base
     bosses.sort { |a,b| a.profile.access_level > b.profile.access_level ? 1 : -1 }.pop
   end
 
+  # Spreadsheets exported from Excel often result in the grade numbers
+  # ending up as float (e.g. "1.0") even if you try hard to mark the
+  # field as a string. Handle that here.
+  def self.numberCleaner(string)
+    string.to_s.strip.gsub(/(\.\d+)|(\,\d+)/, "")
+  end
+
+  def self.import_students_xls(filename, place_id, register)
+    student_profile_id = Profile.find_by_internal_tag!("student").id
+    city = Place.find(place_id)
+
+    gradeHash = {
+      "1" => "first_grade",
+      "2" => "second_grade",
+      "3" => "third_grade",
+      "4" => "fourth_grade",
+      "5" => "fifth_grade",
+      "6" => "sixth_grade",
+      "7" => "seventh_grade",
+      "8" => "eighth_grade",
+      "9" => "ninth_grade",
+      p: "kinder",
+      "Educ  Especial" => "special",
+    }.with_indifferent_access
+
+    shiftHash = {
+      m: "Turno Mañana",
+      t: "Turno Tarde",
+      c: "Turno Completo"
+    }.with_indifferent_access
+
+    sectionHash = {
+      a: "Seccion A",
+      b: "Seccion B",
+      c: "Seccion C",
+      d: "Seccion D",
+
+      #Caacupe specific data
+      colon: "Seccion Colon",
+      futuro: "Seccion Futuro",
+      yegros: "Seccion Yegros",
+      "cap. figari" => "Seccion Cap. Figari",
+      esperatti: "Seccion Esperatti",
+      hernandarias: "Seccion Hernandarias",
+      "pedro juan c." => "Seccion Pedro Juan C.",
+      "M.A.C" => "Seccion M.A.C",
+      "R.S." => "Seccion R.S.",
+      "tte. rojas silva" => "Seccion Tte. Rojas Silva",
+      pestalozzi: "Seccion Pestalozzi",
+      "pte. franco" => "Seccion Pte. Franco",
+      "mcal. Lopez" => "Seccion Mcal. Lopez",
+    }.with_indifferent_access
+
+    _name = 0
+    _lastname = 1
+    _ci = 2
+    _school = 3
+    _grade = 4
+    _shift = 5
+    _section = 6
+    _laptop_sn = 7
+
+    Person.transaction do
+    Spreadsheet.open(filename).worksheet(0).each { |row|
+      next if row == nil
+      dataArray = row.map() { |c| c ? c.to_s : "" }
+
+      name = dataArray[_name].to_s.strip
+      lastname = dataArray[_lastname].to_s.strip
+      next if name == "" and lastname == ""
+
+      grade = numberCleaner(dataArray[_grade])
+      gradeInfo = gradeHash[grade]
+
+      schoolInfo = numberCleaner(dataArray[_school])
+      shiftInfo = shiftHash[dataArray[_shift].to_s.downcase.strip]
+      sectionInfo = sectionHash[dataArray[_section].to_s.downcase.strip]
+
+      # Make sure there is a school.
+      raise "Invalid school (of %s %s)" % [name, lastname] if schoolInfo == ""
+
+      # try to detect user error in importing a spreadsheet of teacher info
+      # (we can only do this when the teacher spreadsheet includes assignments,
+      #  otherwise the only field we can look at is blank, which is valid here)
+      if !gradeInfo and dataArray[_grade] and dataArray[_grade] != ""
+        raise "Invalid grade %s (of %s %s)" % [dataArray[_grade], name, lastname]
+      end
+
+      # Assert that shift info is valid, if given
+      if !shiftInfo and dataArray[_shift] and dataArray[_shift] != ""
+        raise "Invalid shift %s (of %s %s)" % [dataArray[_shift], name, lastname]
+        # Would be cool to show the row number
+      end
+
+      # Assert that section info is valid, if given
+      if !sectionInfo and dataArray[_section] and dataArray[_section] != ""
+        raise "Invalid section %s (of %s %s)" % [dataArray[_section], name, lastname]
+        # Would be cool to show the row number
+      end
+
+      section = Place.theSwissArmyKnifeFuntion(city.id, schoolInfo, shiftInfo, gradeInfo, sectionInfo)
+
+      name = name.mb_chars.titleize
+      lastname = lastname.mb_chars.titleize
+      id_document = numberCleaner(dataArray[_ci])
+
+      kid = Person.find_by_id_document(id_document)
+      if !kid
+        kidAttribs = {
+          name: name,
+          lastname: lastname,
+          id_document: id_document,
+        }
+        performs = [[section.id, student_profile_id]]
+        kid = Person.register(kidAttribs, performs, "", register, schoolInfo)
+      end
+
+      laptop_sn = dataArray[_laptop_sn].to_s.strip.upcase
+      next if laptop_sn == ""
+      Assignment.register(serial_number_laptop: laptop_sn,
+                          person_id: kid.id,
+                          comment: _("From students import"))
+    }
+    end
+  end
+
+  def self.import_teachers_xls(filename, place_id, register)
+    teacher_profile_id = Profile.find_by_internal_tag!("teacher").id
+    city = Place.find(place_id)
+
+    _name =  0
+    _lastname = 1
+    _id_document = 2
+    _school_name = 3
+    _laptop_sn = 4
+
+    Person.transaction do
+      Spreadsheet.open(filename).worksheet(0).each { |row|
+        next if row == nil
+        dataArray = row.map() { |c| c ? c.to_s : "" }
+
+        name = dataArray[_name].to_s.strip
+        lastname = dataArray[_lastname].to_s.strip
+        school_name = numberCleaner(dataArray[_school_name])
+
+        next if name == "" and lastname == ""
+        raise _("No school provided for #{name} #{lastname}") if school_name == ""
+
+        name = name.mb_chars.titleize
+        lastname = lastname.mb_chars.titleize
+        id_document = numberCleaner(dataArray[_id_document])
+        school = Place.theSwissArmyKnifeFuntion(city.id, school_name, nil, nil, nil)
+
+        teacher = Person.find_by_id_document(id_document)
+        if !teacher
+          attribs = {
+            name: name,
+            lastname: lastname,
+            id_document: id_document,
+          }
+          new_performs = [[school.id, teacher_profile_id]]
+
+          teacher = Person.register(attribs, new_performs, "", register, school_name)
+        end
+
+        laptop_sn = dataArray[_laptop_sn].to_s.strip.upcase
+        next if laptop_sn == ""
+        Assignment.register(serial_number_laptop: laptop_sn,
+                            person_id: teacher.id,
+                            comment: _("From teachers import"))
+      }
+    end
+  end
 end

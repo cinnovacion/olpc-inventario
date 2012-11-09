@@ -27,8 +27,6 @@
 # 2009
 # # #
 
-require 'read_file'
-
 class LaptopsController < SearchController
   skip_filter :rpc_block, :only => [:requestBlackList, :reportStolenLaptops, :reportActivatedLaptops]
 

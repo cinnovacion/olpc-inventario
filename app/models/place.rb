@@ -505,10 +505,9 @@ class Place < ActiveRecord::Base
     ret = nil
 
     Place.transaction do
-      school_type_id = PlaceType.find_by_internal_tag("school").id
-      shift_type_id = PlaceType.find_by_internal_tag("shift").id
-      grade_type = PlaceType.find_by_internal_tag(gradeInfo)
-      section_type_id = PlaceType.find_by_internal_tag("section").id
+      school_type_id = PlaceType.find_by_internal_tag!("school").id
+      shift_type_id = PlaceType.find_by_internal_tag!("shift").id
+      section_type_id = PlaceType.find_by_internal_tag!("section").id
 
       school = Place.find_by_name_and_place_type_id_and_place_id(schoolInfo, school_type_id, city_id)
       if !school
@@ -527,6 +526,7 @@ class Place < ActiveRecord::Base
       end
 
       if gradeInfo != nil
+        grade_type = PlaceType.find_by_internal_tag!(gradeInfo)
         grade = Place.find_by_name_and_place_type_id_and_place_id(grade_type.name, grade_type.id, ret.id)
         if !grade
           grade = Place.new({ :name => grade_type.name, :place_type_id => grade_type.id, :place_id => ret.id})

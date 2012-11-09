@@ -7,3 +7,13 @@ admin:
     description: Admin
     internal_tag: root
     access_level: 500
+
+teacher:
+    description: Teacher
+    internal_tag: teacher
+    access_level: 200
+
+student:
+    description: Student
+    internal_tag: student
+    access_level: 100
