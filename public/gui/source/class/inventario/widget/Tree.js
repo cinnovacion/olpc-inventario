@@ -76,7 +76,7 @@ qx.Class.define("inventario.widget.Tree",
               {
                 if (f[k] instanceof qx.ui.form.CheckBox)
                 {
-                  if (f[k].getChecked())
+                  if (f[k].getValue())
                   {
                     ret.push(v);
                     break;

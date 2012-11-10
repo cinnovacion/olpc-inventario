@@ -1038,7 +1038,7 @@ qx.Class.define("inventario.window.AbmForm",
           var h = {};
           h["value"] = v;
 
-          h["updated"] = this._update_checkboxes[i].getChecked();
+          h["updated"] = this._update_checkboxes[i].getValue();
 
           if (h["updated"]) {
             updated = true;
@@ -1083,7 +1083,7 @@ qx.Class.define("inventario.window.AbmForm",
           var h = {};
           h["value"] = v;
 
-          h["updated"] = this._update_checkboxes[i].getChecked();
+          h["updated"] = this._update_checkboxes[i].getValue();
 
           if (h["updated"]) {
             updated = true;
