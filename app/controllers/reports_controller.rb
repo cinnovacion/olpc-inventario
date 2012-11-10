@@ -23,7 +23,8 @@
 
 require 'fecha'
 
-class ReportsController < SearchController
+class ReportsController < ApplicationController
+  around_filter :rpc_block
 
   def movement_types
     @output["widgets"] = Array.new
