@@ -138,6 +138,10 @@ class SearchController < ApplicationController
     form_field(object, name, "textfield", :label => label)
   end
 
+  def form_password(object, name, label)
+    form_field(nil, name, "passwordfield", label: label)
+  end
+
   def form_textarea(object, name, label, attribs = nil)
     form_field(object, name, "textarea", attribs)
   end
@@ -306,8 +310,9 @@ class SearchController < ApplicationController
   def setup_choose_button_options(clazz_ref)
     if clazz_ref.respond_to?(:getChooseButtonColumns)
       h = @vista == "" ? clazz_ref.getChooseButtonColumns : clazz_ref.getChooseButtonColumns(@vista)
-      if h["desc_col"].class.to_s == "Fixnum"
-        h["desc_col"] = {:columnas => [h["desc_col"]],:separator => ""}
+      h = h.with_indifferent_access
+      if h[:desc_col].class.to_s == "Fixnum"
+        h[:desc_col] = {:columnas => [h[:desc_col]],:separator => ""}
       end
       @output["elegir_data"] = h
     end

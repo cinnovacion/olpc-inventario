@@ -25,7 +25,7 @@ class ActiveSupport::TestCase
     return response_dict["result"]
   end
 
-  def sc_post(request, ids, attribs, request_attribs = {})
+  def sc_post_raw(request, ids, attribs, request_attribs = {})
     data = { "fields" => attribs }
     if !ids.nil? and ids.respond_to?(:count)
       data["ids"] = ids
@@ -35,6 +35,10 @@ class ActiveSupport::TestCase
     request_attribs = { payload: data.to_json }.merge(request_attribs)
     post request, request_attribs
     assert_response :success
+  end
+
+  def sc_post(request, ids, attribs, request_attribs = {})
+    sc_post_raw(request, ids, attribs, request_attribs)
     if response_result == "error"
       puts response_dict["msg"] if !response_dict["msg"].blank?
       puts response_dict["codigo"] if !response_dict["codigo"].blank?
@@ -56,6 +60,11 @@ class ActiveSupport::TestCase
     end
 
     post :delete, :payload => ids.to_json
+    if response_result == "error"
+      puts response_dict["msg"] if !response_dict["msg"].blank?
+      puts response_dict["codigo"] if !response_dict["codigo"].blank?
+    end
+
     assert_response :success
     assert_equal "ok", response_result
   end

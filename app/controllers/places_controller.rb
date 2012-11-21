@@ -236,7 +236,7 @@ class PlacesController < SearchController
     subElementTags = JSON.parse(params[:subElementTags])
 
     if id.to_i == -1
-      places = current_user.getRootPlaces()
+      places = current_user.root_places()
     else
       parent = Place.find_by_id(id)
       if parent.nil?

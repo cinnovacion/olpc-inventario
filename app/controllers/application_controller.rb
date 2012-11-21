@@ -339,7 +339,7 @@ class ApplicationController < ActionController::Base
     cb_entries = []
     cb_entries.push(comboBoxifize()) if includeBlank
 
-    roots = current_user.getRootPlaces()
+    roots = current_user.root_places()
     roots_filtered = roots.includes(pruneInc).where(pruneCond)
 
     roots.each { |classSubObj|
