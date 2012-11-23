@@ -2,3 +2,4 @@ default:
     name: Default
     lastname: Person
     id_document: default
+    barcode: 4199999999

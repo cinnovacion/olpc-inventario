@@ -9,3 +9,7 @@ activated:
 stolen:
     description: Robado
     internal_tag: stolen
+
+on_repair:
+    description: En reparacion
+    internal_tag: on_repair

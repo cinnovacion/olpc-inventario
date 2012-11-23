@@ -70,8 +70,16 @@ class ProblemSolution < ActiveRecord::Base
         replacement_laptop = Laptop.find_by_serial_number(replacement_laptop_serial)
         owner = owner_laptop.owner
         replacement_owner = replacement_laptop.owner
-        Movement.for_device(owner_laptop, replacement_owner, "devolucion_problema_tecnico_entrega")
-        Movement.for_device(replacement_laptop, owner, "entrega_alumno")
+        return_type = MovementType.find_by_internal_tag!("devolucion_problema_tecnico_entrega")
+        handout_type = MovementType.find_by_internal_tag!("entrega_alumno")
+        Movement.register(person_id: replacement_owner.id,
+                          laptop_id: owner_laptop.id,
+                          movement_type_id: return_type,
+                          comment: _("Delivery from the CATS module"))
+        Movement.register(person_id: owner.id,
+                          laptop_id: replacement_laptop.id,
+                          movement_type_id: handout_type,
+                          comment: _("Delivery from the CATS module"))
       end
     end
   end

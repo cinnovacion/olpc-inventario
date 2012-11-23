@@ -12,96 +12,65 @@
 # 
 #     You should have received a copy of the GNU General Public License
 #     along with this program.  If not, see <http://www.gnu.org/licenses/>
-# 
 #
-
-# # #
 # Author: Raúl Gutiérrez
 # E-mail Address: rgs@paraguayeduca.org
-# 2009
-# # #
-
-# # #
 # Author: Martin Abente
 # E-mail Address:  (tincho_02@hotmail.com | mabente@paraguayeduca.org) 
-# 2009
-# # #
-                                                                          
+
 class MovementsController < SearchController
-  skip_filter :rpc_block, :only => [ :show, :create, :update, :destroy, :index ]
+  skip_filter :rpc_block, :only => [ :show, :create, :update, :index ]
+  undef_method :delete
 
   def initialize
-    includes = [:source_person, :destination_person, :movement_type, {:movement_details => :laptop}]
+    includes = [:source_person, :destination_person, :movement_type, :laptop]
     super(:includes => includes)
   end
 
   def index
-     all = Movement.find(:all)
-     render :xml => all.to_xml
+     render :xml => Movement.all.to_xml
   end
  
   def show
-    mov = Movement.find_by_id(params["id"])
-    render :xml => mov.to_xml
+    render :xml => Movement.find(params["id"]).to_xml
   end
 
   def create
-    Movement.register(params[:movement])
-    mov = Movement.find(params[:movement])
+    mov = Movement.register!(params[:movement])
     render :xml => mov.to_xml, :status => :created
   end
 
   def update
-    mov = Movement.find_by_id(params["id"])
-    mov.update_attributes(params[:movement])
+    mov = Movement.find(params["id"])
+    mov.update_attributes!(params[:movement])
     render :xml => mov.to_xml, :status => :ok
   end
 
-  def destroy
-    Movement.destroy(params["id"])
-    render :status => :ok
-  end
-
   def details(id)
-    @output["window_title"] = _("Movement details")
-    @output["fields"] = []
+    movement = Movement.includes(:source_person, :destination_person)
+    movement = prepare_form(window_title: _("Movement details"), relation: movement)
 
-    movement = Movement.includes(:movement_details, :source_person, :destination_person).find(id)
-    if !movement
-      raise _("Cannot find movement.")
+    form_label(_("Movement number:"), movement.id)
+
+    creator = movement.creator
+    if creator
+      form_details_link(_("Created by:"), :personas, creator.id, creator)
     end
 
-    h = { "datatype" => "label", "label" => _("Movement number:"), :text => movement.id }
-    @output["fields"].push(h)
+    form_label(_("Movement date:"), movement.date_moved_at.to_s + " " + movement.movement_time)
+    form_label(_("Movement type:"), movement.movement_type)
 
-    if movement.audits and movement.audits.first and movement.audits.first.user
-      creator = movement.audits.first.user.person
-      h = { "label" => _("Created by:"), :datatype => "abmform_details", :option => "personas", :id => creator.id, :text => creator.getFullName() }
-      @output["fields"].push(h)
-    end
-
-    h = { "datatype" => "label", "label" => _("Movement date:"), :text => movement.getMovementDate + " " + movement.getMovementTime }
-    @output["fields"].push(h)
-
-    h = { "datatype" => "label", "label" => _("Movement type:"), :text => movement.getMovementType }
-    @output["fields"].push(h)
-
-    details = movement.movement_details.first
-    h = { "label" => _("Laptop serial:"), :datatype => "abmform_details", :option => "laptops", :id => details.laptop_id, :text => details.serial_number }
-    @output["fields"].push(h)
+    form_details_link(_("Laptop serial:"), :laptops, movement.laptop_id, movement.laptop.serial_number)
 
     if movement.source_person
-      h = { "label" => _("Given by:"), :datatype => "abmform_details", :option => "personas", :id => movement.source_person_id, :text => movement.source_person.getFullName() }
-      @output["fields"].push(h)
+      form_details_link(_("Given by:"), :personas, movement.source_person_id, movement.source_person)
     end
 
     if movement.destination_person
-      h = { "label" => _("Received by:"), :datatype => "abmform_details", :option => "personas", :id => movement.destination_person_id, :text => movement.destination_person.getFullName() }
-      @output["fields"].push(h)
+      form_details_link(_("Received by:"), :personas, movement.destination_person_id, movement.destination_person)
     end
 
-    h = { "datatype" => "label", "label" => _("Comment:"), :text => movement.comment }
-    @output["fields"].push(h)
+    form_label(_("Comment:"), movement.comment)
   end
 
   def new
@@ -110,272 +79,115 @@ class MovementsController < SearchController
       return
     end
 
-    @output["window_title"] = _("Laptop movement")
+    prepare_form(window_title: _("Laptop movement"),
+                 verify_before_save: true,
+                 verify_save_url: "/movements/verify_save")
 
-    @output["fields"] = []
+    id = MovementType.find_by_internal_tag!("entrega_alumno").id
+    movement_types = buildSelectHash2(MovementType, id, "description", false, [])
+    form_combobox(nil, "movement_type_id", _("Movement reason"), movement_types)
 
-    @output["verify_before_save"] = true
-    @output["verify_save_url"] = "/movements/verify_save"
+    people = buildSelectHashSingle(Person, -1, "getFullName")
+    form_select("person_id", "personas", _("Person"), people)
+    form_select("laptop_id", "laptops", _("Laptop"), [])
 
-    ### TEST
-    #places = buildHierarchyHash(Place, "places", "places.place_id", "name", -1, nil, nil, false)
-    #h = { "label" => "Localidad","datatype" => "combobox","options" => places, "vista_widget" => 2, "vista" => "any" }
-    #@output["fields"].push(h)
-    ###
-
-    id = MovementType.find_by_internal_tag("entrega_alumno").id
-    movement_types = buildSelectHash2(MovementType,id,"description",false,[])
-    h = { "label" => _("Movement reason"),"datatype" => "combobox","options" => movement_types }
-    @output["fields"].push(h)
-
-    people = buildSelectHashSingle(Person, -1, "getFullName()")
-    h = { "label" => _("Handed to:"),"datatype" => "select","options" => people, "option" => "personas" }
-    @output["fields"].push(h)
-    
-    h = { "label" => _("Serial Number"),"datatype" => "select","options" => [],"option" => "laptops" } 
-    h.merge!( { "text_value" => true } )
-    @output["fields"].push(h)
-
-    fecha = ""
-    h = { "label" => _("Return date"),"datatype" => "date",  :value => fecha  }
-    @output["fields"].push(h)
-
-    h = { "label" => _("Observation"), "datatype" => "textarea","width" => 250, "height" => 50 }
-    @output["fields"].push(h)
+    form_date(nil, "return_date", _("Return date"))
+    form_textarea(nil, "comment", _("Comment"), width: 250, height: 50)
   end
-
   
   def verify_save
-    attribs = getData()
-    mov_type_desc = MovementType.find(attribs[:movement_type_id]).description
-    personObj = Person.find_by_id_document(attribs[:id_document])
-    if !personObj
-      raise _("Can't find person with document id ") + attribs[:id_document].to_s
-    end
-    person_desc = personObj.getFullName()
+    data = JSON.parse(params[:payload])
+    attribs = data["fields"]
 
-    str = ""
-    str += _("Movement reason") + " : " + mov_type_desc  + "\n"
-    str += _("Handed to") + " : " + person_desc + "\n"
+    mov_type_desc = MovementType.find(attribs["movement_type_id"]).description
+    person = Person.find(attribs["person_id"])
 
-    if strNotEmpty(attribs[:serial_number_laptop])
-      lapObj = Laptop.find_by_serial_number attribs[:serial_number_laptop]
-      if !lapObj
-        raise _("Can't find laptop with serial number") + attribs[:serial_number_laptop].to_s
-      end
-      owner = lapObj.owner ? lapObj.owner.getFullName() : "nadie"
-      str += _("Serial Number") +  attribs[:serial_number_laptop].to_s 
-      str += " (" + _("Owned by ") + owner + ")\n"
+    str  = _("Movement reason") + " : " + mov_type_desc  + "\n"
+    str += _("Handed to") + " : " + person.getFullName() + "\n"
+
+    if !attribs["laptop_id"].blank?
+      laptop = Laptop.find(attribs["laptop_id"])
+      str += _("Serial Number") + " " + laptop.serial_number
+      str += " (" + _("Owned by ") + laptop.owner.to_s + ")\n"
     end
 
-    if strNotEmpty(attribs[:return_date])
-      str += _("Return date:") +  attribs[:return_date] + "\n"
+    if !attribs["return_date"].blank?
+      str += _("Return date:") + " " + attribs["return_date"] + "\n"
     end
     
-    if strNotEmpty(attribs[:comment])
-      str += _("Comment:") +  attribs[:comment] + "\n"
+    if !attribs["comment"].blank?
+      str += _("Comment:") + " " + attribs["comment"] + "\n"
     end
 
     @output["obj_data"] = str
   end
 
   def save
-    attribs = getData()
-    Movement.register(attribs)
+    data = JSON.parse(params[:payload])
+    Movement.register(data["fields"])
     @output["msg"] = _("The movement has been registered.")
   end
 
-  def delete
-    ids = JSON.parse(params[:payload])
-    Movement.cancel(ids)
-    @output["msg"] = ids.length == 1 ? _("The movement has been cancelled") : _("The movements have been cancelled")
-  end
-
-
-  def report_params
-    @output["infoDict"] = Array.new
-    MovementType.find(:all).each { |m|
-      @output["infoDict"].push( { :label => m.description , :id => m.id } )
-    }
-
-    @output["articles"] = Array.new
-    @output["articles"].push( { :label => "Laptops" , :id => "laptop" } )
-  end
-
-  def saveMassMovement
+  def save_mass_movement
     deliveries = JSON.parse(params[:deliveries])
     movement_type_id = params[:movement_type]
-
-    Movement.transaction do
-      deliveries.each { |delivery|
-
-        if delivery["person"] and delivery["laptop"]
-          person = Person.find_by_barcode(delivery["person"])
-          raise _("%s doesn't exist.") % delivery["person"].to_s if !person
-
-          laptop = Laptop.find_by_serial_number(delivery["laptop"])
-          raise _("The laptop with serial number %s doesn't exist.") % delivery["laptop"] if !laptop
-
-          attribs = Hash.new
-          attribs[:id_document] = person.getIdDoc()
-          attribs[:movement_type_id] = movement_type_id
-          attribs[:serial_number_laptop] = laptop.serial_number
-          attribs[:comment] = _("Laptops moved out with the mass movement form.")
-          Movement.register(attribs)
-        end
-      }
-    end
-    @output["msg"] = _("The movements have been registered.")
+    comment = _("Laptops moved out with the mass movement form.")
+    count = Movement.register_barcode_scan(deliveries,
+                                           movement_type_id: movement_type_id,
+                                           comment: comment)
+    @output["msg"] = _("%d movements have been registered.") % count
   end
 
-  def registerHandout
-    datos = JSON.parse(params[:payload])
-    laptops = []
-    not_recognised = []
-
-    movement_type_id = datos["movement_type"]
-    to_register = datos["to_register"]
-    comment = datos["comment"]
-    if comment.nil? or comment == ""
-      comment = _("Laptop handout")
-    end
-
-    attribs = Hash.new
-    attribs[:movement_type_id] = movement_type_id 
-    attribs[:comment] = comment
-
-    if to_register.respond_to?("each")
-      laptops = to_register
-    else
-      laptops = []
-      to_register.split(" ").each { |serial|
-        laptops.push(serial.upcase)
-      }
-    end
-
-    count = 0
-    laptops.each { |serial|
-      laptop = Laptop.find_by_serial_number(serial, :include => :assignee)
-      if laptop
-        if !laptop.assignee_id
-          raise _("Laptop #{serial} is unassigned.")
-        end
-        next if laptop.owner_id == laptop.assignee_id
-
-        attribs[:id_document] = laptop.getAssigneeIdDoc()
-        attribs[:serial_number_laptop] = serial
-        Movement.register(attribs)
-        count = count + 1
-      else
-        not_recognised.push(serial)
-      end
+  # Create movements based on laptop's assignees to complete a laptop handout
+  def register_handout
+    data = JSON.parse(params[:payload])
+    attribs = {
+      movement_type_id: data["movement_type"],
+      comment: data["comment"]
     }
 
+    laptops = data["to_register"]
+    if !laptops.respond_to?("each")
+      laptops = []
+      data["to_register"].split.each { |serial| laptops.push(serial.upcase) }
+    end
+
+    count, not_recognised = Movement.register_handout(laptops, attribs)
+
     @output["msg"] = _("#{count} movements have been registered.")
-    if not_recognised != []
+    if !not_recognised.empty?
       @output["msg"]+= "." + _("The following laptops weren't recognized ")
       @output["msg"]+= "("+not_recognised.join(',')+")"
     end
-    true
   end
 
-  ###
-  # When it is needed to deliver a set of laptops to a single person
-  #
+  # Deliver a set of laptops to a single person
   def single_mass_delivery
-    @output["window_title"] = _("Movement by lot")
-    @output["fields"] = []
+    prepare_form(window_title: _("Movement by lot"))
 
-    id = MovementType.find_by_internal_tag("entrega_alumno").id
+    id = MovementType.find_by_internal_tag!("entrega_alumno").id
     movement_types = buildSelectHash2(MovementType, id, "description", false, [])
-    h = { "label" => _("Reason"), "datatype" => "combobox", "options" => movement_types }
-    @output["fields"].push(h)
+    form_combobox(nil, "movement_type_id", _("Reason"), movement_types)
 
-    people = buildSelectHashSingle(Person, -1, "getFullName()")
-    h = { "label" => _("Handed to:"), "datatype" => "select", "options" => people, "option" => "personas" }
-    @output["fields"].push(h)
+    people = buildSelectHashSingle(Person, -1, "getFullName")
+    form_select("person_id", "personas", _("Handed to:"), people)
 
-    h = { "label" => _("Return date:"),"datatype" => "date",  :value => ""  }
-    @output["fields"].push(h)
-
-    h = { "label" => _("Laptops"), "datatype" => "textarea","width" => 250, "height" => 50 }
-    @output["fields"].push(h)
+    form_date(nil, "return_date", _("Return date"))
+    form_textarea(nil, "laptops", _("Laptops"), width: 250, height: 50)
   end
 
   def save_single_mass_delivery
-    datos = JSON.parse(params[:payload])
-    form_fields = datos["fields"].reverse
+    data = JSON.parse(params[:payload])
+    attribs = data["fields"]
+    laptops = attribs["laptops"].split
+    attribs.delete("laptops")
+    attribs["comment"] = _("Laptops moved out with the mass movement form.")
+    count, not_recognised = Movement.register_many(laptops, attribs)
 
-    movement_type = MovementType.find_by_id(form_fields.pop)
-    person = Person.find_by_id(form_fields.pop)
-
-    if movement_type && person
-      attribs = Hash.new
-      attribs[:id_document] = person.getIdDoc()
-      attribs[:movement_type_id] = movement_type.id 
-      attribs[:comment] = _("Laptops moved out with the mass movement form.")
-      return_date = form_fields.pop
-      attribs[:return_date] = return_date if return_date != "" && movement_type.internal_tag == "prestamo"
-   
-      # Serials Processing
-      not_recognised = []
-      form_fields.pop.split("\n").each { |serial|
-
-        serial.strip!
-        if serial != ""
-          laptop = Laptop.find_by_serial_number(serial)
-          if laptop
-            if laptop.owner_id != person.id
-              attribs[:serial_number_laptop] = serial
-              Movement.register(attribs)
-            end
-          else
-            not_recognised.push(serial)
-          end
-        end 
-      }
-    else
-      raise _("Insufficient data given!")
-    end
-
-    @output["msg"] = _("The movements have been registered.")
+    @output["msg"] = _("%d movements have been registered.") % count
     if not_recognised != []
       @output["msg"]+= "." + _("The following laptops weren't recognized ")
       @output["msg"]+= "("+not_recognised.join(',')+")"
     end
-    true
   end
-
-  private
-
-  def getData
-    datos = JSON.parse(params[:payload])
-    attribs = Hash.new
-
-    data_fields = datos["fields"].reverse
-
-    #movement_place = data_fields.pop #Dummy data
-    attribs[:movement_type_id] = data_fields.pop
-
-    personObj = Person.find_by_id(data_fields.pop)
-    if !personObj
-      raise _("Can't find person")
-    end
-
-    attribs[:id_document] = personObj.id_document
-    attribs[:serial_number_laptop] = data_fields.pop
-    attribs[:return_date] = data_fields.pop
-    attribs[:comment] = data_fields.pop
-
-    attribs
-  end
-
-  ###
-  # FIXME: Isn't this used somewhere else? If so it should be moved to ApplicationController 
-  #        or to a lib. 
-  #
-  def strNotEmpty(str)
-    str && !str.to_s.match(/^ *$/)
-  end
-
 end

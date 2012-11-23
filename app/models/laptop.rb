@@ -22,7 +22,7 @@
 class Laptop < ActiveRecord::Base
   acts_as_audited
 
-  has_many :movement_details
+  has_many :movements
   has_many :assignments
   has_many :problem_reports
   belongs_to :shipment, :class_name => "Shipment", :foreign_key => :shipment_arrival_id
@@ -108,11 +108,8 @@ class Laptop < ActiveRecord::Base
     self.registered ? _("Yes") : _("No")
   end
 
-  def getLastMovementType
-    movements = Movement.includes(:movement_details)
-    movements = movements.where("movement_details.laptop_id = ?", self.id)
-    movements = movements.order("movements.id DESC")
-    last_movement = movements.first
+  def last_movement_type
+    last_movement = self.movements.order("movements.id DESC").first
     last_movement ? last_movement.movement_type : nil
   end
 

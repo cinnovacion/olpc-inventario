@@ -105,7 +105,10 @@ class SearchController < ApplicationController
 
   def prepare_form(attribs = {})
     @output["fields"] = []
-    @output["window_title"] = attribs[:window_title] if attribs[:window_title]
+    attribs = attribs.with_indifferent_access
+    ["window_title", "verify_before_save", "verify_save_url"].each { |attr|
+      @output[attr] = attribs[attr] if attribs.include?(attr)
+    }
     if params[:id]
       if attribs[:relation]
         object = attribs[:relation]
@@ -142,7 +145,8 @@ class SearchController < ApplicationController
     form_field(nil, name, "passwordfield", label: label)
   end
 
-  def form_textarea(object, name, label, attribs = nil)
+  def form_textarea(object, name, label, attribs = {})
+    attribs[:label] = label
     form_field(object, name, "textarea", attribs)
   end
 
@@ -171,7 +175,7 @@ class SearchController < ApplicationController
     label = {
       datatype: "label",
       label: label,
-      text: text
+      text: text.to_s
     }
     @output["fields"].push(label)
   end
@@ -182,7 +186,7 @@ class SearchController < ApplicationController
       label: label,
       option: option,
       id: id,
-      text: text
+      text: text.to_s
     }
     @output["fields"].push(element)
   end

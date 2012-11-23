@@ -86,7 +86,7 @@ qx.Class.define("inventario.window.BarcodeScanForm",
     saveMovementUrl :
     {
       check : "String",
-      init  : "/movements/saveMassMovement"
+      init  : "/movements/save_mass_movement"
     },
     movementTypesUrl :
     {

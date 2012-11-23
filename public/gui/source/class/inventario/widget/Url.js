@@ -89,10 +89,6 @@ qx.Class.define("inventario.widget.Url",
           ret = inventario.widget.Url.SHIPMENTS;
           break;
 
-        case "movement_details":
-          ret = inventario.widget.Url.MOVEMENT_DETAILS;
-          break;
-
         case "movement_types":
           ret = inventario.widget.Url.MOVEMENT_TYPES;
           break;
@@ -306,16 +302,6 @@ qx.Class.define("inventario.widget.Url",
       deleteUrl      : "/shipments/delete",
       searchUrl      : "/shipments/search",
       initialDataUrl : "/shipments/search_options"
-    },
-
-    MOVEMENT_DETAILS :
-    {
-      listUrl        : "/movement_details/search",
-      addUrl         : "/movement_details/new",
-      saveUrl        : "/movement_details/save",
-      deleteUrl      : "/movement_details/delete",
-      searchUrl      : "/movement_details/search",
-      initialDataUrl : "/movement_details/search_options"
     },
 
     MOVEMENT_TYPES :

@@ -101,11 +101,6 @@ class AssignmentsController < SearchController
     @output["msg"] = _("The assignment has been registered.")
   end
 
-  def report_params
-    @output["articles"] = Array.new
-    @output["articles"].push( { :label => "Laptops" , :id => "laptop" } )
-  end
-
   def saveMassAssignment
     deliveries = JSON.parse(params[:deliveries])
 

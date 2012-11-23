@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121001223229) do
+ActiveRecord::Schema.define(:version => 20121123210651) do
 
   create_table "assignments", :force => true do |t|
     t.date    "date_assigned"
@@ -132,17 +132,6 @@ ActiveRecord::Schema.define(:version => 20121001223229) do
     t.text   "description"
   end
 
-  create_table "movement_details", :force => true do |t|
-    t.integer "movement_id"
-    t.integer "laptop_id"
-    t.string  "description",   :limit => 100
-    t.string  "serial_number", :limit => 100
-    t.boolean "returned",                     :default => false
-  end
-
-  add_index "movement_details", ["laptop_id"], :name => "movement_details_laptop_id_fk"
-  add_index "movement_details", ["movement_id"], :name => "movement_details_movement_id_fk"
-
   create_table "movement_types", :force => true do |t|
     t.string  "description"
     t.string  "internal_tag", :limit => 100
@@ -159,9 +148,12 @@ ActiveRecord::Schema.define(:version => 20121001223229) do
     t.text    "comment"
     t.date    "return_date"
     t.integer "movement_type_id"
+    t.integer "laptop_id"
+    t.boolean "returned",              :default => false
   end
 
   add_index "movements", ["destination_person_id"], :name => "movements_destination_person_id_fk"
+  add_index "movements", ["laptop_id"], :name => "index_movements_on_laptop_id"
   add_index "movements", ["movement_type_id"], :name => "movements_movement_type_id_fk"
   add_index "movements", ["responsible_person_id"], :name => "movements_responsible_person_id_fk"
   add_index "movements", ["source_person_id"], :name => "movements_source_person_id_fk"
@@ -466,9 +458,7 @@ ActiveRecord::Schema.define(:version => 20121001223229) do
 
   add_foreign_key "lots", "people", :name => "lots_person_id_fk"
 
-  add_foreign_key "movement_details", "laptops", :name => "movement_details_laptop_id_fk"
-  add_foreign_key "movement_details", "movements", :name => "movement_details_movement_id_fk"
-
+  add_foreign_key "movements", "laptops", :name => "movements_laptop_id_fk"
   add_foreign_key "movements", "movement_types", :name => "movements_movement_type_id_fk"
   add_foreign_key "movements", "people", :name => "movements_destination_person_id_fk", :column => "destination_person_id"
   add_foreign_key "movements", "people", :name => "movements_responsible_person_id_fk", :column => "responsible_person_id"

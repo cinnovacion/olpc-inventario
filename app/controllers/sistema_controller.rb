@@ -234,7 +234,7 @@ class SistemaController < ApplicationController
 
     entregas = genOption(_("Movements"))
  
-    cButton1 = genAbm2CustomButton("/movements/single_mass_delivery/0",
+    cButton1 = genAbm2CustomButton("/movements/single_mass_delivery",
                                    "/movements/save_single_mass_delivery", "add", _("Multiple movement"), true)
     entregas[:elements].push(genElement(_("List movements"), "abm2", 
                                         genAbm2("movimientos", true, false, true, false, [cButton1])))
@@ -243,7 +243,6 @@ class SistemaController < ApplicationController
     entregas[:elements].push(genElement(_("Register handout"), "register_handout"))
     menu_option[:elements].push(entregas)
 
-    #menu_option[:elements].push(genElement("Entregas por detalle", "abm2", genAbm2("movement_details")))
     #menu_option[:elements].push(genElement("Activaciones", "abm2", genAbm2("activaciones")))
     menu_option[:elements].push(genElement(_("Lots"), "abm2", genAbm2("lots")))
     menu_option[:elements].push(getMenuInventoryInform)

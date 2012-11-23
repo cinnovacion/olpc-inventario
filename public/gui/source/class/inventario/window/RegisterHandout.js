@@ -73,7 +73,7 @@ qx.Class.define("inventario.window.RegisterHandout",
     registerHandoutUrl :
     {
       check : "String",
-      init : "/movements/registerHandout"
+      init : "/movements/register_handout"
     },
 
     peopleDataUrl :

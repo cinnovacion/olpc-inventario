@@ -1134,15 +1134,14 @@ class PrintController < ApplicationController
     @title = _("Delivery receipt")
     @data = Array.new
   
-    movements = Movement.includes({:movement_details => :laptop}, :destination_person)
+    movements = Movement.includes(:laptop, :destination_person)
     movements = movements.where(:id => mov_ids)
     movements.each {|movement|
       h = Hash.new
       h[:id] = movement.id
-      h[:parts] = movement.movement_details.map { |detail|
-        { :part => "Laptop", :serial => detail.serial_number }
-      }
-      h[:person] = movement.getDestinationPerson
+      h[:parts] = [{ :part => "Laptop",
+                     :serial => movement.laptop.serial_number }]
+      h[:person] = movement.destination_person.to_s
       @data.push(h)
     }
 
@@ -1588,7 +1587,7 @@ class PrintController < ApplicationController
   #
   def movements
     print_params = JSON.parse(params[:print_params]).reverse
-    movements = Movement.includes({:movement_details => :laptop},:movement_type,:source_person, {:destination_person => {:performs => :place}})
+    movements = Movement.includes(:laptop,:movement_type,:source_person, {:destination_person => {:performs => :place}})
 
     dateOpts = print_params.pop
     movements = buildDateQuery(movements, dateOpts, "movements.date_moved_at")
@@ -1614,21 +1613,16 @@ class PrintController < ApplicationController
     @titulo = _("Laptop movements")
     @fecha_desde = dateOpts["date_since"]
     @fecha_hasta = dateOpts["date_to"]
-    @columnas = [_("Mov \#"), _("Fecha"), _("Desc"), _("Serial"), _("Given by"), _("Received by"), _("Reason")]
+    @columnas = [_("Mov \#"), _("Fecha"), _("Serial"), _("Given by"), _("Received by"), _("Reason")]
     @datos = []
 
     movements.order("movements.id ASC").each  { |m|
-      m.movement_details.each { |md|
-        @datos.push([
-                     md.movement_id,
-                     m.getMovementDate(),
-                     md.description,
-                     md.serial_number,
-                     m.getSourcePerson(),
-                     m.getDestinationPerson(),
-                     m.getMovementType()
-                    ])
-      }
+      @datos.push([m.id,
+                   m.date_moved_at,
+                   m.laptop.serial_number,
+                   m.source_person.to_s,
+                   m.destination_person.to_s,
+                   m.movement_type.to_s])
     }
 
     print(params, "movements")
@@ -1639,7 +1633,7 @@ class PrintController < ApplicationController
   #
   def movement_types
     print_params = JSON.parse(params[:print_params]).reverse
-    types = MovementType.includes(:movements => [ {:destination_person => :performs}, { :movement_details => :laptop} ])
+    types = MovementType.includes(:movements => [ {:destination_person => :performs}, :laptop ])
 
     from_person_id = print_params.pop
     types = buildPersonQuery(types, from_person_id, "movements.source_person_id")
@@ -1668,11 +1662,7 @@ class PrintController < ApplicationController
     graph_data = Array.new
     types.each { |mt|
       total=laptops=0
-      mt.movements.each { |m|
-        m.movement_details.each { |md|
-          laptops += 1
-        }
-      }
+      mt.movements.each { |m| laptops += 1 }
 
     h = { :name => mt.description, :value => laptops } 
     graph_data.push(h)
@@ -1692,7 +1682,7 @@ class PrintController < ApplicationController
   # Movimientos en un vetana de tiempo.
   def movements_time_range
     print_params = JSON.parse(params[:print_params]).reverse
-    movements = Movement.includes({:destination_person => {:performs => :place}}, :source_person, {:movement_details => [:laptop]})
+    movements = Movement.includes({:destination_person => {:performs => :place}}, :source_person, :laptop)
 
     dateOpts = print_params.pop
     movements = buildDateQuery(movements, dateOpts, "date_moved_at")
@@ -1707,15 +1697,15 @@ class PrintController < ApplicationController
     @titulo = _("Movements on a given timeframe")
     @fecha_desde = dateOpts["date_since"]
     @fecha_hasta = dateOpts["date_to"]
-    @columnas = [_("\#"), _("Date"), _("Parts"), _("Responsible"), _("Delivered by"), _("Received by")]
+    @columnas = [_("\#"), _("Date"), _("Laptop"), _("Responsible"), _("Delivered by"), _("Received by")]
     @datos = movements.map { |d|
       a = Array.new
       a.push(d.id)
       a.push(d.date_moved_at)
-      a.push(d.getParts())
-      a.push(d.getResponsible())
-      a.push(d.getSourcePerson())
-      a.push(d.getDestinationPerson())
+      a.push(d.laptop.serial_number)
+      a.push(d.creator.to_s)
+      a.push(d.source_person.to_s)
+      a.push(d.destination_person.to_s)
       a
     }
     print(params, "movements")
@@ -1750,7 +1740,7 @@ class PrintController < ApplicationController
   # Distribution of laptops handed off per person. 
   def laptops_per_source_person
     print_params = JSON.parse(params[:print_params]).reverse
-    people = Person.includes({:source_movements => :movement_details})
+    people = Person.includes(:source_movements)
 
     source_person = print_params.pop
     people = buildPersonQuery(people,source_person,"id")
@@ -1760,13 +1750,7 @@ class PrintController < ApplicationController
     @datos = []
     people.each { |p|
       count=0
-      p.source_movements.each { |m|
-        m.movement_details.each { |md|
-          if md.laptop_id
-            count+=1
-          end
-        }
-      }
+      p.source_movements.each { |m| count+=1 }
       @datos.push([p.getFullName(),count]) if count != 0
     }
 
@@ -1784,7 +1768,7 @@ class PrintController < ApplicationController
   # Distribution of laptops to people.
   def laptops_per_destination_person
     print_params = JSON.parse(params[:print_params]).reverse
-    people = Person.includes({:destination_movements => :movement_details})
+    people = Person.includes(:destination_movements)
 
     destination_person = print_params.pop
     people = buildPersonQuery(people,destination_person,"id")
@@ -1794,13 +1778,7 @@ class PrintController < ApplicationController
     @datos = []
     people.each { |p|
       count=0
-      p.destination_movements.each { |m|
-        m.movement_details.each { |md|
-          if md.laptop_id
-            count+=1
-          end
-        }
-      }
+      p.destination_movements.each { |m| count+=1 }
       @datos.push([p.getFullName(),count]) if count != 0
     }
 
@@ -1815,8 +1793,7 @@ class PrintController < ApplicationController
   #
   def lendings
     print_params = JSON.parse(params[:print_params]).reverse
-    movements = Movement.includes(:movement_details)
-    movements = movements.where("return_date is not null")
+    movements = Movements.where("return_date is not null")
 
     timeRange = print_params.pop
     movements = buildDateQuery(movements,timeRange,"date_moved_at")
@@ -1829,30 +1806,26 @@ class PrintController < ApplicationController
 
     filters = print_params.pop
     if filters.length > 0
-      movements = movements.where("movement_details.returned = false") if !filters.include? "returned"
-      movements = movements.where("movement_details.returned = true") if !filters.include? "not_returned"
+      movements = movements.where(returned: false) if !filters.include? "returned"
+      movements = movements.where(returned: true) if !filters.include? "not_returned"
     end
 
     @titulo = _("Lendings")
     @fecha_desde = timeRange["date_since"]
     @fecha_hasta = timeRange["date_to"]
-    @columnas = [_("#"), _("Date"), _("Given by"), _("Received by"), _("Return date"), _("Part"), _("Serial number"), _("Returned?")]
+    @columnas = [_("#"), _("Date"), _("Given by"), _("Received by"), _("Return date"), _("Serial number"), _("Returned?")]
     @datos =[]
     counter = 1
     movements.order("date_moved_at DESC").each { |m|
-      m.movement_details.each { |md|
-        @datos.push([
-                     counter,
-                     m.getMovementDate(),
-                     m.getSourcePerson(),
-                     m.getDestinationPerson(),
-                     m.getReturnDate(),
-                     md.description,
-                     md.serial_number,
-                     md.getReturned()
+        @datos.push([counter,
+                     m.date_moved_at,
+                     m.source_person.to_s,
+                     m.destination_person.to_s,
+                     m.return_date.to_s,
+                     m.serial_number,
+                     m.returned ? _("Yes") : _("No")
                     ])
         counter+=1
-      }
     }
 
     print(params, "prestamos")
