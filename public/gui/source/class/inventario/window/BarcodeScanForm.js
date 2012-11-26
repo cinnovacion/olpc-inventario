@@ -81,7 +81,7 @@ qx.Class.define("inventario.window.BarcodeScanForm",
     saveAssignmentUrl :
     {
       check : "String",
-      init  : "/assignments/saveMassAssignment"
+      init  : "/assignments/save_mass_assignment"
     },
     saveMovementUrl :
     {

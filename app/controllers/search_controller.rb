@@ -154,7 +154,7 @@ class SearchController < ApplicationController
     form_field(object, name, "date", label: label)
   end
 
-  def form_select(name, option, label, options, attribs = {})
+  def form_select(name, option, label, options = [], attribs = {})
     attribs[:label] = label
     attribs[:options] = options
     attribs[:option] = option

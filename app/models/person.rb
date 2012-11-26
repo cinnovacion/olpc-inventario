@@ -495,8 +495,8 @@ class Person < ActiveRecord::Base
 
       laptop_sn = dataArray[_laptop_sn].to_s.strip.upcase
       next if laptop_sn == ""
-      Assignment.register(serial_number_laptop: laptop_sn,
-                          person_id: kid.id,
+      laptop = Laptop.find_by_serial_number!(laptop_sn)
+      Assignment.register(laptop_id: laptop.id, person_id: kid.id,
                           comment: _("From students import"))
     }
     end
@@ -543,8 +543,8 @@ class Person < ActiveRecord::Base
 
         laptop_sn = dataArray[_laptop_sn].to_s.strip.upcase
         next if laptop_sn == ""
-        Assignment.register(serial_number_laptop: laptop_sn,
-                            person_id: teacher.id,
+        laptop = Laptop.find_by_serial_number!(laptop_sn)
+        Assignment.register(laptop_id: laptop.id, person_id: teacher.id,
                             comment: _("From teachers import"))
       }
     end

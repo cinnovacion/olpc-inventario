@@ -12,20 +12,22 @@ class AssignmentsControllerTest < ActionController::TestCase
   end
 
  test "verify_save" do
+    laptop = Laptop.find_by_serial_number!("SHC00000000")
     request = {
-      serial_number_laptop: "SHC00000000",
+      laptop_id: laptop.id,
       person_id: default_person.id,
       comment: "foo",
     }
 
     sc_verify_save(nil, request)
-    assert response_dict["obj_data"].include? "SHC00000000"
+    assert response_dict["obj_data"].include? laptop.serial_number
     assert response_dict["obj_data"].include? "foo"
   end
 
   test "save" do
+    laptop = Laptop.find_by_serial_number!("SHC00000000")
     request = {
-      serial_number_laptop: "SHC00000000",
+      laptop_id: laptop.id,
       person_id: default_person.id,
       comment: "foo",
     }
@@ -35,8 +37,9 @@ class AssignmentsControllerTest < ActionController::TestCase
   end
 
   test "can't delete" do
+    laptop = Laptop.find_by_serial_number!("SHC00000000")
     request = {
-      serial_number_laptop: "SHC00000000",
+      laptop_id: laptop.id,
       person_id: default_person.id,
       comment: "foo",
     }
@@ -48,9 +51,10 @@ class AssignmentsControllerTest < ActionController::TestCase
   end
 
   test "can't edit" do
+    laptop = Laptop.find_by_serial_number!("SHC00000000")
     # trying to edit doesn't end up saving the changes
     request = {
-      serial_number_laptop: "SHC00000000",
+      laptop_id: laptop.id,
       person_id: default_person.id,
       comment: "foo",
     }
@@ -64,8 +68,9 @@ class AssignmentsControllerTest < ActionController::TestCase
   end
 
   test "details" do
+    laptop = Laptop.find_by_serial_number!("SHC00000000")
     request = {
-      serial_number_laptop: "SHC00000000",
+      laptop_id: laptop.id,
       person_id: default_person.id,
       comment: "foo",
     }
@@ -94,7 +99,7 @@ class AssignmentsControllerTest < ActionController::TestCase
     ]
 
     assert_difference('Assignment.count', 2) do
-      post :saveMassAssignment, deliveries: data.to_json
+      post :save_mass_assignment, deliveries: data.to_json
     end
     assert_response :success
     assert_equal "ok", response_result

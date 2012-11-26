@@ -59,8 +59,8 @@ class AssignmentsController < SearchController
                  verify_before_save: true,
                  verify_save_url: "/assignments/verify_save")
 
-    form_select("person_id", "personas", _("Assigned to:"), [])
-    form_select("serial_number_laptop", "laptops", _("Serial Number:"), [], text_value: true)
+    form_select("person_id", "personas", _("Assigned to:"))
+    form_select("laptop_id", "laptops", _("Serial Number:"))
     form_textarea(nil, "comment", _("Observation"), width: 250, height: 50)
   end
   
@@ -68,7 +68,6 @@ class AssignmentsController < SearchController
     data = JSON.parse(params[:payload])
     attribs = data["fields"]
 
-    # FIXME check person_id for deassigning, is it 0 or blank?
     if !attribs["person_id"].blank?
       person_desc = Person.find(attribs["person_id"]).getFullName()
     else
@@ -77,13 +76,10 @@ class AssignmentsController < SearchController
 
     str = _("Handed to") + ": " + person_desc + "\n"
 
-    if !attribs["serial_number_laptop"].blank?
-      lapObj = Laptop.find_by_serial_number attribs["serial_number_laptop"]
-      if !lapObj
-        raise _("Can't find laptop with serial number") + attribs["serial_number_laptop"]
-      end
-      owner = lapObj.owner ? lapObj.owner.getFullName() : _("Nobody")
-      str += _("Serial Number") + ": " + attribs["serial_number_laptop"]
+    if !attribs["laptop_id"].blank?
+      laptop = Laptop.find(attribs["laptop_id"])
+      owner = laptop.owner ? laptop.owner.getFullName() : _("Nobody")
+      str += _("Serial Number") + ": " + laptop.serial_number
       str += " (" + _("in hands of ") + owner + ")\n"
     end
 
@@ -101,22 +97,11 @@ class AssignmentsController < SearchController
     @output["msg"] = _("The assignment has been registered.")
   end
 
-  def saveMassAssignment
+  def save_mass_assignment
     deliveries = JSON.parse(params[:deliveries])
-
-    Assignment.transaction do
-      deliveries.each { |delivery|
-        person = Person.find_by_barcode(delivery["person"])
-        raise _("%s doesn't exist.") % delivery["person"] if !person
-
-        attribs = Hash.new
-        attribs[:person_id] = person.id
-        attribs[:serial_number_laptop] = delivery["laptop"]
-        attribs[:comment] = _("Laptops assigned with the massive delivery form.")
-        Assignment.register(attribs)
-      }
-    end
-    @output["msg"] = _("The assignments have been registered.")
+    comment = _("Laptops assigned with the massive delivery form.")
+    count = Assignment.register_barcode_scan(deliveries, comment: comment)
+    @output["msg"] = _("%d assignments have been registered.") % count
   end
 
   # Deliver a set of laptops to a single person
@@ -129,13 +114,10 @@ class AssignmentsController < SearchController
   def save_single_mass_assignment
     data = JSON.parse(params[:payload])
     attribs = data["fields"]
+    count = Assignment.register_many(attribs["laptops"].split,
+                                     person_id: attribs["person_id"],
+                                     comment: _("Laptops assigned in mass."))
 
-    attribs["laptops"].split.each { |serial|
-      Assignment.register(serial_number_laptop: serial,
-                          person_id: attribs["person_id"],
-                          comment: _("Laptops assigned in mass."))
-    }
-
-    @output["msg"] = _("The assignments have been registered.")
+    @output["msg"] = _("%d assignments have been registered.") % count
   end
 end

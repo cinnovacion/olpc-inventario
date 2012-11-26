@@ -140,14 +140,12 @@ class MovementTest < ActiveSupport::TestCase
   test "register handout" do
     person_one = other_person
     l1 = Laptop.find_by_serial_number!("SHC00000000")
-    assignment = Assignment.register(serial_number_laptop: "SHC00000000",
-                                     person_id: person_one.id)
+    assignment = Assignment.register(laptop_id: l1.id, person_id: person_one.id)
     assert_not_equal l1.owner, person_one
 
     person_two = other_person("two")
     l2 = Laptop.find_by_serial_number!("SHC00000001")
-    assignment = Assignment.register(serial_number_laptop: "SHC00000001",
-                                     person_id: person_two.id)
+    assignment = Assignment.register(laptop_id: l2.id, person_id: person_two.id)
     assert_not_equal l2.owner, person_two
 
     assert_difference('Movement.count', 2) {
@@ -168,8 +166,7 @@ class MovementTest < ActiveSupport::TestCase
   test "register handout with unrecognised laptops" do
     person_one = other_person
     l1 = Laptop.find_by_serial_number!("SHC00000000")
-    assignment = Assignment.register(serial_number_laptop: "SHC00000000",
-                                     person_id: person_one.id)
+    assignment = Assignment.register(laptop_id: l1.id, person_id: person_one.id)
 
     count, not_recognised = Movement.register_handout(
       ["ABC456", l1.serial_number, "ABC123"],

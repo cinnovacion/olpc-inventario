@@ -47,18 +47,19 @@ class Assignment < ActiveRecord::Base
   def self.register(attribs)
     attribs = attribs.with_indifferent_access
     Assignment.transaction do
-      laptop = Laptop.includes(:status).find_by_serial_number!(attribs[:serial_number_laptop])
+      laptop = Laptop.includes(:status).find(attribs[:laptop_id])
 
-      m = Assignment.new
-      m.source_person_id = laptop.assignee_id
-      m.laptop_id = laptop.id
+      m = Assignment.new(
+        source_person_id: laptop.assignee_id,
+        laptop_id: laptop.id,
+        comment: attribs[:comment],
+      )
 
-      if attribs[:person_id] and attribs[:person_id] != ""
+      if !attribs[:person_id].blank?
         person = Person.find(attribs[:person_id])
         m.destination_person_id = person.id
       end
 
-      m.comment = attribs[:comment]
       m.save!
 
       # Move laptop out of "En desuso" for new assignments
@@ -71,6 +72,37 @@ class Assignment < ActiveRecord::Base
       laptop.save!
       m
     end
+  end
+
+  # Register multiple laptop assignments to the same person, based on laptop SN
+  def self.register_many(laptops, attribs)
+    count = 0
+    Assignment.transaction do
+      laptops.each { |serial|
+        laptop = Laptop.find_by_serial_number!(serial)
+        attribs[:laptop_id] = laptop.id
+        Assignment.register(attribs)
+        count += 1
+      }
+    end
+    count
+  end
+
+  def self.register_barcode_scan(details, attribs)
+    attribs = attribs.with_indifferent_access
+    count = 0
+
+    Assignment.transaction do
+      details.each { |delivery|
+        person = Person.find_by_barcode!(delivery["person"])
+        laptop = Laptop.find_by_serial_number!(delivery["laptop"])
+        attribs[:person_id] = person.id
+        attribs[:laptop_id] = laptop.id
+        Assignment.register(attribs)
+        count += 1
+      }
+    end
+    count
   end
 
   def getAssignmentTime()
