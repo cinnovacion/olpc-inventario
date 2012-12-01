@@ -19,7 +19,7 @@
 require 'fecha'
 
 class Assignment < ActiveRecord::Base
-  acts_as_audited
+  audited
 
   attr_accessible :source_person_id, :source_person
   attr_accessible :destination_person_id, :destination_person

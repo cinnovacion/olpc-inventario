@@ -21,7 +21,7 @@
 require 'fecha'
 
 class Movement < ActiveRecord::Base
-  acts_as_audited
+  audited
 
   belongs_to :laptop
   belongs_to :source_person, :class_name => "Person", :foreign_key => :source_person_id 

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121123210651) do
+ActiveRecord::Schema.define(:version => 20121201175153) do
 
   create_table "assignments", :force => true do |t|
     t.date    "date_assigned"
@@ -28,20 +28,21 @@ ActiveRecord::Schema.define(:version => 20121123210651) do
 
   create_table "audits", :force => true do |t|
     t.integer  "auditable_id"
-    t.string   "auditable_type",   :limit => 100
+    t.string   "auditable_type",  :limit => 100
     t.integer  "user_id"
-    t.string   "user_type",        :limit => 100
-    t.string   "username",         :limit => 100
-    t.string   "action",           :limit => 100
+    t.string   "user_type",       :limit => 100
+    t.string   "username",        :limit => 100
+    t.string   "action",          :limit => 100
     t.text     "audited_changes"
-    t.integer  "version",                         :default => 0
+    t.integer  "version",                        :default => 0
     t.datetime "created_at"
     t.string   "comment"
     t.string   "remote_address"
-    t.integer  "association_id"
-    t.string   "association_type", :limit => 100
+    t.integer  "associated_id"
+    t.string   "associated_type", :limit => 100
   end
 
+  add_index "audits", ["associated_id", "associated_type"], :name => "associated_index"
   add_index "audits", ["auditable_id", "auditable_type"], :name => "auditable_index"
   add_index "audits", ["created_at"], :name => "index_audits_on_created_at"
   add_index "audits", ["user_id", "user_type"], :name => "user_index"

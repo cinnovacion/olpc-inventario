@@ -37,10 +37,7 @@ require 'spreadsheet'
 require 'will_paginate'
 require 'gettext_i18n_rails'
 require 'foreigner'
-
-# Locally packaged gems
-$LOAD_PATH << './vendor/gems/acts_as_audited-2.0.0/lib'
-require 'acts_as_audited'
+require 'audited-activerecord'
 
 # gettext only required for development (for generating po/mo etc).
 if Rails.env.development?

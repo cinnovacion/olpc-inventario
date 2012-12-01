@@ -20,7 +20,7 @@
 # E-mail Address:  (tincho_02@hotmail.com | mabente@paraguayeduca.org) 
                                                                          
 class Place < ActiveRecord::Base
-  acts_as_audited
+  audited
 
   belongs_to :place
   belongs_to :place_type

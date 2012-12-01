@@ -20,7 +20,7 @@
 # E-mail Address:  (tincho_02@hotmail.com | mabente@paraguayeduca.org) 
 
 class Laptop < ActiveRecord::Base
-  acts_as_audited
+  audited
 
   has_many :movements
   has_many :assignments

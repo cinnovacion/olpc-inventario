@@ -21,7 +21,7 @@
 # E-mail Address:  (tincho_02@hotmail.com | mabente@paraguayeduca.org) 
                                                                       
 class Person < ActiveRecord::Base
-  acts_as_audited
+  audited
   attr_accessible :name, :id_document, :lastname, :birth_date, :phone, :cell_phone, :email
   attr_accessible :position, :school_name, :image_id, :barcode, :notes
 
