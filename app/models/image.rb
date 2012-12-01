@@ -26,6 +26,8 @@ require 'fecha'
 class Image < ActiveRecord::Base
   has_many :people
 
+  attr_accessible :name, :file
+
   #Se verifica la presencia de los campos.
   validates_presence_of :name, :message => N_("The image must be named.")
   validates_presence_of :file, :message => N_("The image must have an associated file.")

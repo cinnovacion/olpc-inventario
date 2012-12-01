@@ -28,6 +28,10 @@ class StatusChange < ActiveRecord::Base
   belongs_to :battery
   belongs_to :charger
 
+  attr_accessible :previous_state, :prevous_state_id
+  attr_accessible :new_state, :new_state_id
+  attr_accessible :laptop, :laptop_id
+
   #DEBUG: validates_presence_of :previous_state_id, :message => "Debe proveer el estado anterior."
   validates_presence_of :new_state_id, :message => N_("You must provide the new state.")
 

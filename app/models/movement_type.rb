@@ -19,6 +19,8 @@
 class MovementType < ActiveRecord::Base
   has_many :movements
 
+  attr_accessible :description, :internal_tag, :is_delivery
+
   validates_uniqueness_of :internal_tag, :message => N_("The tag must be unique")
   
   def self.getColumnas

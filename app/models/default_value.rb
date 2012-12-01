@@ -1,4 +1,5 @@
 class DefaultValue < ActiveRecord::Base
+  attr_accessible :key, :value
 
   validates_uniqueness_of :key, :message => N_("The key must be unique.")
 

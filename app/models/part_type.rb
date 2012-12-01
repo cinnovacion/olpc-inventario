@@ -24,6 +24,8 @@
 class PartType < ActiveRecord::Base
   has_many :parts
 
+  attr_accessible :description, :internal_tag, :cost
+
   validates_uniqueness_of :internal_tag, :message => N_("The tag must be unique")
 
   def self.getColumnas()

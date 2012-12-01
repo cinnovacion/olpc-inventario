@@ -22,9 +22,11 @@
 # # #
                                                                         
 class NotificationSubscriber < ActiveRecord::Base
-
   belongs_to :person
   belongs_to :notification
+
+  attr_accessible :notification, :notification_id
+  attr_accessible :person, :person_id
 
   validates_presence_of :person_id, :message => N_("You must provide the subscriber.")
   validates_presence_of :notification_id, :message => N_("You must provide the Notification.")

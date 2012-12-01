@@ -31,6 +31,11 @@ class Laptop < ActiveRecord::Base
   belongs_to :model
   belongs_to :status
 
+  attr_accessible :serial_number, :uuid, :registered, :last_activation_date
+  attr_accessible :model, :model_id, :status, :status_id
+  attr_accessible :owner, :owner_id, :assignee, :assignee_id
+  attr_accessible :shipment_arrival, :shipment_arrival_id
+
   validates_presence_of :serial_number, :message => N_("You must provide the serial number")
   validates_uniqueness_of :serial_number, :message => N_("Laptop Serial Number can not be repeated")
   validates_presence_of :owner_id, :message => N_("You must provide the Owner")

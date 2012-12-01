@@ -24,4 +24,5 @@
 class Permission < ActiveRecord::Base
   belongs_to :controller
   has_and_belongs_to_many :profiles
+  attr_accessible :name, :controller, :controller_id
 end

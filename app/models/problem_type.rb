@@ -24,6 +24,9 @@
 class ProblemType < ActiveRecord::Base
   has_many :problem_reports
 
+  attr_accessible :description, :internal_tag, :name, :extended_info
+  attr_accessible :is_hardware
+
   validates_uniqueness_of :internal_tag, :message => N_("The tag must be unique")
 
   def self.getColumnas()

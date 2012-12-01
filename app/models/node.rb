@@ -25,6 +25,12 @@ class Node < ActiveRecord::Base
   belongs_to :place
   belongs_to :node_type
 
+  attr_accessible :place, :place_id
+  attr_accessible :node_type, :node_type_id
+  attr_accessible :name, :lat, :lng, :zoom, :last_update_at, :ip_address
+  attr_accessible :last_status_change_at, :height, :username, :password
+  attr_accessible :information
+
   validates_presence_of :name, :message => N_("Must specify the name.")
   validates_presence_of :lat, :message => N_("Must specify the Latitude")
   validates_presence_of :lng, :message => N_("Must specify the Longitude")

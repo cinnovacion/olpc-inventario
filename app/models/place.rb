@@ -41,6 +41,9 @@ class Place < ActiveRecord::Base
   before_update :update_place_dependencies
   before_destroy :unregister_place_dependencies
 
+  attr_accessible :name, :description
+  attr_accessible :place, :place_id, :place_type, :place_type_id
+
   def self.getColumnas(vista = "")
     ret = Hash.new
     

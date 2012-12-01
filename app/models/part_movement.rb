@@ -23,6 +23,12 @@ class PartMovement < ActiveRecord::Base
   belongs_to :place
   belongs_to :person
 
+  attr_accessible :part_movement_type, :part_movement_type_id
+  attr_accessible :part_type, :part_type_id
+  attr_accessible :place, :place_id
+  attr_accessible :person, :person_id
+  attr_accessible :amount
+
   before_save :set_created_at
 
   def self.getColumnas()

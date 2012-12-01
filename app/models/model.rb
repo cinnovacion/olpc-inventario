@@ -25,6 +25,8 @@ class Model < ActiveRecord::Base
   has_many :laptops
   has_many :software_versions
 
+  attr_accessible :name, :description
+
   validates_presence_of :name
   validates_presence_of :description
 

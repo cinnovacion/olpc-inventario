@@ -22,6 +22,8 @@
                                                                       
 class Person < ActiveRecord::Base
   acts_as_audited
+  attr_accessible :name, :id_document, :lastname, :birth_date, :phone, :cell_phone, :email
+  attr_accessible :position, :school_name, :image_id, :barcode, :notes
 
   belongs_to :image
   has_many :laptops, :class_name => "Laptop", :foreign_key => :owner_id

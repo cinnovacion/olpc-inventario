@@ -26,6 +26,8 @@ class SolutionType < ActiveRecord::Base
   has_many :solution_type_part_types
   has_many :part_types, :through => :solution_type_part_types, :source => :part_type
 
+  attr_accessible :name, :description, :extended_info, :internal_tag
+
   validates_uniqueness_of :internal_tag, :message => N_("The tag must be unique")
 
   def self.getColumnas()

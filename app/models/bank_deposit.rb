@@ -1,6 +1,8 @@
 class BankDeposit < ActiveRecord::Base
-
   belongs_to :problem_solution
+
+  attr_accessible :problem_solution, :problem_solution_id
+  attr_accessible :deposit, :amount, :desposited_at, :bank
 
   before_create :set_created_at
 

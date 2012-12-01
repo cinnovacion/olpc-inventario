@@ -24,6 +24,9 @@
 class NodeType < ActiveRecord::Base
   belongs_to :image
 
+  attr_accessible :name, :description, :internal_tag
+  attr_accessible :image, :image_id
+
   validates_presence_of :name, :message => N_("Must specify the name.")
   validates_presence_of :internal_tag, :message => N_("You must specify the internal tag")
   validates_uniqueness_of :internal_tag, :message => N_("The tag must be unique")

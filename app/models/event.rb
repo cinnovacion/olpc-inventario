@@ -25,6 +25,10 @@ class Event < ActiveRecord::Base
   belongs_to :event_type
   belongs_to :place
 
+  attr_accessible :event_type, :event_type_id
+  attr_accessible :reporter_info, :extended_info
+  attr_accessible :place, :place_id
+
   before_create :set_created_at
 
   def self.getColumnas()

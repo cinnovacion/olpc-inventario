@@ -22,10 +22,11 @@
 # # #
                                                                           
 class Status < ActiveRecord::Base
-
   has_many :laptops
 	has_many :batteries
 	has_many :chargers
+
+  attr_accessible :description, :abbrev, :internal_tag
 
   validates_uniqueness_of :internal_tag, :message => N_("The tag must be unique")
 

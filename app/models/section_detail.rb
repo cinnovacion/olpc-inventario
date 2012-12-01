@@ -26,6 +26,8 @@ class SectionDetail < ActiveRecord::Base
   belongs_to :lot
   belongs_to :place
 
+  attr_accessible :lot, :lot_id, :place, :place_id
+
   def self.alreadyExists?(lot_id, place_id)
     return true if SectionDetail.find_by_lot_id_and_place_id(lot_id, place_id)
     false

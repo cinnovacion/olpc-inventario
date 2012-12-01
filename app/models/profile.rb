@@ -23,10 +23,11 @@
 
                                                                           
 class Profile < ActiveRecord::Base
-
   has_and_belongs_to_many :permissions
   has_many :performs
   has_many :people, :through => :performs, :source => :person
+
+  attr_accessible :description, :internal_tag, :access_level
 
   validates_uniqueness_of :internal_tag, :message => N_("The tag must be unique")
 

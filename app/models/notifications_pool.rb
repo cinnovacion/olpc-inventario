@@ -18,9 +18,12 @@
 #
 
 class NotificationsPool < ActiveRecord::Base
-
   belongs_to :notification
   belongs_to :place
+
+  attr_accessible :notification, :notification_Id
+  attr_accessible :place, :place_id
+  attr_accessible :sent, :extended_data
 
   validates_presence_of :notification_id, :message => N_("You must specify the notification.")
   validates_presence_of :place_id, :message => N_("You must specify the Location.")

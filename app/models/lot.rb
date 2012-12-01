@@ -25,6 +25,9 @@ class Lot < ActiveRecord::Base
   has_many :section_details
   belongs_to :person
 
+  attr_accessible :delivery_date, :delivered, :boxes_number
+  attr_accessible :person, :person_id
+
   validates_presence_of :person_id, :message => N_("You must provide the responsible.")
 
   before_create :set_created_at

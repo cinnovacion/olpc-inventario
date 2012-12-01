@@ -22,13 +22,19 @@
 # # #
                                                                           
 class ProblemReport < ActiveRecord::Base
-
   belongs_to :problem_type
   belongs_to :person
   belongs_to :owner, :class_name => "Person", :foreign_key => :owner_id
   belongs_to :place
   belongs_to :laptop
   has_one :problem_solution
+
+  attr_accessible :problem_type, :problem_type_id
+  attr_accessible :person, :person_id
+  attr_accessible :owner, :owner_id
+  attr_accessible :place, :place_id
+  attr_accessible :laptop, :laptop_id
+  attr_accessible :solved, :comment, :solved_at
 
   validates_presence_of :problem_type_id, :message => N_("You must provide the type of problem.")
   validates_presence_of :laptop_id, :message => N_("You must provide the laptop linked to the problem.")

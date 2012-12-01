@@ -1,4 +1,5 @@
 class PartMovementType < ActiveRecord::Base
+  attr_accessible :name, :description, :internal_tag, :direction
 
   def self.getColumnas()
     [ 

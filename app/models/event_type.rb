@@ -24,5 +24,7 @@
 class EventType < ActiveRecord::Base
   has_many :events
 
+  attr_accessible :name, :description, :internal_tag
+
   validates_uniqueness_of :internal_tag, :message => N_("The tag must be unique")
 end

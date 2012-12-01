@@ -24,6 +24,8 @@
 class Shipment < ActiveRecord::Base
   has_many :laptops
 
+  attr_accessible :arrived_at, :comment, :shipment_number
+
   before_save :set_created_at
 
   ###

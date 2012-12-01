@@ -21,6 +21,9 @@ class SchoolInfo < ActiveRecord::Base
   validate :expiry_or_duration
   validates :place, presence: true
 
+  attr_accessible :server_hostname, :lease_duration, :lease_expiry
+  attr_accessible :wan_ip_address, :wan_netmask, :wan_gateway, :place_id
+
   def self.getColumnas(vista = "")
     ret = Hash.new
 

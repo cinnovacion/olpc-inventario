@@ -26,6 +26,8 @@ class Perform < ActiveRecord::Base
   belongs_to :place
   belongs_to :profile
 
+  attr_accessible :person_id, :place_id, :profile_id
+
   validate :check_already_exists
   validates_presence_of :person_id, :message => N_("You must specify the person.")
   validates_presence_of :place_id, :message => N_("You must specify the place.")

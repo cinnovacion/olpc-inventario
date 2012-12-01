@@ -22,8 +22,9 @@
 # # #
                                                                        
 class Notification < ActiveRecord::Base
-
   has_many :notification_subscribers
+
+  attr_accessible :name, :description, :internal_tag, :active
 
   validates_uniqueness_of :internal_tag
   validates_uniqueness_of :name

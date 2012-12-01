@@ -2,6 +2,9 @@ class PlaceDependency < ActiveRecord::Base
   belongs_to :descendant, :class_name => "Place", :foreign_key => :descendant_id
   belongs_to :ancestor, :class_name => "Place", :foreign_key => :ancestor_id
 
+  attr_accessible :descendant, :descendant_id
+  attr_accessible :ancestor, :ancestor_id
+
   ###
   # Creates all dependencies for the descendant_place
   def self.register_dependencies(descendant_place)

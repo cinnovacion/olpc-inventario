@@ -28,6 +28,14 @@ class Movement < ActiveRecord::Base
   belongs_to :destination_person, :class_name => "Person", :foreign_key => :destination_person_id
   belongs_to :movement_type 
 
+  attr_accessible :responsible_person, :responsible_person_id
+  attr_accessible :source_person, :source_person_id
+  attr_accessible :destination_person, :destination_person_id
+  attr_accessible :movement_type, :movement_type_id
+  attr_accessible :laptop, :laptop_id
+  attr_accessible :comment, :return_date, :returned
+
+
   validates_presence_of :source_person_id, :message => N_("Please specify who delivered.")
   validates_presence_of :destination_person_id, :message => N_("Please specify who gets it.")
 

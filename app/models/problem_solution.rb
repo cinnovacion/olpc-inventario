@@ -27,6 +27,11 @@ class ProblemSolution < ActiveRecord::Base
   belongs_to :problem_report
   has_many :bank_deposits
 
+  attr_accessible :comment
+  attr_accessible :solved_by_person_id, :solved_by_person
+  attr_accessible :problem_report, :problem_report_id
+  attr_accessible :solution_type, :solution_type_id
+
   validates_presence_of :solution_type_id, :message => N_("Specify the solution.")
   validates_presence_of :solved_by_person_id, :message => N_("Specify who made the repair.")
   validates_presence_of :problem_report_id, :message => N_("Specify the problem.")

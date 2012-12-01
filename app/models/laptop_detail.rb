@@ -26,6 +26,10 @@ class LaptopDetail < ActiveRecord::Base
   belongs_to :person
   belongs_to :laptop
 
+  attr_accessible :section_detail, :section_detail_id
+  attr_accessible :person, :person_id
+  attr_accessible :laptop, :laptop_id
+
   validates_presence_of :person_id, :message => N_("You must provide the student.")
   validates_presence_of :laptop_id, :message => N_("There is a student without laptop.")
 
