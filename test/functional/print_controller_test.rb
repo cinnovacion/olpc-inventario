@@ -1,8 +1,18 @@
 require 'test_helper'
 
 class PrintControllerTest < ActionController::TestCase
-  # Replace this with your real tests.
-  def test_truth
-    assert true
+  setup do
+    @request.session[:user_id] = 1
+  end
+
+  test "barcodes" do
+    attribs = {
+      places: [root_place.id],
+      profile_filter: "developer",
+      laptop_filter: ["with"],
+    }
+
+    post :barcodes, print_params: attribs.to_json
+    assert_response :success
   end
 end

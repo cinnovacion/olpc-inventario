@@ -1,26 +1,28 @@
 # BarcodeGenerator
 # uses Gbarcode for encoding barcode data and then rmagick to generate
 # images out of it for displaying in views.
+# Based on the old rails plugin https://github.com/anujluthra/barcode-generator/
 
-# i was using clumsy file.new and file.close for eps generation, but 
-# Adam Feuer had published a much elegant way by using IO.pipe for doing
-# same thing. (never occured to me !! :-P )
-
-# this way we can generate any barcode type which Gbarcode -> Gnome Barcode project
-# supports.
-
-# Extending <tt>ActionView::Base</tt> to support rendering themes
-require 'gs_wrapper'
 module ActionView
-  # Extending <tt>ActionView::Base</tt> to support rendering themes
   class Base
-    include GsWrapper
-
-
     VALID_BARCODE_OPTIONS = [:encoding_format, :output_format, :width, :height, :scaling_factor, :xoff, :yoff, :margin, :resolution, :antialias	]
-    
-    def barcode(id, options = {:encoding_format => DEFAULT_ENCODING })
+    DEFAULT_ENCODING = Gbarcode::BARCODE_39 | Gbarcode::BARCODE_NO_CHECKSUM
+    DEFAULT_FORMAT = 'png'
+    DEFAULT_WIDTH = 200
+    DEFAULT_HEIGHT = 50
 
+    class ConvertNotFoundError < StandardError
+    end
+
+    def gs_convert(format, src, out)
+      device="jpeg"
+      device = "pnggray" if format == "png"
+
+      ret = system("gs -q -r250 -dEPSCrop -dSAFER -dBATCH -dNOPAUSE -sDEVICE=#{device} -sOutputFile=#{out} #{src}")
+      raise ConvertNotFoundError if !ret
+    end
+
+    def barcode(id, options = {:encoding_format => DEFAULT_ENCODING })
       options.assert_valid_keys(VALID_BARCODE_OPTIONS)
       options[:width] = DEFAULT_WIDTH unless options[:width]
       options[:height] = DEFAULT_HEIGHT unless options[:height]
@@ -62,13 +64,13 @@ module ActionView
           eps_img.close
           gs_convert(output_format, eps, out)
         end
-        
+
         # delete the eps image, no need to accummulate cruft
         File.delete(eps)
       end
       #send the html image tag
       image_tag(out.gsub(/.*public\/system/, '/system'), :width => options[:width], :height => options[:height])
     end
-    
+
   end
 end
