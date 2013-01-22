@@ -25,6 +25,7 @@ class Laptop < ActiveRecord::Base
   has_many :movements
   has_many :assignments
   has_many :problem_reports
+  has_many :connection_events, inverse_of: :laptop
   belongs_to :shipment, :class_name => "Shipment", :foreign_key => :shipment_arrival_id
   belongs_to :owner, :class_name => "Person", :foreign_key => :owner_id
   belongs_to :assignee, :class_name => "Person", :foreign_key => :assignee_id

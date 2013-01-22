@@ -291,6 +291,7 @@ class SistemaController < ApplicationController
   def getMenuCats
     menu_option = genOption(_("Technical support"))
     menu_option[:elements].push(genElement(_("Events"), "abm2", genAbm2("events")))
+    menu_option[:elements].push(genElement(_("Laptop connectivity log"), "abm2", genAbm2("connection_events", false, false, true, false)))
     menu_option[:elements].push(genElement(_("Network nodes tracking"), "node_tracker"))
 
     cButton1 = genAbm2CustomButton("/part_movements/new_transfer/0", "/part_movements/save_transfer","add","Transferencias", true)

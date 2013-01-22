@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121201175153) do
+ActiveRecord::Schema.define(:version => 20130122214604) do
 
   create_table "assignments", :force => true do |t|
     t.date    "date_assigned"
@@ -57,6 +57,17 @@ ActiveRecord::Schema.define(:version => 20121201175153) do
   end
 
   add_index "bank_deposits", ["problem_solution_id"], :name => "bank_deposits_problem_solution_id_fk"
+
+  create_table "connection_events", :force => true do |t|
+    t.integer  "laptop_id",                                     :null => false
+    t.datetime "connected_at",                                  :null => false
+    t.boolean  "stolen",                     :default => false
+    t.string   "ip_address",   :limit => 64
+    t.string   "vhash",        :limit => 64
+    t.integer  "free_space"
+  end
+
+  add_index "connection_events", ["laptop_id", "connected_at"], :name => "index_connection_events_on_laptop_id_and_connected_at", :unique => true
 
   create_table "controllers", :force => true do |t|
     t.string "name", :limit => 100
@@ -446,6 +457,8 @@ ActiveRecord::Schema.define(:version => 20121201175153) do
   add_foreign_key "assignments", "people", :name => "assignments_source_person_id_fk", :column => "source_person_id"
 
   add_foreign_key "bank_deposits", "problem_solutions", :name => "bank_deposits_problem_solution_id_fk"
+
+  add_foreign_key "connection_events", "laptops", :name => "connection_events_laptop_id_fk"
 
   add_foreign_key "events", "places", :name => "events_place_id_fk"
 
