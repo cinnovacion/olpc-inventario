@@ -1315,8 +1315,7 @@ class PrintController < ApplicationController
     print_params = JSON.parse(params[:print_params]).reverse
 
     place_id = print_params.pop
-    root_place = Place.find_by_id(place_id)
-    raise _("Invalid Place") if root_place.nil?
+    root_place = Place.find(place_id)
 
     relate = { "assignment" => "assignee_id", "physical" => "owner_id" }
     criteria = print_params.pop
@@ -1344,6 +1343,8 @@ class PrintController < ApplicationController
     laptops = laptops.where("serial_number is not NULL and serial_number != \"\"")
     laptops = laptops.where("uuid is not NULL and uuid != \"\"")
     laptops = laptops.where("status_id is not NULL and statuses.internal_tag = \"activated\"")
+    laptops = laptops.where("status_id is not NULL")
+    laptops = laptops.where("statuses.internal_tag" => ["activated", "on_repair", "repaired"])
     laptops = laptops.where("#{relation} in (?)", people_ids)
 
     laptops.each { |laptop|
