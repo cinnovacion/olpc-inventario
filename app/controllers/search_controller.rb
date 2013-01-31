@@ -106,7 +106,11 @@ class SearchController < ApplicationController
   def prepare_form(attribs = {})
     @output["fields"] = []
     attribs = attribs.with_indifferent_access
-    ["window_title", "verify_before_save", "verify_save_url"].each { |attr|
+
+    allowed_attribs = [
+      "window_title", "verify_before_save", "verify_save_url", "with_tabs"
+    ]
+    allowed_attribs.each { |attr|
       @output[attr] = attribs[attr] if attribs.include?(attr)
     }
     if params[:id]
@@ -120,6 +124,10 @@ class SearchController < ApplicationController
       return object
     end
     nil
+  end
+
+  def tab_break(label)
+    @output["fields"].push({ datatype: "tab_break", title: label })
   end
 
   def form_field(object, name, datatype, extra_options)

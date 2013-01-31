@@ -101,7 +101,7 @@ class LaptopsController < SearchController
 
   def new_single_edit
     relation = Laptop.includes(:owner, :assignee)
-    laptop = prepare_form(relation: relation)
+    laptop = prepare_form(relation: relation, with_tabs: true)
     form_textfield(laptop, "serial_number", _("Serial Number"))
 
     id = laptop ? laptop.model_id : -1
@@ -132,6 +132,19 @@ class LaptopsController < SearchController
     form_textfield(laptop, "uuid", _("UUID"))
 
     form_uploadfield(_("Load .xls"), :uploadfile) if !p
+
+    if laptop
+      tab_break(_("Connection log"))
+      events = laptop.connection_events.order("connected_at DESC").limit(5)
+      events.each { |event|
+        form_details_link(("Connection event:"), "connection_events", event.id, event.connected_at)
+      }
+      if events.any?
+        form_label("", _("Only the last 5 connection events are shown."))
+      else
+        form_label("", _("No connection events logged."))
+      end
+    end
   end
 
 
