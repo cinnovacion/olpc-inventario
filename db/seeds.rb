@@ -11,12 +11,11 @@ EventType.transaction do
 end
 
 Model.transaction do
-  Model.find_or_create_by_name("XO-1", :created_at => "2008-10-27", :description => "Estas son las primeras XOs, de material rugoso, verde y blanca")
-  Model.find_or_create_by_name("XO-2", :created_at => "2008-11-10", :description => "Esta va a estar disponible en el 2009")
-  Model.find_or_create_by_name("XO-1 (B2)", :created_at => "2009-09-23", :description => "Modelos de laptop lisa")
-  Model.find_or_create_by_name("XO-1.5", :created_at => "2010-07-23", :description => "XO-1.5 laptop con VIA CPU")
-  Model.find_or_create_by_name("XO-1.75", :created_at => "2010-07-23", :description => "XO-1.75 laptop con ARM CPU")
-  Model.find_or_create_by_name("XO-3", :created_at => "2010-07-23", :description => "XO-3 tablet")
+  Model.find_or_create_by_name("XO-1", description: "Estas son las primeras XOs, de material rugoso, verde y blanca")
+  Model.find_or_create_by_name("XO-1 (B2)", description: "Modelos de laptop lisa")
+  Model.find_or_create_by_name("XO-1.5", description: "XO-1.5 laptop con VIA CPU")
+  Model.find_or_create_by_name("XO-1.75", description: "XO-1.75 laptop con ARM CPU")
+  Model.find_or_create_by_name("XO-4", description: "XO-4 laptop con ARM CPU")
 end
 
 MovementType.transaction do
