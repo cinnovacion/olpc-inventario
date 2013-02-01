@@ -215,11 +215,7 @@ class SistemaController < ApplicationController
 
   def getMenuInventory
     menu_option = genOption(_("Inventory"))
-    #menu_option[:elements].push(genElement("Cajas", "abm2", genAbm2("boxes")))
     menu_option[:elements].push(genElement(_("Laptops"), "abm2", genAbm2("laptops")))
-    #menu_option[:elements].push(genElement("Baterias", "abm2", genAbm2("baterias")))
-    #menu_option[:elements].push(genElement("Cargadores", "abm2", genAbm2("cargadores")))
-    #menu_option[:elements].push(genElement("Movimiento de Cajas", "abm2", genAbm2("box_movements")))
 
     assignments = genOption(_("Assignments"))
 
@@ -237,13 +233,12 @@ class SistemaController < ApplicationController
     cButton1 = genAbm2CustomButton("/movements/single_mass_delivery",
                                    "/movements/save_single_mass_delivery", "add", _("Multiple movement"), true)
     entregas[:elements].push(genElement(_("List movements"), "abm2", 
-                                        genAbm2("movimientos", true, false, true, false, [cButton1])))
-    entregas[:elements].push(genElement(_("New movement"), "abmform", genAbm2("movimientos")))
+                                        genAbm2("movements", true, false, true, false, [cButton1])))
+    entregas[:elements].push(genElement(_("New movement"), "abmform", genAbm2("movements")))
     entregas[:elements].push(genElement(_("Mass movement"), "barcode_scan", :mode => "movement"))
     entregas[:elements].push(genElement(_("Register handout"), "register_handout"))
     menu_option[:elements].push(entregas)
 
-    #menu_option[:elements].push(genElement("Activaciones", "abm2", genAbm2("activaciones")))
     menu_option[:elements].push(genElement(_("Lots"), "abm2", genAbm2("lots")))
     menu_option[:elements].push(getMenuInventoryInform)
     menu_option[:elements].push(getMenuInventoryConfig)
@@ -280,7 +275,7 @@ class SistemaController < ApplicationController
 
   def getMenuInventoryConfig
     menu_option = genOption(_("Configuration"))
-    menu_option[:elements].push(getMenuListAndCreate("modelos", _("Laptop models")))
+    menu_option[:elements].push(getMenuListAndCreate("models", _("Laptop models")))
     menu_option[:elements].push(getMenuListAndCreate("software_versions", _("Software versions")))
     menu_option[:elements].push(getMenuListAndCreate("movement_types", _("Movement types")))
     menu_option[:elements].push(getMenuListAndCreate("statuses", _("Status types")))
@@ -348,12 +343,12 @@ class SistemaController < ApplicationController
 
   def getMenuDeployment
     menu_option = genOption(_("People & locations"))
-    menu_option[:elements].push(getMenuListAndCreate("localidades", _("Locations")))
+    menu_option[:elements].push(getMenuListAndCreate("places", _("Locations")))
     menu_option[:elements].push(genElement(_("Tool Box"), "place_tool_box"))
 
     submenu = genOption(_("People"))
-    submenu[:elements].push(genElement(_("List people"), "abm2", genAbm2("personas", true, true, true, true)))
-    submenu[:elements].push(genElement(_("Add people") , "abmform", genAbm2("personas")))
+    submenu[:elements].push(genElement(_("List people"), "abm2", genAbm2("people", true, true, true, true)))
+    submenu[:elements].push(genElement(_("Add people") , "abmform", genAbm2("people")))
     submenu[:elements].push(genElement(_("Move people"), "people_mover"))
     menu_option[:elements].push(submenu)
     menu_option[:elements].push(getMenuDeploymentInform)
