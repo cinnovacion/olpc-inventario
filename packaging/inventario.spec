@@ -1,5 +1,5 @@
 Name: inventario
-Version: 0.6.5
+Version: 0.7.0
 Release: 1
 Vendor: Paraguay Educa
 Summary: This (Ruby on Rails based) web app lets you track laptops given out, status of networks and support tickets.
@@ -83,7 +83,7 @@ fi
 /var/%{name}/app
 /var/%{name}/config
 %attr(-,apache,apache) /var/%{name}/config/environment.rb
-/var/%{name}/config.ru
+%attr(-,apache,apache) /var/%{name}/config.ru
 /var/%{name}/COPYING
 /var/%{name}/README
 /var/%{name}/db
@@ -100,7 +100,6 @@ fi
 /var/%{name}/test
 %attr(-,apache,apache) /var/%{name}/tmp
 /var/%{name}/translation
-/var/%{name}/vendor
 
 %changelog
 * Fri Aug 26 2011 Martin Abente. <tch@paraguayeduca.org>
