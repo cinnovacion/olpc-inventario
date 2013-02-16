@@ -22,6 +22,7 @@
 # # #
                                                                         
 class Controller < ActiveRecord::Base
+  attr_accessible :name
   has_many :permissions
 
   def self.refreshMethodsTree()
@@ -51,24 +52,13 @@ class Controller < ActiveRecord::Base
     permissions_ids = []
 
     permissions.each { |controller|
-
-      controllerObj = Controller.find_by_name(controller["name"])
-      if !controllerObj
-        controllerObj = Controller.new({:name => controller["name"] })
-        controllerObj.save!
-      end
-
+      controllerObj = Controller.where(name: controller["name"]).first_or_create
       controller["methods"].each { |method|
-        permissionObj = Permission.find_by_name_and_controller_id(method, controllerObj.id)
-        if !permissionObj
-          permissionObj = Permission.new({ :name => method, :controller_id => controllerObj.id })
-          permissionObj.save!
-        end
+        permissionObj = Permission.where(name: method, controller_id: controllerObj.id).first_or_create
         permissions_ids.push(permissionObj.id)
       }
     }
 
     permissions_ids
-
   end
 end
