@@ -1,11 +1,10 @@
-# spec file for our tracking, monitoring and support web app
-Name: inventario		
+Name: inventario
 Version: 0.6.5
 Release: 1
 Vendor: Paraguay Educa
 Summary: This (Ruby on Rails based) web app lets you track laptops given out, status of networks and support tickets.
 Group:	Applications/Internet
-License: GPL	
+License: GPL
 URL: http://git.paraguayeduca.org/gitweb/projects/inventario.git
 Source0: %{name}-%{version}.tar.gz
 Requires: ruby(abi) = 1.9.1, crontabs, rubygems, rubygem-activesupport, rubygem-activeresource, rubygem-rails, mysql-server, htmldoc, httpd, ruby-mysql, rubygem-json, rubygem-gruff, rubygem-spreadsheet, rubygem-gbarcode, logrotate, rubygem-gettext_i18n_rails, rubygem-mysql2, rubygem-will_paginate, rubygem-locale, rubygem-gettext, rubygem-foreigner, rubygem-audited-activerecord
@@ -61,11 +60,6 @@ rm -rf $RPM_BUILD_ROOT/var/%{name}/packaging
 rm -rf $RPM_BUILD_ROOT
 
 %post
-# copy virtual-host-example-config to /etc/httpd/conf.d
-if [ ! -f /etc/httpd/conf.d/101-tracking.conf ] ; then
-  cp /var/%{name}/extra/101-tracking.conf /etc/httpd/conf.d/101-tracking.conf.example
-fi
-
 # copy database config template
 cp /var/%{name}/config/database.yml.example /var/%{name}/config/database.yml
 
@@ -81,7 +75,7 @@ fi
 %postun
 
 %files
-%defattr(-,root,root,-)
+%doc extra/inventario.conf
 %dir /var/%{name}
 /etc/cron.d
 /etc/logrotate.d/inventario
