@@ -97,7 +97,7 @@ class NodesController < SearchController
 
     id = (node && node.place) ? node.place_id : -1
     places = buildHierarchyHash(Place, "places", "places.place_id", "name", id, nil, nil, false)
-    h = { "label" => _("Place"),"datatype" => "select","options" => places, "option" => "localidades" }
+    h = { "label" => _("Place"),"datatype" => "select","options" => places, "option" => "places" }
     @output["fields"].push(h)
 
     id = (node && node.node_type) ? node.node_type_id : -1

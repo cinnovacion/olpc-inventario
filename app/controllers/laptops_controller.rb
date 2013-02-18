@@ -113,16 +113,16 @@ class LaptopsController < SearchController
     form_combobox(laptop, "shipment_arrival_id", _("Shipment"), shipments)
 
     if laptop and laptop.owner_id
-      form_details_link(_("In hands of"), "personas", laptop.owner_id, laptop.owner.getFullName())
+      form_details_link(_("In hands of"), "people", laptop.owner_id, laptop.owner.getFullName())
     end
 
     if laptop and laptop.assignee_id
-      form_details_link(_("Assigned to (final recipient)"), "personas", laptop.assignee_id, laptop.assignee.getFullName())
+      form_details_link(_("Assigned to (final recipient)"), "people", laptop.assignee_id, laptop.assignee.getFullName())
     end
 
     if !laptop
       people = buildSelectHashSingle(Person, -1, "getFullName()")
-      form_select("owner_id", "personas", _("In hands of"), people)
+      form_select("owner_id", "people", _("In hands of"), people)
     end
 
     id = laptop && laptop.status ? laptop.status_id : Status.find_by_internal_tag("deactivated").id

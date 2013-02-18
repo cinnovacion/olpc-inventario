@@ -48,7 +48,7 @@ class PartMovementsController < SearchController
     @output["fields"].push(h)
 
     #options = (part_movement && part_movement.person) ? [{ :text => part_movement.person.getFullName, :value => part_movement.person.id, :selected => true}] : []
-    #h = { "label" => "Responsable (CI)", "datatype" => "select", "options" => options, "option" => "personas" }
+    #h = { "label" => "Responsable (CI)", "datatype" => "select", "options" => options, "option" => "people" }
     #@output["fields"].push(h)
 
     h = { "label" => _("Place"), "datatype" => "hierarchy_on_demand", "options" => { "width" => 360, "height" => 50 }}

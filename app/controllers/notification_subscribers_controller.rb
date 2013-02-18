@@ -48,7 +48,7 @@ class NotificationSubscribersController < SearchController
     if p 
       opts = buildSelectHash2(Person, p.person_id, "getFullName()",false,["people.id = ?", p.person_id])
     end
-    h = { "label" => _("Suscriber"),"datatype" => "select","options" => opts, "option" => "personas" }
+    h = { "label" => _("Suscriber"),"datatype" => "select","options" => opts, "option" => "people" }
     @output["fields"].push(h)
 
   end

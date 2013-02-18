@@ -30,7 +30,7 @@ class UsersController < SearchController
 
     id = user ? user.person_id : -1
     people = buildSelectHash2(Person, id, "getFullName()", false, ["people.id = ?", id])
-    form_select("person_id", "personas", _("Person"), people)
+    form_select("person_id", "people", _("Person"), people)
   end
 
   def save

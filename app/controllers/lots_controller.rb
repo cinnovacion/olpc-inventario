@@ -39,7 +39,7 @@ class LotsController < SearchController
 
     id = lot ? lot.person_id : -1
     people = buildSelectHashSingle(Person, id, "getFullName()")
-    h = { "label" => _("Responsible person"), "datatype" => "select", "options" => people, :option => "personas" }
+    h = { "label" => _("Responsible person"), "datatype" => "select", "options" => people, :option => "people" }
     @output["fields"].push(h)
 
     delivered = lot ? lot.delivered : false

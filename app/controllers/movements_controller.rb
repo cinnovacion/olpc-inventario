@@ -54,7 +54,7 @@ class MovementsController < SearchController
 
     creator = movement.creator
     if creator
-      form_details_link(_("Created by:"), :personas, creator.id, creator)
+      form_details_link(_("Created by:"), :people, creator.id, creator)
     end
 
     form_label(_("Movement date:"), movement.date_moved_at.to_s + " " + movement.movement_time)
@@ -63,11 +63,11 @@ class MovementsController < SearchController
     form_details_link(_("Laptop serial:"), :laptops, movement.laptop_id, movement.laptop.serial_number)
 
     if movement.source_person
-      form_details_link(_("Given by:"), :personas, movement.source_person_id, movement.source_person)
+      form_details_link(_("Given by:"), :people, movement.source_person_id, movement.source_person)
     end
 
     if movement.destination_person
-      form_details_link(_("Received by:"), :personas, movement.destination_person_id, movement.destination_person)
+      form_details_link(_("Received by:"), :people, movement.destination_person_id, movement.destination_person)
     end
 
     form_label(_("Comment:"), movement.comment)
@@ -88,7 +88,7 @@ class MovementsController < SearchController
     form_combobox(nil, "movement_type_id", _("Movement reason"), movement_types)
 
     people = buildSelectHashSingle(Person, -1, "getFullName")
-    form_select("person_id", "personas", _("Person"), people)
+    form_select("person_id", "people", _("Person"), people)
     form_select("laptop_id", "laptops", _("Laptop"), [])
 
     form_date(nil, "return_date", _("Return date"))
@@ -170,7 +170,7 @@ class MovementsController < SearchController
     form_combobox(nil, "movement_type_id", _("Reason"), movement_types)
 
     people = buildSelectHashSingle(Person, -1, "getFullName")
-    form_select("person_id", "personas", _("Handed to:"), people)
+    form_select("person_id", "people", _("Handed to:"), people)
 
     form_date(nil, "return_date", _("Return date"))
     form_textarea(nil, "laptops", _("Laptops"), width: 250, height: 50)

@@ -31,7 +31,7 @@ class AssignmentsController < SearchController
 
     if assignment.audits and assignment.audits.first and assignment.audits.first.user
       creator = assignment.audits.first.user.person
-      form_details_link(_("Created by:"), "personas", creator.id, creator.getFullName)
+      form_details_link(_("Created by:"), "people", creator.id, creator.getFullName)
     end
 
     form_label(_("Assigned at:"), assignment.date_assigned.to_s + " " + assignment.getAssignmentTime)
@@ -39,11 +39,11 @@ class AssignmentsController < SearchController
     form_details_link(_("Laptop serial:"), "laptops", assignment.laptop_id, assignment.laptop.serial_number)
 
     if assignment.source_person
-      form_details_link(_("Given by:"), "personas", assignment.source_person_id, assignment.source_person.getFullName)
+      form_details_link(_("Given by:"), "people", assignment.source_person_id, assignment.source_person.getFullName)
     end
 
     if assignment.destination_person
-      form_details_link(_("Assigned to:"), "personas", assignment.destination_person_id, assignment.destination_person.getFullName)
+      form_details_link(_("Assigned to:"), "people", assignment.destination_person_id, assignment.destination_person.getFullName)
     end
 
     form_label(_("Comment:"), assignment.comment)
@@ -59,7 +59,7 @@ class AssignmentsController < SearchController
                  verify_before_save: true,
                  verify_save_url: "/assignments/verify_save")
 
-    form_select("person_id", "personas", _("Assigned to:"))
+    form_select("person_id", "people", _("Assigned to:"))
     form_select("laptop_id", "laptops", _("Serial Number:"))
     form_textarea(nil, "comment", _("Observation"), width: 250, height: 50)
   end
@@ -107,7 +107,7 @@ class AssignmentsController < SearchController
   # Deliver a set of laptops to a single person
   def single_mass_assignment
     prepare_form(window_title: _("Mass assignment"))
-    form_select("person_id", "personas", _("Assigned to:"), [])
+    form_select("person_id", "people", _("Assigned to:"), [])
     form_textarea(nil, "laptops", _("Laptops"), width: 250, height: 50)
   end
 

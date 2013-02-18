@@ -30,10 +30,10 @@ class ReportsController < ApplicationController
     @output["widgets"] = Array.new
 
     # from person
-    @output["widgets"].push(listSelector(_("Given by: "), "personas"))
+    @output["widgets"].push(listSelector(_("Given by: "), "people"))
 
     # to person
-    @output["widgets"].push(listSelector(_("Received by: "), "personas"))
+    @output["widgets"].push(listSelector(_("Received by: "), "people"))
 
     #Rango de fecha
     @output["widgets"].push(dateRange())
@@ -61,10 +61,10 @@ class ReportsController < ApplicationController
     @output["widgets"].push(checkBoxSelector(_("Reasons"), cb_options,3))
 
     # from person
-    @output["widgets"].push(listSelector(_("Given by: "), "personas"))
+    @output["widgets"].push(listSelector(_("Given by: "), "people"))
 
     # to person
-    @output["widgets"].push(listSelector(_("Received by: "), "personas"))
+    @output["widgets"].push(listSelector(_("Received by: "), "people"))
 
     # Place
     @output["widgets"].push(hierarchy(""))
@@ -86,7 +86,7 @@ class ReportsController < ApplicationController
   # Distribucion de laptops por propietario
   def laptops_per_owner
     @output["widgets"] = Array.new
-    @output["widgets"].push(listSelector(_("Owner"), "personas"))
+    @output["widgets"].push(listSelector(_("Owner"), "people"))
     @output["print_method"] = "laptops_per_owner"
   end
 
@@ -94,7 +94,7 @@ class ReportsController < ApplicationController
   # Distribucion de laptops entregadas por personas
   def laptops_per_source_person
     @output["widgets"] = Array.new
-    @output["widgets"].push(listSelector(_("Delivered by"),"personas"))
+    @output["widgets"].push(listSelector(_("Delivered by"),"people"))
     @output["print_method"] = "laptops_per_source_person"
   end
 
@@ -102,7 +102,7 @@ class ReportsController < ApplicationController
   # Distribucion de laptops entregadas a personas
   def laptops_per_destination_person
     @output["widgets"] = Array.new
-    @output["widgets"].push(listSelector(_("Given to"), "personas"))
+    @output["widgets"].push(listSelector(_("Given to"), "people"))
     @output["print_method"] = "laptops_per_destination_person"
   end
 
@@ -111,7 +111,7 @@ class ReportsController < ApplicationController
   def activations
     @output["widgets"] = Array.new
     @output["widgets"].push(dateRange())
-    @output["widgets"].push(listSelector(_("Activated by"), "personas"))
+    @output["widgets"].push(listSelector(_("Activated by"), "people"))
     @output["print_method"] = "activations"
   end
 
@@ -122,8 +122,8 @@ class ReportsController < ApplicationController
     #Rango de fecha
     @output["widgets"].push(dateRange())
     #Persona que entrego y recibio.
-    @output["widgets"].push(listSelector(_("Lended by "), "personas"))
-    @output["widgets"].push(listSelector(_("Lended to "), "personas"))
+    @output["widgets"].push(listSelector(_("Lended by "), "people"))
+    @output["widgets"].push(listSelector(_("Lended to "), "people"))
     #Filtros por prestamos entregado y no entregados.
     cb_filters = Array.new
     cb_filters.push( { :label => _("Returned"), :cb_name => "returned",:checked => true } )
