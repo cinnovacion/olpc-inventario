@@ -119,8 +119,18 @@ msgstr ""
 msgid "Filter  "
 msgstr ""
 
+#: inventario/window/AbmForm.js:249 inventario/widget/ComboBoxFiltered.js:52
+#: inventario/window/Abm2.js:534
+msgid "Details"
+msgstr ""
+
 #: inventario/widget/ComboboxSelector.js:74
 msgid "View Selections "
+msgstr ""
+
+#: inventario/widget/ListSelector.js:105
+#: inventario/widget/ComboboxSelector.js:115
+msgid "See: "
 msgstr ""
 
 #: inventario/widget/CoordsTextField.js:37
@@ -143,7 +153,7 @@ msgstr ""
 msgid "Data Importer"
 msgstr ""
 
-#: inventario/widget/DataImporter.js:85 inventario/window/AbmForm.js:685
+#: inventario/widget/DataImporter.js:85 inventario/window/AbmForm.js:661
 msgid "Browse"
 msgstr ""
 
@@ -167,13 +177,8 @@ msgstr ""
 msgid "do not know the datatype : "
 msgstr ""
 
-#: inventario/widget/Form.js:326
+#: inventario/widget/Form.js:316
 msgid "I don't know the data type "
-msgstr ""
-
-#: inventario/widget/ListSelector.js:105
-#: inventario/widget/ComboboxSelector.js:115
-msgid "See: "
 msgstr ""
 
 #: inventario/widget/MapLocator.js:396
@@ -236,6 +241,12 @@ msgstr ""
 msgid "The minimum update time of 10 seconds."
 msgstr ""
 
+#: inventario/window/AbmForm.js:269
+#: inventario/widget/MultipleHierarchySelection.js:46
+#: inventario/widget/Table2.js:140 inventario/window/Abm2.js:500
+msgid "Add"
+msgstr ""
+
 #: inventario/widget/MultipleHierarchySelection.js:48
 #: inventario/widget/Table2.js:158 inventario/window/Abm2.js:574
 msgid "Remove"
@@ -263,7 +274,10 @@ msgid "Back"
 msgstr ""
 
 #: inventario/widget/PeopleMover.js:90
-msgid "Select the source place from where people are to be moved, and the destination where they will be transferred to. On the next screen you can select exactly which people from the source are to be moved."
+msgid ""
+"Select the source place from where people are to be moved, and the "
+"destination where they will be transferred to. On the next screen you can "
+"select exactly which people from the source are to be moved."
 msgstr ""
 
 #: inventario/widget/PeopleMover.js:94
@@ -505,6 +519,11 @@ msgstr ""
 msgid "Select All"
 msgstr ""
 
+#: inventario/window/AbmForm.js:256 inventario/widget/Table2.js:457
+#: inventario/window/Abm2.js:517
+msgid "Edit"
+msgstr ""
+
 #: inventario/widget/Table2.js:899
 msgid "Didn't receive the correct number of parameters."
 msgstr ""
@@ -539,6 +558,10 @@ msgstr ""
 
 #: inventario/window/Abm2.js:557
 msgid "Enter"
+msgstr ""
+
+#: inventario/window/AbmForm.js:365 inventario/window/Abm2.js:593
+msgid "Close"
 msgstr ""
 
 #: inventario/window/Abm2.js:699
@@ -589,76 +612,56 @@ msgstr ""
 msgid "Export only visible columns?"
 msgstr ""
 
-#: inventario/window/AbmForm.js:240
+#: inventario/window/Abm2.js:1455
+msgid "Abm2: problem inserting selected row in ComboBox:\n"
+msgstr ""
+
+#: inventario/window/AbmForm.js:233
 msgid "Main"
 msgstr ""
 
-#: inventario/window/AbmForm.js:256 inventario/widget/ComboBoxFiltered.js:52
-#: inventario/window/Abm2.js:534
-msgid "Details"
-msgstr ""
-
-#: inventario/window/AbmForm.js:263 inventario/widget/Table2.js:457
-#: inventario/window/Abm2.js:517
-msgid "Edit"
-msgstr ""
-
-#: inventario/window/AbmForm.js:276
-#: inventario/widget/MultipleHierarchySelection.js:46
-#: inventario/widget/Table2.js:140 inventario/window/Abm2.js:500
-msgid "Add"
-msgstr ""
-
-#: inventario/window/AbmForm.js:342
+#: inventario/window/AbmForm.js:328
 msgid " type "
 msgstr ""
 
-#: inventario/window/AbmForm.js:342
+#: inventario/window/AbmForm.js:328
 msgid "Problem to add the item num "
 msgstr ""
 
-#: inventario/window/AbmForm.js:343
+#: inventario/window/AbmForm.js:329
 msgid " with label "
 msgstr ""
 
-#: inventario/window/AbmForm.js:343
+#: inventario/window/AbmForm.js:329
 msgid ". EXCEPTION: "
 msgstr ""
 
-#: inventario/window/AbmForm.js:371 inventario/window/BarcodeScanForm.js:328
+#: inventario/window/AbmForm.js:357 inventario/window/BarcodeScanForm.js:328
 msgid "Save"
 msgstr ""
 
-#: inventario/window/AbmForm.js:371
+#: inventario/window/AbmForm.js:357
 msgid "Save Changes"
 msgstr ""
 
-#: inventario/window/AbmForm.js:379 inventario/window/Abm2.js:593
-msgid "Close"
-msgstr ""
-
-#: inventario/window/AbmForm.js:810
+#: inventario/window/AbmForm.js:780
 msgid "You must check at least one field"
 msgstr ""
 
-#: inventario/window/AbmForm.js:821
+#: inventario/window/AbmForm.js:791
 msgid "These changes will be applied to these "
 msgstr ""
 
-#: inventario/window/AbmForm.js:822
+#: inventario/window/AbmForm.js:792
 msgid " records. Are you sure?"
 msgstr ""
 
-#: inventario/window/AbmForm.js:825
+#: inventario/window/AbmForm.js:795
 msgid "Save changes?"
 msgstr ""
 
-#: inventario/window/AbmForm.js:828
+#: inventario/window/AbmForm.js:798
 msgid "Create?"
-msgstr ""
-
-#: inventario/window/AbmForm.js:964
-msgid "Config error. in getDataFromForm"
 msgstr ""
 
 #: inventario/window/AbstractWindow.js:230
@@ -754,11 +757,17 @@ msgid "Create movements with type:"
 msgstr ""
 
 #: inventario/window/BarcodeScanForm.js:157
-msgid "This form is for creating <b>assignments</b> of laptops in mass. For each assignment you wish to create, scan the barcode of the person and the barcode (serial number) of the laptop."
+msgid ""
+"This form is for creating <b>assignments</b> of laptops in mass. For each "
+"assignment you wish to create, scan the barcode of the person and the "
+"barcode (serial number) of the laptop."
 msgstr ""
 
 #: inventario/window/BarcodeScanForm.js:159
-msgid "This form is for creating <b>movements</b> of laptops in mass. For each movement you wish to create, scan the barcode of the person and the barcode (serial number) of the laptop."
+msgid ""
+"This form is for creating <b>movements</b> of laptops in mass. For each "
+"movement you wish to create, scan the barcode of the person and the barcode "
+"(serial number) of the laptop."
 msgstr ""
 
 #: inventario/window/BarcodeScanForm.js:163
@@ -798,7 +807,9 @@ msgid "Register handout"
 msgstr ""
 
 #: inventario/window/RegisterHandout.js:97
-msgid "Use this form to mark laptops as handed out. For each laptop, a movement will be created, from the current owner to the respective assignee."
+msgid ""
+"Use this form to mark laptops as handed out. For each laptop, a movement "
+"will be created, from the current owner to the respective assignee."
 msgstr ""
 
 #: inventario/window/RegisterHandout.js:101
@@ -826,11 +837,15 @@ msgid "Select the place where the handout will be registered."
 msgstr ""
 
 #: inventario/window/RegisterHandout.js:141
-msgid "Enter the serial numbers of the laptops for which handout should be registered."
+msgid ""
+"Enter the serial numbers of the laptops for which handout should be "
+"registered."
 msgstr ""
 
 #: inventario/window/RegisterHandout.js:152
-msgid "Entries with a tick will cause a movement to be created for each laptop, to the current assignee of the laptop (shown)."
+msgid ""
+"Entries with a tick will cause a movement to be created for each laptop, to "
+"the current assignee of the laptop (shown)."
 msgstr ""
 
 #: inventario/window/RegisterHandout.js:219
@@ -846,105 +861,3 @@ msgstr ""
 #: inventario/window/WelcomeInfo.js:88
 msgid "Quick access"
 msgstr ""
-
-#~ msgid " Added row "
-#~ msgstr ""
-
-#~ msgid " Empty fields are not updated."
-#~ msgstr ""
-
-#~ msgid " and document number "
-#~ msgstr ""
-
-#~ msgid " is selected"
-#~ msgstr ""
-
-#~ msgid " no recibio igual numero de parametros q columnas"
-#~ msgstr ""
-
-#~ msgid " of "
-#~ msgstr ""
-
-#~ msgid " with the name "
-#~ msgstr ""
-
-#~ msgid ", surname "
-#~ msgstr ""
-
-#~ msgid "Abm2, Choose Button CreateInput in\n"
-#~ msgstr ""
-
-#~ msgid "Abm2, Choose Button CreateInput in\n"
-#~ msgstr ""
-
-#~ msgid "Abm2, Choose Button CreateInput in\n"
-#~ msgstr ""
-
-#~ msgid "Abm2, Choose Button CreateInput in\n"
-#~ msgstr ""
-
-#~ msgid "Abm2: problem inserting selected row in ComboBox:\n"
-#~ msgstr ""
-
-#~ msgid "Abm2: problem inserting selected row in ComboBox:\n"
-#~ msgstr ""
-
-#~ msgid "Abm2: problem inserting selected row in ComboBox:\n"
-#~ msgstr ""
-
-#~ msgid "Abm2: problem inserting selected row in ComboBox:\n"
-#~ msgstr ""
-
-#~ msgid "Abm2: problem inserting selected row in ComboBox:\n"
-#~ msgstr ""
-
-#~ msgid "Abm2: problem inserting selected row in ComboBox:\n"
-#~ msgstr ""
-
-#~ msgid "Bienvenido al sistema"
-#~ msgstr "Welcome to the system"
-
-#~ msgid "Displaying Results page: "
-#~ msgstr ""
-
-#~ msgid "General Information"
-#~ msgstr ""
-
-#~ msgid "Generate"
-#~ msgstr ""
-
-#~ msgid "Grades"
-#~ msgstr ""
-
-#~ msgid "Map"
-#~ msgstr ""
-
-#~ msgid "Move %1 people to %2?"
-#~ msgstr ""
-
-#~ msgid "Number of results found: "
-#~ msgstr ""
-
-#~ msgid "Only without laptops"
-#~ msgstr ""
-
-#~ msgid "Parties"
-#~ msgstr ""
-
-#~ msgid "Row "
-#~ msgstr ""
-
-#~ msgid "Servers"
-#~ msgstr ""
-
-#~ msgid "Students"
-#~ msgstr ""
-
-#~ msgid "Teachers"
-#~ msgstr ""
-
-#~ msgid "The selected item is a Person."
-#~ msgstr ""
-
-#~ msgid "Upgrade to "
-#~ msgstr ""

@@ -119,9 +119,19 @@ msgstr "Vea los valores"
 msgid "Filter  "
 msgstr "Filtro"
 
+#: inventario/window/AbmForm.js:249 inventario/widget/ComboBoxFiltered.js:52
+#: inventario/window/Abm2.js:534
+msgid "Details"
+msgstr "Detalles"
+
 #: inventario/widget/ComboboxSelector.js:74
 msgid "View Selections "
 msgstr "Ver la Selecciones "
+
+#: inventario/widget/ListSelector.js:105
+#: inventario/widget/ComboboxSelector.js:115
+msgid "See: "
+msgstr "Vea:"
 
 #: inventario/widget/CoordsTextField.js:37
 msgid "Decimals"
@@ -143,7 +153,7 @@ msgstr "Secundos"
 msgid "Data Importer"
 msgstr "Importador de datos"
 
-#: inventario/widget/DataImporter.js:85 inventario/window/AbmForm.js:685
+#: inventario/widget/DataImporter.js:85 inventario/window/AbmForm.js:661
 msgid "Browse"
 msgstr "Examinar"
 
@@ -167,14 +177,9 @@ msgstr " Hasta:"
 msgid "do not know the datatype : "
 msgstr "no conozco el datatype:"
 
-#: inventario/widget/Form.js:326
+#: inventario/widget/Form.js:316
 msgid "I don't know the data type "
 msgstr "No conozco el tipo de datos"
-
-#: inventario/widget/ListSelector.js:105
-#: inventario/widget/ComboboxSelector.js:115
-msgid "See: "
-msgstr "Vea:"
 
 #: inventario/widget/MapLocator.js:396
 msgid "Type:"
@@ -236,6 +241,12 @@ msgstr "Auto-restaure requiere modo inalterable."
 msgid "The minimum update time of 10 seconds."
 msgstr "El tiempo mínimo de actualización es de 10 segundos."
 
+#: inventario/window/AbmForm.js:269
+#: inventario/widget/MultipleHierarchySelection.js:46
+#: inventario/widget/Table2.js:140 inventario/window/Abm2.js:500
+msgid "Add"
+msgstr "Agregar"
+
 #: inventario/widget/MultipleHierarchySelection.js:48
 #: inventario/widget/Table2.js:158 inventario/window/Abm2.js:574
 msgid "Remove"
@@ -263,8 +274,14 @@ msgid "Back"
 msgstr "Detrás"
 
 #: inventario/widget/PeopleMover.js:90
-msgid "Select the source place from where people are to be moved, and the destination where they will be transferred to. On the next screen you can select exactly which people from the source are to be moved."
-msgstr "Elegir la origen donde están las personas actualmente, y el destino hasta donde trasladarlas. En la siguiente página, eligirás cuales personas de la origen trasladar."
+msgid ""
+"Select the source place from where people are to be moved, and the "
+"destination where they will be transferred to. On the next screen you can "
+"select exactly which people from the source are to be moved."
+msgstr ""
+"Elegir la origen donde están las personas actualmente, y el destino hasta "
+"donde trasladarlas. En la siguiente página, eligirás cuales personas de la "
+"origen trasladar."
 
 #: inventario/widget/PeopleMover.js:94
 msgid "Move people from:"
@@ -505,6 +522,11 @@ msgstr "Eliminar fila"
 msgid "Select All"
 msgstr "Seleccionar todo"
 
+#: inventario/window/AbmForm.js:256 inventario/widget/Table2.js:457
+#: inventario/window/Abm2.js:517
+msgid "Edit"
+msgstr "Editar"
+
 #: inventario/widget/Table2.js:899
 msgid "Didn't receive the correct number of parameters."
 msgstr "No recibí el número correcto de parámetros. "
@@ -540,6 +562,10 @@ msgstr "Exportar"
 #: inventario/window/Abm2.js:557
 msgid "Enter"
 msgstr "Entre"
+
+#: inventario/window/AbmForm.js:365 inventario/window/Abm2.js:593
+msgid "Close"
+msgstr "Cerrar"
 
 #: inventario/window/Abm2.js:699
 msgid "Search Criteria: "
@@ -589,77 +615,53 @@ msgstr "Abm2: problema de insertar la fila seleccionada en el ComboBox:\n"
 msgid "Export only visible columns?"
 msgstr "¿Exportar solamente columnas visibles?"
 
-#: inventario/window/AbmForm.js:240
+#: inventario/window/AbmForm.js:233
 msgid "Main"
 msgstr "Principal"
 
-#: inventario/window/AbmForm.js:256 inventario/widget/ComboBoxFiltered.js:52
-#: inventario/window/Abm2.js:534
-msgid "Details"
-msgstr "Detalles"
-
-#: inventario/window/AbmForm.js:263 inventario/widget/Table2.js:457
-#: inventario/window/Abm2.js:517
-msgid "Edit"
-msgstr "Editar"
-
-#: inventario/window/AbmForm.js:276
-#: inventario/widget/MultipleHierarchySelection.js:46
-#: inventario/widget/Table2.js:140 inventario/window/Abm2.js:500
-msgid "Add"
-msgstr "Agregar"
-
-#: inventario/window/AbmForm.js:342
+#: inventario/window/AbmForm.js:328
 msgid " type "
 msgstr "tipo"
 
-#: inventario/window/AbmForm.js:342
+#: inventario/window/AbmForm.js:328
 msgid "Problem to add the item num "
 msgstr "Problema para agregar el elemento num"
 
-#: inventario/window/AbmForm.js:343
+#: inventario/window/AbmForm.js:329
 msgid " with label "
 msgstr "con la etiqueta "
 
-#: inventario/window/AbmForm.js:343
+#: inventario/window/AbmForm.js:329
 msgid ". EXCEPTION: "
 msgstr ". EXCEPCION: "
 
-#: inventario/window/AbmForm.js:371 inventario/window/BarcodeScanForm.js:328
+#: inventario/window/AbmForm.js:357 inventario/window/BarcodeScanForm.js:328
 msgid "Save"
 msgstr "Guardar"
 
-#: inventario/window/AbmForm.js:371
+#: inventario/window/AbmForm.js:357
 msgid "Save Changes"
 msgstr "Guardar cambios "
 
-#: inventario/window/AbmForm.js:379 inventario/window/Abm2.js:593
-msgid "Close"
-msgstr "Cerrar"
-
-#: inventario/window/AbmForm.js:810
+#: inventario/window/AbmForm.js:780
 msgid "You must check at least one field"
 msgstr "Usted debe seleccionar por lo menos un campo"
 
-#: inventario/window/AbmForm.js:821
+#: inventario/window/AbmForm.js:791
 msgid "These changes will be applied to these "
 msgstr "Estos cambios serán aplicados a estos "
 
-#: inventario/window/AbmForm.js:822
+#: inventario/window/AbmForm.js:792
 msgid " records. Are you sure?"
 msgstr "registros. ¿Está usted seguro?"
 
-#: inventario/window/AbmForm.js:825
+#: inventario/window/AbmForm.js:795
 msgid "Save changes?"
 msgstr "¿Guardar cambios?"
 
-#: inventario/window/AbmForm.js:828
+#: inventario/window/AbmForm.js:798
 msgid "Create?"
 msgstr "Crear?"
-
-#: inventario/window/AbmForm.js:964
-msgid "Config error. in getDataFromForm"
-msgstr "Error de los Config. en getDataFromForm"
 
 #: inventario/window/AbstractWindow.js:230
 msgid "Close window?"
@@ -754,12 +756,24 @@ msgid "Create movements with type:"
 msgstr "Crear movimientos de tipo:"
 
 #: inventario/window/BarcodeScanForm.js:157
-msgid "This form is for creating <b>assignments</b> of laptops in mass. For each assignment you wish to create, scan the barcode of the person and the barcode (serial number) of the laptop."
-msgstr "Este formulario es para hacer <b>asignaciones</b> de laptops de manera masiva. Por cada asignacion que quieres hacer, escanea el codigo de barra de la persona y el codigo de barra (número de serie) de la laptop."
+msgid ""
+"This form is for creating <b>assignments</b> of laptops in mass. For each "
+"assignment you wish to create, scan the barcode of the person and the "
+"barcode (serial number) of the laptop."
+msgstr ""
+"Este formulario es para hacer <b>asignaciones</b> de laptops de manera "
+"masiva. Por cada asignacion que quieres hacer, escanea el codigo de barra de"
+" la persona y el codigo de barra (número de serie) de la laptop."
 
 #: inventario/window/BarcodeScanForm.js:159
-msgid "This form is for creating <b>movements</b> of laptops in mass. For each movement you wish to create, scan the barcode of the person and the barcode (serial number) of the laptop."
-msgstr "Este formulario es para hacer <b>movimientos</b> de laptops de manera masiva. Por cada movimiento que quieres hacer, escanea el codigo de barra de la persona y el codigo de barra (número de serie) de la laptop."
+msgid ""
+"This form is for creating <b>movements</b> of laptops in mass. For each "
+"movement you wish to create, scan the barcode of the person and the barcode "
+"(serial number) of the laptop."
+msgstr ""
+"Este formulario es para hacer <b>movimientos</b> de laptops de manera "
+"masiva. Por cada movimiento que quieres hacer, escanea el codigo de barra de"
+" la persona y el codigo de barra (número de serie) de la laptop."
 
 #: inventario/window/BarcodeScanForm.js:163
 msgid "#Person"
@@ -798,8 +812,12 @@ msgid "Register handout"
 msgstr "Registrar entrega"
 
 #: inventario/window/RegisterHandout.js:97
-msgid "Use this form to mark laptops as handed out. For each laptop, a movement will be created, from the current owner to the respective assignee."
-msgstr "Este formulario es para marcar laptops como entregadas. Para cada laptop, un movimiento será creado, desde el dueño actual hasta su asignación."
+msgid ""
+"Use this form to mark laptops as handed out. For each laptop, a movement "
+"will be created, from the current owner to the respective assignee."
+msgstr ""
+"Este formulario es para marcar laptops como entregadas. Para cada laptop, un"
+" movimiento será creado, desde el dueño actual hasta su asignación."
 
 #: inventario/window/RegisterHandout.js:101
 msgid "Movement type:"
@@ -826,12 +844,21 @@ msgid "Select the place where the handout will be registered."
 msgstr "Elegir el lugar en cual la entrega será registrada."
 
 #: inventario/window/RegisterHandout.js:141
-msgid "Enter the serial numbers of the laptops for which handout should be registered."
-msgstr "Entrar los números de serial de las laptops que deberían ser registradas como entregadas."
+msgid ""
+"Enter the serial numbers of the laptops for which handout should be "
+"registered."
+msgstr ""
+"Entrar los números de serial de las laptops que deberían ser registradas "
+"como entregadas."
 
 #: inventario/window/RegisterHandout.js:152
-msgid "Entries with a tick will cause a movement to be created for each laptop, to the current assignee of the laptop (shown)."
-msgstr "Entradas con un check causarán la creación de un movimiento para cada laptop, hasta la person que tiene la asignación actual de la laptop (se muestra)."
+msgid ""
+"Entries with a tick will cause a movement to be created for each laptop, to "
+"the current assignee of the laptop (shown)."
+msgstr ""
+"Entradas con un check causarán la creación de un movimiento para cada "
+"laptop, hasta la person que tiene la asignación actual de la laptop (se "
+"muestra)."
 
 #: inventario/window/RegisterHandout.js:219
 msgid "Register %1 handout in %2?"
