@@ -58,10 +58,6 @@ class User < ActiveRecord::Base
     User.where(usuario: name, clave: password).first
   end
 
-  def authenticate
-    User.login(self.usuario, self.password)
-  end
-
   def hasProfiles?(profiles_tags)
     profiles = Profile.includes(:performs => :profile)
     profiles = profiles.where("performs.person_id = ? and profiles.internal_tag in (?)", self.person.id, profiles_tags)

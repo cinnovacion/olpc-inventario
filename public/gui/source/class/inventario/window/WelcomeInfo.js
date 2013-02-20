@@ -1,4 +1,3 @@
-
 //     Copyright Paraguay Educa 2009
 //
 //     This program is free software: you can redistribute it and/or modify
@@ -27,17 +26,18 @@ qx.Class.define("inventario.window.WelcomeInfo",
 
   construct : function() {
     this._vbox = new qx.ui.layout.HBox(20);
+    var spacer = new qx.ui.core.Spacer();
+    var img    = new qx.ui.basic.Image(this.getDefaultLogoPath());
+
     this.base(arguments, this._vbox);
+    this.setBackgroundColor('#FFFFFF');
+    this.add(img, { flex : 1 });
+    this.add(spacer, { flex : 2});
+    this.add(this.spotlight(), { flex : 1 });
   },
 
   properties :
   {
-    initialDataUrl :
-    {
-      check : "String",
-      init  : "/sistema/welcome_info"
-    },
-
     defaultLogoPath :
     {
       check : "String",
@@ -54,31 +54,6 @@ qx.Class.define("inventario.window.WelcomeInfo",
 
   members :
   {
-    launch : function()
-    {
-      var hopts = {};
-      hopts["url"] = this.getInitialDataUrl();
-      hopts["parametros"] = null;
-      hopts["handle"] = this._loadInitialDataResp;
-      hopts["data"] = {};
-
-      inventario.transport.Transport.callRemote(hopts, this);
-    },
-
-    _loadInitialDataResp : function(remoteData, params)
-    {
-      var spacer = new qx.ui.core.Spacer();
-      var img    = new qx.ui.basic.Image(this.getDefaultLogoPath());
-      this.setBackgroundColor('#FFFFFF');
-      this.add(img, { flex : 1 });
-      this.add(spacer, { flex : 2});
-      this.add(this.spotlight(), { flex : 1 });
-
-      // BROKEN;
-      // var scope = inventario.window.Abm2SetScope.getInstance();
-      // scope.show(this.getPage(), "Set scope");
-    },
-
     // Perhaps we should check if menu elements was given to us in order 
     // to instantiate Autocomplete?
     spotlight : function() {

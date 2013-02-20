@@ -385,38 +385,10 @@ class ApplicationController < ActionController::Base
   # Language support facilities
   #
   def getAcceptedLang
-    accepted_languages = ["es", "en"]
+    ["es", "en"]
   end
 
   def getLangText(lang)
-    lang_texts = { "es" => _("Spanish"), "en" => _("English") }
-    lang_texts[lang]
+    { "es" => _("Spanish"), "en" => _("English") }[lang]
   end
-
-  def getDefaultLang
-    default = DefaultValue.find_by_key("lang")
-    default_lang = default ? default.value : nil
-    default_lang  = (default_lang && getAcceptedLang.include?(default_lang)) ? default_lang : "es"
-  end
-
-  def langCombo
-    default_lang = session["lang"] ? session["lang"] : getDefaultLang
-    lang_full_list = [default_lang] + (getAcceptedLang - [default_lang])
-
-    comboDef = []
-    first = true
-    lang_full_list.each { |lang|
-
-      comboDef.push({ :text => getLangText(lang), :value => lang, :selected => first })
-      first = false if first
-    }
-
-    comboDef
-  end
-
-  def setLanguage(lang)
-    accepted_languages = getAcceptedLang
-    session["lang"] = session["locale"] = accepted_languages.include?(lang) ? lang : getDefaultLang
-  end
-
 end

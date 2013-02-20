@@ -121,7 +121,6 @@ qx.Class.define("inventario.Application",
       var welcomeInfo = new inventario.window.WelcomeInfo();
       // pass along the list of menu elements for spotlight widget to make use of them
       welcomeInfo.setMenuElements(launcher.getMenuElements());
-      welcomeInfo.launch();
       panel.add(welcomeInfo);
 
       mainVbox.add(panel, { flex : 1 });
