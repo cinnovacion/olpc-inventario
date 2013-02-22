@@ -73,49 +73,6 @@ class ReportsController < ApplicationController
   end
 
   ##
-  # Movimientos en una ventana de tiempo
-  def movements_time_range
-    @output["widgets"] = Array.new
-    @output["widgets"].push(dateRange())
-    cb_data = buildHierarchyHash(Place, "places", "places.place_id", "name", -1, nil, nil, true)
-    @output["widgets"].push(comboBoxSelector(_("Location"), cb_data))
-    @output["print_method"] = "movements_time_range"
-  end
-
-  ##
-  # Distribucion de laptops por propietario
-  def laptops_per_owner
-    @output["widgets"] = Array.new
-    @output["widgets"].push(listSelector(_("Owner"), "people"))
-    @output["print_method"] = "laptops_per_owner"
-  end
-
-  ##
-  # Distribucion de laptops entregadas por personas
-  def laptops_per_source_person
-    @output["widgets"] = Array.new
-    @output["widgets"].push(listSelector(_("Delivered by"),"people"))
-    @output["print_method"] = "laptops_per_source_person"
-  end
-
-  ##
-  # Distribucion de laptops entregadas a personas
-  def laptops_per_destination_person
-    @output["widgets"] = Array.new
-    @output["widgets"].push(listSelector(_("Given to"), "people"))
-    @output["print_method"] = "laptops_per_destination_person"
-  end
-
-  ##
-  # Listado de activaciones en una ventana de tiempo y por activador.
-  def activations
-    @output["widgets"] = Array.new
-    @output["widgets"].push(dateRange())
-    @output["widgets"].push(listSelector(_("Activated by"), "people"))
-    @output["print_method"] = "activations"
-  end
-
-  ##
   # Prestamos realizados
   def lendings
     @output["widgets"] = Array.new
@@ -193,14 +150,6 @@ class ReportsController < ApplicationController
     @output["widgets"] = Array.new
     @output["widgets"].push(comboBoxSelector(_("Lot"), buildSelectHash2(Lot,-1,"getTitle",false,[])))
     @output["print_method"] = "lots_labels"
-  end
-
-  def laptops_per_tree
-    @output["widgets"] = Array.new
-    cb_filter = buildSelectHash2(PlaceType,id,"name",true,[])
-    cb_data = buildHierarchyHash(Place, "places", "places.place_id", "name", -1, nil, nil, false)
-    @output["widgets"].push(comboBoxFiltered(_("Location"), cb_filter, cb_data, 360, "/places/requestPlaces"))
-    @output["print_method"] = "laptops_per_tree"
   end
 
   def possible_mistakes

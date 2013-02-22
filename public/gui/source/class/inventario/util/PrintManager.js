@@ -84,12 +84,7 @@ qx.Class.define("inventario.util.PrintManager",
         case "movements":
           case "movement_types":
             case "test_print_report":
-              case "movements_time_range":
-                case "laptops_per_owner":
                   case "laptops_per_place":
-                    case "laptops_per_source_person":
-                      case "laptops_per_destination_person":
-                        case "activations":
                           case "lendings":
                             case "statuses_distribution":
                               case "status_changes":
@@ -98,7 +93,6 @@ qx.Class.define("inventario.util.PrintManager",
                                     case "problems_per_type":
                                       case "barcodes":
                                         case "lots_labels":
-                                          case "laptops_per_tree":
                                             case "possible_mistakes":
                                               case "printable_delivery":
                                                 case "registered_laptops":

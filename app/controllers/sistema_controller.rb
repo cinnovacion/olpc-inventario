@@ -202,12 +202,6 @@ class SistemaController < ApplicationController
   end
 
   def inventory_info_menu
-    #menu_option[:elements].push(menu_element("Movimientos ventana de tiempo*", "report", report("movements_time_range")))
-    #menu_option[:elements].push(menu_element("Laptops por propietario*?", "report", report("laptops_per_owner")))
-    #menu_option[:elements].push(menu_element("Entregas por persona*", "report", report("laptops_per_source_person")))
-    #menu_option[:elements].push(menu_element("Entregas a persona*", "report", report("laptops_per_destination_person")))
-    #menu_option[:elements].push(menu_element("Activaciones", "report", report("activations")))
-    #menu_option[:elements].push(menu_element("Distribucion por localidad*?", "report", report("laptops_per_tree")))
     submenu _("Reports"), [
       menu_element(_("Serial numbers per location"), "report", report("serials_per_places")),
       menu_element(_("Where are these laptops?"), "report", report("where_are_these_laptops")),
