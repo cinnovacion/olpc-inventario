@@ -75,57 +75,10 @@ qx.Class.define("inventario.util.PrintManager",
       var excel_controller = "/planillas/";
       var url = "";
 
-      switch(documento)
-      {
-        case "planilla":
-          url = excel_controller + documento;
-          break;
-
-        case "movements":
-          case "movement_types":
-            case "test_print_report":
-                  case "laptops_per_place":
-                          case "lendings":
-                            case "statuses_distribution":
-                              case "status_changes":
-                                case "parts_replaced":
-                                  case "available_parts":
-                                    case "problems_per_type":
-                                      case "barcodes":
-                                        case "lots_labels":
-                                            case "possible_mistakes":
-                                              case "printable_delivery":
-                                                case "registered_laptops":
-                                                  case "problems_per_school":
-                                                    case "problems_per_grade":
-                                                      case "used_parts_per_person":
-                                                        case "where_are_these_laptops":
-                                                          case "online_time_statistics":
-                                                            case "serials_per_places":
-                                                              case "students_ids_distro":
-                                                                case "problems_and_deposits":
-                                                                  case "deposits":
-                                                                    case "spare_parts_registry":
-                                                                      case "problems_time_distribution":
-                                                                        case "is_hardware_dist":
-                                                                          case "laptops_problems_recurrence":
-                                                                            case "average_solved_time":
-                                                                              case "audit_report":
-                                                                                case "stock_status_report":
-                                                                                case "people_laptops":
-                                                                                case "people_documents":
-                                                                                case "laptops_uuids":
-                                                                                case "lot_information":
-                                                                                case "laptops_check":
-                                                                                //PLEASE someone fix this horrible identation
-                                                                                url = print_controller + documento;
-                                                                                break;
-
-                                                                              default:
-                                                                                throw new Error(qx.locale.Manager.tr("The document ") + documento + qx.locale.Manager.tr(" not set to print even"));
-                                                                            }
-
-                                                                            return url;
-                                                                          }
-                                                                        }
-                                                                      });
+      if (documento == "planilla")
+        return "/planillas/planilla";
+      else
+        return "/print/" + documento;
+    }
+  }
+});
