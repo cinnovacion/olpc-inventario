@@ -1,5 +1,5 @@
 Name: inventario
-Version: 0.7.2
+Version: 0.7.3
 Release: 1
 Vendor: Paraguay Educa
 Summary: This (Ruby on Rails based) web app lets you track laptops given out, status of networks and support tickets.
