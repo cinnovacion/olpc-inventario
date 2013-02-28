@@ -54,7 +54,7 @@ InventarioNicaragua::Application.routes.draw do
 
   resources :connection_events do
     collection do
-      post :report_event
+      post :report
     end
   end
 

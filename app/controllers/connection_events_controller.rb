@@ -14,7 +14,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>
 
 class ConnectionEventsController < SearchController
-  skip_filter :rpc_block, only: [:report_event]
+  skip_filter :rpc_block, only: [:report]
   undef_method :delete
   undef_method :save
 
@@ -43,7 +43,7 @@ class ConnectionEventsController < SearchController
     end
   end
 
-  def report_event
+  def report
     laptop = Laptop.find_by_serial_number!(params[:laptop])
     attribs = params.slice(:ip_address, :free_space, :stolen, :vhash, :connected_at)
 

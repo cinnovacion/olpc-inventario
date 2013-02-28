@@ -20,7 +20,7 @@ class ConnectionEventsControllerTest < ActionController::TestCase
 
   test "report event" do
     assert_difference('ConnectionEvent.count') do
-      post :report_event, laptop: Laptop.first.serial_number,
+      post :report, laptop: Laptop.first.serial_number,
                           ip_address: "1.2.3.4", free_space: 678,
                           stolen: false, connected_at: "2009-01-02 03:04:05"
       assert_response :success
@@ -42,9 +42,9 @@ class ConnectionEventsControllerTest < ActionController::TestCase
     }
 
     assert_difference('ConnectionEvent.count') do
-      post :report_event, attribs
+      post :report, attribs
       assert_response :success
-      post :report_event, attribs
+      post :report, attribs
       assert_response :success
     end
   end
