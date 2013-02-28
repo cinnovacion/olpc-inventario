@@ -7,9 +7,14 @@ qx.Class.define("inventario.widget.Autocomplete",
 {
   extend : qx.ui.container.Composite,
 
-  construct: function()
+  construct: function(elements)
   {
     this.base(arguments, new qx.ui.layout.VBox(5));
+    this.elements = elements;
+    this.setMaxWidth(250);
+    this.setAlignX('right');
+    this.setAlignY('top');
+
     this.__textfield = new qx.ui.form.TextField();
     this.__list = new qx.ui.form.List();
 
@@ -19,6 +24,8 @@ qx.Class.define("inventario.widget.Autocomplete",
       offset : 0,
       position : "bottom-left"
     });
+
+    this.add(new qx.ui.basic.Label(this.tr("Quick access")));
 
     this.__list.hide();
     this.__textfield.setLiveUpdate(true);
@@ -38,20 +45,10 @@ qx.Class.define("inventario.widget.Autocomplete",
     this._disposeObjects("__popup");
   },
 
-  properties:
-  {
-    autocompleteElements :
-    {
-      check:"Array",
-      init: [],
-      apply: "_addData"
-    }
-  },
-
   members:
   {
     _addData: function(value) {
-      this.getAutocompleteElements().concat(value);
+      this.elements.concat(value);
     },
 
     _onTextKeypress: function(e) {
@@ -119,14 +116,13 @@ qx.Class.define("inventario.widget.Autocomplete",
     },
 
     _onChange: function(e) {
-      var data    = this.getAutocompleteElements();
       var rawData = [];
       var text    = this.__textfield.getValue().toLowerCase();
       this._clearListElements();
 
-      for (var i in data)
-        if (data[i].label.toLowerCase().match(text))
-          rawData.push(data[i]);
+      for (var i in this.elements)
+        if (this.elements[i].label.toLowerCase().match(text))
+          rawData.push(this.elements[i]);
             
       if (rawData.length > 0 && text.length > 0) {
         var size = rawData.length > 10 ? 10 : rawData.length;

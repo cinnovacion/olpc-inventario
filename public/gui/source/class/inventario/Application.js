@@ -116,12 +116,16 @@ qx.Class.define("inventario.Application",
 
       var layout = new qx.ui.layout.VBox();
       var panel = new qx.ui.container.Composite(layout);
-      this.main_panel = panel;
 
-      var welcomeInfo = new inventario.window.WelcomeInfo();
-      // pass along the list of menu elements for spotlight widget to make use of them
-      welcomeInfo.setMenuElements(launcher.getMenuElements());
-      panel.add(welcomeInfo);
+      layout = new qx.ui.layout.HBox(20);
+      var upper_hbox = new qx.ui.container.Composite(layout);
+      var img = new qx.ui.basic.Image("/images/view_by_name/logo_pyeduca.jpg");
+      var menu_elements = launcher.getMenuElements();
+      var autocomplete = new inventario.widget.Autocomplete(menu_elements);
+      upper_hbox.add(img, { flex: 1 });
+      upper_hbox.add(new qx.ui.core.Spacer(), { flex: 2});
+      upper_hbox.add(autocomplete, { flex: 1 });
+      panel.add(upper_hbox);
 
       mainVbox.add(panel, { flex : 1 });
       mainVbox.add(taskbar);
