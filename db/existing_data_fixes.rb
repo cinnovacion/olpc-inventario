@@ -42,6 +42,7 @@ permissions = []
 permissions.push({ "name" => "Nodes", "methods" => [ "show", "up", "down"] })
 permissions.push({ "name" => "Places", "methods" => [ "schools_leases" ] } )
 permissions.push({ "name" => "Laptops", "methods" => [ "requestBlackList" ] } )
+permissions.push({ "name" => "ConnectionEvents", "methods" => [ "report" ] } )
 Profile.find_by_internal_tag("extern_system").register_update({}, permissions)
 
 permissions = []
