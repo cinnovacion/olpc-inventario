@@ -404,28 +404,6 @@ class Person < ActiveRecord::Base
       c: "Turno Completo"
     }.with_indifferent_access
 
-    sectionHash = {
-      a: "Seccion A",
-      b: "Seccion B",
-      c: "Seccion C",
-      d: "Seccion D",
-
-      #Caacupe specific data
-      colon: "Seccion Colon",
-      futuro: "Seccion Futuro",
-      yegros: "Seccion Yegros",
-      "cap. figari" => "Seccion Cap. Figari",
-      esperatti: "Seccion Esperatti",
-      hernandarias: "Seccion Hernandarias",
-      "pedro juan c." => "Seccion Pedro Juan C.",
-      "M.A.C" => "Seccion M.A.C",
-      "R.S." => "Seccion R.S.",
-      "tte. rojas silva" => "Seccion Tte. Rojas Silva",
-      pestalozzi: "Seccion Pestalozzi",
-      "pte. franco" => "Seccion Pte. Franco",
-      "mcal. Lopez" => "Seccion Mcal. Lopez",
-    }.with_indifferent_access
-
     _name = 0
     _lastname = 1
     _ci = 2
@@ -449,7 +427,7 @@ class Person < ActiveRecord::Base
 
       schoolInfo = numberCleaner(dataArray[_school])
       shiftInfo = shiftHash[dataArray[_shift].to_s.downcase.strip]
-      sectionInfo = sectionHash[dataArray[_section].to_s.downcase.strip]
+      sectionInfo = dataArray[_section].to_s.strip
 
       # Make sure there is a school.
       raise "Invalid school (of %s %s)" % [name, lastname] if schoolInfo == ""
@@ -468,9 +446,18 @@ class Person < ActiveRecord::Base
       end
 
       # Assert that section info is valid, if given
-      if !sectionInfo and dataArray[_section] and dataArray[_section] != ""
+      if sectionInfo.blank? and dataArray[_section] and dataArray[_section] != ""
         raise "Invalid section %s (of %s %s)" % [dataArray[_section], name, lastname]
         # Would be cool to show the row number
+      end
+
+      if sectionInfo.present?
+        # Capitalize the section name if no capital letters are present
+        if sectionInfo == sectionInfo.downcase
+          sectionInfo = sectionInfo.titleize
+        end
+
+        sectionInfo = "Seccion " + sectionInfo
       end
 
       section = Place.theSwissArmyKnifeFuntion(city.id, schoolInfo, shiftInfo, gradeInfo, sectionInfo)

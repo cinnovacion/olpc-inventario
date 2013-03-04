@@ -519,7 +519,7 @@ class Place < ActiveRecord::Base
       end
       ret = school
 
-      if shiftInfo != nil
+      if shiftInfo.present?
         shift = Place.find_by_name_and_place_type_id_and_place_id(shiftInfo, shift_type_id, ret.id)
         if !shift
           shift = Place.new({ :name => shiftInfo, :place_type_id => shift_type_id, :place_id => ret.id })
@@ -528,7 +528,7 @@ class Place < ActiveRecord::Base
         ret = shift
       end
 
-      if gradeInfo != nil
+      if gradeInfo.present?
         grade_type = PlaceType.find_by_internal_tag!(gradeInfo)
         grade = Place.find_by_name_and_place_type_id_and_place_id(grade_type.name, grade_type.id, ret.id)
         if !grade
@@ -538,7 +538,7 @@ class Place < ActiveRecord::Base
         ret = grade
       end
 
-      if sectionInfo != nil
+      if sectionInfo.present?
         section = Place.find_by_name_and_place_type_id_and_place_id(sectionInfo, section_type_id, ret.id)
         if !section
           section = Place.new({ :name => sectionInfo, :place_type_id => section_type_id, :place_id => ret.id})

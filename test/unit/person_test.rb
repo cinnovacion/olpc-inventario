@@ -50,7 +50,7 @@ class PersonTest < ActiveSupport::TestCase
     }
     importschool2 = Place.register(attribs, [], default_person)
 
-    assert_difference("Person.count", 4) {
+    assert_difference("Person.count", 7) {
       Person.import_students_xls(fixture_path + "/files/students.xls",
                                    root_place.id, default_person)
     }
@@ -81,5 +81,15 @@ class PersonTest < ActiveSupport::TestCase
     student4 = Person.find_by_name!("Student4")
     assert_equal 1, student4.laptops_assigned.count
     assert_equal student4, Laptop.find_by_serial_number!("SHC00000000").assignee
+
+    # check that a school can have a lot of sections
+    student5 = Person.find_by_name!("Student5")
+    assert_equal "Seccion J", student5.place.name
+
+    # check some section names and titleization behaviour from Caacupe data
+    student6 = Person.find_by_name!("Student6")
+    assert_equal "Seccion Pedro Juan C.", student6.place.name
+    student7 = Person.find_by_name!("Student7")
+    assert_equal "Seccion mcal. Lopez", student7.place.name
   end
 end
