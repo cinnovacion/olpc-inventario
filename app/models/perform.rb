@@ -28,7 +28,7 @@ class Perform < ActiveRecord::Base
 
   attr_accessible :person_id, :place, :place_id, :profile_id
 
-  validate :check_already_exists
+  validates_uniqueness_of :person_id, scope: [:place_id, :profile_id]
   validates_presence_of :person_id, :message => N_("You must specify the person.")
   validates_presence_of :place_id, :message => N_("You must specify the place.")
   validates_presence_of :profile_id, :message => N_("You must specify the profile.")
@@ -44,11 +44,6 @@ class Perform < ActiveRecord::Base
                      ]
     ret[:columnas_visibles] = [true, true, true, true]
     ret
-  end
-
-  def self.alreadyExists?(person_id, place_id, profile_id)
-    return true if Perform.find_by_person_id_and_place_id_and_profile_id(person_id, place_id, profile_id)
-    false
   end
 
   ###
@@ -130,10 +125,5 @@ class Perform < ActiveRecord::Base
     #otherwise... nop.
     return false
 
-  end
-
- protected
-  def check_already_exists
-    errors.add(:person, "This registry already exists") if Perform.alreadyExists?(self.person_id, self.place_id, self.profile_id)
   end
 end

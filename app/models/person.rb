@@ -151,7 +151,6 @@ class Person < ActiveRecord::Base
   end
 
   def register_update(attribs, performs = [], fotocarnet = "", register = nil)
-
     #Checking for person ownership
     raise _("No sufficient level of access") if !(register.owns(self))
 
@@ -159,19 +158,15 @@ class Person < ActiveRecord::Base
     raise _("Profile Configuration overrides!") if !Perform.check(register, performs)
 
     Person.transaction do
-
       self.registerFotocarnet(fotocarnet)
-
       if self.update_attributes!(attribs)
 
-       #Updating Performs.
         self.performs.each { |perform|
           Perform.delete(perform.id) if !performs.include?([perform.place_id.to_s, perform.profile_id.to_s])
         }
         performs.each { |perform|
-          if !Perform.alreadyExists?(self.id, perform[0].to_i, perform[1].to_i)
-            Perform.create!({:person_id => self.id, :place_id => perform[0].to_i, :profile_id => perform[1].to_i})
-          end
+          Perform.where(person_id: self.id, place_id: perform[0],
+                        profile_id: perform[1]).first_or_create!
         }
 
       end
