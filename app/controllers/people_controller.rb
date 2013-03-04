@@ -223,44 +223,13 @@ class PeopleController < SearchController
     src_place_id = datos["src_place_id"]
     dst_place_id = datos["dst_place_id"]
     add_comment = datos["add_comment"]
-
     people_ids = datos["people_ids"]
-    if src_place_id.nil? or dst_place_id.nil? or people_ids.nil?
-      raise _("Missing field data.");
-    end
 
-    src_place = Place.find_by_id(src_place_id)
-    dst_place = Place.find_by_id(dst_place_id)
-    raise _("Could not find place.") if src_place.nil? or dst_place.nil?
+    raise _("Missing field data.") if people_ids.empty?
+    src_place = Place.find(src_place_id)
+    dst_place = Place.find(dst_place_id)
 
-    Perform.transaction do
-      people_ids.each { |person_id|
-        perform = Perform
-        perform = perform.includes(:person) if add_comment
-        perform = perform.where(:person_id => person_id, :place_id => src_place.id).first
-        next if perform.nil?
-
-        if !Perform.alreadyExists?(person_id, dst_place_id, perform.profile_id)
-          Perform.create!({:person_id => person_id, :place_id => dst_place_id, :profile_id => perform.profile_id})
-        end
-        Perform.delete(perform.id)
-
-        if add_comment
-          person = perform.person
-          time = Time.now.strftime("%d/%m/%Y")
-          moved_by = current_user.getPersonName()
-          old_place = src_place.getName
-          new_place = dst_place.getName
-          comment = _("#{time}: Person was moved from #{old_place} to #{new_place} by #{moved_by}")
-          if person.notes and person.notes != ""
-            comment = person.notes + "\n" + comment
-          end
-          person.notes = comment
-          person.save!
-        end
-      }
-    end
-
+    Perform.move_people(people_ids, src_place, dst_place, current_user.person, add_comment)
     @output[:msg] = _("People moved.")
   end
 

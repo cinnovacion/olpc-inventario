@@ -26,7 +26,7 @@ class Perform < ActiveRecord::Base
   belongs_to :place
   belongs_to :profile
 
-  attr_accessible :person_id, :place_id, :profile_id
+  attr_accessible :person_id, :place, :place_id, :profile_id
 
   validate :check_already_exists
   validates_presence_of :person_id, :message => N_("You must specify the person.")
@@ -66,6 +66,28 @@ class Perform < ActiveRecord::Base
 
     people_ids = Perform.find(:all, :conditions => cond_v).map { |p| p.person_id }
 
+  end
+
+  def self.move_people(people_ids, src_place, dst_place, moved_by, add_comment)
+    Perform.transaction do
+      people_ids.each { |person_id|
+        perform = Perform
+        perform = perform.includes(:person) if add_comment
+        perform = perform.where(person_id: person_id, place_id: src_place.id).first
+        next if perform.nil?
+
+        perform.update_attributes!(place_id: dst_place.id)
+
+        if add_comment
+          person = perform.person
+          time = Time.now.strftime("%d/%m/%Y")
+          comment = _("%{time}: Person was moved from %{old_place} to %{new_place} by %{moved_by}") % {time: time, old_place: src_place, new_place: dst_place, moved_by: moved_by}
+          comment = person.notes + "\n" + comment if person.notes.present?
+          person.notes = comment
+          person.save!
+        end
+      }
+    end
   end
 
   ###
