@@ -17,6 +17,8 @@
 # E-mail Address:  (tincho_02@hotmail.com | mabente@paraguayeduca.org) 
 
 class SchoolInfosController < SearchController
+  skip_filter :rpc_block, only: [ :lease_info, :list ]
+
   def new
     info = prepare_form
     form_label(_("Note"), _("Enter a value for either lease expiry date or lease duration, not both."))
@@ -27,5 +29,35 @@ class SchoolInfosController < SearchController
     form_textfield(info, "wan_ip_address", _("IP address"))
     form_textfield(info, "wan_netmask", _("Netmask"))
     form_textfield(info, "wan_gateway", _("Gateway"))
+  end
+
+  def lease_info
+    hostname = params[:hostname]
+    info = SchoolInfo.includes(:place).find_by_server_hostname!(hostname)
+
+    if info.lease_duration.nil?
+      t = info.lease_expiry
+    else
+      t = Time.now
+      t += info.lease_duration * 3600 * 24
+
+      # Avoid leases expiring at the weekend
+      t += 3600 * 24 * 2 if t.saturday?
+      t += 3600 * 24 if t.sunday?
+    end
+
+    # leases should expire at 6am
+    expiry = Time.local(t.year, t.month, t.day, 6, 0)
+    expiry = expiry.utc.iso8601.gsub(":","").gsub("-","")
+
+    render xml: {
+      serials_uuids: info.place.laptops_uuids,
+      expiry_date: expiry,
+    }.to_xml
+  end
+
+  def list
+    servers = SchoolInfo.where("server_hostname IS NOT NULL")
+    render xml: servers.collect(&:server_hostname).to_xml
   end
 end

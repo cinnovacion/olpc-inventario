@@ -43,4 +43,35 @@ class SchoolInfosControllerTest < ActionController::TestCase
       sc_delete info.id
     end
   end
+
+  test "lease_info" do
+    activated = Status.find_by_internal_tag!("activated")
+    school = create_place
+    person = register_person(place: school)
+    person.laptops.create!(serial_number: "SHC44444444", uuid: "123456",
+                           status: activated)
+    info = SchoolInfo.create!(
+      place_id: school.id,
+      lease_duration: 3,
+      server_hostname: "myserver.com",
+    )
+
+    get :lease_info, hostname: "myserver.com"
+    assert_response :success
+    assert_match /SHC44444444/, @response.body
+    assert_match /123456/, @response.body
+  end
+
+  test "list" do
+    school = create_place
+    info = SchoolInfo.create!(
+      place_id: school.id,
+      lease_duration: 3,
+      server_hostname: "myserver.com",
+    )
+
+    get :list
+    assert_response :success
+    assert_match /myserver\.com/, @response.body
+  end
 end

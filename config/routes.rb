@@ -24,17 +24,10 @@ InventarioNicaragua::Application.routes.draw do
     end
   end
 
-  resources :places do
+  resources :school_infos do
     collection do
-      get :requestSchools
-      get :requestSections
-      get :requestSectionName
-      get :schools
-      get :schools_leases
-      get :findByHostname
-    end
-    member do
-      post :reportLaptops
+      get :list
+      get :lease_info
     end
   end
 

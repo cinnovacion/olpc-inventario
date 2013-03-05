@@ -28,8 +28,6 @@
 # # #
                                                                        
 class PlacesController < SearchController
-  skip_filter :rpc_block, :only => [ :requestSchools, :requestSections, :requestSectionName, :schools_leases, :findByHostname, :show, :reportLaptops]
-
   def initialize
     super(:includes => :place_type)
   end
@@ -111,46 +109,6 @@ class PlacesController < SearchController
     @output[:nodes] = places.map { |root|
       root.genTreeElements(prune)
     }
-  end
-
-  def findByHostname
-    place = nil
-    hostname = params[:hostname]
-    if hostname
-      schoolInfo = SchoolInfo.find_by_server_hostname(hostname)
-      if schoolInfo
-        place = schoolInfo.place
-      end
-    end
-    render :xml => place.to_xml, :status => :ok
-  end
-
-  def show
-
-    place = Place.find_by_id(params[:id])
-
-    if !place
-      render :text => "Lugar no encontrado", :status => 404
-    else
-      render :xml => place.to_xml
-    end
-
-  end
-
-  def reportLaptops
-    registered_laptops = params[:hash][:laptops_serials]
-    
-    if registered_laptops
-      registered_laptops.each { |laptop_serial|
-        laptop = Laptop.find_by_serial_number(laptop_serial[:serial_number])
-        if laptop
-          laptop.registered = true
-          laptop.save!
-        end
-      }
-    end
-
-    render :xml => {}.to_xml, :status => :ok
   end
 
   def requestPlaces
@@ -279,79 +237,4 @@ class PlacesController < SearchController
 
     true
   end
-
-  ##
-  # Restful methods
-  def schools_leases
-
-    hostnames = params[:hostnames]
-    schools = SchoolInfo.includes(:place)
-    if hostnames and hostnames != []
-      schools = schools.where(:server_hostname => hostnames)
-    end
-
-    leases = Array.new
-
-    schools.each { |info|
-      if info.lease_duration.nil?
-        t = info.lease_expiry
-      else
-        t = Time.now
-        t += info.lease_duration * 3600 * 24
-
-        # Avoid leases expiring at the weekend
-        t += 3600 * 24 * 2 if t.saturday?
-        t += 3600 * 24 if t.sunday?
-      end
-
-      expiry = Time.local(t.year, t.month, t.day, 6, 0) # leases should expire at 6am
-      expiry = expiry.utc.iso8601.gsub(":","").gsub("-","")
-
-      h = Hash.new
-      h[:school_name] = info.server_hostname
-      h[:serials_uuids] = info.place.laptops_uuids
-      h[:expiry_date] = expiry
-
-      leases.push(h)
-    }
-
-    render :xml => leases.to_xml
-  end
-
-  def requestSchools
-
-    ret = { :list => [] }
-
-    places = Place.includes(:place_type).where("place_types.internal_tag = 'school'")
-    ret[:list] = places.map { |school|
-      h = Hash.new
-      h[:id] = school.id
-      h[:text] = school.getName
-      h
-    }
-    render :xml => ret.to_xml
-  end
-
-  def requestSections
-
-    ret = { :list => [] }
-    school_place_id = params["id"]
-
-    if school_place_id
-      school = Place.find_by_id(school_place_id)
-      if school
-        sub_places_ids = school.getDescendantsIds
-        places = Place.includes(:place_type).where(:place_id => sub_places_ids)
-        places = places.where("place_types.internal_tag = 'section'")
-        ret[:list] = places.map { |section|
-          h = Hash.new
-          h[:id] = section.id
-          h[:text] = section.getName
-          h         
-        }
-      end
-    end
-    render :xml => ret.to_xml
-  end
-
 end
