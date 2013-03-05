@@ -9,6 +9,14 @@ class ActiveSupport::TestCase
   # -- they do not yet inherit this setting
   fixtures :all
 
+  def default_person
+    Person.find_by_id_document('default')
+  end
+
+  def root_place
+    Place.find_by_name("Rootland")
+  end
+
   def create_place(attribs = {})
     options = {
       name: "Some place",
@@ -19,13 +27,19 @@ class ActiveSupport::TestCase
     Place.register(options, [], default_person)
   end
 
-  def default_person
-    Person.find_by_id_document('default')
+  def register_person(attribs = {})
+    options = {
+      name: "Foo",
+      id_document: "foo",
+      profile: "student",
+      place: root_place,
+    }.merge(attribs)
+
+    profile = Profile.find_by_internal_tag!(options[:profile])
+    performs = [[options[:place].id, profile.id]]
+    Person.register(options.except(:profile, :place), performs, "", default_person)
   end
 
-  def root_place
-    Place.find_by_name("Rootland")
-  end
 
   def response_dict
     JSON.parse(@response.body)

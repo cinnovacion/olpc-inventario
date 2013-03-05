@@ -309,7 +309,7 @@ class PlacesController < SearchController
 
       h = Hash.new
       h[:school_name] = info.server_hostname
-      h[:serials_uuids] = Place.getSerialsInfo(info.place_id)
+      h[:serials_uuids] = info.place.laptops_uuids
       h[:expiry_date] = expiry
 
       leases.push(h)

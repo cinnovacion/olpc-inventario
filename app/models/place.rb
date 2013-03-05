@@ -77,26 +77,27 @@ class Place < ActiveRecord::Base
     ret
   end
 
-  # Returns list of serial_nums and uuids of all laptops in a place
-  def self.getSerialsInfo(place_id)
-    ret = Array.new
+  def laptops_uuids
+    # Returns list of serials and uuids of all laptops associated to a
+    # place.
+    #
+    # It looks at both ancestors and children of the place in question,
+    # finding all laptops that are assigned or in hands of anyone in those
+    # places.
+    #
+    # This lookup was taking ages when done via ActiveRecord.
+    # Optimize using raw SQL.
 
-    place = Place.find_by_id(place_id)
-    return ret if not place
+    activated_id = Status.where(internal_tag: "activated").pluck(:id)[0]
+    places_ids = getDescendantsIds + [self.id] + getAncestorsIds
+    places_ids = places_ids.join(",")
 
-    places_ids = place.getDescendantsIds + [place_id] + place.getAncestorsIds
-    people_ids = Perform.find_all_by_place_id(places_ids).collect(&:person_id)
+    sql =  "SELECT laptops.serial_number, laptops.uuid FROM performs "
+    sql += "LEFT JOIN laptops ON (laptops.owner_id=performs.person_id OR laptops.assignee_id=performs.person_id) "
+    sql += "WHERE performs.place_id IN (#{places_ids}) AND laptops.uuid IS NOT NULL AND laptops.status_id=#{activated_id}"
 
-    cond_v = "serial_number is not NULL and serial_number != \"\""
-    cond_v += " and uuid is not NULL and uuid != \"\""
-    cond_v += " and status_id is not NULL and statuses.internal_tag = \"activated\""
-    cond_v += " and (owner_id in (?) or assignee_id in (?))"
-
-    Laptop.where(cond_v, people_ids, people_ids).includes(:status).each { |laptop|
-      ret.push({ :serial_number => laptop.serial_number, :uuid => laptop.uuid })
-    }
-
-    ret
+    result = ActiveRecord::Base.connection.execute(sql)
+    result.map { |row| { serial_number: row[0], uuid: row[1] } }
   end
   
   def update_place_dependencies
