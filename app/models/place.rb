@@ -101,7 +101,7 @@ class Place < ActiveRecord::Base
 
     sql =  "SELECT laptops.serial_number, laptops.uuid FROM performs "
     sql += "LEFT JOIN laptops ON (laptops.owner_id=performs.person_id OR laptops.assignee_id=performs.person_id) "
-    sql += "WHERE laptops.uuid IS NOT NULL AND laptops.status_id=#{activated_id}"
+    sql += "WHERE laptops.uuid IS NOT NULL AND laptops.uuid != '' AND laptops.status_id=#{activated_id}"
     sql += " AND ((performs.place_id IN (#{places_ids})) OR (performs.place_id IN (#{ancestor_ids}) AND (laptops.assignee_id=laptops.owner_id OR laptops.assignee_id IS NULL)))"
 
     result = ActiveRecord::Base.connection.execute(sql)
