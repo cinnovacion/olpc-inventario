@@ -45,11 +45,10 @@ class SchoolInfosControllerTest < ActionController::TestCase
   end
 
   test "lease_info" do
-    activated = Status.find_by_internal_tag!("activated")
     school = create_place
     person = register_person(place: school)
     person.laptops.create!(serial_number: "SHC44444444", uuid: "123456",
-                           status: activated)
+                           status: Status.activated)
     info = SchoolInfo.create!(
       place_id: school.id,
       lease_duration: 3,

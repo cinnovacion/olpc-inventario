@@ -72,11 +72,11 @@ class Movement < ActiveRecord::Base
       end
 
       if movement_type.is_repair?
-        device_status = Status.find_by_internal_tag("on_repair")
+        device_status = Status.on_repair
       elsif movement_type.is_delivery?
-        device_status = Status.find_by_internal_tag("activated")
+        device_status = Status.activated
       elsif movement_type.is_return?
-        device_status = Status.find_by_internal_tag("deactivated")
+        device_status = Status.deactivated
       end
 
       laptop = Laptop.find(attribs[:laptop_id])

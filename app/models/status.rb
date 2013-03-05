@@ -48,7 +48,7 @@ class Status < ActiveRecord::Base
 				  {
 					:name => _("Abbreviation"),
 					:key => "statuses.abbrev",
-					:related_attribute => "getAbbreviation()",
+					:related_attribute => "abbrev",
 					:width => 50
 				  }
 				 ]
@@ -56,12 +56,23 @@ class Status < ActiveRecord::Base
 		ret
 	end
 
+  def self.activated
+    Status.find_by_internal_tag!("activated")
+  end
+
+  def self.deactivated
+    Status.find_by_internal_tag!("deactivated")
+  end
+
+  def self.on_repair
+    Status.find_by_internal_tag!("on_repair")
+  end
+
+  def self.stolen
+    Status.find_by_internal_tag!("stolen")
+  end
+
   def to_s
     self.description
   end
-
-	def getAbbreviation()
-		self.abbrev
-	end
-
 end

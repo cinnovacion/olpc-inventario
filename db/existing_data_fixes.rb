@@ -121,7 +121,7 @@ migrate_status("available", "activated")
 # After a lot of discussion we think this much better reflects the use
 # of the status: the laptop is available but not being used, so no
 # activations should be generated for it.
-status = Status.find_by_internal_tag("deactivated")
+status = Status.deactivated
 status.update_attributes(:description => "En desuso") if !status.nil?
 
 # rename Activado to En uso
@@ -130,7 +130,7 @@ status.update_attributes(:description => "En desuso") if !status.nil?
 # activations for it. (It doesn't necessarily mean that such a laptop has
 # received an activation and activated itself, though, thats kind of out
 # of scope of inventario).
-status = Status.find_by_internal_tag("activated")
+status = Status.activated
 status.update_attributes(:description => "En uso") if !status.nil?
 
 # Having 3 entrega movement types (student, docente, formador) was

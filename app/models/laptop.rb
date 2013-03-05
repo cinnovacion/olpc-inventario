@@ -44,7 +44,7 @@ class Laptop < ActiveRecord::Base
   before_save { |laptop| laptop.serial_number.upcase! }
   before_create { |laptop|
     laptop.created_at = Time.now
-    laptop.status_id = Status.find_by_internal_tag("deactivated").id if !self.status_id 
+    laptop.status_id = Status.deactivated.id if !self.status_id 
   }
 
   def self.getColumnas()
@@ -93,7 +93,7 @@ class Laptop < ActiveRecord::Base
   end
 
   def self.getBlackList
-    Status.find_by_internal_tag("stolen").laptops.map { |laptop|
+    Status.stolen.laptops.map { |laptop|
       { :serial_number => laptop.serial_number, :uuid => laptop.uuid }
     }
   end

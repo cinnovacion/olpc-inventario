@@ -125,7 +125,7 @@ class LaptopsController < SearchController
       form_select("owner_id", "people", _("In hands of"), people)
     end
 
-    id = laptop && laptop.status ? laptop.status_id : Status.find_by_internal_tag("deactivated").id
+    id = laptop && laptop.status ? laptop.status_id : Status.deactivated.id
     statuses = buildSelectHash2(Status, id, "description", false, [])
     form_combobox(laptop, "status_id", _("Status"), statuses)
 
@@ -166,7 +166,7 @@ class LaptopsController < SearchController
     shipments = buildSelectHash2(Shipment, id, "comment", false, [])
     form_combobox(p, "shipment_arrival_id", _("Shipment"), shipments)
 
-    id = p && p.status ? p.status_id : Status.find_by_internal_tag("deactivated").id
+    id = p && p.status ? p.status_id : Status.deactivated.id
     statuses = buildSelectHash2(Status, id, "description", false, [])
     form_combobox(p, "status_id", _("Status"), statuses)
   end

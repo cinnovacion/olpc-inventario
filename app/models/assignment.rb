@@ -68,7 +68,7 @@ class Assignment < ActiveRecord::Base
 
       # Move laptop out of "En desuso" for new assignments
       if m.destination_person_id and laptop.status.internal_tag == "deactivated"
-        laptop.status = Status.find_by_internal_tag("activated")
+        laptop.status = Status.activated
       end
 
       # Update laptop assignee

@@ -34,7 +34,7 @@ class MovementTest < ActiveSupport::TestCase
     person_two = other_person
     movement_type = MovementType.find_by_internal_tag!("devolucion")
     laptop = Laptop.find_by_serial_number!("SHC00000000")
-    laptop.update_attributes!(status: Status.find_by_internal_tag!("activated"))
+    laptop.update_attributes!(status: Status.activated)
     Movement.register(
       laptop_id: laptop.id,
       person_id: person_two.id,

@@ -27,7 +27,7 @@ class LaptopTest < ActiveSupport::TestCase
   test "getBlackList" do
     l1 = default_person.laptops.create!(:serial_number => "SHC12345678")
     l2 = default_person.laptops.create!(:serial_number => "SHC12345679")
-    l1.update_attributes!(status: Status.find_by_internal_tag("stolen"))
+    l1.update_attributes!(status: Status.stolen)
     blacklist = Laptop.getBlackList
 
     l1_found = false
@@ -42,17 +42,17 @@ class LaptopTest < ActiveSupport::TestCase
 
   test "import_xls" do
     model = Model.first
-    status = Status.find_by_internal_tag("deactivated")
     assert_difference("Laptop.count", 5) {
       Laptop.import_xls(fixture_path + "/files/laptops.xls",
                         arrived_at: Time.now, model_id: model.id,
-                        status_id: status.id, owner_id: default_person.id) 
+                        status_id: Status.deactivated.id,
+                        owner_id: default_person.id) 
     }
 
     shipment = Shipment.find_by_shipment_number!(12345)
     l = Laptop.find_by_serial_number!("SHC1000002")
     assert_equal model, l.model
-    assert_equal status, l.status
+    assert_equal Status.deactivated, l.status
     assert_equal l.shipment, shipment
   end
 
