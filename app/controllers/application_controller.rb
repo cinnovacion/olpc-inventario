@@ -171,14 +171,12 @@ class ApplicationController < ActionController::Base
   end
 
   def rest_auth_control
-    authenticate_or_request_with_http_basic do |username, pass|
-      user = User.login(username, pass)
-      if user
-        session[:user_id] = user.id
-        true
-      else
-        false
-      end
+    if user = authenticate_with_http_basic { |u, p| User.login(u, p) }
+      session[:user_id] = user.id
+      true
+    else
+      request_http_basic_authentication
+      false
     end
   end
 
