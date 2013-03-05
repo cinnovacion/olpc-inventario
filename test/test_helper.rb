@@ -9,6 +9,16 @@ class ActiveSupport::TestCase
   # -- they do not yet inherit this setting
   fixtures :all
 
+  def create_place(attribs = {})
+    options = {
+      name: "Some place",
+      description: "Foo",
+      place_type_id: PlaceType.first.id,
+      place_id: root_place.id,
+    }.merge(attribs)
+    Place.register(options, [], default_person)
+  end
+
   def default_person
     Person.find_by_id_document('default')
   end

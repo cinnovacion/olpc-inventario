@@ -8,10 +8,7 @@ class SchoolInfoTest < ActiveSupport::TestCase
   end
 
   test "new with expiry" do
-    pt = PlaceType.first
-    attribs = { name: "School", place_type_id: pt.id, place_id: root_place.id }
-    school = Place.register(attribs, [], default_person)
-
+    school = create_place
     info = SchoolInfo.create!(
       place_id: school.id,
       lease_expiry: "2099-01-02",
@@ -27,10 +24,7 @@ class SchoolInfoTest < ActiveSupport::TestCase
   end
 
   test "new with duration" do
-    pt = PlaceType.first
-    attribs = { name: "School", place_type_id: pt.id, place_id: root_place.id }
-    school = Place.register(attribs, [], default_person)
-
+    school = create_place
     info = SchoolInfo.create!(
       place_id: school.id,
       lease_duration: 3,
@@ -46,10 +40,7 @@ class SchoolInfoTest < ActiveSupport::TestCase
   end
 
   test "new with both" do
-    pt = PlaceType.first
-    attribs = { name: "School", place_type_id: pt.id, place_id: root_place.id }
-    school = Place.register(attribs, [], default_person)
-
+    school = create_place
     assert_raises(ActiveRecord::RecordInvalid) {
       info = SchoolInfo.create!(
         place_id: school.id,

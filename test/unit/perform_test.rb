@@ -3,12 +3,8 @@ require 'test_helper'
 class PerformTest < ActiveSupport::TestCase
   # Replace this with your real tests.
   test "move_people" do
-    pt = PlaceType.first
-    parent = Place.first
-    attribs = { name: "Source", description: "foo", place_type_id: pt.id, place_id: parent.id }
-    src_place = Place.register(attribs, [], default_person)
-    attribs[:name] = "Dest"
-    dst_place = Place.register(attribs, [], default_person)
+    src_place = create_place(name: "Source")
+    dst_place = create_place(name: "Dest")
 
     attribs = {
       name: "Name",

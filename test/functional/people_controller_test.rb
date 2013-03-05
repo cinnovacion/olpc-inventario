@@ -6,8 +6,7 @@ class PeopleControllerTest < ActionController::TestCase
   end
 
   test "movePeople" do
-    attribs = { name: "My place", description: "foo", place_type_id: PlaceType.first.id, place_id: root_place.id }
-    place = Place.register(attribs, [], default_person)
+    place = create_place
 
     attribs = {
       people_ids: [default_person.id],

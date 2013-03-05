@@ -7,12 +7,7 @@ class PersonTest < ActiveSupport::TestCase
     # Create Importschool2 first. This way we test importing into an existing
     # place, as well as creating a new place as part of the import.
     pt = PlaceType.find_by_internal_tag!("school")
-    attribs = {
-      name: "Importschool2",
-      place_type_id: pt.id,
-      place_id: root_place.id
-    }
-    importschool2 = Place.register(attribs, [], default_person)
+    importschool2 = create_place(name: "Importschool2", place_type_id: pt.id)
 
     assert_difference("Person.count", 4) {
       assert_difference("Place.count") {
@@ -43,12 +38,7 @@ class PersonTest < ActiveSupport::TestCase
     # Create Importschool2 first. This way we test importing into an existing
     # place, as well as creating a new place as part of the import.
     pt = PlaceType.find_by_internal_tag!("school")
-    attribs = {
-      name: "Importschool2",
-      place_type_id: pt.id,
-      place_id: root_place.id
-    }
-    importschool2 = Place.register(attribs, [], default_person)
+    importschool2 = create_place(name: "Importschool2", place_type_id: pt.id)
 
     assert_difference("Person.count", 7) {
       Person.import_students_xls(fixture_path + "/files/students.xls",

@@ -12,11 +12,10 @@ class PlaceTest < ActiveSupport::TestCase
   end
 
   test "register_update" do
-    pt = PlaceType.first
-    parent = Place.first
-    attribs = { name: "My place", description: "foo", place_type_id: pt.id, place_id: parent.id }
-    place = Place.register(attribs, [], default_person)
+    place = create_place
     place.register_update({ description: "bar" }, [], default_person)
+    assert_equal "bar", place.description
+    place.reload
     assert_equal "bar", place.description
   end
 end
