@@ -78,23 +78,31 @@ class Place < ActiveRecord::Base
   end
 
   def laptops_uuids
-    # Returns list of serials and uuids of all laptops associated to a
+    # Returns list of serials and uuids of all activated laptops associated to a
     # place.
     #
-    # It looks at both ancestors and children of the place in question,
-    # finding all laptops that are assigned or in hands of anyone in those
-    # places.
+    # It looks at both the place and its children, finding all laptops that
+    # are assigned or in hands of anyone in those places.
+    #
+    # It also includes some laptops that can be found in ancestor places,
+    # specifically those where there is no assignee ID, or where the assignee
+    # is the same as the owner. This means that assigned laptops from other
+    # schools that are temporarily warehoused in a parent place are *not*
+    # included in the results, while laptops belonging to people who actually
+    # work in multiple locations are activated.
     #
     # This lookup was taking ages when done via ActiveRecord.
     # Optimize using raw SQL.
 
     activated_id = Status.where(internal_tag: "activated").pluck(:id)[0]
-    places_ids = getDescendantsIds + [self.id] + getAncestorsIds
+    places_ids = getDescendantsIds + [self.id]
     places_ids = places_ids.join(",")
+    ancestor_ids = getAncestorsIds.join(",")
 
     sql =  "SELECT laptops.serial_number, laptops.uuid FROM performs "
     sql += "LEFT JOIN laptops ON (laptops.owner_id=performs.person_id OR laptops.assignee_id=performs.person_id) "
-    sql += "WHERE performs.place_id IN (#{places_ids}) AND laptops.uuid IS NOT NULL AND laptops.status_id=#{activated_id}"
+    sql += "WHERE laptops.uuid IS NOT NULL AND laptops.status_id=#{activated_id}"
+    sql += " AND ((performs.place_id IN (#{places_ids})) OR (performs.place_id IN (#{ancestor_ids}) AND (laptops.assignee_id=laptops.owner_id OR laptops.assignee_id IS NULL)))"
 
     result = ActiveRecord::Base.connection.execute(sql)
     result.map { |row| { serial_number: row[0], uuid: row[1] } }

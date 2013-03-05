@@ -37,6 +37,7 @@ class PlaceTest < ActiveSupport::TestCase
     person6 = register_person(id_document: "6", place: place)
     person7 = register_person(id_document: "7", place: place)
     person8 = register_person(id_document: "8", place: another_place)
+    person9 = register_person(id_document: "9", place: root_place)
 
     # person1 has two laptops in hands
     person1.laptops.create!(serial_number: "SHC10000001", uuid: "ABC1",
@@ -73,6 +74,20 @@ class PlaceTest < ActiveSupport::TestCase
     person8.laptops.create!(serial_number: "SHC10000009", uuid: "ABC9",
                             status: activated)
 
+    # person9 acts like a warehouse. 4 laptops in hands:
+    #  1. no assignation
+    #  2. assigned to person1 (in the place in question)
+    #  3. assigned to person8 (unrelated place)
+    #  4. assigned to self
+    person9.laptops.create!(serial_number: "SHC20000001", uuid: "ABC1",
+                            status: activated)
+    l = person9.laptops.create!(serial_number: "SHC20000002", uuid: "ABC1")
+    Assignment.register(laptop_id: l.id, person_id: person1.id)
+    l = person9.laptops.create!(serial_number: "SHC20000003", uuid: "ABC1")
+    Assignment.register(laptop_id: l.id, person_id: person8.id)
+    l = person9.laptops.create!(serial_number: "SHC20000004", uuid: "ABC1")
+    Assignment.register(laptop_id: l.id, person_id: person9.id)
+
     # ancestor user has a laptop as well
     default_person.laptops.create!(serial_number: "SHC12345678", uuid: "xxx",
                                    status: activated)
@@ -86,8 +101,14 @@ class PlaceTest < ActiveSupport::TestCase
     assert_not_nil ret.detect {|l| l[:serial_number] == "SHC10000006" }
     assert_nil ret.detect {|l| l[:serial_number] == "SHC10000007" }
     assert_nil ret.detect {|l| l[:serial_number] == "SHC10000008" }
-    assert_not_nil ret.detect {|l| l[:serial_number] == "SHC12345678" }
     assert_nil ret.detect {|l| l[:serial_number] == "SHC10000009" }
+
+    # ancestor logic testing
+    assert_not_nil ret.detect {|l| l[:serial_number] == "SHC12345678" }
+    assert_not_nil ret.detect {|l| l[:serial_number] == "SHC20000001" }
+    assert_not_nil ret.detect {|l| l[:serial_number] == "SHC20000002" }
+    assert_nil ret.detect {|l| l[:serial_number] == "SHC20000003" }
+    assert_not_nil ret.detect {|l| l[:serial_number] == "SHC20000004" }
 
     # all entries have uuid
     assert_nil ret.detect {|l| l[:uuid].blank? }
