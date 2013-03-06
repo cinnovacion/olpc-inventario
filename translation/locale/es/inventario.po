@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: version 0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-19 15:46-0600\n"
+"POT-Creation-Date: 2013-03-06 16:28-0600\n"
 "PO-Revision-Date: 2010-03-14 17:56-0400\n"
 "Last-Translator: Raúl Gutiérrez Segalés <rgs@paraguayeduca.org>\n"
 "Language-Team: PyEduca <soporte@paraguayeduca.org>\n"
@@ -27,9 +27,6 @@ msgstr "\"#{count} laptops\""
 
 msgid "\"#{count} movements have been registered.\""
 msgstr "\"#{count} movimientos han sido registrados.\""
-
-msgid "\"#{time}: Person was moved from #{old_place} to #{new_place} by #{moved_by}\""
-msgstr "\"#{time}: Persona fue traslada desde #{old_place} hasta #{new_place} por #{moved_by}\""
 
 msgid "\"Box #{j} of #{num_boxes}\""
 msgstr "\"Caja #{j} de #{num_boxes}\""
@@ -75,6 +72,9 @@ msgid_plural "%{num} days"
 msgstr[0] "%{num} día"
 msgstr[1] "%{num} días"
 
+msgid "%{time}: Person was moved from %{old_place} to %{new_place} by %{moved_by}"
+msgstr "%{time}: Persona fue traslada desde %{old_place} hasta %{new_place} por %{moved_by}"
+
 msgid ", of which the following haven't been solved yet: [%s]"
 msgstr ", de la cuales los siguientes no han sido resuelto: [%s]"
 
@@ -101,9 +101,6 @@ msgstr "Nivel de acceso"
 
 msgid "Accumulated running time"
 msgstr "Tiempo de uptime acumulado"
-
-msgid "Activated by"
-msgstr "Activado por"
 
 msgid "Activation expiry"
 msgstr "Expiración de activación"
@@ -306,9 +303,6 @@ msgstr "Costo"
 msgid "Could not find place %d"
 msgstr "No se puede encontrar la localidad %d"
 
-msgid "Could not find place."
-msgstr "No se puede encontrar la localidad"
-
 msgid "Couldn't great the person."
 msgstr "No podía saludar a la persona."
 
@@ -350,9 +344,6 @@ msgstr "Valores predeterminados"
 
 msgid "Delivered"
 msgstr "Entregado"
-
-msgid "Delivered by"
-msgstr "Entregado por"
 
 msgid "Delivered to:"
 msgstr "Entregado a:"
@@ -747,20 +738,11 @@ msgstr "Laptops asignadas con el formulario de asignaciones masivas"
 msgid "Laptops check"
 msgstr "Control de laptops"
 
-msgid "Laptops given to people"
-msgstr "Laptops entregadas a personas"
-
-msgid "Laptops handed out per person"
-msgstr "Laptops entregadas por persona"
-
 msgid "Laptops moved out with the mass movement form."
 msgstr "Laptops entregada con el formulario de movimientos masivos"
 
 msgid "Laptops per location"
 msgstr "Laptops por localidad"
-
-msgid "Laptops per owner"
-msgstr "Laptops por dueño"
 
 msgid "Laptops per status"
 msgstr "Laptops por estado"
@@ -947,9 +929,6 @@ msgstr "Movimientos"
 
 msgid "Movements grouped by type"
 msgstr "Movimientos agrupados por tipo"
-
-msgid "Movements on a given timeframe"
-msgstr "Movimientos en una ventana de tiempo"
 
 msgid "Movements per Type"
 msgstr "Movimientos por tipo"
@@ -1463,12 +1442,6 @@ msgstr "Escuela"
 
 msgid "School Servers"
 msgstr "Servidores de la escuelas"
-
-msgid "School name"
-msgstr "Nombre de escuela"
-
-msgid "School num."
-msgstr "Numero de escuela"
 
 msgid "Script run successfully. "
 msgstr "El script se ejecutó con éxito."

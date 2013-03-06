@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: version 0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-19 15:46-0600\n"
+"POT-Creation-Date: 2013-03-06 16:28-0600\n"
 "PO-Revision-Date: 2010-02-25 HO:MI+ZONE\n"
 "Last-Translator: Raul Gutierrez S. <rgs@paraguayeduca.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -29,9 +29,6 @@ msgid "\"#{count} laptops\""
 msgstr ""
 
 msgid "\"#{count} movements have been registered.\""
-msgstr ""
-
-msgid "\"#{time}: Person was moved from #{old_place} to #{new_place} by #{moved_by}\""
 msgstr ""
 
 msgid "\"Box #{j} of #{num_boxes}\""
@@ -78,6 +75,9 @@ msgid_plural "%{num} days"
 msgstr[0] ""
 msgstr[1] ""
 
+msgid "%{time}: Person was moved from %{old_place} to %{new_place} by %{moved_by}"
+msgstr ""
+
 msgid ", of which the following haven't been solved yet: [%s]"
 msgstr ""
 
@@ -103,9 +103,6 @@ msgid "Access level"
 msgstr ""
 
 msgid "Accumulated running time"
-msgstr ""
-
-msgid "Activated by"
 msgstr ""
 
 msgid "Activation expiry"
@@ -309,9 +306,6 @@ msgstr ""
 msgid "Could not find place %d"
 msgstr ""
 
-msgid "Could not find place."
-msgstr ""
-
 msgid "Couldn't great the person."
 msgstr ""
 
@@ -352,9 +346,6 @@ msgid "Default values"
 msgstr ""
 
 msgid "Delivered"
-msgstr ""
-
-msgid "Delivered by"
 msgstr ""
 
 msgid "Delivered to:"
@@ -750,19 +741,10 @@ msgstr ""
 msgid "Laptops check"
 msgstr ""
 
-msgid "Laptops given to people"
-msgstr ""
-
-msgid "Laptops handed out per person"
-msgstr ""
-
 msgid "Laptops moved out with the mass movement form."
 msgstr ""
 
 msgid "Laptops per location"
-msgstr ""
-
-msgid "Laptops per owner"
 msgstr ""
 
 msgid "Laptops per status"
@@ -949,9 +931,6 @@ msgid "Movements"
 msgstr ""
 
 msgid "Movements grouped by type"
-msgstr ""
-
-msgid "Movements on a given timeframe"
 msgstr ""
 
 msgid "Movements per Type"
@@ -1465,12 +1444,6 @@ msgid "School"
 msgstr ""
 
 msgid "School Servers"
-msgstr ""
-
-msgid "School name"
-msgstr ""
-
-msgid "School num."
 msgstr ""
 
 msgid "Script run successfully. "

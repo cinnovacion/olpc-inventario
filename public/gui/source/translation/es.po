@@ -103,13 +103,9 @@ msgstr "Fallo en su orden... "
 msgid "Processing your request..."
 msgstr "Procesando su petición..."
 
-#: inventario/util/PrintManager.js:131
-msgid " not set to print even"
-msgstr "no puesto para imprimir"
-
-#: inventario/util/PrintManager.js:131
-msgid "The document "
-msgstr "El documento"
+#: inventario/widget/Autocomplete.js:28
+msgid "Quick access"
+msgstr "Acceso rápido"
 
 #: inventario/widget/ColumnValueSelector.js:57
 msgid "See values"
@@ -869,7 +865,3 @@ msgstr[1] "Registrar %1 entregas en %2?"
 #: inventario/window/RegisterHandout.js:228
 msgid "Register handout from serial numbers?"
 msgstr "Registrar entrega con los números de seriales?"
-
-#: inventario/window/WelcomeInfo.js:88
-msgid "Quick access"
-msgstr "Acceso rápido"

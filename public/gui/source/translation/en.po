@@ -103,12 +103,8 @@ msgstr ""
 msgid "Processing your request..."
 msgstr ""
 
-#: inventario/util/PrintManager.js:131
-msgid " not set to print even"
-msgstr ""
-
-#: inventario/util/PrintManager.js:131
-msgid "The document "
+#: inventario/widget/Autocomplete.js:28
+msgid "Quick access"
 msgstr ""
 
 #: inventario/widget/ColumnValueSelector.js:57
@@ -858,6 +854,8 @@ msgstr[1] ""
 msgid "Register handout from serial numbers?"
 msgstr ""
 
-#: inventario/window/WelcomeInfo.js:88
-msgid "Quick access"
-msgstr ""
+#~ msgid " not set to print even"
+#~ msgstr ""
+
+#~ msgid "The document "
+#~ msgstr ""
