@@ -1,0 +1,2 @@
+*/7 * * * *     apache  cd /var/inventario && rails runner -e production "NotificationsPool.send_notifications" &>/dev/null
+*/15 * * * *    apache  cd /var/inventario && rails runner -e production "Node.markOldEntries" &>/dev/null

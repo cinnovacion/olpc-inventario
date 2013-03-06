@@ -77,7 +77,7 @@ fi
 %files
 %doc extra/inventario.conf
 %dir /var/%{name}
-/etc/cron.d
+/etc/cron.d/*
 /etc/logrotate.d/inventario
 /var/%{name}/extra
 /var/%{name}/app
