@@ -76,14 +76,8 @@ class StatusChange < ActiveRecord::Base
                       },
                       {
                         :name => _("Creation Date"),
-                        :key => "date_created_at",
-                        :related_attribute => "getDate()",
-                        :width => 120
-                      },
-                      {
-                        :name => _("Creation Time"),
-                        :key => "time_created_at",
-                        :related_attribute => "getTime()",
+                        :key => "created_at",
+                        :related_attribute => "created_at",
                         :width => 120
                       }
                      ]
@@ -127,20 +121,6 @@ class StatusChange < ActiveRecord::Base
   #
   def getChargerSerial()
     self.charger.getSerialNumber()
-  end
-
-  ##
-  # Creation date
-  #
-  def getDate()
-    self.date_created_at.to_s
-  end
-
-  ##
-  # Creation time
-  #
-  def getTime()
-    self.time_created_at.to_s
   end
 
   ##

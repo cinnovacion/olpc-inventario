@@ -21,8 +21,6 @@
 # 2009
 # # #
 
-require 'fecha'
-
 class ShipmentsController < SearchController
   def new
     if params[:id]
@@ -37,8 +35,8 @@ class ShipmentsController < SearchController
     h = { "label" => _("Comment"), "datatype" => "textfield" }.merge( p ? {"value" => p.getComment } : {} )
     @output["fields"].push(h)
 
-    fecha = p ? p.arrived_at.to_s : Fecha::getFecha()
-    h = { "label" => _("Arrival date"), "datatype" => "date", "value" => fecha }
+    fecha = p ? p.arrived_at : Date.current
+    h = { "label" => _("Arrival date"), "datatype" => "date", "value" => fecha.iso8601 }
     @output["fields"].push(h)
 
     h = { "label" => _("Number"), "datatype" => "textfield" }.merge( p ? {"value" => p.getShipmentNumber } : {} )

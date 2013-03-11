@@ -4,15 +4,13 @@ class BankDeposit < ActiveRecord::Base
   attr_accessible :problem_solution, :problem_solution_id
   attr_accessible :deposit, :amount, :desposited_at, :bank
 
-  before_create :set_created_at
-
   def self.getColumnas()
     [ 
      {:name => _("Id"), :key => "bank_deposits.id", :related_attribute => "getId", :width => 50},
      {:name => _("Solution"), :key => "problem_solutions.id", :related_attribute => "getSolutionId", :width => 100},
      {:name => _("Deposit"), :key => "bank_deposits.deposit", :related_attribute => "getDeposit", :width => 100},
      {:name => _("Amount"), :key => "bank_deposits.amount", :related_attribute => "getAmount", :width => 100},
-     {:name => _("Created at"), :key => "bank_deposits.created_at", :related_attribute => "getCreatedAt", :width => 100},
+     {:name => _("Created at"), :key => "bank_deposits.created_at", :related_attribute => "created_at", :width => 100},
      {:name => _("Deposited at"), :key => "bank_deposits.deposited_at", :related_attribute => "getDepositedAt", :width => 100},
      {:name => _("Bank"), :key => "bank_deposits.bank", :related_attribute => "getBank", :width => 100}
     ]
@@ -45,10 +43,6 @@ class BankDeposit < ActiveRecord::Base
     true
   end
 
-  def set_created_at
-    self.created_at = Date.today
-  end
-
   def getId
     self.id.to_s
   end
@@ -63,10 +57,6 @@ class BankDeposit < ActiveRecord::Base
 
   def getAmount
     self.amount ? self.amount : ""
-  end
-
-  def getCreatedAt
-    self.created_at ? self.created_at.to_s : ""
   end
 
   def getBank

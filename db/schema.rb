@@ -11,15 +11,14 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130122214604) do
+ActiveRecord::Schema.define(:version => 20130307225154) do
 
   create_table "assignments", :force => true do |t|
-    t.date    "date_assigned"
-    t.time    "time_assigned"
-    t.integer "source_person_id"
-    t.integer "destination_person_id"
-    t.integer "laptop_id"
-    t.text    "comment"
+    t.integer  "source_person_id"
+    t.integer  "destination_person_id"
+    t.integer  "laptop_id"
+    t.text     "comment"
+    t.datetime "created_at"
   end
 
   add_index "assignments", ["destination_person_id"], :name => "assignments_destination_person_id_fk"
@@ -151,17 +150,15 @@ ActiveRecord::Schema.define(:version => 20130122214604) do
   end
 
   create_table "movements", :force => true do |t|
-    t.date    "created_at"
-    t.date    "date_moved_at"
-    t.time    "time_moved_at"
-    t.integer "responsible_person_id"
-    t.integer "source_person_id"
-    t.integer "destination_person_id"
-    t.text    "comment"
-    t.date    "return_date"
-    t.integer "movement_type_id"
-    t.integer "laptop_id"
-    t.boolean "returned",              :default => false
+    t.datetime "created_at"
+    t.integer  "responsible_person_id"
+    t.integer  "source_person_id"
+    t.integer  "destination_person_id"
+    t.text     "comment"
+    t.date     "return_date"
+    t.integer  "movement_type_id"
+    t.integer  "laptop_id"
+    t.boolean  "returned",              :default => false
   end
 
   add_index "movements", ["destination_person_id"], :name => "movements_destination_person_id_fk"
@@ -186,7 +183,7 @@ ActiveRecord::Schema.define(:version => 20130122214604) do
     t.integer  "node_type_id"
     t.integer  "place_id"
     t.integer  "zoom"
-    t.datetime "last_update_at"
+    t.datetime "updated_at"
     t.string   "ip_address",            :limit => 100
     t.datetime "last_status_change_at"
     t.string   "height",                :limit => 100
@@ -423,13 +420,12 @@ ActiveRecord::Schema.define(:version => 20130122214604) do
   end
 
   create_table "status_changes", :force => true do |t|
-    t.integer "previous_state_id"
-    t.integer "new_state_id"
-    t.integer "laptop_id"
-    t.integer "battery_id"
-    t.integer "charger_id"
-    t.date    "date_created_at"
-    t.time    "time_created_at"
+    t.integer  "previous_state_id"
+    t.integer  "new_state_id"
+    t.integer  "laptop_id"
+    t.integer  "battery_id"
+    t.integer  "charger_id"
+    t.datetime "created_at"
   end
 
   add_index "status_changes", ["battery_id"], :name => "status_changes_battery_id_fk"

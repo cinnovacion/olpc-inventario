@@ -16,8 +16,6 @@
 # 
 #   
 
-require 'fecha'
-
 class Assignment < ActiveRecord::Base
   audited
 
@@ -31,13 +29,10 @@ class Assignment < ActiveRecord::Base
 
   validates_presence_of :laptop_id, :message => N_("Please specify a laptop.")
 
-  before_save { self.date_assigned = self.time_assigned = Time.now }
-
   def self.getColumnas() {
     columnas: [
      {:name => _("Assignment Nbr"),:key => "assignments.id",:related_attribute => "id", :width => 50},
-     {:name => _("Assignment Date"),:key => "assignments.date_assigned",:related_attribute => "date_assigned", :width => 90},
-     {:name => _("Assignment Time"),:key => "assignments.time_assigned",:related_attribute => "getAssignmentTime()", :width => 90},
+     {:name => _("Assignment Date"),:key => "assignments.created_at",:related_attribute => "created_at", :width => 90},
      {:name => _("Laptop serial"),:key => "laptops.serial_number",:related_attribute => "laptop.serial_number", :width => 180},
      {:name => _("Given by"),:key => "people.name",:related_attribute => "source_person", :width => 180},
      {:name => _("Given by (Doc ID)"),:key => "people.id_document",:related_attribute => "getSourcePersonIdDoc()", :width => 180},
@@ -107,10 +102,6 @@ class Assignment < ActiveRecord::Base
       }
     end
     count
-  end
-
-  def getAssignmentTime()
-    Fecha::getHora(self.time_assigned)
   end
 
   def getSourcePersonIdDoc()

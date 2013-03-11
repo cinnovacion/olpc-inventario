@@ -21,8 +21,6 @@
 # 2009
 # # #
 
-require 'fecha'
-
 class ProblemSolutionsController < SearchController
   def initialize
     super(:includes => [:solution_type, :solved_by_person])
@@ -40,8 +38,7 @@ class ProblemSolutionsController < SearchController
     h = { "label" => _("Solution*"), "datatype" => "combobox", "options" => solution_types }
     @output["fields"].push(h)
 
-    fecha = Fecha.usDate(Date.today.to_s)
-    h = { "label" => _("Date solved"), "datatype" => "date", :value => fecha  }
+    h = { "label" => _("Date solved"), "datatype" => "date", :value => Date.current.iso8601 }
     @output["fields"].push(h)
 
     h = { "label" => _("Comments"), "datatype" => "textarea","width" => 250, "height" => 50}
@@ -197,7 +194,7 @@ class ProblemSolutionsController < SearchController
      [
        { :value => bank_deposit.deposit, :text => bank_deposit.deposit},
        { :value => bank_deposit.amount, :text => bank_deposit.amount},
-       { :value => Fecha.usDate(bank_deposit.getDepositedAt), :text => Fecha.usDate(bank_deposit.getDepositedAt)}
+       { :value => bank_deposit.getDepositedAt, :text => bank_deposit.getDepositedAt}
      ] 
     } if problem_solution
 

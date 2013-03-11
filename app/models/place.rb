@@ -36,7 +36,7 @@ class Place < ActiveRecord::Base
   has_many :problem_reports
   has_one :school_info
 
-  before_create :set_created_at_and_ancestors
+  before_create :set_ancestors
   after_create :register_place_dependencies
   before_update :update_place_dependencies
   before_destroy :unregister_place_dependencies
@@ -123,8 +123,7 @@ class Place < ActiveRecord::Base
     end
   end
 
-  def set_created_at_and_ancestors
-    self.created_at = Time.now
+  def set_ancestors
     Place.send(:with_exclusive_scope) do
       self.setAncestorsIds
     end

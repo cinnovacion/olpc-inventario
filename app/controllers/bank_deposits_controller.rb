@@ -21,8 +21,6 @@
 # Author: Martin Abente - mabente@paraguayeduca.org
 #
 
-require 'fecha'
-
 class BankDepositsController < SearchController
   def new
 
@@ -45,7 +43,7 @@ class BankDepositsController < SearchController
     h = { "label" => _("Amount"), "datatype" => "numericfield" }.merge( bank_deposit ? {"value" => bank_deposit.getAmount } : {} )
     @output["fields"].push(h)
 
-    fecha = Fecha.usDate(bank_deposit ? bank_deposit.getDepositedAt : Date.today.to_s)
+    fecha = bank_deposit ? bank_deposit.getDepositedAt.iso8601 : Date.current.iso8601
     h = { "label" => _("Deposit date"), "datatype" => "date", :value => fecha  }
     @output["fields"].push(h)
 

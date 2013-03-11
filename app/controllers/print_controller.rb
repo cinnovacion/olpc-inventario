@@ -27,7 +27,6 @@
 # - the imprimir function could be called automatically by an 'after' hook
 #
 
-require 'fecha'
 require 'py_educa_graph'
 
 class PrintController < ApplicationController
@@ -961,7 +960,7 @@ class PrintController < ApplicationController
     h = Hash.new
     PlaceType.find_all_by_internal_tag(grade_types).each {|type| h[type] = 0 }
 
-    current_year = Date.today.year
+    current_year = Time.zone.now.year
     reports.each { |problem_report|
       report_year = problem_report.created_at.year
       rPlace = problem_report.place
@@ -1555,7 +1554,7 @@ class PrintController < ApplicationController
     movements = Movement.includes(:laptop,:movement_type,:source_person, {:destination_person => {:performs => :place}})
 
     dateOpts = print_params.pop
-    movements = buildDateQuery(movements, dateOpts, "movements.date_moved_at")
+    movements = buildDateQuery(movements, dateOpts, "movements.created_at")
 
     serials = print_params.pop
     movements = buildSerialQuery(movements,serials)
@@ -1583,7 +1582,7 @@ class PrintController < ApplicationController
 
     movements.order("movements.id ASC").each  { |m|
       @datos.push([m.id,
-                   m.date_moved_at,
+                   m.created_at,
                    m.laptop.serial_number,
                    m.source_person.to_s,
                    m.destination_person.to_s,
@@ -1607,7 +1606,7 @@ class PrintController < ApplicationController
     types = buildPersonQuery(types, to_person_id, "movements.destination_person_id")
 
     dateOpts = print_params.pop
-    types = buildDateQuery(types, dateOpts, "movements.date_moved_at")
+    types = buildDateQuery(types, dateOpts, "movements.created_at")
 
     place_id = print_params.pop.to_i
     if place_id != -1
@@ -1651,7 +1650,7 @@ class PrintController < ApplicationController
     movements = Movements.where("return_date is not null")
 
     timeRange = print_params.pop
-    movements = buildDateQuery(movements,timeRange,"date_moved_at")
+    movements = buildDateQuery(movements,timeRange,"created_at")
 
     sourcePerson = print_params.pop
     movements = buildPersonQuery(movements,sourcePerson,"source_person_id")
@@ -1671,9 +1670,9 @@ class PrintController < ApplicationController
     @columnas = [_("#"), _("Date"), _("Given by"), _("Received by"), _("Return date"), _("Serial number"), _("Returned?")]
     @datos =[]
     counter = 1
-    movements.order("date_moved_at DESC").each { |m|
+    movements.order("created_at DESC").each { |m|
         @datos.push([counter,
-                     m.date_moved_at,
+                     m.created_at,
                      m.source_person.to_s,
                      m.destination_person.to_s,
                      m.return_date.to_s,
@@ -1735,7 +1734,7 @@ class PrintController < ApplicationController
     changes = StatusChange.includes(:previous_state, :new_state, :laptop)
 
     timeRange = print_params.pop
-    changes = buildDateQuery(changes,timeRange,"status_changes.date_created_at")
+    changes = buildDateQuery(changes,timeRange,"status_changes.created_at")
 
     @titulo = _("Status changes")
     @fecha_desde = timeRange["date_since"]
@@ -1743,8 +1742,8 @@ class PrintController < ApplicationController
     @columnas = [_("Date"), _("Previous"), _("Next"), _("Serial Number")]
     @datos = []
 
-    changes.order("status_changes.date_created_at DESC").each {  |sc|
-      @datos.push([sc.getDate(),sc.getPreviousState(),sc.getNewState(),sc.getPart(),sc.getSerial()])
+    changes.order("status_changes.created_at DESC").each {  |sc|
+      @datos.push([sc.created_at,sc.getPreviousState(),sc.getNewState(),sc.getPart(),sc.getSerial()])
     }
 
     print(params, "cambios_de_estado")
@@ -1762,7 +1761,7 @@ class PrintController < ApplicationController
     @matrix = p.buildMatrix(root, Array.new, 0, p.getTreeDepth(root))
     @title = _("Number of laptops per location")
     @comment = _("The penultimate column shows the number of laptops physically in the place (or in a sub-place).<br>The final column shows the number of laptops assigned to that place (or a sub-place).")
-    @date = Fecha.getFecha()
+    @date = Date.current
 
     print(params, "laptops_por_tipo_localidad", "print/laptops_per_place_type")
   end
@@ -1834,7 +1833,7 @@ class PrintController < ApplicationController
     # Swapping elements and creating labels for the line graph
     ordered_results.each_with_index { |window, index|
       results[window].keys.each { |type| swapped_results[type][window] = results[window][type] }
-      graph_labels[index] = Fecha.pyDate(window.to_date)
+      graph_labels[index] = window.to_date.iso8601
     }
 
     # generating data for the report and graph
@@ -1846,7 +1845,7 @@ class PrintController < ApplicationController
       @datos.push([name, "", ""])
       ordered_results.each { |window|
         amount = swapped_results[type][window].to_i
-        @datos.push(["", Fecha.pyDate(window.to_date), amount])
+        @datos.push(["", window.to_date.iso8601, amount])
         value.push(amount)
       }
       graph_data.push({ :name => type.description, :value => value })
@@ -2001,11 +2000,11 @@ class PrintController < ApplicationController
 
   def buildDateQuery(query, dateOpts, col_canonical_name)
     if dateOpts["date_since"] && dateOpts["date_since"].to_s != ""
-      query = query.where("#{col_canonical_name} >= ? ", Fecha::usDate(dateOpts["date_since"]))
+      query = query.where("#{col_canonical_name} >= ? ", dateOpts["date_since"])
     end
 
     if dateOpts["date_to"] && dateOpts["date_to"].to_s != ""
-      query = query.where("#{col_canonical_name} <= ? ", Fecha::usDate(dateOpts["date_to"]))
+      query = query.where("#{col_canonical_name} <= ? ", dateOpts["date_to"])
     end
 
     query

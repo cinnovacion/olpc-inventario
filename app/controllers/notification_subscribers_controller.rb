@@ -21,8 +21,6 @@
 # 2009
 # # #
 
-require 'fecha'
-
 class NotificationSubscribersController < SearchController
   def initialize
     super(:includes => [:notification,:person])
@@ -59,7 +57,6 @@ class NotificationSubscribersController < SearchController
     attribs = Hash.new
     attribs[:notification_id] = datos["fields"][0]
     attribs[:person_id] = datos["fields"][1]
-    attribs[:created_at] = Fecha::getFecha()
 
     save_object(NotificationSubscriber,datos["id"],attribs)
     @output["msg"] = _("Changes saved.")

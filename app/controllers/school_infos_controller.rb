@@ -38,7 +38,7 @@ class SchoolInfosController < SearchController
     if info.lease_duration.nil?
       t = info.lease_expiry
     else
-      t = Time.now
+      t = Time.zone.now
       t += info.lease_duration * 3600 * 24
 
       # Avoid leases expiring at the weekend
@@ -47,7 +47,7 @@ class SchoolInfosController < SearchController
     end
 
     # leases should expire at 6am
-    expiry = Time.local(t.year, t.month, t.day, 6, 0)
+    expiry = Time.zone.local(t.year, t.month, t.day, 6, 0)
     expiry = expiry.utc.iso8601.gsub(":","").gsub("-","")
 
     render xml: {

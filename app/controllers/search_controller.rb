@@ -31,8 +31,6 @@
 # 2009
 # # #
 
-require 'fecha'
-
 class SearchController < ApplicationController
   around_filter :rpc_block
   before_filter :set_vista
@@ -99,7 +97,7 @@ class SearchController < ApplicationController
     @output["rows"] = getDataToSend(@clazz_ref, returned_objects)
     @output["results"] = returned_objects.total_entries
     @output["page_count"] = returned_objects.total_pages
-    @output["fecha"] = Fecha::getFecha()
+    @output["fecha"] = Date.current.iso8601
     setup_choose_button_options(@clazz_ref)
   end
 

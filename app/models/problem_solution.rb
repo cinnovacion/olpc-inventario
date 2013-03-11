@@ -36,7 +36,6 @@ class ProblemSolution < ActiveRecord::Base
   validates_presence_of :solved_by_person_id, :message => N_("Specify who made the repair.")
   validates_presence_of :problem_report_id, :message => N_("Specify the problem.")
 
-  before_create :set_created_at
   after_create :do_after_create
 
   def self.getColumnas()
@@ -45,7 +44,7 @@ class ProblemSolution < ActiveRecord::Base
      {:name => _("Report"),:key => "problem_reports.id", :related_attribute => "getReportId", :width => 50},
      {:name => _("Problem"),:key => "problem_types.name", :related_attribute => "getProblemType", :width => 150},
      {:name => _("Solution"),:key => "solution_types.name", :related_attribute => "getSolutionName()", :width => 150},
-     {:name => _("Date"),:key => "problem_solutions.created_at",:related_attribute => "getDate()", :width => 100},
+     {:name => _("Date"),:key => "problem_solutions.created_at",:related_attribute => "created_at", :width => 100},
      {:name => _("Comment"),:key => "problem_solutions.comment",:related_attribute => "getComment()", :width => 100},
      {:name => _("Technician"),:key => "people.name",:related_attribute => "getTechnicianName()", :width => 150},
     ]
@@ -117,10 +116,6 @@ class ProblemSolution < ActiveRecord::Base
     true
   end
 
-  def set_created_at
-   self.created_at = Time.now
-  end
-
   def do_after_create
 
     #Mark the report as solved
@@ -146,10 +141,6 @@ class ProblemSolution < ActiveRecord::Base
 
   def getSolutionName
     self.solution_type_id ? self.solution_type.name : ""
-  end
-
-  def getDate()
-   self.created_at ? self.created_at.to_s : ""
   end
 
   def getTechnicianName()

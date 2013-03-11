@@ -29,13 +29,11 @@ class Event < ActiveRecord::Base
   attr_accessible :reporter_info, :extended_info
   attr_accessible :place, :place_id
 
-  before_create :set_created_at
-
   def self.getColumnas()
     [ 
      {:name => _("Id"), :key => "events.id", :related_attribute => "id", :width => 50},
      {:name => _("Event"), :key => "event_types.name", :related_attribute => "getEventName()", :width => 160},
-     {:name => _("Date"), :key => "events.created_at", :related_attribute => "getCreatedAt()", :width => 120},
+     {:name => _("Date"), :key => "events.created_at", :related_attribute => "created_at", :width => 120},
      {:name => _("Reporter"), :key => "events.reporter_info", :related_attribute => "getReporterInfo", :width => 160},
      {:name => _("Information"), :key => "events.extended_info", :related_attribute => "getExtendedInfo", :width => 255},
      {:name => _("Location associated"), :key => "events.place_id", :related_attribute => "getPlaceName", :width => 255}
@@ -55,16 +53,8 @@ class Event < ActiveRecord::Base
     false
   end
 
-  def set_created_at
-    self.created_at = Time.now
-  end
-
   def getEventName
     self.event_type_id ? self.event_type.name : ""
-  end
-
-  def getCreatedAt
-    self.created_at ? self.created_at : ""
   end
 
   def getReporterInfo

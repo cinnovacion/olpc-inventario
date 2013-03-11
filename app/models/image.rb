@@ -21,8 +21,6 @@
 # 2009
 # # #
 
-require 'fecha'
-
 class Image < ActiveRecord::Base
   has_many :people
 
@@ -31,8 +29,6 @@ class Image < ActiveRecord::Base
   #Se verifica la presencia de los campos.
   validates_presence_of :name, :message => N_("The image must be named.")
   validates_presence_of :file, :message => N_("The image must have an associated file.")
-
-  before_create :set_created_at
 
   def self.getColumnas(vista = "")
     [ 
@@ -64,9 +60,4 @@ class Image < ActiveRecord::Base
   def register_update(uploadfile)
     self.update_attributes(Image.genAttribs(uploadfile))
   end
-
-  def set_created_at
-    self.created_at = Fecha.getFecha()
-  end
-
 end

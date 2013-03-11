@@ -19,7 +19,7 @@ class ConnectionEvent < ActiveRecord::Base
 
   validates :laptop, :presence => true
   validates :vhash, :allow_nil => true, :format => { :with => /[a-z0-9]{64}/ }
-  before_save { self.connected_at = Time.now if self.connected_at.nil? }
+  before_save { self.connected_at = Time.zone.now if self.connected_at.nil? }
 
   def self.getColumnas(vista = "")
     [

@@ -30,13 +30,11 @@ class Lot < ActiveRecord::Base
 
   validates_presence_of :person_id, :message => N_("You must provide the responsible.")
 
-  before_create :set_created_at
-
   def self.getColumnas()
     [ 
      {:name => _("Id"),:key => "lots.id",:related_attribute => "id", :width => 120},
      {:name => _("Nbr of Boxes"),:key => "lots.boxes_number",:related_attribute => "getBoxesNumber()", :width => 120},
-     {:name => _("Creation Date"),:key => "lots.created_at",:related_attribute => "getCreatedAt()", :width => 120},
+     {:name => _("Creation Date"),:key => "lots.created_at",:related_attribute => "created_at", :width => 120},
      {:name => _("Responsible"),:key => "people.name",:related_attribute => "getResponsable()", :width => 255},
      {:name => _("Delivered"),:key => "lots.delivered",:related_attribute => "getDelivered()", :width => 120},
      {:name => _("Delivery Date"),:key => "lots.delivery_date",:related_attribute => "getDeliveryDate()", :width => 120}
@@ -86,16 +84,8 @@ class Lot < ActiveRecord::Base
 
   end
 
-  def set_created_at
-    self.created_at = Time.now
-  end
-
   def getBoxesNumber
     self.boxes_number ? self.boxes_number : ""
-  end
-
-  def getCreatedAt
-    self.created_at ? self.created_at : ""
   end
 
   def getResponsable

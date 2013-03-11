@@ -53,7 +53,7 @@ class NotificationSubscriber < ActiveRecord::Base
                       },
                       {:name => _("Date of Subscription"),
                        :key => "notification_subscribers.created_at.name",
-                       :related_attribute => "getDate()",
+                       :related_attribute => "created_at",
                        :width => 120
                       }
                      ]
@@ -81,12 +81,6 @@ class NotificationSubscriber < ActiveRecord::Base
   # Se obtiene el nombre del suscriptor.
   def getSubscriberName()
     self.person.getFullName()
-  end
-
-  ##
-  # Se obtiene la fecha de la suscripcion
-  def getDate()
-    self.created_at.to_s
   end
 
   ###

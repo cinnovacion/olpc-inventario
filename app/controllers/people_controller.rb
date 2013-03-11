@@ -27,8 +27,6 @@
 # 2009
 # # #
 
-require 'fecha'
-                                                                          
 class PeopleController < SearchController
   skip_filter :rpc_block, :only => [ :show, :update, :requestStudents ]
 
@@ -59,7 +57,7 @@ class PeopleController < SearchController
     h = { "label" => _("Document ID"),"datatype" => "textfield" }.merge( p ? {"value" => p.id_document } : {} )
     @output["fields"].push(h)
 
-    fecha = p && p.birth_date ? Fecha::pyDate(p.birth_date.to_s) : ""
+    fecha = p && p.birth_date ? p.birth_date.iso8601 : ""
     h = { "label" => _("Birth date"),"datatype" => "date",  :value => fecha  }
     @output["fields"].push(h)
 

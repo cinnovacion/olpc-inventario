@@ -21,8 +21,6 @@
 # 2009
 # # #
 
-require 'fecha'
-
 class LotsController < SearchController
   def new
     @output["fields"] = []
@@ -47,7 +45,7 @@ class LotsController < SearchController
     h = { "label" => _("Delivered?"), "datatype" => "combobox", "options" => options }
     @output["fields"].push(h)
 
-    fecha = lot ? lot.delivery_date.to_s : Fecha::getFecha()
+    fecha = lot ? lot.delivery_date.iso8601 : Date.current.iso8601
     h = { "label" => _("Delivery date"),"datatype" => "date", "value" => fecha }
     @output["fields"].push(h)
 

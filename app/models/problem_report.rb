@@ -41,7 +41,6 @@ class ProblemReport < ActiveRecord::Base
   validates_presence_of :place_id, :message => N_("You must provide the location of the owner.")
   validates_presence_of :owner_id, :message => N_("You must provide the owner.")
 
-  before_create :set_created_at
   after_create :register_notifications
   before_validation :sync_laptop_details
 
@@ -52,7 +51,7 @@ class ProblemReport < ActiveRecord::Base
      {:name => _("Type"), :key => "problem_types.name", :related_attribute => "getProblemName()", :width => 120},
      {:name => _("Laptop"), :key => "laptops.serial_number", :related_attribute => "getLaptopSerialNumber()", :width => 120},
      {:name => _("Place"), :key => "places.name", :related_attribute => "getParentPlaceName", :width => 120},
-     {:name => _("Report Date"), :key => "problem_reports.created_at", :related_attribute => "getDate()", :width => 120},
+     {:name => _("Report Date"), :key => "problem_reports.created_at", :related_attribute => "created_at", :width => 120},
      {:name => _("Solved"), :key => "problem_reports.solved", :related_attribute => "getSolvedStatus()", :width => 120},
      {:name => _("Solved at"), :key => "problem_reports.solved_at", :related_attribute => "getSolvedDate()", :width => 120},
      {:name => _("Comment"), :key => "problem_reports.comment", :related_attribute => "getComment()", :width => 120}
@@ -72,10 +71,6 @@ class ProblemReport < ActiveRecord::Base
     # owner and his location, since this may change.
     self.owner_id = self.laptop.owner.id
     self.place_id = self.laptop.owner.place.id
-  end
-
-  def set_created_at
-    self.created_at = Time.now
   end
 
   def register_notifications
@@ -102,10 +97,6 @@ class ProblemReport < ActiveRecord::Base
 
    def getLaptopSerialNumber
      self.laptop_id ? self.laptop.serial_number : ""
-   end
-
-   def getDate
-     self.created_at ? self.created_at : ""
    end
 
    def getSolvedStatus

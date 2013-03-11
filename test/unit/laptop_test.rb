@@ -44,7 +44,7 @@ class LaptopTest < ActiveSupport::TestCase
     model = Model.first
     assert_difference("Laptop.count", 5) {
       Laptop.import_xls(fixture_path + "/files/laptops.xls",
-                        arrived_at: Time.now, model_id: model.id,
+                        arrived_at: Time.zone.now, model_id: model.id,
                         status_id: Status.deactivated.id,
                         owner_id: default_person.id) 
     }

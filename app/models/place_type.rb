@@ -50,7 +50,7 @@ class PlaceType < ActiveRecord::Base
   end
 
   def self.upGradeAll
-    current_year = Date.today.year
+    current_year = Time.zone.now.year
     up_grade_list = DefaultValue.getJsonValue("up_grades")
     up_grade_list = up_grade_list ? up_grade_list : []
 

@@ -18,8 +18,6 @@
 # Author: Martin Abente
 # E-mail Address:  (tincho_02@hotmail.com | mabente@paraguayeduca.org) 
 
-require 'fecha'
-
 class Movement < ActiveRecord::Base
   audited
 
@@ -46,8 +44,7 @@ class Movement < ActiveRecord::Base
     {
     columnas: [ 
      {name: _("Mov. Nbr"), key: "movements.id", related_attribute: "id", width: 50},
-     {name: _("Mov. Date"), key: "movements.date_moved_at", related_attribute: "date_moved_at", width: 90},
-     {name: _("Mov. Time"), key: "movements.time_moved_at", related_attribute: "movement_time", width: 90},
+     {name: _("Mov. Date"), key: "movements.created_at", related_attribute: "created_at", width: 90},
      {name: _("Type"), key: "movement_types.description", related_attribute: "movement_type", width: 150},
      {name: _("Serial Nbr"), key: "laptops.serial_number", related_attribute: "laptop.serial_number", width: 150},
      {name: _("Given by"), key: "people.name", related_attribute: "source_person", width: 180},
@@ -182,9 +179,6 @@ class Movement < ActiveRecord::Base
   def do_before_save
     raise _("Loans require a return date.") if !return_date and movement_type.is_loan?
     raise _("Only loans require return date.") if return_date and !movement_type.is_loan?
-    # FIXME make created_at datetime, combine moved_at info there, drop
-    # moved_info, drop this assignment, and let rails do the work
-    self.created_at = self.date_moved_at = self.time_moved_at = Time.now
   end
 
   def handle_returns
@@ -199,10 +193,6 @@ class Movement < ActiveRecord::Base
     movement.update_attributes!(returned: true) if movement
   end
   
-  def movement_time
-    Fecha::getHora(self.time_moved_at)
-  end
-
   def creator
     if audits and audits.first and audits.first.user
       return audits.first.user.person

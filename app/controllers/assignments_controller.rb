@@ -34,7 +34,7 @@ class AssignmentsController < SearchController
       form_details_link(_("Created by:"), "people", creator.id, creator.getFullName)
     end
 
-    form_label(_("Assigned at:"), assignment.date_assigned.to_s + " " + assignment.getAssignmentTime)
+    form_label(_("Assigned at:"), assignment.created_at)
 
     form_details_link(_("Laptop serial:"), "laptops", assignment.laptop_id, assignment.laptop.serial_number)
 

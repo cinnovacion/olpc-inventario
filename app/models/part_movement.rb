@@ -29,8 +29,6 @@ class PartMovement < ActiveRecord::Base
   attr_accessible :person, :person_id
   attr_accessible :amount
 
-  before_save :set_created_at
-
   def self.getColumnas()
     [ 
      {:name => _("Id"), :key => "part_movements.id", :related_attribute => "id", :width => 100},
@@ -38,7 +36,7 @@ class PartMovement < ActiveRecord::Base
      {:name => _("Part"), :key => "part_types.description", :related_attribute => "getPartTypeDescription", :width => 255},
      {:name => _("Amount"), :key => "part_movements.amount", :related_attribute => "getAmount", :width => 100},
      {:name => _("Responsible (CI)"), :key => "people.id_document", :related_attribute => "getResponsibleIdDoc", :width => 100},
-     {:name => _("Creation Date"), :key => "part_movements.created_at", :related_attribute => "getCreatedAt", :width => 100}
+     {:name => _("Creation Date"), :key => "part_movements.created_at", :related_attribute => "created_at", :width => 100}
     ]
   end
 
@@ -68,10 +66,6 @@ class PartMovement < ActiveRecord::Base
     PartMovement.create!(attribs)
   end
 
-  def set_created_at
-    self.created_at = Time.now if !self.created_at
-  end
-
   def getPartMovementTypeName
     self.part_movement_type ? self.part_movement_type.name : ""
   end
@@ -86,10 +80,6 @@ class PartMovement < ActiveRecord::Base
 
   def getResponsibleIdDoc
     self.person ? self.person.getIdDoc : ""
-  end
-
-  def getCreatedAt
-    self.created_at ? self.created_at : ""
   end
 
   ###

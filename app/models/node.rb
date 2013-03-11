@@ -27,7 +27,7 @@ class Node < ActiveRecord::Base
 
   attr_accessible :place, :place_id
   attr_accessible :node_type, :node_type_id
-  attr_accessible :name, :lat, :lng, :zoom, :last_update_at, :ip_address
+  attr_accessible :name, :lat, :lng, :zoom, :ip_address
   attr_accessible :last_status_change_at, :height, :username, :password
   attr_accessible :information
 
@@ -59,7 +59,7 @@ class Node < ActiveRecord::Base
                       {:name => _("Location"), :key => "places.name", :related_attribute => "getPlaceName()", :width => 100},
                       {:name => _("Parents Location"), :key => "places_places.name", :related_attribute => "getParentPlaceName()", :width => 100},
                       {:name => _("Type"), :key => "node_types.name", :related_attribute => "getNodeTypeName()", :width => 100},
-                      {:name => _("Updated"), :key => "nodes.last_update_at", :related_attribute => "getLastUpdate()", :width => 100},
+                      {:name => _("Updated"), :key => "nodes.updated_at", :related_attribute => "updated_at", :width => 100},
                       {:name => _("IP Address"), :key => "nodes.ip_address", :related_attribute => "getIpAddress()", :width => 100},
                       {:name => _("Username"), :key => "nodes.username", :related_attribute => "getUsername()", :width => 100},
                       {:name => _("Password"), :key => "nodes.password", :related_attribute => "getPassword()", :width => 100}    
@@ -92,7 +92,7 @@ class Node < ActiveRecord::Base
   def self.getOldNodes()
     @@node_type_ids ||= NodeType.getControledTypes
     include_v = [:node_type]
-    cond_v = ["node_type_id in (?) and (last_update_at < ? or last_update_at is null)", @@node_type_ids, MIN_REFRESH_TIME.minutes.ago]
+    cond_v = ["node_type_id in (?) and (updated_at < ? or updated_at is null)", @@node_type_ids, MIN_REFRESH_TIME.minutes.ago]
     Node.find(:all, :conditions => cond_v, :include => include_v)
   end
 
@@ -150,7 +150,7 @@ class Node < ActiveRecord::Base
     old_me = Node.find_by_id(self.id)
     if old_me && old_me.node_type_id != self.node_type_id
 
-      self.last_status_change_at = Time.now
+      self.last_status_change_at = Time.zone.now
 
       node_type = NodeType.find_by_id(self.node_type_id).internal_tag
       node_nature = node_type.match("^server(|_down)$") ? "server" : node_type.match("^ap(|_down)$") ? "ap" : nil
@@ -165,12 +165,6 @@ class Node < ActiveRecord::Base
       end
       
     end
-
-    self.last_update_at = Time.now 
-  end
-
-  def getLastUpdate()
-    self.last_update_at ? self.last_update_at : ""
   end
 
   def getIpAddress()

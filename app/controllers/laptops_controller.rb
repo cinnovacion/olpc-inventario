@@ -51,7 +51,7 @@ class LaptopsController < SearchController
     elsif params[:uploadfile] && params[:uploadfile] != ""
       attribs = datos["fields"].with_indifferent_access
       path = params[:uploadfile].path
-      attribs[:arrived_at] = Time.now
+      attribs[:arrived_at] = Time.zone.now
       return Laptop.import_xls(path, attribs)
     else
       super

@@ -26,8 +26,6 @@ class Shipment < ActiveRecord::Base
 
   attr_accessible :arrived_at, :comment, :shipment_number
 
-  before_save :set_created_at
-
   ###
   # Listado
   #
@@ -37,7 +35,7 @@ class Shipment < ActiveRecord::Base
     ret[:columnas] = [ 
                       {:name => _("Id"),:key => "shipments.id",:related_attribute => "id", :width => 50},
                       {:name => _("Creation Date"),:key => "shipments.description", 
-                        :related_attribute => "getDate()", :width => 120},
+                        :related_attribute => "created_at", :width => 120},
                       {:name => _("Arrival Date"),:key => "shipments.created_at",:related_attribute => "getArrivalDate()",
                         :width => 150},
                       {:name => _("Comment"),:key => "shipments.comment",:related_attribute => "getComment()",
@@ -50,18 +48,6 @@ class Shipment < ActiveRecord::Base
 
     ret
   end
-
-
-  def set_created_at
-    self.created_at = Time.now
-  end
-
-
-  def getDate()
-    self.created_at.to_s
-  end
-
-
 
   ###
   # Comentario al momento de la creacion del envio

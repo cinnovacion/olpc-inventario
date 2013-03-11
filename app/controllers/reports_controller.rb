@@ -21,8 +21,6 @@
 # 2009
 # # #
 
-require 'fecha'
-
 class ReportsController < ApplicationController
   around_filter :rpc_block
 
@@ -111,9 +109,8 @@ class ReportsController < ApplicationController
 
   def parts_replaced
     @output["widgets"] = Array.new
-    since = Fecha.usDate((Date.today - 1.month).to_s)
-    to = Fecha.usDate(Date.today.to_s)
-    @output["widgets"] += multipleDataRange(since, to)
+    since = Date.current - 1.month
+    @output["widgets"] += multipleDataRange(since, Date.current)
     @output["widgets"].push(hierarchy(_("Locations")))
     @output["widgets"].push(checkBoxSelector(_("Parts"), buildCheckHash(PartType, "description"), 6))
     @output["print_method"] = "parts_replaced"
@@ -278,9 +275,7 @@ class ReportsController < ApplicationController
 
   def online_time_statistics
     @output["widgets"] = Array.new
-    since = Fecha.usDate((Date.today - 1.month).to_s)
-    to = Fecha.usDate(Date.today.to_s)
-    @output["widgets"].push(dateRange(since, to))
+    @output["widgets"].push(dateRange(Date.current - 1.month, Date.current))
     @output["widgets"].push(hierarchy(_("In")))
     @output["print_method"] = "online_time_statistics"
   end
@@ -293,19 +288,16 @@ class ReportsController < ApplicationController
 
   def students_ids_distro
     @output["widgets"] = Array.new
-    since = Fecha.usDate(Date.today.beginning_of_year.to_s)
-    to = Fecha.usDate(Date.today.to_s)
+    since = Date.current.beginning_of_year
     #@output["widgets"].push(dateRange(since, to))
-    @output["widgets"] += multipleDataRange(since, to)
+    @output["widgets"] += multipleDataRange(since, Date.current)
     @output["widgets"].push(hierarchy(""))
     @output["print_method"] = "students_ids_distro"
   end
 
   def problems_and_deposits
     @output["widgets"] = Array.new
-    since = Fecha.usDate((Date.today - 1.month).to_s)
-    to = Fecha.usDate(Date.today.to_s)
-    @output["widgets"].push(dateRange(since, to))
+    @output["widgets"].push(dateRange(Date.current - 1.month, Date.current))
     @output["widgets"].push(hierarchy(""))
     cb_options = Array.new
     cb_options.push( { :label => _("Yes"), :cb_name => true,:checked => true } )
@@ -316,18 +308,15 @@ class ReportsController < ApplicationController
 
   def deposits
     @output["widgets"] = Array.new
-    since = Fecha.usDate((Date.today - 1.month).to_s)
-    to = Fecha.usDate(Date.today.to_s)
-    @output["widgets"].push(dateRange(since, to))
+    @output["widgets"].push(dateRange(Date.current - 1.month, Date.current))
     @output["widgets"].push(hierarchy(""))
     @output["print_method"] = "deposits"
   end
   
   def problems_time_distribution
     @output["widgets"] = Array.new
-    since = Fecha.usDate(Date.today.beginning_of_year.to_s)
-    to = Fecha.usDate(Date.today.to_s)
-    @output["widgets"] += multipleDataRange(since, to)
+    since = Date.current.beginning_of_year
+    @output["widgets"] += multipleDataRange(since, Date.current)
     @output["widgets"].push(hierarchy(""))
     @output["widgets"].push(checkBoxSelector(_("Problems"),buildCheckHash(ProblemType,"name"),5))
     @output["widgets"].push(checkBoxSelector(_("Laptop models"),buildCheckHash(Model,"name"),6))
@@ -361,9 +350,7 @@ class ReportsController < ApplicationController
 
   def audit_report
     @output["widgets"] = Array.new
-    since = Fecha.usDate((Date.today - 1.month).to_s)
-    to = Fecha.usDate(Date.today.to_s)
-    @output["widgets"].push(dateRange(since, to))
+    @output["widgets"].push(dateRange(Date.current - 1.month, Date.current))
     cb_options = Audit.audited_classes.map { |audited_class|
       class_name = audited_class.name
       { :text => class_name, :value => class_name, :selected => true }
@@ -400,8 +387,8 @@ class ReportsController < ApplicationController
     h = Hash.new
     h["widget_type"] = "date_range"
     h["options"] = Hash.new
-    h["options"]["since"] = since ? since : Fecha.usDate(Date.today.beginning_of_year.to_s)
-    h["options"]["to"] = to ? to : Fecha.usDate(Date.today.to_s)
+    h["options"]["since"] = since ? since.iso8601 : Date.current.beginning_of_year.iso8601
+    h["options"]["to"] = to ? to.iso8601 : Date.current.iso8601
     h
   end
 

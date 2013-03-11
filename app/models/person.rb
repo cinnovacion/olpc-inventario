@@ -38,7 +38,6 @@ class Person < ActiveRecord::Base
   validates_uniqueness_of :id_document, :message => N_("Repeated document id number")
   validates_presence_of :id_document, :message => N_("Must have a document id number")
 
-  before_create :set_created_at
   before_save :do_before_save
 
   SELECTION_VIEW = "selection"
@@ -65,7 +64,7 @@ class Person < ActiveRecord::Base
     ret[:columnas] = [ 
                       {:name => _("Id"),:key => "people.id",:related_attribute => "id", :width => 50},
                       {:name => _("Created at"),:key => "people.created_at",
-                        :related_attribute => "getDate()", :width => 120},
+                        :related_attribute => "created_at", :width => 120},
                       {:name => _("Name"),:key => "people.name",:related_attribute => "name", :width => 110},
                       {:name => _("Last name"),:key => "people.lastname", :related_attribute => "getLastName()", :width => 110}, 
                       {:name => _("Doc. Id."),:key => "people.id_document", :related_attribute => "getIdDoc()", 
@@ -208,18 +207,9 @@ class Person < ActiveRecord::Base
 
   def do_before_save
     old_self = Person.find_by_id(self.id)
-    self.id_document_created_at = Date.today if (!old_self || (old_self && !old_self.hasValidIdDoc?)) && self.hasValidIdDoc?
+    self.id_document_created_at = Time.zone.now if (!old_self || (old_self && !old_self.hasValidIdDoc?)) && self.hasValidIdDoc?
     self.generateBarCode if !self.barcode
   end
-
-  def set_created_at
-    self.created_at = Time.now
-  end
-
-  def getDate()
-    self.created_at.to_s
-  end
-
 
   def getFullName()
     self.name and self.lastname ? self.name.to_s + " " + self.lastname.to_s : ""

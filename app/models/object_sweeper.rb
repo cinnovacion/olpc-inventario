@@ -27,8 +27,6 @@
 # 2009
 # # #
 
-require 'fecha'
-
 class ObjectSweeper < ActionController::Caching::Sweeper
 
   # Include observed classes...
@@ -69,8 +67,6 @@ class ObjectSweeper < ActionController::Caching::Sweeper
     change.previous_state_id = old_record.status_id
     change.new_state_id = new_record.status_id
     change.laptop_id = new_record.id
-    change.date_created_at = Fecha::getFecha()
-    change.time_created_at = Fecha::getHora()
     change.save!
   end
 

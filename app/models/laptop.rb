@@ -43,7 +43,6 @@ class Laptop < ActiveRecord::Base
 
   before_save { |laptop| laptop.serial_number.upcase! }
   before_create { |laptop|
-    laptop.created_at = Time.now
     laptop.status_id = Status.deactivated.id if !self.status_id 
   }
 
