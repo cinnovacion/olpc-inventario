@@ -57,7 +57,7 @@ class MovementsController < SearchController
       form_details_link(_("Created by:"), :people, creator.id, creator)
     end
 
-    form_label(_("Movement date:"), movement.created_at)
+    form_label(_("Movement date:"), I18n.l(movement.created_at))
     form_label(_("Movement type:"), movement.movement_type)
 
     form_details_link(_("Laptop serial:"), :laptops, movement.laptop_id, movement.laptop.serial_number)

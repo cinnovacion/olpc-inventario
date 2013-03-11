@@ -33,6 +33,16 @@ class ConnectionEvent < ActiveRecord::Base
     ]
   end
 
+  def connected_at=(value)
+    # special case: if the connected time is provided as a string without
+    # UTC offset (as we would expect from normal usage), it is actually a
+    # UTC time. Make sure it gets interpreted that way.
+    if value.is_a?(String) and value !~ /[+-][0-9]{4}$/
+      value = ActiveSupport::TimeZone.new('UTC').parse(value)
+    end
+    write_attribute(:connected_at, value)
+  end
+
   def software_version
     SoftwareVersion.find_by_vhash(vhash)
   end

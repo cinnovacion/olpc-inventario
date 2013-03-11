@@ -22,7 +22,7 @@ class ConnectionEventsController < SearchController
     event = prepare_form(window_title: "Connection event")
     form_details_link(_("Laptop:"), :laptops, event.laptop_id, event.laptop.serial_number)
 
-    form_label(_("Connected at:"), event.connected_at)
+    form_label(_("Connected at:"), I18n.l(event.connected_at))
 
     form_label(_("Notified as stolen:"), event.stolen ? _("Yes") : _("No"))
 
