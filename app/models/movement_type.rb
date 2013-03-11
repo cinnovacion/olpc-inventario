@@ -23,16 +23,11 @@ class MovementType < ActiveRecord::Base
 
   validates_uniqueness_of :internal_tag, :message => N_("The tag must be unique")
   
-  def self.getColumnas
-    {
-      columnas: [
-        {name: _("Id"), key: "movement_types.id", related_attribute: "id", width: 50},
-        {name: _("Descritpion"), key: "movement_types.description", related_attribute: "description", width: 120},
-        {name: _("Delivery?"), key: "movement_types.is_delivery", related_attribute: "is_delivery", width: 50}                   
-      ],
-      columnas_visibles: [false, true]
-    }
-  end
+  FIELDS = [
+    {name: _("Id"), column: :id, width: 50, visible: false},
+    {name: _("Description"), column: :description, width: 120},
+    {name: _("Delivery?"), column: :is_delivery, width: 50}
+  ]
 
   def to_s
     self.description

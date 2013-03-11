@@ -38,17 +38,15 @@ class ProblemSolution < ActiveRecord::Base
 
   after_create :do_after_create
 
-  def self.getColumnas()
-    [ 
-     {:name => _("Id"),:key => "problem_solutions.id", :related_attribute => "getId", :width => 50},
-     {:name => _("Report"),:key => "problem_reports.id", :related_attribute => "getReportId", :width => 50},
-     {:name => _("Problem"),:key => "problem_types.name", :related_attribute => "getProblemType", :width => 150},
-     {:name => _("Solution"),:key => "solution_types.name", :related_attribute => "getSolutionName()", :width => 150},
-     {:name => _("Date"),:key => "problem_solutions.created_at",:related_attribute => "created_at", :width => 100},
-     {:name => _("Comment"),:key => "problem_solutions.comment",:related_attribute => "getComment()", :width => 100},
-     {:name => _("Technician"),:key => "people.name",:related_attribute => "getTechnicianName()", :width => 150},
-    ]
-  end
+  FIELDS = [ 
+    {name: _("Id"), column: :id, width: 50},
+    {name: _("Report"), association: :problem_report, column: :id, width: 50},
+    {name: _("Problem"), association: :problem_report, column: :problem_type_id, attribute: :getProblemType, width: 150},
+    {name: _("Solution"), association: :solution_type, column: :name, width: 150},
+    {name: _("Date"), column: :created_at},
+    {name: _("Comment"), column: :comment},
+    {name: _("Technician"), association: :solved_by_person, column: :lastname, attribute: :getTechnicianName, width: 150},
+  ]
 
   def self.getChooseButtonColumns(vista = "")
     ret = Hash.new

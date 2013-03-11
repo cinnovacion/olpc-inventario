@@ -31,18 +31,12 @@ class Profile < ActiveRecord::Base
 
   validates_uniqueness_of :internal_tag, :message => N_("The tag must be unique")
 
-  def self.getColumnas(vista = "")
-    ret = Hash.new
-    
-    ret[:columnas] = [ 
-                      {:name => _("Id"),:key => "profiles.id",:related_attribute => "id", :width => 50},
-                      {:name => _("Description"),:key => "profiles.description",:related_attribute => "description()", :width => 140},
-                      {:name => _("Internal Tag"),:key => "profiles.internal_tag",:related_attribute => "internal_tag", :width => 140},
-                      {:name => _("Access Level"),:key => "profiles.access_level",:related_attribute => "getAccessLevel()", :width => 140}
-                     ]
-    ret[:columnas_visibles] = [true,true,true]
-    ret
-  end
+  FIELDS = [ 
+    {name: _("Id"), column: :id, width: 50},
+    {name: _("Description"), column: :description, width: 140},
+    {name: _("Internal Tag"), column: :internal_tag, width: 140},
+    {name: _("Access Level"), column: :access_level, width: 140}
+  ]
 
   def self.getChooseButtonColumns(vista = "")
     ret = Hash.new

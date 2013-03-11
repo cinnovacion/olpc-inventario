@@ -30,14 +30,12 @@ class Model < ActiveRecord::Base
   validates_presence_of :name
   validates_presence_of :description
 
-  def self.getColumnas()
-    [ 
-     {:name => _("Id"),:key => "models.id",:related_attribute => "id", :width => 50},
-     {:name => _("Created at"),:key => "models.created_at",:related_attribute => "created_at", :width => 120},
-     {:name => _("Name"),:key => "models.name",:related_attribute => "name", :width => 200},
-     {:name => _("Description"),:key => "models.description",:related_attribute => "description", :width => 400}
-    ]
-  end
+  FIELDS = [
+    {name: _("Id"), column: :id, width: 50},
+    {name: _("Created at"), column: :created_at, width: 120},
+    {name: _("Name"), column: :name, width: 200},
+    {name: _("Description"), column: :description, width: 400}
+  ]
 
   def to_s
     self.name

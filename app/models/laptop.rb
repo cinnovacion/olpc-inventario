@@ -46,27 +46,21 @@ class Laptop < ActiveRecord::Base
     laptop.status_id = Status.deactivated.id if !self.status_id 
   }
 
-  def self.getColumnas()
-    ret = Hash.new
-    ret[:columnas] = [ 
-                      {:name => _("Id"),:key => "laptops.id",:related_attribute => "id", :width => 50},
-                      {:name => _("Created at"),:key => "laptops.created_at",:related_attribute => "created_at.to_s", :width => 80},
-                      {:name => _("Serial nbr."),:key => "laptops.serial_number",:related_attribute => "serial_number", :width => 120,
-                        :selected => true},
-                      {:name => _("In hands of"),:key => "people.name",:related_attribute => "owner", :width => 210},
-                      {:name => _("Owners Doc Id"),:key => "people.id_document",:related_attribute => "owner.id_document", :width => 80},
-                      {:name => _("Code Bar Owner"), :key => "people.barcode", :related_attribute => "owner.barcode", :width => 80},
-                      {:name => _("Assigned to"),:key => "people.name",:related_attribute => "getAssignee", :width => 210},
-                      {:name => _("Assignee Doc Id"),:key => "people.id_document",:related_attribute => "getAssigneeIdDoc", :width => 210},
-                      {:name => _("Model"),:key => "models.name",:related_attribute => "model", :width => 120},
-                      {:name => _("State"),:key => "statuses.description",:related_attribute => "status", :width => 160},
-                      {:name => _("UUID"),:key => "laptops.uuid",:related_attribute => "uuid", :width => 80},
-                      {:name => _("Registered"), :key => "laptops.registered", :related_attribute => "getRegistered", :width => 50},
-                      {:name => _("Last activation"), :key => "laptops.last_activation_date", :related_attribute => "getLastActivation", :width => 100}
-                     ]
-    ret[:columnas_visibles] = [false, false, true, true, true, false, true, true, false, false, false, false, false]
-    ret 
-  end
+  FIELDS = [
+    {:name => _("Id"), column: :id, width: 50, visible: false, default_sort: :desc},
+    {:name => _("Created at"), column: :created_at, width: 80, visible: false},
+    {:name => _("Serial nbr."), column: :serial_number, width: 120, default_search: true},
+    {:name => _("In hands of"), association: :owner, column: :lastname, attribute: :owner, width: 210},
+    {:name => _("Owners Doc Id"), association: :owner, column: :id_document, width: 80},
+    {:name => _("Code Bar Owner"), association: :owner, column: :barcode, width: 80, visible: false},
+    {:name => _("Assigned to"), association: :assignee, column: :lastname, attribute: :assignee, width: 210},
+    {:name => _("Assignee Doc Id"), association: :assignee, column: :id_document, width: 210},
+    {:name => _("Model"), association: :model, column: :name, width: 120, visible: false},
+    {:name => _("State"), association: :status, column: :description, width: 160, visible: false},
+    {:name => _("UUID"), column: :uuid, width: 80, visible: false},
+    {:name => _("Registered"), column: :registered, width: 50, visible: false},
+    {:name => _("Last activation"), column: :last_activation_date, visible: false}
+  ]
 
   def self.getDrillDownInfo
     {

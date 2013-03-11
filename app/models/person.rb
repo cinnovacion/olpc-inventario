@@ -40,60 +40,22 @@ class Person < ActiveRecord::Base
 
   before_save :do_before_save
 
-  SELECTION_VIEW = "selection"
   BARCODE_UPPERBOUND = 9999999999
 
-  ###
-  # Listado
-  #
-  def self.getColumnas(vista = "")
-    ret = Hash.new
-
-    case vista 
-    when Person::SELECTION_VIEW 
-      ret.merge!(self.getSelectionCols())
-    else
-      ret.merge!(self.getDefaultCols())
-    end
-
-    ret
-  end
-
-  def self.getDefaultCols()
-    ret = Hash.new
-    ret[:columnas] = [ 
-                      {:name => _("Id"),:key => "people.id",:related_attribute => "id", :width => 50},
-                      {:name => _("Created at"),:key => "people.created_at",
-                        :related_attribute => "created_at", :width => 120},
-                      {:name => _("Name"),:key => "people.name",:related_attribute => "name", :width => 110},
-                      {:name => _("Last name"),:key => "people.lastname", :related_attribute => "getLastName()", :width => 110}, 
-                      {:name => _("Doc. Id."),:key => "people.id_document", :related_attribute => "getIdDoc()", 
-                        :width => 100, :selected => true },
-                      {:name => _("Doc. ID. Created at"),:key => "people.id_document_created_at", :related_attribute => "getIdDocCreatedAt()", :width => 70}, 
-                      {:name => _("Birth Date"),:key => "people.birth_date", :related_attribute => "getBirthDate()",
-                        :width => 100},                 
-                      {:name => _("Tel."),:key => "people.phone", :related_attribute => "getPhone()", :width => 80},
-                      {:name => _("Cell."),:key => "people.cell_phone", :related_attribute => "getCell()", :width => 80},
-                      {:name => _("Email"),:key => "people.email", :related_attribute => "getEmail()", :width => 100},
-                      {:name => _("Profiles"), :key => "profiles.description", :related_attribute => "getProfiles()", :width => 250},
-                      {:name => _("Bar Code"), :key => "people.barcode", :related_attribute => "getBarcode()", :width => 250}
-                     ]
-
-    ret[:columnas_visibles] = [true, true, true, true, true, false, false, false, false, false, true, false]
-    ret
-  end
-
-  def self.getSelectionCols()
-    ret = Hash.new
-    ret[:columnas] = [ 
-                      {:name => _("Id"),:key => "people.id",:related_attribute => "id", :width => 50},
-                      {:name => _("Name"),:key => "people.name",:related_attribute => "name", :width => 110},
-                      {:name => _("Last name"),:key => "people.lastname", :related_attribute => "getLastName()", :width => 110}, 
-                      {:name => _("Email"),:key => "people.email", :related_attribute => "getEmail()", :width => 100}
-                     ]
-    ret[:columnas_visibles] = [false, true, true, true]
-    ret
-  end
+  FIELDS = [
+    {name: _("Id"), column: :id, width: 50},
+    {name: _("Created at"), column: :created_at, width: 120},
+    {name: _("Name"), column: :name, width: 110},
+    {name: _("Last name"), column: :lastname, width: 120},
+    {name: _("Doc. Id."), column: :id_document, default_search: true},
+    {name: _("Doc. ID. Created at"), column: :id_document_created_at, width: 70, visible: false},
+    {name: _("Birth Date"), column: :birth_date, visible: false}, 
+    {name: _("Tel."), column: :phone, width: 80, visible: false},
+    {name: _("Cell."), column: :cell_phone, width: 80, visible: false},
+    {name: _("Email"), column: :email, width: 100, visible: false},
+    {name: _("Profiles"), attribute: :getProfiles, width: 250},
+    {name: _("Bar Code"), column: :barcode, width: 250, visible: false}
+  ]
 
   def self.genAsFromCondition(vista)
     split = vista.split("_")

@@ -31,15 +31,13 @@ class NodeType < ActiveRecord::Base
   validates_presence_of :internal_tag, :message => N_("You must specify the internal tag")
   validates_uniqueness_of :internal_tag, :message => N_("The tag must be unique")
 
-  def self.getColumnas(vista = "")
-    [
-     {:name => _("Id"), :key => "node_types.id", :related_attribute => "id", :width => 50},
-     {:name => _("Name"), :key => "node_types.name", :related_attribute => "name", :width => 100},
-     {:name => _("Description"), :key => "node_types.description", :related_attribute => "description", :width => 255},
-     {:name => _("Tag"), :key => "node_types.internal_tag", :related_attribute => "internal_tag", :width => 100},
-     {:name => _("Image"), :key => "images.name", :related_attribute => "getImageName()", :width => 100}
-    ]
-  end
+  FIELDS = [
+    {name: _("Id"), column: :id, width: 50},
+    {name: _("Name"), column: :name},
+    {name: _("Description"), column: :description, width: 255},
+    {name: _("Tag"), column: :internal_tag},
+    {name: _("Image"), association: :image, column: :name},
+  ]
 
   def self.getChooseButtonColumns(vista = "")
     ret = Hash.new

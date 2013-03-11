@@ -44,19 +44,17 @@ class ProblemReport < ActiveRecord::Base
   after_create :register_notifications
   before_validation :sync_laptop_details
 
-  def self.getColumnas()
-    [ 
-     {:name => _("Id"), :key => "problem_reports.id", :related_attribute => "getId()", :width => 50},
-     {:name => _("Technician CI"), :key => "people.id_document", :related_attribute => "getTechnicianIdDoc()", :width => 120},
-     {:name => _("Type"), :key => "problem_types.name", :related_attribute => "getProblemName()", :width => 120},
-     {:name => _("Laptop"), :key => "laptops.serial_number", :related_attribute => "getLaptopSerialNumber()", :width => 120},
-     {:name => _("Place"), :key => "places.name", :related_attribute => "getParentPlaceName", :width => 120},
-     {:name => _("Report Date"), :key => "problem_reports.created_at", :related_attribute => "created_at", :width => 120},
-     {:name => _("Solved"), :key => "problem_reports.solved", :related_attribute => "getSolvedStatus()", :width => 120},
-     {:name => _("Solved at"), :key => "problem_reports.solved_at", :related_attribute => "getSolvedDate()", :width => 120},
-     {:name => _("Comment"), :key => "problem_reports.comment", :related_attribute => "getComment()", :width => 120}
-    ]
-  end
+   FIELDS = [ 
+    {name: _("Id"), column: :id, width: 50},
+    {name: _("Technician CI"), association: :person, column: :id_document, width: 120},
+    {name: _("Type"), association: :problem_type, column: :name, width: 120},
+    {name: _("Laptop"), association: :laptop, column: :serial_number, width: 120},
+    {name: _("Place"), association: :place, column: :name, attribute: :getParentPlaceName, width: 120},
+    {name: _("Report Date"), column: :created_at, width: 120},
+    {name: _("Solved"), column: :solved, width: 120},
+    {name: _("Solved at"), column: :solved_at, width: 120},
+    {name: _("Comment"), column: :comment},
+  ]
 
   def self.getChooseButtonColumns(vista = "")
     ret = Hash.new

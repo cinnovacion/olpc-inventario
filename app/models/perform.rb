@@ -33,18 +33,12 @@ class Perform < ActiveRecord::Base
   validates_presence_of :place_id, :message => N_("You must specify the place.")
   validates_presence_of :profile_id, :message => N_("You must specify the profile.")
 
-  def self.getColumnas()
-    ret = Hash.new
-
-    ret[:columnas] = [ 
-                      {:name => _("Id"),:key => "performs.id", :related_attribute => "id", :width => 120},
-                      {:name => _("Person"),:key => "people.name", :related_attribute => "person", :width => 250},
-                      {:name => _("Location"),:key => "places.name", :related_attribute => "place", :width => 250},
-                      {:name => _("Profile"),:key => "profile.description", :related_attribute => "profile", :width => 250}
-                     ]
-    ret[:columnas_visibles] = [true, true, true, true]
-    ret
-  end
+  FIELDS = [
+    {name: _("Id"), column: :id, width: 120},
+    {name: _("Person"), association: :person, column: :lastname, attribute: :person, width: 250},
+    {name: _("Location"), association: :place, column: :name, width: 250},
+    {name: _("Profile"), association: :profile, column: :description, width: 250}
+  ]
 
   ###
   # Finds all the people that performs these (profiles_ids) at (place_id, and/or subplaces) 

@@ -44,31 +44,13 @@ class Place < ActiveRecord::Base
   attr_accessible :name, :description
   attr_accessible :place, :place_id, :place_type, :place_type_id
 
-  def self.getColumnas(vista = "")
-    ret = Hash.new
-    
-    ret[:columnas] = [ 
-                      {:name => _("Id"),:key => "places.id",:related_attribute => "id", :width => 50},
-                      {:name => _("Creation Date"),:key => "places.description", 
-                        :related_attribute => "created_at", :width => 120},
-                      {:name => _("Name"),:key => "places.name",:related_attribute => "to_s", :width => 325},
-                      {:name => _("Description"),:key => "places.description",:related_attribute => "description",
-                        :width => 150},
-                      {:name => _("Type"),:key => "place_types.name",:related_attribute => "place_type", :width => 100}
-                     ]
-
-    ret[:columnas_visibles] = [true, true, true, true, true]
-    
-    #Theres obviously a better way to do this, but for now it works.
-    #case vista
-      #when "teaches"
-      #  ret[:conditions] = ["place_type_id in (?)", PlaceType.getGradeTypes()]
-      #when /\d/
-        #ret[:conditions] = ["place_type_id in (?) and place_id in  (?)", PlaceType.find_by_internal_tag("section").id, Place.find(vista).getDescendantsIds]
-    #end
-
-    ret
-  end
+  FIELDS = [
+    {name: _("Id"), column: :id, width: 50},
+    {name: _("Creation Date"), column: :description, width: 120},
+    {name: _("Name"), column: :name, attribute: :to_s, width: 325},
+    {name: _("Description"), column: :description, width: 150},
+    {name: _("Type"), association: :place_type, column: :name},
+  ]
 
   def self.getChooseButtonColumns(vista = "")
     ret = Hash.new
@@ -522,7 +504,7 @@ class Place < ActiveRecord::Base
 
       school = Place.find_by_name_and_place_type_id_and_place_id(schoolInfo, school_type_id, city_id)
       if !school
-        school = Place.new({:name => schoolInfo, :place_type_id => school_type_id, :place_id => city_id})
+        school = Place.new({name: schoolInfo, :place_type_id => school_type_id, :place_id => city_id})
         school.save!
       end
       ret = school
@@ -530,7 +512,7 @@ class Place < ActiveRecord::Base
       if shiftInfo.present?
         shift = Place.find_by_name_and_place_type_id_and_place_id(shiftInfo, shift_type_id, ret.id)
         if !shift
-          shift = Place.new({ :name => shiftInfo, :place_type_id => shift_type_id, :place_id => ret.id })
+          shift = Place.new({ name: shiftInfo, :place_type_id => shift_type_id, :place_id => ret.id })
           shift.save!
         end
         ret = shift
@@ -540,7 +522,7 @@ class Place < ActiveRecord::Base
         grade_type = PlaceType.find_by_internal_tag!(gradeInfo)
         grade = Place.find_by_name_and_place_type_id_and_place_id(grade_type.name, grade_type.id, ret.id)
         if !grade
-          grade = Place.new({ :name => grade_type.name, :place_type_id => grade_type.id, :place_id => ret.id})
+          grade = Place.new({ name: grade_type.name, :place_type_id => grade_type.id, :place_id => ret.id})
           grade.save!
         end
         ret = grade
@@ -549,7 +531,7 @@ class Place < ActiveRecord::Base
       if sectionInfo.present?
         section = Place.find_by_name_and_place_type_id_and_place_id(sectionInfo, section_type_id, ret.id)
         if !section
-          section = Place.new({ :name => sectionInfo, :place_type_id => section_type_id, :place_id => ret.id})
+          section = Place.new({ name: sectionInfo, :place_type_id => section_type_id, :place_id => ret.id})
           section.save!
         end
         ret = section

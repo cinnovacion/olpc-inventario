@@ -26,28 +26,13 @@ class Shipment < ActiveRecord::Base
 
   attr_accessible :arrived_at, :comment, :shipment_number
 
-  ###
-  # Listado
-  #
-  def self.getColumnas()
-    ret = Hash.new
-    
-    ret[:columnas] = [ 
-                      {:name => _("Id"),:key => "shipments.id",:related_attribute => "id", :width => 50},
-                      {:name => _("Creation Date"),:key => "shipments.description", 
-                        :related_attribute => "created_at", :width => 120},
-                      {:name => _("Arrival Date"),:key => "shipments.created_at",:related_attribute => "getArrivalDate()",
-                        :width => 150},
-                      {:name => _("Comment"),:key => "shipments.comment",:related_attribute => "getComment()",
-                        :width => 350},
-                      {:name => _("Number"),:key => "shipments.shipment_number",:related_attribute => "getShipmentNumber()",
-                        :width => 350}
-                     ]
-
-    ret[:columnas_visibles] = [false, true, true, true]
-
-    ret
-  end
+  FIELDS = [
+    {name: _("Id"), column: :id, width: 50, visible: false},
+    {name: _("Creation Date"), column: :created_at, width: 120},
+    {name: _("Arrival Date"), column: :arrived_at, width: 150},
+    {name: _("Comment"), column: :comment, width: 350},
+    {name: _("Number"), column: :shipment_number, width: 350},
+  ]
 
   ###
   # Comentario al momento de la creacion del envio

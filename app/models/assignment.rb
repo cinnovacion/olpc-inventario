@@ -29,19 +29,16 @@ class Assignment < ActiveRecord::Base
 
   validates_presence_of :laptop_id, :message => N_("Please specify a laptop.")
 
-  def self.getColumnas() {
-    columnas: [
-     {:name => _("Assignment Nbr"),:key => "assignments.id",:related_attribute => "id", :width => 50},
-     {:name => _("Assignment Date"),:key => "assignments.created_at",:related_attribute => "created_at", :width => 90},
-     {:name => _("Laptop serial"),:key => "laptops.serial_number",:related_attribute => "laptop.serial_number", :width => 180},
-     {:name => _("Given by"),:key => "people.name",:related_attribute => "source_person", :width => 180},
-     {:name => _("Given by (Doc ID)"),:key => "people.id_document",:related_attribute => "getSourcePersonIdDoc()", :width => 180},
-     {:name => _("Received by"),:key => "destination_people_assignments.name",:related_attribute => "destination_person", :width => 180},
-     {:name => _("Received (Doc ID)"),:key => "destination_people_assignments.id_document",:related_attribute => "getDestinationPersonIdDoc()", :width => 180},
-     {:name => _("Comment"),:key => "assignments.comment",:related_attribute => "comment", :width => 160}
-    ],
-    sort_column: 0
-  } end
+  FIELDS = [
+    {name: _("Assignment Nbr"), column: :id, width: 50, default_sort: :desc},
+    {name: _("Assignment Date"), column: :created_at, width: 90},
+    {name: _("Laptop serial"), association: :laptop, column: :serial_number, width: 180},
+    {name: _("Given by"), association: :source_person, column: :lastname, attribute: :source_person, width:  180},
+    {name: _("Given by (Doc ID)"), association: :source_person, column: :id_document, width: 180},
+    {name: _("Received by"), association: :destination_person, column: :lastname, attribute: :destination_person, width: 180},
+    {name: _("Received (Doc ID)"), association: :destination_person, column: :id_document, width: 180},
+    {name: _("Comment"), column: :comment, width: 160},
+  ]
 
   def self.register(attribs)
     attribs = attribs.with_indifferent_access

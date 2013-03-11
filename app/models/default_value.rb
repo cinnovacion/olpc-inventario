@@ -3,13 +3,11 @@ class DefaultValue < ActiveRecord::Base
 
   validates_uniqueness_of :key, :message => N_("The key must be unique.")
 
-  def self.getColumnas()
-    [ 
-     {:name => _("Id"), :key => "default_values.id", :related_attribute => "id", :width => 50},
-     {:name => _("Key"), :key => "default_values.key", :related_attribute => "getKey", :width => 100},
-     {:name => _("Value"), :key => "default_values.value", :related_attribute => "getValue", :width => 256}
-    ] 
-  end
+  FIELDS = [ 
+     {name: _("Id"), column: :id, width: 50},
+     {name: _("Key"), column: :key},
+     {name: _("Value"), column: :value, width: 256}
+  ] 
 
   def getKey
     self.key ? self.key : ""

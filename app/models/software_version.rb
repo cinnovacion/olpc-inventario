@@ -25,15 +25,13 @@ class SoftwareVersion < ActiveRecord::Base
     version.vhash = nil if !version.vhash.nil? and version.vhash.empty?
   }
 
-  def self.getColumnas(vista = "")
-    [ 
-     {:name => _("Id"), :key => "software_versions.id", :related_attribute => "id", :width => 50},
-     {:name => _("Name"), :key => "software_versions.name", :related_attribute => "name", :width => 100},
-     {:name => _("Laptop model"), :key => "models.name", :related_attribute => "model", :width => 100},
-     {:name => _("Description"), :key => "software_versions.description", :related_attribute => "description", :width => 200},
-     {:name => _("Hash"),:key => "software_versions.vhash", :related_attribute => "vhash", :width => 100},
-    ]
-  end
+  FIELDS = [ 
+    {name: _("Id"), column: :id, width: 50},
+    {name: _("Name"), column: :name},
+    {name: _("Laptop model"), association: :model, column: :name},
+    {name: _("Description"), column: :description, width: 200},
+    {name: _("Hash"), column: :vhash},
+  ]
 
   def to_s
     name

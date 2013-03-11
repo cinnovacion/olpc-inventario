@@ -35,56 +35,13 @@ class StatusChange < ActiveRecord::Base
   #DEBUG: validates_presence_of :previous_state_id, :message => "Debe proveer el estado anterior."
   validates_presence_of :new_state_id, :message => N_("You must provide the new state.")
 
-  def self.getColumnas()
-    ret = Hash.new
-    ret[:columnas] = [
-                      {
-                        :name => _("Id"),
-                        :key => "status_changes.id",
-                        :related_attribute => "id",
-                        :width => 50
-                      },
-                      {
-                        :name => _("Previous state"),
-                        :key => "statuses.description",
-                        :related_attribute => "getPreviousState()",
-                        :width => 240
-                      },
-                      {
-                        :name => _("New State"),
-                        :key => "statuses.description",
-                        :related_attribute => "getNewState()",
-                        :width => 240
-                      },
-                      {
-                        :name => _("Laptop"),
-                        :key => "laptops.serial_number",
-                        :related_attribute => "getSerial()",
-                        :width => 120
-                      },
-                      {
-                        :name => _("Battery"),
-                        :key => "batteries.serial_number",
-                        :related_attribute => "getSerial()",
-                        :width => 120
-                      },
-                      {
-                        :name => _("Charger"),
-                        :key => "chargers.serial_number",
-                        :related_attribute => "getSerial()",
-                        :width => 120
-                      },
-                      {
-                        :name => _("Creation Date"),
-                        :key => "created_at",
-                        :related_attribute => "created_at",
-                        :width => 120
-                      }
-                     ]
-
-    ret[:columnas_visibles] = [false,true,true,true,true,true,true,true]
-    ret
-  end
+  FIELDS = [
+    {name: _("Id"), column: :id, width: 50, visible: false},
+    {name: _("Previous state"), association: :previous_state, column: :description, width: 240},
+    {name: _("New state"), association: :new_state, column: :description, width: 240},
+    {name: _("Laptop"), association: :laptop, column: :serial_number, width: 120},
+    {name: _("Creation Date"), column: :created_at, width: 120},
+  ]
   
   ##
   # Previous state

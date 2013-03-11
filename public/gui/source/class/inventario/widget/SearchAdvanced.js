@@ -65,6 +65,12 @@ qx.Class.define("inventario.widget.SearchAdvanced",
     {
       for (var i=0; i<len; i++)
       {
+        if ("searchable" in param[i] && !param[i].searchable)
+          continue;
+
+        if (!("db_column" in param[i]))
+          continue;
+
         var tf = this._setComponent(param[i]);
 
         var options = new qx.ui.form.SelectBox();
@@ -74,7 +80,6 @@ qx.Class.define("inventario.widget.SearchAdvanced",
         options.add(new qx.ui.form.ListItem(qx.locale.Manager.tr("Minor"), '', '<'));
         options.add(new qx.ui.form.ListItem(qx.locale.Manager.tr("Major"), '', '>'));
         options.add(new qx.ui.form.ListItem(qx.locale.Manager.tr("Unlike"), '', '!='));
-
 
         var addButton = new qx.ui.form.Button("+", "icon/16/add.png");
         addButton.setUserData("widget", tf);
@@ -89,7 +94,7 @@ qx.Class.define("inventario.widget.SearchAdvanced",
           width = 650;
         }
 
-        gl.add(new qx.ui.basic.Label(param[i]["text"]),
+        gl.add(new qx.ui.basic.Label(param[i]["name"]),
         {
           row    : i,
           column : 0
@@ -120,7 +125,7 @@ qx.Class.define("inventario.widget.SearchAdvanced",
 
         form.push(tf);
 
-        humanQuery.column[param[i].value] = param[i].text;
+        humanQuery.column[param[i].db_column] = param[i].name;
       }
     }
     catch(e)
@@ -218,7 +223,7 @@ qx.Class.define("inventario.widget.SearchAdvanced",
           break;
       }
 
-      tf.setUserData("key", param["value"]);
+      tf.setUserData("key", param.db_column);
       return tf;
     },
 

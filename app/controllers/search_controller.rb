@@ -17,9 +17,6 @@
 # 
 #                                                                          
 # TODO:
-# - set_vista (in spanish view) should be rename to something like set_models_scope
-#   since that is what it really does. On the client side the same should be done. 
-# - cleanup?
 # - is checking strings against "null" still needed? This was an old (0.6.1) Qooxdoo
 #   bug. 
 #
@@ -33,8 +30,6 @@
 
 class SearchController < ApplicationController
   around_filter :rpc_block
-  before_filter :set_vista
-  attr_accessor :vista
 
   def initialize(options = nil)
     @clazz_ref = controller_name.classify.constantize
@@ -47,58 +42,24 @@ class SearchController < ApplicationController
   end
 
   def search
-    do_search
-  end
+    send_column_info if params[:need_column_info]
+    objects = @clazz_ref
+    objects = objects.includes(@search_includes) if !@search_includes.nil?
 
-  def search_options
-    crearColumnasCriterios(@clazz_ref)
-    do_search()
-  end
+    page = params[:page] || 1
+    per_page = params[:per_page] ? params[:per_page].to_i : 30
+    objects = objects.page(page).per_page(per_page)
+    objects = handle_ordering(objects)
 
-  #####
-  # check if you would like to scope your models?
-  #
-  def set_vista
-    if params[:vista] and params[:vista] != "null"
-      @vista = params[:vista]
-    else
-      @vista = ""
-    end
-  end
-  
-  ####
-  # this method does the actual search of a Model's objects. 
-  #
-  def do_search
-    @find_options = {}
-    @find_options[:include] = @search_includes
+    client_conditions = extract_conditions()
+    objects = objects.where(client_conditions) if client_conditions
 
-    extract_client_options(@clazz_ref)
-    clients_conditions = extract_conditions()
-
-    # merge the search conditions that come from the client request with those set
-    # in the controller where do_search() was called. 
-    @search_conditions = clients_conditions
-
-    # We need to ask the model what columns and what other conditions does it want. 
-    @model_config = @vista == "" ? @clazz_ref.getColumnas() : @clazz_ref.getColumnas(@vista)
-
-    case @model_config.class.to_s
-    when "Array"
-      @output["cols_titles"] = @model_config.map { |x| x[:name] }
-    when "Hash"
-      extract_model_config()
-    end
-
-    @find_options.merge!( { :conditions => @search_conditions } ) if @search_conditions[0] != ""
-
-    returned_objects = @clazz_ref.paginate(@find_options)
-
-    @output["rows"] = getDataToSend(@clazz_ref, returned_objects)
-    @output["results"] = returned_objects.total_entries
-    @output["page_count"] = returned_objects.total_pages
+    @output["rows"] = format_results(objects)
+    @output["results"] = objects.total_entries
+    @output["page_count"] = objects.total_pages
+    @output["page"] = page
     @output["fecha"] = Date.current.iso8601
-    setup_choose_button_options(@clazz_ref)
+    setup_choose_button_options
   end
 
   def prepare_form(attribs = {})
@@ -230,96 +191,85 @@ class SearchController < ApplicationController
 
   private
 
-  ####
-  # Extract options sent by our HTTP client. 
-  #
-  def extract_client_options(clazz_ref)
-    model_config = @vista == "" ? clazz_ref.getColumnas() : clazz_ref.getColumnas(@vista)
-    column_config = model_config.is_a?(Array) ? model_config : model_config[:columnas]
+  # Given a field, determine the database column name, for use in
+  # ORDER BY and WHERE clauses, etc.
+  def get_db_column(field)
+    return nil if field[:column].blank?
 
-    @client_payload = params[:payload] ? JSON.parse(params[:payload]) : {}
-
-    # Some options for the listing of rows.  
-    @find_options[:per_page] = params[:cant_fila] ? params[:cant_fila].to_i : 30
-    @find_options[:page] = params[:page] || 1
-
-    if params[:sort_column] and params[:sort_column] != ""
-      # apply user-selected sort
-	  @find_options[:order] = column_config[params[:sort_column].to_i][:key]
-      if params[:sort] == "desc"
-	    @find_options[:order] += " DESC"
-      end
-    elsif model_config.is_a?(Hash) and model_config[:sort_column]
-      # model specifies default sort
-      @find_options[:order] = column_config[model_config[:sort_column]][:key]
-      if model_config[:sort_ascending] == false
-        @find_options[:order] += " DESC"
-      end
-    end
-  end
-
-
-  ####
-  # setup options established in the Model. 
-  #
-  def extract_model_config()
-    @output["cols_titles"] = @model_config[:columnas].map { |x| x[:name] }
-
-    @search_conditions = merge_conditions(@model_config[:conditions], @search_conditions)
-
-    # if the order was established in the Model, we use that one. 
-    @find_options[:order] = @model_config[:order] if @model_config[:order]
-
-    # Any joins configured in the model?
-    @find_options[:joins] = @model_config[:joins] if @model_config[:joins]
-
-    # include?
-    if @model_config[:include]
-      if !@find_options[:include]
-        @find_options[:include] = @model_config[:include]
+    if field[:association].present?
+      # If using an association, reflect and look up table name
+      reflection = @clazz_ref.reflect_on_association(field[:association])
+      if reflection.options.include?(:class_name)
+        assoc_class = reflection.options[:class_name]
       else
-        @find_options[:include] += @model_config[:include]
+        assoc_class = reflection.name.to_s
       end
+      assoc_class = classify_singular(assoc_class).constantize
+      return assoc_class.table_name + "." + field[:column].to_s
     end
-    
-    # group by?
-    @find_options[:group] = @model_config[:group] if @model_config[:group]
 
-    # in the Model you can set what columns should be displayed in the client-side listing. 
-    @output["columnas_visibles"] = @model_config[:columnas_visibles] if @model_config[:columnas_visibles]
-    # and a default sort order
-    @output["sort_column"] = @model_config[:sort_column] if @model_config[:sort_column]
-    @output["sort_ascending"] = @model_config[:sort_ascending] ? @model_config[:sort_ascending] : true
+    # Assume the field is in the current table
+    return controller_name + "." + field[:column].to_s
   end
 
+  def handle_ordering(objects)
+    fields = @clazz_ref::FIELDS
+    sort_column = 0
+    sort = "asc"
 
-  ####
+    if params[:sort_column].present?
+      # apply user-selected sort
+      sort_column = params[:sort_column].to_i
+      sort = params[:sort] if params[:sort].present?
+    else
+      # model specifies default sort via one column having :default_sort set
+      fields.each_with_index { |field, i|
+        if field[:default_sort]
+          sort_column = i
+          if [String, Symbol].include?(field[:default_sort].class)
+            sort = field[:default_sort].to_s
+          end
+          break
+        end
+      }
+    end
+
+    order = get_db_column(fields[sort_column])
+    return objects if order.nil?
+    
+    @output["sort_column"] = sort_column
+    @output["sort"] = sort
+    order += " " + sort
+    objects.order(order)
+  end
+
   # Create the data needed for the combobox the lets the user search by 
   # different criteria in our Listings. 
-  #
-  def crearColumnasCriterios(clazz_ref)
-    model_config = @vista == "" ? clazz_ref.getColumnas() : clazz_ref.getColumnas(@vista)
-    column_config = model_config.is_a?(Array) ? model_config : model_config[:columnas]
+  def send_column_info
+    @output["columns"] = @clazz_ref::FIELDS.map { |col|
+      tmp = col.slice(:name, :default_search, :visible, :width)
 
-    @output["criterios"] = column_config.map { |x|
-      sel = x[:selected] && x[:selected] == true ? true : false
-      tmp = { :text=> x[:name], :value => x[:key], :selected => sel}
-      tmp.merge!({:datatype => x[:datatype]}) if x[:datatype]
-      tmp.merge!({:options => x[:options]}) if x[:options]
-      tmp.merge!({:data => eval(x[:data])}) if x[:data]
-      tmp.merge!({:vista => x[:vista]}) if x[:vista]
-      tmp.merge!({:width => x[:width]}) if x[:width]
+      db_column = get_db_column(col)
+      tmp[:db_column] = db_column if db_column
+
+      if col.include?(:attribute)
+        # if we are dealing with an attribute-accessed field, we cannot
+        # offer DB-driven search functionality on that field
+        tmp[:searchable] = false
+
+        # if our attribute field has no column info, we can't sort either
+        tmp[:sortable] = false if !col.include?(:column)
+      end
       tmp
     }
   end
 
-
   ####
   # Config option for the 'Choose' button. 
   #
-  def setup_choose_button_options(clazz_ref)
-    if clazz_ref.respond_to?(:getChooseButtonColumns)
-      h = @vista == "" ? clazz_ref.getChooseButtonColumns : clazz_ref.getChooseButtonColumns(@vista)
+  def setup_choose_button_options()
+    if @clazz_ref.respond_to?(:getChooseButtonColumns)
+      h = @clazz_ref.getChooseButtonColumns
       h = h.with_indifferent_access
       if h[:desc_col].class.to_s == "Fixnum"
         h[:desc_col] = {:columnas => [h[:desc_col]],:separator => ""}
@@ -329,61 +279,38 @@ class SearchController < ApplicationController
   end
 
 
-  ##
-  # We return the table (array of arrays) of data that will be loaded in the Listing 
-  # on the Client side. 
-  #
-  def getDataToSend(clazz_ref, objects)
-    column_config = @model_config.is_a?(Array) ? @model_config : @model_config[:columnas]
-
+  def format_results(objects)
     objects.map { |obj|
-      column_config.map { |c| 
-        if c[:related_attribute]
-          begin
-            #It would be nice to use obj.send(...) But in getColumnas some strings 
-            #include "()" which breaks the send call.
-            newCol = eval("obj." + c[:related_attribute] + ".to_s")
-            newCol =  "" if newCol == nil
-          rescue
-            newCol =  ""
-          end
-        else
-          newCol = obj[c[:key]] ? obj[c[:key]] : ""
+      @clazz_ref::FIELDS.map { |c| 
+        # Always use :attribute value if provided
+        next eval("obj." + c[:attribute].to_s + ".to_s") if c[:attribute].present?
+
+        # Look up value from association
+        if c[:association].present?
+          tmp = obj.send(c[:association])
+          next "" if !tmp
+          next tmp.send(c[:column]).to_s
         end
-        newCol
+
+        # Its a column in the local table
+        next obj.send(c[:column]).to_s
       }
     }
   end
 
-  ###
-  # merges 2 conditions arrays in ActiveRecord's format
-  #
-  def merge_conditions(a,b)
-    a = a == nil ? [""] : a
-    b = b == nil ? [""] : b
-
-    conditions = [a,b]
-    conditions.delete([""])
-
-    ret = [conditions.map { |condition| condition[0] }.join(" and ")]
-    ret += a[1,a.length] if a.length > 1
-    ret += b[1,b.length] if b.length > 1
-    ret
-  end
-
-  ####
   # extract the conditions sent by the client request and 
   # return them in ActiveRecords conditions format
   def extract_conditions()
+    payload = params[:payload] ? JSON.parse(params[:payload]) : {}
     cond = [""]
     condStrArr = []
 
-    @client_payload.keys.each { |key| 
-      oprLen = @client_payload[key]["operators"].length
-      valLen = @client_payload[key]["values"].length
+    payload.keys.each { |key|
+      oprLen = payload[key]["operators"].length
+      valLen = payload[key]["values"].length
     
       # we treat letter with/without accents indistinctively. 
-      @client_payload[key]["values"].map { |m| 
+      payload[key]["values"].map { |m|
         begin
             m.gsub!(/n|ñ/,'(n|ñ)')
             m.gsub!(/a|á/,'(a|á)')
@@ -397,18 +324,23 @@ class SearchController < ApplicationController
     
       oprArr = []
       (valLen / oprLen).times do
-        subOprStr = @client_payload[key]["operators"].map { |opr|
+        subOprStr = payload[key]["operators"].map { |opr|
           " #{key} #{opr} "
         }.join(" and ")
         oprArr.push("(#{subOprStr})")
       end
       oprStr = oprArr.join(" or ")
       condStrArr.push("(#{oprStr})")
-      cond += @client_payload[key]["values"]
+      cond += payload[key]["values"]
     }
 
     cond[0] = condStrArr.join(" and ")
     cond
+  end
+
+  # Like classify but takes a singular table name as input
+  def classify_singular(table_name)
+    table_name.to_s.camelize.sub(/.*\./, '')
   end
 
 end

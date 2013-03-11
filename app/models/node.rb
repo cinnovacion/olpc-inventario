@@ -41,35 +41,23 @@ class Node < ActiveRecord::Base
   before_update :register_events
   
   DEFAULT_ZOOM_VALUE = 17
-
   MIN_REFRESH_TIME = 15
 
-
-
-  def self.getColumnas(vista = "")
-    ret = Hash.new
-
-    ret[:columnas] = [
-                      {:name => _("Id"), :key => "nodes.id", :related_attribute => "id", :width => 50},
-                      {:name => _("Name"), :key => "nodes.name", :related_attribute => "name", :width => 100},
-                      {:name => _("Latitude"), :key => "nodes.lat", :related_attribute => "getLat()", :width => 100},
-                      {:name => _("Longitude"), :key => "nodes.lng", :related_attribute => "getLng()", :width => 100},
-                      {:name => _("Height"), :key => "nodes.height", :related_attribute => "getHeight()", :width => 100},
-                      {:name => _("Zoom"), :key => "nodes.zoom", :related_attribute => "getZoom()", :width => 100},
-                      {:name => _("Location"), :key => "places.name", :related_attribute => "getPlaceName()", :width => 100},
-                      {:name => _("Parents Location"), :key => "places_places.name", :related_attribute => "getParentPlaceName()", :width => 100},
-                      {:name => _("Type"), :key => "node_types.name", :related_attribute => "getNodeTypeName()", :width => 100},
-                      {:name => _("Updated"), :key => "nodes.updated_at", :related_attribute => "updated_at", :width => 100},
-                      {:name => _("IP Address"), :key => "nodes.ip_address", :related_attribute => "getIpAddress()", :width => 100},
-                      {:name => _("Username"), :key => "nodes.username", :related_attribute => "getUsername()", :width => 100},
-                      {:name => _("Password"), :key => "nodes.password", :related_attribute => "getPassword()", :width => 100}    
-                     ]
-
-    # BROKEN: ver http://trac.paraguayeduca.org/ticket/22
-    # ret[:columnas_visibles] = [ true, true, true, true, false, true, true, true, false, false ]
-
-    ret
-  end
+  FIELDS = [
+    {name: _("Id"), column: :id, width: 50},
+    {name: _("Name"), column: :name},
+    {name: _("Latitude"), column: :lat},
+    {name: _("Longitude"), column: :lng},
+    {name: _("Height"), column: :height},
+    {name: _("Zoom"), column: :zoom},
+    {name: _("Location"), association: :place, column: :name},
+    {name: _("Parents Location"), association: :place, column: :name, attribute: :getParentPlaceName},
+    {name: _("Type"), association: :node_type, column: :name},
+    {name: _("Updated"), column: :updated_at}, 
+    {name: _("IP Address"), column: :ip_address, visible: false},
+    {name: _("Username"), column: :username, visible: false},
+    {name: _("Password"), column: :password, visible: false},
+  ]
 
   def self.getChooseButtonColumns(vista = "")
     ret = Hash.new
@@ -158,7 +146,7 @@ class Node < ActiveRecord::Base
 
       if event_type && node_nature
 
-        extended_info = { :id => self.id, :name => self.name, :type => node_nature }
+        extended_info = { :id => self.id, name: self.name, :type => node_nature }
         info = extended_info.to_json
         Event.register(event_type, "system", info, self.place.id)
         NotificationsPool.register(event_type, extended_info.merge({ "subject" => self.place.getName }), place)
@@ -224,7 +212,7 @@ class Node < ActiveRecord::Base
   def nodefize()
     node_desc = {
       :id => self.id,
-      :name => self.name,
+      name: self.name,
       :lat => self.getLat(),
       :lng => self.getLng(),
       :height => self.getHeight(),

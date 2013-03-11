@@ -23,32 +23,17 @@
 
 
 /**
- * Esta clase utiliza 6 metodos:
+ * This class uses 4 methods:
  *
- * 1) searchUrl: un metodo al cual se le envian 2 parametros:
- *               a) query (cadena de busqueda)
- *               b) query_option (criterio de busqueda)
- *    y retorna:
- *        - rows: la matriz de resultados para cargar en la grilla via table.getTableModel().setData(rows);
+ * 1) searchUrl
+ *    Execute a search, retrieving the results, plus (optionally) metadata
+ *    about the columns.
  *
- * 2) initialDataUrl: no se le envian parametros (de momento) y devuelve:
- *                    - criterios (formato de loadcombo() )
- *                    - col_titles (vector de titulos de la tabla de resultados)
- *                    - rows  (filas iniciales)
- *                    - page_count (cantidad de paginas)
- *                    - elegir_data (hash) {id_col, desc_col}
+ * 2) addUrl: datos p/ formulario de nuevo element
  *
- * 3) listUrl: listado
+ * 3) saveUrl: guardar datos del formulario (en RoR seria crear un nuevo objeto)
  *
- * 4) addUrl: datos p/ formulario de nuevo element
- *
- * 5) saveUrl: guardar datos del formulario (en RoR seria crear un nuevo objeto)
- *
- * 6) deleteUrl: eliminar elemento
- *
- *
- * @param oMethods {Hash}  hash de configuracion {searchUrl,initialDataUrl,...}
- * @return void
+ * 4) deleteUrl: eliminar elemento
  */
 
 /*
@@ -66,14 +51,10 @@ qx.Class.define("inventario.window.Abm2",
     this.base(arguments);
     this.prepared = false;
     this._number_format = null;
-
-    this._searchMode = false;
+    this._renderers_setup = false;
 
     try {
       this.setSearchUrl(oMethods.searchUrl);
-      this.setInitialDataUrl(oMethods.initialDataUrl);
-
-      this.setListUrl(oMethods.listUrl);
       if (oMethods.addUrl) this.setAddUrl(oMethods.addUrl);
       if (oMethods.saveUrl) this.setSaveUrl(oMethods.saveUrl);
       if (oMethods.deleteUrl) this.setDeleteUrl(oMethods.deleteUrl);
@@ -155,14 +136,7 @@ qx.Class.define("inventario.window.Abm2",
       init  : ""
     },
 
-    initialDataUrl :
-    {
-      check : "String",
-      init  : ""
-    },
-
     /* CRUD */
-    listUrl : { check : "String" },
     addUrl : { check : "String" },
     saveUrl : { check : "String" },
     deleteUrl : { check : "String" },
@@ -625,9 +599,9 @@ qx.Class.define("inventario.window.Abm2",
         try
         {
           /* New search; return to first page */
-          this._resetNavigationOptions();
+          this._page = 1;
           this._validateData();
-          this._saveData(true);
+          this._doSearch();
         }
         catch(e)
         {
@@ -794,18 +768,18 @@ qx.Class.define("inventario.window.Abm2",
      */
     _loadInitialData : function()
     {
-      this._pages = 1;  // pagina actual
+      this._page = 1;  // current page
       this._numPages = 0;  // cantidad de paginas en el listado
       this._sort_column = null;
       this._sort = "asc";
       this._internal_sort = false; // sort is happening, not triggered by user
     
-      var url = this.getInitialDataUrl();
       var dhash = this.getDataHashQuery();
+      dhash["need_column_info"] = true;
 
       inventario.transport.Transport.callRemote(
       {
-        url        : url,
+        url        : this.getSearchUrl(),
         parametros : null,
         handle     : this._loadInitialDataResp,
         data       : dhash
@@ -827,60 +801,59 @@ qx.Class.define("inventario.window.Abm2",
      */
     _loadInitialDataResp : function(remoteData, params)
     {
-      if (remoteData["fecha"]) {
+      if (remoteData["fecha"])
         this.setFechaActual(remoteData["fecha"]);
-      }
 
+      var columns = remoteData["columns"];
+
+      /* Search field combo box */
       var cb = this.getSearchOptions();
-      inventario.widget.Form.loadComboBox(cb, remoteData["criterios"], true);
-      this.setSearchAdvancedData(remoteData["criterios"]);
+      var combo_data = [];
+      for (var i=0; i < columns.length; i++) {
+        if ("searchable" in columns[i] && !columns[i].searchable)
+          continue;
 
-      var listColumns = remoteData["cols_titles"];  // titulos para el listado
-      var h = new Array();
-      var len = listColumns.length;
+        if (!("db_column" in columns[i]))
+          continue;
 
-      for (var i=0; i<len; i++)
-      {
-        var width = (remoteData["criterios"][i]["width"] ? remoteData["criterios"][i]["width"] : 100);
+        var col = {
+          text: columns[i].name,
+          value: columns[i].db_column
+        }
+        if (columns[i].default_search)
+          col.selected = true;
+        combo_data.push(col);
+      }
+      inventario.widget.Form.loadComboBox(cb, combo_data, true);
 
-        h.push(
-        {
-          titulo   : remoteData["cols_titles"][i],
+      this.setSearchAdvancedData(remoteData["columns"]);
+
+      /* Table */
+      var h = [];
+      for (var i=0; i < columns.length; i++) {
+        var width = (columns[i].width ? columns[i].width : 100);
+        var tmp = {
+          titulo   : columns[i].name,
           editable : true,
           width    : width
-        });
+        };
+        if ("visible" in columns[i])
+          tmp.visible = columns[i].visible;
+        if ("sortable" in columns[i])
+          tmp.sortable = columns[i].sortable;
+        h.push(tmp);
       }
-
       var table = inventario.widget.Table.createTable(h, 400, 300);
       table.setMinHeight(300);
 
-      if (remoteData["columnas_visibles"])
-      {
-        var len = remoteData["columnas_visibles"].length;
-
-        for (var i=0; i<len; i++)
-        {
-          var visibleBool = remoteData["columnas_visibles"][i];
-
-          if (!visibleBool) {
-            table.getTableColumnModel().setColumnVisible(i, visibleBool);
-          }
-        }
-      }
-
-      if ("sort_column" in remoteData && "sort_ascending" in remoteData)
-      {
-        table.getTableModel().sortByColumn(remoteData["sort_column"], remoteData["sort_ascending"]);
-      }
-
       table.getTableModel().addListener("sorted", function(e)
         {
-          if (this._internal_sort)
-            return;
           var data = e.getData();
           this._sort = data.ascending ? "asc" : "desc";
           this._sort_column = data.columnIndex;
-          this._saveData(false);
+
+          if (!this._internal_sort)
+            this._doSearch();
         },
         this);
  
@@ -901,28 +874,18 @@ qx.Class.define("inventario.window.Abm2",
         this);
       }
 
-      // load the data
-      this._actualizarPantalla(remoteData);
+      this._showResults(remoteData);
 
       /* Datos para saber que columnas utilizar para cargar un combobox */
-      if (remoteData["elegir_data"])
-      {
+      if (remoteData["elegir_data"]) {
         var col_desc = remoteData["elegir_data"]["desc_col"];
         var col_id = remoteData["elegir_data"]["id_col"];
         this.setChooseComboBoxDesc(col_desc);
         this.setChooseComboBoxId(col_id);
 
         /* Condiciones para filas seleccionables */
-        if (remoteData["elegir_data"]["selection_options"]) {
+        if (remoteData["elegir_data"]["selection_options"])
           this.setSelectionOptions(remoteData["elegir_data"]["selection_options"]);
-        }
-      }
-
-      /* activamos los botones > y >> si es que la cantida de paginas encontradas es > 1 */
-      if (this._numPages > 1)
-      {
-        this.getNextButton().setEnabled(true);
-        this.getLastButton().setEnabled(true);
       }
 
       var mainVBox = this.getVbox();
@@ -989,17 +952,14 @@ qx.Class.define("inventario.window.Abm2",
      *       - query_option (criterio de busqueda)
      * @return {void} 
      */
-    _saveData : function(newSearch)
+    _doSearch : function()
     {
-      var url = this.getSearchUrl();
-      var dhash = this.getDataHashQuery();
-
       inventario.transport.Transport.callRemote(
       {
-        url        : url,
-        parametros : newSearch,
-        handle     : this._saveDataResp,
-        data       : dhash
+        url        : this.getSearchUrl(),
+        parametros : null,
+        handle     : this._searchResp,
+        data       : this.getDataHashQuery()
       },
       this);
     },
@@ -1014,19 +974,9 @@ qx.Class.define("inventario.window.Abm2",
      * @param handleParams {var} TODOC
      * @return {void} 
      */
-    _saveDataResp : function(remoteData, handleParams)
+    _searchResp : function(remoteData, handleParams)
     {
-      if (remoteData["rows"].length > 0)
-      {
-        this._searchMode = true;
-        this._numPages = remoteData["page_count"];
-
-        if (handleParams) {
-          this._pages = 1;
-        }
-      }
-
-      this._actualizarPantalla(remoteData);
+      this._showResults(remoteData);
 
       // Select first row
       if (remoteData["rows"] && remoteData["rows"].length > 0) {
@@ -1079,15 +1029,34 @@ qx.Class.define("inventario.window.Abm2",
     {
       if (remoteData["id"])
       {
-        // no se para que sirve esta variable, dsp se tendria que sacar
-        this._searchMode = true;
-        this.queryStr = remoteData["id"];
-
         // aca suponemos que siempre el primer items de select es el id
         this.queryOption = remoteData["primary_key"];
       }
 
       this._navegar();
+    },
+
+    _setupRenderers : function(rows)
+    {
+      /* Only setup renderers the first time we receive row data. */
+      if (this._renderers_setup || rows.length == 0)
+        return;
+
+      var table = this.getResultsGrid();
+      var len = rows[0].length;
+      var tcm = table.getTableColumnModel();
+
+      for (var i=0; i < len; i++) {
+        if (typeof (rows[0][i]) == "object") {
+          tcm.setDataCellRenderer(i, new inventario.qooxdoo.ListDataCellRenderer());
+        } else if (typeof (rows[0][i]) == "boolean") {
+          tcm.setDataCellRenderer(i, new qx.ui.table.cellrenderer.Boolean());
+          table.removeListener("cellClick", this._seleccionarCheckBox, this);
+          table.addListener("cellClick", this._seleccionarCheckBox, this);
+        }
+      }
+
+      this._renderers_setup = true;
     },
 
     /**
@@ -1096,41 +1065,8 @@ qx.Class.define("inventario.window.Abm2",
      * @param filas {Array} vector de filas
      * @return {void} void
      */
-    _cargarFilas : function(filas)
+    _cargarFilas : function(remoteData)
     {
-      var table = this.getResultsGrid();
-
-      // FIXME: this should be done only once. 
-      if (filas.length > 0)
-      {
-        var len = filas[0].length;
-        var tcm = table.getTableColumnModel();
-
-        for (var i=0; i<len; i++)
-        {
-          if (typeof (filas[0][i]) == "object") {
-            tcm.setDataCellRenderer(i, new inventario.qooxdoo.ListDataCellRenderer());
-          }
-          else if (typeof (filas[0][i]) == "boolean")
-          {
-            tcm.setDataCellRenderer(i, new qx.ui.table.cellrenderer.Boolean());
-
-            table.removeListener("cellClick", this._seleccionarCheckBox, this);
-            table.addListener("cellClick", this._seleccionarCheckBox, this);
-          }
-        }
-      }
-
-      /* load data while preserving sort column */
-      var model = table.getTableModel();
-      var sort_column = model.getSortColumnIndex();
-      var sort_ascending = model.isSortAscending();
-      model.setData(filas);
-      if (sort_column != -1) {
-        this._internal_sort = true;
-        model.sortByColumn(sort_column, sort_ascending);
-        this._internal_sort = false;
-      }
     },
 
     _deleteRows : function()
@@ -1144,15 +1080,12 @@ qx.Class.define("inventario.window.Abm2",
         var data = { payload : payload };
         var vista = this.getVista();
 
-        if (vista != "") {
+        if (vista != "")
           data["vista"] = vista;
-        }
-
-        var url = this.getDeleteUrl();
 
         inventario.transport.Transport.callRemote(
         {
-          url        : url,
+          url        : this.getDeleteUrl(),
           parametros : null,
           handle     : this._deleteRowsResp,
           data       : data
@@ -1175,17 +1108,12 @@ qx.Class.define("inventario.window.Abm2",
      */
     _navegar : function()
     {
-      if (!this._searchMode) {
-        this.queryStr = "";
-      }
-
-      if (!this.queryOption || (this.queryOption && this.queryOption == ""))
-      {
+      if (!this.queryOption || (this.queryOption && this.queryOption == "")) {
         var cb = this.getSearchOptions();
         this.queryOption = inventario.widget.Form.getInputValue(cb);
       }
 
-      this._saveData(false);
+      this._doSearch();
     },
 
     _modify : function()
@@ -1212,140 +1140,101 @@ qx.Class.define("inventario.window.Abm2",
       }
     },
 
-    _showPageNumber : function()
+    _updatePageWidgets : function()
     {
       var str = this.tr("Displaying results page %1 of %2");
-      str = qx.lang.String.format(str, [this._pages, this._numPages]);
+      str = qx.lang.String.format(str, [this._page, this._numPages]);
       this._page_label.setValue(str);
 
       str = this.tr("Number of results found: %1");
       str = qx.lang.String.format(str, [this.getResults()]);
       this._num_results_label.setValue(str);
+
+      this.getFirstButton().setEnabled(this._page != 1);
+      this.getPrevButton().setEnabled(this._page != 1);
+      this.getNextButton().setEnabled(this._page < this._numPages);
+      this.getLastButton().setEnabled(this._page != this._numPages);
     },
 
     getDataHashQuery : function()
     {
       var datos = this.getQueryComponents();
 
-      var cant_fila = this.getFilasSpinner().getValue();
-      cant_fila = ((cant_fila && cant_fila > 0) ? cant_fila : 100);
+      var per_page = this.getFilasSpinner().getValue();
+      per_page = ((per_page && per_page > 0) ? per_page : 100);
 
       var dhash =
       {
         payload   : qx.lang.Json.stringify(datos),
-        page      : this._pages,
-        cant_fila : cant_fila,
-        sort      : this._sort,
-        sort_column : this._sort_column
+        page      : this._page,
+        per_page  : per_page
       };
 
-      var vista = this.getVista();
-
-      if (vista != "") {
-        dhash["vista"] = vista;
+      if (this._sort_column != null) {
+        dhash.sort_column = this._sort_column
+        dhash.sort = this._sort;
       }
+
+      var vista = this.getVista();
+      if (vista != "")
+        dhash["vista"] = vista;
 
       return dhash;
     },
 
-    _actualizarPantalla : function(remoteData)
+    _showResults : function(remoteData)
     {
       var table = this.getResultsGrid();
-      this._cargarFilas(remoteData["rows"]);
+      var model = table.getTableModel();
+
+      this._setupRenderers(remoteData["rows"]);
+
+      /* Display data */
+      model.setData(remoteData["rows"]);
+
+      /* Indicate how the data is sorted */
+      if ("sort_column" in remoteData) {
+        this._internal_sort = true;
+        model.sortByColumn(remoteData.sort_column, remoteData.sort != "desc");
+        this._internal_sort = false;
+      }
+
+      /* Update page numbers etc */
       this._numPages = remoteData["page_count"];
       this.setResults(remoteData["results"]);
-      this._showPageNumber();
+      this._page = remoteData["page"];
+      this._updatePageWidgets();
     },
 
     _navegarPaginaAnterior : function(e)
     {
-      if (this._pages == this._numPages)
-      {
-        /* Habilitar los botones >> y > porque acabo de pasar de la primera pagina */
-        this.getLastButton().setEnabled(true);
-        this.getNextButton().setEnabled(true);
-      }
-
-      if (this._pages > 1)
-      {
-        this._pages--;
+      if (this._page > 1) {
+        this._page--;
         this._navegar();
-        this._showPageNumber();
-      }
-
-      if (this._pages == 1)
-      {
-        /* Deshabilitar los botones << y < porque llegue a la primera pagina */
-        this.getPrevButton().setEnabled(false);
-        this.getFirstButton().setEnabled(false);
       }
     },
 
     _navegarPaginaSiguiente : function(e)
     {
-      if (this._pages == 1)
-      {
-        /* Habilitar los botones << y < porque acabo de pasar de la primera pagina */
-        this.getPrevButton().setEnabled(true);
-        this.getFirstButton().setEnabled(true);
-      }
-
-      if (this._numPages > this._pages)
-      {
-        this._pages++;
+      if (this._numPages > this._page) {
+        this._page++;
         this._navegar();
-        this._showPageNumber();
-      }
-
-      if (this._pages == this._numPages)
-      {
-        /* Deshabilitar los botones de > y >> porque llegue a la ultima pagina */
-        this.getLastButton().setEnabled(false);
-        this.getNextButton().setEnabled(false);
       }
     },
 
     _navegarPrimeraPagina : function(e)
     {
-      if (this._pages != 1) {
-        /* Deshabilitar los botones de << y < porque estoy en la primera pagina */
-        this.getPrevButton().setEnabled(false);
-        this.getFirstButton().setEnabled(false);
-
-        /* Habilitar los botones de >> y > */
-        this.getNextButton().setEnabled(true);
-        this.getLastButton().setEnabled(true);
-
-        this._pages = 1;
+      if (this._page != 1) {
+        this._page = 1;
         this._navegar();
-        this._showPageNumber();
       }
-    },
-
-    _resetNavigationOptions : function()
-    {
-      this.getPrevButton().setEnabled(false);
-      this.getFirstButton().setEnabled(false);
-      this.getNextButton().setEnabled(true);
-      this.getLastButton().setEnabled(true);
-      this._pages = 1;
-      this._showPageNumber();
     },
 
     _navegarUltimaPagina : function(e)
     {
       if (this._numPages > 1) {
-        /* Deshabilitar los botones de >> y > porque estoy en la ultima pagina */
-        this.getNextButton().setEnabled(false);
-        this.getLastButton().setEnabled(false);
-
-        /* Habilitar los botones de << y < */
-        this.getPrevButton().setEnabled(true);
-        this.getFirstButton().setEnabled(true);
-
-        this._pages = this._numPages;
+        this._page = this._numPages;
         this._navegar();
-        this._showPageNumber();
       }
     },
 
@@ -1356,7 +1245,7 @@ qx.Class.define("inventario.window.Abm2",
         var f = function(components)
         {
           this.setQueryComponents(components);
-          this._saveData(true);
+          this._doSearch();
         };
 
         var datos =
@@ -1519,10 +1408,8 @@ qx.Class.define("inventario.window.Abm2",
 
 
     _reloadVista:  function () {
-        this._pages = 1;  // pagina actual
-        this._numPages = 0;  // cantidad de paginas en el listado
         this.setQueryComponents({});
-        this._saveData(true);
+        this._doSearch();
     },
 
     _addCustomButton : function(btn) {

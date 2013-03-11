@@ -30,16 +30,14 @@ class Lot < ActiveRecord::Base
 
   validates_presence_of :person_id, :message => N_("You must provide the responsible.")
 
-  def self.getColumnas()
-    [ 
-     {:name => _("Id"),:key => "lots.id",:related_attribute => "id", :width => 120},
-     {:name => _("Nbr of Boxes"),:key => "lots.boxes_number",:related_attribute => "getBoxesNumber()", :width => 120},
-     {:name => _("Creation Date"),:key => "lots.created_at",:related_attribute => "created_at", :width => 120},
-     {:name => _("Responsible"),:key => "people.name",:related_attribute => "getResponsable()", :width => 255},
-     {:name => _("Delivered"),:key => "lots.delivered",:related_attribute => "getDelivered()", :width => 120},
-     {:name => _("Delivery Date"),:key => "lots.delivery_date",:related_attribute => "getDeliveryDate()", :width => 120}
-    ]
-   end
+  FIELDS = [
+    {name: _("Id"), column: :id, width: 120},
+    {name: _("Nbr of Boxes"), column: :boxes_number, width: 120},
+    {name: _("Creation Date"), column: :created_at, width: 120},
+    {name: _("Responsible"), association: :person, column: :lastname, attribute: :getResponsable, width: 255},
+    {name: _("Delivered"), column: :delivered, width: 120},
+    {name: _("Delivery Date"), column: :delivery_date, width: 120}
+  ]
 
   def self.register(attribs, sections)
 

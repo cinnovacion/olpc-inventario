@@ -30,12 +30,10 @@ class Image < ActiveRecord::Base
   validates_presence_of :name, :message => N_("The image must be named.")
   validates_presence_of :file, :message => N_("The image must have an associated file.")
 
-  def self.getColumnas(vista = "")
-    [ 
-     {:name => _("Id"),:key => "images.id",:related_attribute => "id", :width => 120},
-     {:name => _("Name"),:key => "images.name",:related_attribute => "name", :width => 120}
-    ]
-  end
+  FIELDS = [
+    {name: _("Id"), column: :id, width: 120},
+    {name: _("Name"), column: :name, width: 120}
+  ]
 
   def self.getChooseButtonColumns(vista = "")
     ret = Hash.new

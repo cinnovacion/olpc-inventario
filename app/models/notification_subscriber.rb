@@ -33,35 +33,12 @@ class NotificationSubscriber < ActiveRecord::Base
 
   before_save :validate_person
 
-  def self.getColumnas()
-    ret = Hash.new 
-    ret[:columnas] = [
-                      {:name => _("Id"),
-                       :key => "notification_subscribers.id",
-                       :related_attribute => "id",
-                       :width => 50
-                      },
-                      {:name => _("Notification"),
-                       :key => "notifications.name",
-                       :related_attribute => "getNotificationName()",
-                       :width => 100
-                      },
-                      {:name => _("Subscriber"),
-                       :key => "people.name",
-                       :related_attribute => "getSubscriberName()",
-                       :width => 100
-                      },
-                      {:name => _("Date of Subscription"),
-                       :key => "notification_subscribers.created_at.name",
-                       :related_attribute => "created_at",
-                       :width => 120
-                      }
-                     ]
-
-
-    ret[:columnas_visibles] = [false,true,true,true]
-    ret
-  end
+  FIELDS = [
+    {name: _("Id"), column: :id, width: 50, visible: false},
+    {name: _("Notification"), column: :name},
+    {name: _("Subscriber"), association: :person, column: :lastname, attribute: :getSubscriberName},
+    {name: _("Date of Subscription"), column: :created_at, width: 120},
+  ]
 
   def validate_person()
     if !self.person.isEmailValid?

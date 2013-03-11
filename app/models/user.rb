@@ -34,13 +34,11 @@ class User < ActiveRecord::Base
   #        Server-side code should never trust the client!
   before_validation { self.clave = self.password if !self.password.blank? }
 
-  def self.getColumnas
-    [ 
-     {:name => _("ID"),:key => "users.id",:related_attribute => "id", :width => 50},
-     {:name => _("Username"),:key => "users.usuario",:related_attribute => "usuario", :width => 90},
-     {:name => _("Name"),:key => "people.name",:related_attribute => "person", :width => 250}
-    ]
-  end
+  FIELDS = [ 
+    {name: _("ID"), column: :id, width: 50},
+    {name: _("Username"), column: :usuario, width: 90},
+    {name: _("Name"), association: :person, column: :lastname, attribute: :person, width: 250}
+  ]
 
   def self.getChooseButtonColumns
     { desc_col: 1, id_col: 0 }

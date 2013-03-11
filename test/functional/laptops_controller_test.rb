@@ -5,6 +5,13 @@ class LaptopsControllerTest < ActionController::TestCase
     @request.session[:user_id] = 1
   end
 
+  # search controller tests
+  test "search" do
+    post :search
+    assert_response :success
+    assert_equal "ok", response_result
+  end
+
   test "new single edit" do
     get :new
     assert_response :success

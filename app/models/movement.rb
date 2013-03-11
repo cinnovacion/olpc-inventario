@@ -40,22 +40,17 @@ class Movement < ActiveRecord::Base
   before_save :do_before_save
   after_save :handle_returns
 
-  def self.getColumnas()
-    {
-    columnas: [ 
-     {name: _("Mov. Nbr"), key: "movements.id", related_attribute: "id", width: 50},
-     {name: _("Mov. Date"), key: "movements.created_at", related_attribute: "created_at", width: 90},
-     {name: _("Type"), key: "movement_types.description", related_attribute: "movement_type", width: 150},
-     {name: _("Serial Nbr"), key: "laptops.serial_number", related_attribute: "laptop.serial_number", width: 150},
-     {name: _("Given by"), key: "people.name", related_attribute: "source_person", width: 180},
-     {name: _("Given (Doc id)"), key: "people.id_document", related_attribute: "source_person.id_document", width: 180},
-     {name: _("Received by"), key: "destination_people_movements.name", related_attribute: "destination_person", width: 180},
-     {name: _("Received (Doc id)"), key: "destination_people_movements.id_document", related_attribute: "destination_person.id_document", width: 180},
-     {name: _("Comment"), key: "movements.comment", related_attribute: "comment", width: 160}
-    ],
-    sort_column: 0
-    }
-  end
+  FIELDS = [
+    {name: _("Mov. Nbr"), column: :id, width: 50, default_sort: :desc},
+    {name: _("Mov. Date"), column: :created_at, width: 90},
+    {name: _("Type"), association: :movement_type, column: :description, width: 150},
+    {name: _("Serial Nbr"), association: :laptop, column: :serial_number, width: 150},
+    {name: _("Given by"), association: :source_person, column: :lastname, attribute: :source_person, width: 180},
+    {name: _("Given (Doc id)"), association: :source_person, column: :id_document, width: 180},
+    {name: _("Received by"), association: :destination_person, column: :name, attribute: :destination_person, width: 180},
+    {name: _("Received (Doc id)"), association: :destination_person, column: :id_document, width: 180},
+    {name: _("Comment"), column: :comment, width: 160}
+  ]
 
   def self.register(attribs)
     attribs = attribs.with_indifferent_access

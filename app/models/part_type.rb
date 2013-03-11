@@ -28,14 +28,12 @@ class PartType < ActiveRecord::Base
 
   validates_uniqueness_of :internal_tag, :message => N_("The tag must be unique")
 
-  def self.getColumnas()
-    [ 
-     {:name => _("Id"),:key => "part_types.id",:related_attribute => "id", :width => 50},
-     {:name => _("Description"),:key => "part_types.description",:related_attribute => "description()", :width => 250},
-     {:name => _("Cost"), :key => "part_types.cost", :related_attribute => "getCost()", :width => 100},
-     {:name => _("Internal Tag"),:key => "part_types.internal_tag",:related_attribute => "internal_tag", :width => 250}
-    ]
-  end
+  FIELDS = [ 
+    {name: _("Id"), column: :id, width: 50},
+    {name: _("Description"), column: :description, width: 250},
+    {name: _("Cost"), column: :cost},
+    {name: _("Internal Tag"), column: :internal_tag, width: 250},
+  ]
 
   def self.getChooseButtonColumns(vista = "")
     ret = Hash.new

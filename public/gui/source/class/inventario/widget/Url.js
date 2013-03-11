@@ -23,12 +23,10 @@ qx.Class.define("inventario.widget.Url", {
     getUrl : function(param) {
       param = "/" + param + "/";
       return {
-        listUrl        : param + "search",
         addUrl         : param + "new",
         saveUrl        : param + "save",
         deleteUrl      : param + "delete",
-        searchUrl      : param + "search",
-        initialDataUrl : param + "search_options"
+        searchUrl      : param + "search"
       }
     }
   }

@@ -30,31 +30,11 @@ class Status < ActiveRecord::Base
 
   validates_uniqueness_of :internal_tag, :message => N_("The tag must be unique")
 
-	def self.getColumnas()
-		ret = Hash.new
-		ret[:columnas] = [
-				  {
-					:name => _("Id"),
-					:key => "statuses.id",
-					:related_attribute => "id",
-					:width => 50
-				  },
-				  {
-					:name => _("Description"),
-					:key => "statuses.description",
-					:related_attribute => "description",
-					:width => 255
-				  },
-				  {
-					:name => _("Abbreviation"),
-					:key => "statuses.abbrev",
-					:related_attribute => "abbrev",
-					:width => 50
-				  }
-				 ]
-		ret[:columnas_visibles] = [false,true,true]
-		ret
-	end
+	FIELDS = [
+    {name: _("Id"), column: :id, width: 50, visible: false},
+		{name: _("Description"), column: :description, width: 255},
+		{name: _("Abbreviation"), column: :abbrev, width: 50},
+  ]
 
   def self.activated
     Status.find_by_internal_tag!("activated")

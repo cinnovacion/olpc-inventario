@@ -29,14 +29,12 @@ class ProblemType < ActiveRecord::Base
 
   validates_uniqueness_of :internal_tag, :message => N_("The tag must be unique")
 
-  def self.getColumnas()
-    [ 
-     {:name => _("Id"), :key => "problem_types.id", :related_attribute => "id", :width => 50},
-     {:name => _("Name"), :key => "problem_types.name", :related_attribute => "name", :width => 100},
-     {:name => _("Description"), :key => "problem_types.description", :related_attribute => "description()", :width => 360},
-     {:name => _("Internal Tag"),:key => "problem_types.internal_tag",:related_attribute => "internal_tag", :width => 100}
-    ]
-  end
+  FIELDS = [ 
+    {name: _("Id"), column: :id, width: 50},
+    {name: _("Name"), column: :name},
+    {name: _("Description"), column: :description, width: 360},
+    {name: _("Internal Tag"), column: :internal_tag},
+  ]
 
   def to_s
     self.name.to_s

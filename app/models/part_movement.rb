@@ -29,16 +29,14 @@ class PartMovement < ActiveRecord::Base
   attr_accessible :person, :person_id
   attr_accessible :amount
 
-  def self.getColumnas()
-    [ 
-     {:name => _("Id"), :key => "part_movements.id", :related_attribute => "id", :width => 100},
-     {:name => _("Movement"), :key => "part_movement_types.name", :related_attribute => "getPartMovementTypeName", :width => 100},
-     {:name => _("Part"), :key => "part_types.description", :related_attribute => "getPartTypeDescription", :width => 255},
-     {:name => _("Amount"), :key => "part_movements.amount", :related_attribute => "getAmount", :width => 100},
-     {:name => _("Responsible (CI)"), :key => "people.id_document", :related_attribute => "getResponsibleIdDoc", :width => 100},
-     {:name => _("Creation Date"), :key => "part_movements.created_at", :related_attribute => "created_at", :width => 100}
-    ]
-  end
+  FIELDS = [ 
+     {name: _("Id"), column: :id},
+     {name: _("Movement"), association: :part_movement_type, column: :name},
+     {name: _("Part"), association: :part_type, column: :description, width: 255},
+     {name: _("Amount"), column: :amount},
+     {name: _("Responsible (CI)"), association: :person, column: :id_document},
+     {name: _("Creation Date"), column: :created_at},
+  ]
 
   def self.registerReplacements(problem_solution)
     attribs = {}

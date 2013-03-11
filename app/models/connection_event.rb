@@ -21,17 +21,15 @@ class ConnectionEvent < ActiveRecord::Base
   validates :vhash, :allow_nil => true, :format => { :with => /[a-z0-9]{64}/ }
   before_save { self.connected_at = Time.zone.now if self.connected_at.nil? }
 
-  def self.getColumnas(vista = "")
-    [
-     {name: _("Id"), key: "connection_events.id", related_attribute: "id"},
-     {name: _("Laptop"), key: "laptops.serial_number", related_attribute: "laptop.serial_number"},
-     {name: _("Connected at"), key: "connection_events.connected_at", related_attribute: "connected_at", width: 150},
-     {name: _("IP address"), key: "connection_events.ip_address", related_attribute: "ip_address"},
-     {name: _("Software version"), key: "software_versions.name", related_attribute: "software_version"},
-     {name: _("Software version hash"), key: "connection_events.vhash", related_attribute: "vhash"},
-     {name: _("Free disk space"), key: "connection_events.free_space", :related_attribute => "free_space"},
-    ]
-  end
+  FIELDS = [
+    {name: _("Id"), column: :id, width: 50},
+    {name: _("Laptop"), association: :laptop, column: :serial_number},
+    {name: _("Connected at"), column: :connected_at, width: 150, default_sort: :desc},
+    {name: _("IP address"), column: :ip_address},
+    {name: _("Software version"), column: :vhash, attribute: :software_version},
+    {name: _("Software version hash"), column: :vhash},
+    {name: _("Free disk space"), column: :free_space},
+  ]
 
   def connected_at=(value)
     # special case: if the connected time is provided as a string without

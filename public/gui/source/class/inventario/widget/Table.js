@@ -26,14 +26,19 @@ qx.Class.define("inventario.widget.Table",
     for (var i=0; i<vdata.length; i++) titulo.push(vdata[i]["titulo"]);
     this._tableModel = new qx.ui.table.model.Simple();
     this._tableModel.setColumns(titulo);
-
-    for (var i=0; i<vdata.length; i++) this._tableModel.setColumnEditable(i, vdata[i]["editable"]);
     this.base(arguments, this._tableModel);
 
-    for (var i=0; i<vdata.length; i++) {
-      this.setColumnWidth(i, vdata[i]["width"]);
-      if (vdata[i]["renderer"]) this.getTableColumnModel().setDataCellRenderer(i, new vdata[i]["renderer"]);
-      if (vdata[i]["factory"]) this.getTableColumnModel().setCellEditorFactory(i, new vdata[i]["factory"]);
+    for (var i=0; i < vdata.length; i++) {
+      var col = vdata[i];
+      this._tableModel.setColumnEditable(i, col.editable);
+      if ("visible" in col)
+        this.getTableColumnModel().setColumnVisible(i, col.visible);
+      if ("sortable" in col)
+        this._tableModel.setColumnSortable(i, col.sortable);
+
+      this.setColumnWidth(i, col.width);
+      if (col.renderer) this.getTableColumnModel().setDataCellRenderer(i, new col.renderer);
+      if (col.factory) this.getTableColumnModel().setCellEditorFactory(i, new col.factory);
 
       /* because we do sorting and data selection on the server, we want
        * to disable qooxdoo's sorting and instead pull in new data from the
@@ -71,18 +76,6 @@ qx.Class.define("inventario.widget.Table",
       return data2;
     },
 
-    copiarTablaSlice : function(t)
-    {
-      var ret = new Array();
-      var len = (t ? t.length : 0);
-
-      for (var i=0; i<len; i++) {
-        ret.push(t[i].slice());
-      }
-
-      return ret;
-    },
-
     dummySort : function(row1, row2)
     {
       /* next item always comes after */
@@ -112,67 +105,6 @@ qx.Class.define("inventario.widget.Table",
       }
 
       return table;
-    },
-
-    /**
-     * createTable2(): crear una tabla. Wrapper de createTable(). Normalmente dentro de loadInitialData()
-     *
-     * @param titles {Array} vector de titulos
-     * @param options {Hash} hash de opciones
-     * @return {var} table {qx.ui.table.Table}
-     */
-    createTable2 : function(titles, options)
-    {
-      var h = new Array();
-      var len = titles.length;
-
-      for (var i=0; i<len; i++)
-      {
-        var width = (options["widths"] && parseInt(options["widths"][i])) ? parseInt(options["widths"][i]) : 100;
-        var editable = (options["editables"] && options["editables"][i]) ? options["editables"][i] : false;
-
-        h.push(
-        {
-          titulo   : titles[i],
-          editable : editable,
-          width    : width
-        });
-      }
-
-      var width = options["width"] ? options["width"] : "100%";
-      var height = options["height"] ? options["height"] : "50%";
-      var table = inventario.widget.Table.createTable(h, width, height);
-      return table;
-    },
-
-    /**
-     * Helper p/ construccion de tablas
-     *
-     * @param pInput {var} El input (combobox) del cual quitaremos los datos
-     * @return {Map} hash {text,value}
-     */
-    getTextValue : function(pInput)
-    {
-      var val = -1;
-      var text = " ";
-
-      var sel = pInput.getSelected();
-
-      if (sel)
-      {
-        val = sel.getValue();
-
-        var field = pInput.getField();
-
-        if (field) {
-          text = field.getValue();
-        }
-      }
-
-      return {
-        value : val,
-        text  : text
-      };
     }
   },
 
@@ -276,57 +208,6 @@ qx.Class.define("inventario.widget.Table",
       return ret;
     },
 
-
-    /**
-     * Verifica que filas estan seleccionadeas y devuelve el valor en la misma posicion de
-     *
-     * @param allRows {var} TODOC
-     * @param mappingArray {var} TODOC
-     * @return {var} TODOC
-     */
-    getMappedIds : function(allRows, mappingArray)
-    {
-      var ids = this.getSelected2([ 0 ], true);
-      var ret = new Array();
-      var len = ids.length;
-      var len2 = mappingArray.length;
-
-      for (var i=0; i<len; i++) {
-        var val = false;
-
-        for (var j=0; j<len2; j++) {
-          if (ids[i] == mappingArray[j]["id_visible"]) {
-            val = mappingArray[j]["id_real"];
-            break;
-          }
-        }
-
-        if (val) {
-          ret.push(val);
-          if (!allRows) {
-            break;
-          }
-        }
-      }
-
-      return ret;
-    },
-
-
-    /**
-     * Borra una fila de la tabla
-     *
-     * @param row {Integer} TODOC
-     * @return {void} 
-     */
-    removeRow : function(row)
-    {
-      var tableData = this.getTableModel().getData();
-      qx.lang.Array.removeAt(tableData, row);
-      this.getTableModel().setData(tableData);
-    },
-
-
     /**
      * Agrega una fila de datos a la tabla
      *
@@ -418,41 +299,6 @@ qx.Class.define("inventario.widget.Table",
 
       return ret;
     },
-
-    /**
-     * emptyTable(): Vaciar tabla
-     *
-     * @return {boolean} void
-     */
-    emptyTable : function()
-    {
-      this.getTableModel().setData([]);
-      return true;
-    },
-
-
-    /**
-     * convertToNum(): Vaciar tabla
-     *
-     * @param cols {var} columnas que hay que convetir a numero
-     * @return {void} void
-     */
-    convertToNum : function(cols)
-    {
-      var len = this.length;
-
-      for (var i=0; i<len; i++)
-      {
-        var len2 = cols.length;
-
-        for (var j=0; j<len2; j++)
-        {
-          var x = cols[j];
-          this[i][x] = parseFloat(this[i][x]);
-        }
-      }
-    },
-
 
     /**
      * setRenderers(): establecer renderers de las columnas

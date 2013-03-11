@@ -4,17 +4,15 @@ class BankDeposit < ActiveRecord::Base
   attr_accessible :problem_solution, :problem_solution_id
   attr_accessible :deposit, :amount, :desposited_at, :bank
 
-  def self.getColumnas()
-    [ 
-     {:name => _("Id"), :key => "bank_deposits.id", :related_attribute => "getId", :width => 50},
-     {:name => _("Solution"), :key => "problem_solutions.id", :related_attribute => "getSolutionId", :width => 100},
-     {:name => _("Deposit"), :key => "bank_deposits.deposit", :related_attribute => "getDeposit", :width => 100},
-     {:name => _("Amount"), :key => "bank_deposits.amount", :related_attribute => "getAmount", :width => 100},
-     {:name => _("Created at"), :key => "bank_deposits.created_at", :related_attribute => "created_at", :width => 100},
-     {:name => _("Deposited at"), :key => "bank_deposits.deposited_at", :related_attribute => "getDepositedAt", :width => 100},
-     {:name => _("Bank"), :key => "bank_deposits.bank", :related_attribute => "getBank", :width => 100}
-    ]
-  end
+  FIELDS = [
+    {name: _("Id"), column: :id, width: 50},
+    {name: _("Solution"), association: :problem_solution, column: :id},
+    {name: _("Deposit"), column: :deposit},
+    {name: _("Amount"), column: :amount},
+    {name: _("Created at"), column: :created_at},
+    {name: _("Deposited at"), column: :deposited_at},
+    {name: _("Bank"), column: :bank}
+  ]
 
   def self.register(problem_solution_id, data_list)
 
@@ -45,10 +43,6 @@ class BankDeposit < ActiveRecord::Base
 
   def getId
     self.id.to_s
-  end
-
-  def getSolutionId
-    self.problem_solution_id ? self.problem_solution_id.to_s : ""
   end
 
   def getDeposit

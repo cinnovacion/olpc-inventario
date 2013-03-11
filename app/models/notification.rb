@@ -29,37 +29,12 @@ class Notification < ActiveRecord::Base
   validates_uniqueness_of :internal_tag
   validates_uniqueness_of :name
 
-  ##
-  # Listado de columnas.
-  def self.getColumnas()
-    ret = Hash.new 
-    ret[:columnas] = [
-                      {:name => _("Id"),
-                       :key => "notifications.id",
-                       :related_attribute => "id",
-                       :width => 50
-                      },
-                      {:name => _("Name"),
-                       :key => "notifications.name",
-                       :related_attribute => "name",
-                       :width => 100
-                      },
-                      {:name => _("Description"),
-                       :key => "notifications.description",
-                       :related_attribute => "description()",
-                       :width => 255
-                      },
-                      {:name => _("Active"),
-                       :key => "notifications.description",
-                       :related_attribute => "getActiveStatus()",
-                       :width => 5
-                      }
-                     ]
-
-
-    ret[:columnas_visibles] = [false,true,true,true]
-    ret
-  end
+  FIELDS = [
+    {name: _("Id"), column: :id, width: 50, visible: false},
+    {name: _("Name"), column: :name},
+    {name: _("Description"), column: :description, width: 255},
+    {name: _("Active"), column: :active, width: 5},
+  ]
 
   ##
   # Para que se puede usar los select

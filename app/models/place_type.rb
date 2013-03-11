@@ -26,13 +26,11 @@ class PlaceType < ActiveRecord::Base
 
   @@grades_list = ["first_grade", "second_grade", "third_grade", "fourth_grade", "fifth_grade", "sixth_grade", "seventh_grade", "eighth_grade","ninth_grade"]
 
-  def self.getColumnas()
-    [ 
-     {name: _("Id"), key: "place_types.id", related_attribute: "id", width: 50},
-     {name: _("Location type"), key: "place_types.name", related_attribute: "name", width: 250},
-     {name: _("Internal Tag"), key: "place_types.internal_tag", related_attribute: "internal_tag", width: 250}
-    ]
-  end
+  FIELDS = [ 
+    {name: _("Id"), column: :id, width: 50},
+    {name: _("Location type"), column: :name, width: 250},
+    {name: _("Internal Tag"), column: :internal_tag, width: 250}
+  ]
 
   def self.getChooseButtonColumns(vista = "")
     {

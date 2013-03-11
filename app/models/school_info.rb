@@ -24,27 +24,15 @@ class SchoolInfo < ActiveRecord::Base
   attr_accessible :server_hostname, :lease_duration, :lease_expiry
   attr_accessible :wan_ip_address, :wan_netmask, :wan_gateway, :place_id
 
-  def self.getColumnas(vista = "")
-    ret = Hash.new
-
-    case vista
-      when /place_\d/
-        place_id = vista.split('_')[1]
-        ret[:conditions] = ["school_infos.place_id = ?",place_id]
-    end
-
-    ret[:columnas] = [ 
-     {:name => _("Id"), :key => "school_infos.id", :related_attribute => "id", :width => 50},
-     {:name => _("Place"), :key => "places.description", :related_attribute => "place", :width => 100},
-     {:name => _("Activation expiry"),:key => "school_infos.lease_duration", :related_attribute => "lease_info", :width => 100},
-     {:name => _("Hostname"), :key => "school_infos.server_hostname", :related_attribute => "server_hostname", :width => 100},
-     {:name => _("Address"), :key => "school_infos.wan_ip_address", :related_attribute => "wan_ip_address", :width => 100},
-     {:name => _("Netmask"), :key => "school_infos.wan_netmask", :related_attribute => "wan_netmask", :width => 100},
-     {:name => _("Gateway"), :key => "school_infos.wan_gateway", :related_attribute => "wan_gateway", :width => 100}
-    ]
-
-    ret
-  end
+  FIELDS = [
+    {name: _("Id"), column: :id, width: 50},
+    {name: _("Place"), association: :place, column: :description, attribute: :place},
+    {name: _("Activation expiry"), column: :lease_duration, attribute: :lease_info},
+    {name: _("Hostname"), column: :server_hostname},
+    {name: _("Address"), column: :wan_ip_address},
+    {name: _("Netmask"), column: :wan_netmask},
+    {name: _("Gateway"), column: :wan_gateway},
+  ]
 
   # accessor override
   def lease_duration
