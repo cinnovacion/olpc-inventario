@@ -16,3 +16,7 @@ name: MyProject Inventario
 # a box if it would avoid having boxes with only 1 or 2 laptops at the end.
 # Default false.
 #overpack_boxes: false
+
+# Set the timezone in which times/dates will be shown. By default UTC is used.
+# Pick a value from "rake time:zones:all"
+#timezone: Central America
