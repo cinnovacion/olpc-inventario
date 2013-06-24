@@ -10,6 +10,11 @@ delivery:
     description: Entrega
     is_delivery: true
 
+repair_finished:
+    internal_tag: reparacion_finalizada
+    description: Reparacion finalizada, devolución propietario
+    is_delivery: true
+
 return:
     internal_tag: devolucion
     description: Devolucion

@@ -160,3 +160,8 @@ if !entrega_type.nil?
   entrega_type.description = "Entrega"
   entrega_type.save!
 end
+
+
+# These movement types used to be created incorrectly with is_delivery=false
+MovementType.find_by_internal_tag!("reparacion_finalizada").is_delivery = true
+MovementType.find_by_internal_tag!("verificacion_finalizada").is_delivery = true

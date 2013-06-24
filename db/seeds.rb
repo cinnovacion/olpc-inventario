@@ -20,8 +20,8 @@ end
 
 MovementType.transaction do
   MovementType.find_or_create_by_internal_tag("reparacion", :description => "Reparacion o Verificacion", :is_delivery => "false")
-  MovementType.find_or_create_by_internal_tag("reparacion_finalizada", :description => "Reparacion Finalizada - Devolucion Propietario", :is_delivery => "false")
-  MovementType.find_or_create_by_internal_tag("verificacion_finalizada", :description => "Verificacion Finalizada - Devolucion Propietario", :is_delivery => "false")
+  MovementType.find_or_create_by_internal_tag("reparacion_finalizada", :description => "Reparacion Finalizada - Devolucion Propietario", :is_delivery => "true")
+  MovementType.find_or_create_by_internal_tag("verificacion_finalizada", :description => "Verificacion Finalizada - Devolucion Propietario", :is_delivery => "true")
   MovementType.find_or_create_by_internal_tag("uso_desarrollador", :description => "Uso Desarrollador", :is_delivery => "true")
   MovementType.find_or_create_by_internal_tag("prestamo", :description => "Prestamo", :is_delivery => "true")
   MovementType.find_or_create_by_internal_tag("devolucion", :description => "Devolucion", :is_delivery => "false")

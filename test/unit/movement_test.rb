@@ -242,4 +242,31 @@ class MovementTest < ActiveSupport::TestCase
     m1.reload
     assert m1.returned
   end
+
+  test "repair workflow" do
+    person_two = other_person
+    laptop = Laptop.find_by_serial_number!("SHC00000000")
+    repair_type = MovementType.find_by_internal_tag!("reparacion")
+    handout_type = MovementType.find_by_internal_tag!("entrega_alumno")
+    finished_type = MovementType.find_by_internal_tag!("reparacion_finalizada")
+    assert finished_type.is_delivery?
+
+    # hand out laptop to student
+    Movement.register(laptop_id: laptop.id, person_id: person_two.id,
+                      movement_type_id: handout_type.id)
+    laptop.reload
+    assert_equal Status.activated, laptop.status
+
+    # laptop develops fault, retrieve it for repair
+    Movement.register(laptop_id: laptop.id, person_id: default_person.id,
+                      movement_type_id: repair_type.id)
+    laptop.reload
+    assert_equal Status.on_repair, laptop.status
+
+    # return repaired laptop to student
+    Movement.register(laptop_id: laptop.id, person_id: person_two.id,
+                      movement_type_id: finished_type.id)
+    laptop.reload
+    assert_equal Status.activated, laptop.status
+  end
 end
