@@ -15,4 +15,9 @@ class PrintControllerTest < ActionController::TestCase
     post :barcodes, print_params: attribs.to_json
     assert_response :success
   end
+
+  test "statuses_distribution" do
+    post :statuses_distribution, print_params: [root_place.id].to_json
+    assert_response :success
+  end
 end
