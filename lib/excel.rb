@@ -15,8 +15,6 @@
 # 
 # Author: Raúl Gutiérrez <rgs@paraguayeduca.org>
 
-require 'iconv'
-
 module Excel
 
   # - genera una planilla de excel a partir de la matriz @datos
@@ -49,8 +47,6 @@ module Excel
     for i in 0 .. (row.length - 1)
       if row[i].is_a?(FalseClass) || row[i].is_a?(TrueClass) 
         row[i] = row[i] ? trueStr : falseStr 
-      else
-        row[i] = Iconv.conv('latin1', 'utf-8', row[i]) if row[i].is_a?(String)
       end
     end
   end
