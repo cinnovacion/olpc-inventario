@@ -28,6 +28,7 @@
 #
 
 require 'py_educa_graph'
+require 'excel'
 
 class PrintController < ApplicationController
 
@@ -1305,7 +1306,7 @@ class PrintController < ApplicationController
         places += place.places.reverse
     end
 
-    file_name = FormatManager.generarExcel2(rows,columns)
+    file_name = Excel.generate(rows,columns)
     send_file(file_name,:filename => "id_documents.xls",:type => "application/vnd.ms-excel",:stream => false )
   end
 
@@ -1911,7 +1912,7 @@ class PrintController < ApplicationController
       }
     }
 
-    file_name = FormatManager.generarExcel2(xls_rows, xls_columns)
+    file_name = Excel.generate(xls_rows, xls_columns)
     send_file(file_name,:filename => "laptops_check.xls",:type => "application/vnd.ms-excel",:stream => false )
   end
 

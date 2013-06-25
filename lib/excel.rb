@@ -13,25 +13,14 @@
 #     You should have received a copy of the GNU General Public License
 #     along with this program.  If not, see <http://www.gnu.org/licenses/>
 # 
-#
+# Author: Raúl Gutiérrez <rgs@paraguayeduca.org>
 
-# # #
-# Author: Raúl Gutiérrez
-# E-mail Address: rgs@paraguayeduca.org
-# 2009
-# # #
-                   
-require "iconv"                                                       
+require 'iconv'
 
-class FormatManager < ActiveRecord::Base
+module Excel
 
-
-  ####
-  #  generarExcel2(): 
-  #  - genera una planilla de excel a partir de la matriz @datos
-  #
-  def self.generarExcel2(datos, titulos = [])
-    # jugando con fuego.. puede haber carrera...
+  # - genera una planilla de excel a partir de la matriz @datos
+  def self.generate(datos, titulos = [])
     workbook = Spreadsheet::Workbook.new
     worksheet = workbook.create_worksheet
 
@@ -45,7 +34,7 @@ class FormatManager < ActiveRecord::Base
     # filas
     cnt = 1
     datos.each { |fila|
-      self.clean_row(fila)
+      clean_row(fila)
       worksheet.row(cnt).replace(fila)
       cnt += 1
     }
@@ -55,23 +44,14 @@ class FormatManager < ActiveRecord::Base
     return file_name
   end
 
-  ####
   # clean_row : changes boolean values (to @trueStr or @falseStr, accordingly)
-  #
-  # return true if row was cleaned, false otherwise. 
   def self.clean_row(row, trueStr="Si", falseStr="No")
-    row_was_cleaned = false
-  
     for i in 0 .. (row.length - 1)
       if row[i].is_a?(FalseClass) || row[i].is_a?(TrueClass) 
         row[i] = row[i] ? trueStr : falseStr 
-        row_was_cleaned = true
       else
         row[i] = Iconv.conv('latin1', 'utf-8', row[i]) if row[i].is_a?(String)
       end
     end
-    
-    row_was_cleaned
   end
-
 end

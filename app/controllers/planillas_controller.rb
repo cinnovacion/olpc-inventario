@@ -12,18 +12,13 @@
 # 
 #     You should have received a copy of the GNU General Public License
 #     along with this program.  If not, see <http://www.gnu.org/licenses/>
-# 
-#          
+#
+# Author: Raúl Gutiérrez <rgs@paraguayeduca.org>
 
-# # #
-# Author: Raúl Gutiérrez
-# E-mail Address: rgs@paraguayeduca.org
-# 2009
-# # #
-                                                                
+require 'excel'
+
 class PlanillasController < ApplicationController
   around_filter :rpc_block, :only => [:planilla_carga_datos]
-
 
   ###
   # HACK:
@@ -38,8 +33,7 @@ class PlanillasController < ApplicationController
   end
 
   def planilla
-    file_name = FormatManager.generarExcel2(session[:datos],session[:titulos])
+    file_name = Excel.generate(session[:datos],session[:titulos])
     send_file(file_name,:filename => "datos.xls",:type => "application/vnd.ms-excel",:stream => false )
   end
-
 end
