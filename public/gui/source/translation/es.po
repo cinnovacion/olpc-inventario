@@ -116,7 +116,7 @@ msgid "Filter  "
 msgstr "Filtro"
 
 #: inventario/window/AbmForm.js:249 inventario/widget/ComboBoxFiltered.js:52
-#: inventario/window/Abm2.js:534
+#: inventario/window/Abm2.js:508
 msgid "Details"
 msgstr "Detalles"
 
@@ -239,12 +239,12 @@ msgstr "El tiempo mínimo de actualización es de 10 segundos."
 
 #: inventario/window/AbmForm.js:269
 #: inventario/widget/MultipleHierarchySelection.js:46
-#: inventario/widget/Table2.js:140 inventario/window/Abm2.js:500
+#: inventario/widget/Table2.js:140 inventario/window/Abm2.js:474
 msgid "Add"
 msgstr "Agregar"
 
 #: inventario/widget/MultipleHierarchySelection.js:48
-#: inventario/widget/Table2.js:158 inventario/window/Abm2.js:574
+#: inventario/widget/Table2.js:158 inventario/window/Abm2.js:548
 msgid "Remove"
 msgstr "Eliminar"
 
@@ -299,7 +299,7 @@ msgstr[1] "Trasladar %1 personas hasta %2?"
 
 #: inventario/widget/PeopleMover.js:225
 #: inventario/window/RegisterHandout.js:37
-#: inventario/window/BarcodeScanForm.js:340 inventario/window/Abm2.js:453
+#: inventario/window/BarcodeScanForm.js:340 inventario/window/Abm2.js:427
 msgid "Next"
 msgstr "Siguiente"
 
@@ -477,32 +477,32 @@ msgstr "Ejecutar script"
 msgid "Run"
 msgstr "Ejecutar"
 
-#: inventario/widget/SearchAdvanced.js:71
+#: inventario/widget/SearchAdvanced.js:77
 msgid "Contains"
 msgstr "Contiene"
 
-#: inventario/widget/SearchAdvanced.js:72
+#: inventario/widget/SearchAdvanced.js:78
 msgid "It contains"
 msgstr "Contiene"
 
-#: inventario/widget/SearchAdvanced.js:73
+#: inventario/widget/SearchAdvanced.js:79
 msgid "Same"
 msgstr "Igual a"
 
-#: inventario/widget/SearchAdvanced.js:74
+#: inventario/widget/SearchAdvanced.js:80
 msgid "Minor"
 msgstr "Menor que"
 
-#: inventario/widget/SearchAdvanced.js:75
+#: inventario/widget/SearchAdvanced.js:81
 msgid "Major"
 msgstr "Mayor que"
 
-#: inventario/widget/SearchAdvanced.js:76
+#: inventario/widget/SearchAdvanced.js:82
 msgid "Unlike"
 msgstr "Distinto"
 
-#: inventario/widget/Select.js:40 inventario/widget/SearchAdvanced.js:137
-#: inventario/window/Abm2.js:110 inventario/window/Abm2.js:217
+#: inventario/widget/Select.js:40 inventario/widget/SearchAdvanced.js:142
+#: inventario/window/Abm2.js:91 inventario/window/Abm2.js:191
 msgid "Search"
 msgstr "Busar"
 
@@ -519,7 +519,7 @@ msgid "Select All"
 msgstr "Seleccionar todo"
 
 #: inventario/window/AbmForm.js:256 inventario/widget/Table2.js:457
-#: inventario/window/Abm2.js:517
+#: inventario/window/Abm2.js:491
 msgid "Edit"
 msgstr "Editar"
 
@@ -527,87 +527,87 @@ msgstr "Editar"
 msgid "Didn't receive the correct number of parameters."
 msgstr "No recibí el número correcto de parámetros. "
 
-#: inventario/window/Abm2.js:81
+#: inventario/window/Abm2.js:62
 msgid "Missing parameter in urls hash! "
 msgstr "!Faltan parámetros en urls hash!"
 
-#: inventario/window/Abm2.js:248
+#: inventario/window/Abm2.js:222
 msgid "Choose"
 msgstr "Elegir"
 
-#: inventario/window/Abm2.js:359
+#: inventario/window/Abm2.js:333
 msgid "Listing"
 msgstr "Listando"
 
-#: inventario/window/Abm2.js:439
+#: inventario/window/Abm2.js:413
 msgid "First Page "
 msgstr "Primera página"
 
-#: inventario/window/Abm2.js:446
+#: inventario/window/Abm2.js:420
 msgid "Previous"
 msgstr "Anterior"
 
-#: inventario/window/Abm2.js:460
+#: inventario/window/Abm2.js:434
 msgid "Last Page"
 msgstr "Última página"
 
-#: inventario/window/Abm2.js:477
+#: inventario/window/Abm2.js:451
 msgid "Export"
 msgstr "Exportar"
 
-#: inventario/window/Abm2.js:557
+#: inventario/window/Abm2.js:531
 msgid "Enter"
 msgstr "Entre"
 
-#: inventario/window/AbmForm.js:365 inventario/window/Abm2.js:593
+#: inventario/window/AbmForm.js:365 inventario/window/Abm2.js:567
 msgid "Close"
 msgstr "Cerrar"
 
-#: inventario/window/Abm2.js:699
+#: inventario/window/Abm2.js:673
 msgid "Search Criteria: "
 msgstr "Criterios de búsqueda: "
 
-#: inventario/window/Abm2.js:713
+#: inventario/window/Abm2.js:687
 msgid "Search string: "
 msgstr "Cadena de búsqueda"
 
-#: inventario/window/Abm2.js:739
+#: inventario/window/Abm2.js:713
 msgid "Per page.:"
 msgstr "Por pagina: "
 
-#: inventario/window/Abm2.js:1141
+#: inventario/window/Abm2.js:1077
 msgid "Delete selected items"
 msgstr "Borrar elementos seleccionados "
 
-#: inventario/window/Abm2.js:1166
+#: inventario/window/Abm2.js:1099
 msgid " Deleted row "
 msgstr "Fila eliminada"
 
-#: inventario/window/Abm2.js:1199 inventario/window/Abm2.js:1211
+#: inventario/window/Abm2.js:1127 inventario/window/Abm2.js:1139
 msgid "You must select a row"
 msgstr "Usted debe seleccionar una fila"
 
-#: inventario/window/Abm2.js:1217
+#: inventario/window/Abm2.js:1145
 msgid "Displaying results page %1 of %2"
 msgstr "Exhibición la página de resultados: %1 of %2"
 
-#: inventario/window/Abm2.js:1221
+#: inventario/window/Abm2.js:1149
 msgid "Number of results found: %1"
 msgstr "Número de resultados encontrados: %1"
 
-#: inventario/window/Abm2.js:1387
+#: inventario/window/Abm2.js:1276
 msgid "You must select at least one row."
 msgstr "Hay que seleccionar por lo menos una fila."
 
-#: inventario/window/Abm2.js:1451
+#: inventario/window/Abm2.js:1340
 msgid "Contact the System Administrator: Configuration Error"
 msgstr "Contacte el administrador de sistema: Error de la configuración"
 
-#: inventario/window/Abm2.js:1455
+#: inventario/window/Abm2.js:1344
 msgid "Abm2: problem inserting selected row in ComboBox:\n"
 msgstr "Abm2: problema de insertar la fila seleccionada en el ComboBox:\n"
 
-#: inventario/window/Abm2.js:1498
+#: inventario/window/Abm2.js:1387
 msgid "Export only visible columns?"
 msgstr "¿Exportar solamente columnas visibles?"
 

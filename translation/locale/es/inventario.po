@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: version 0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-06 16:28-0600\n"
+"POT-Creation-Date: 2013-06-27 09:36-0600\n"
 "PO-Revision-Date: 2010-03-14 17:56-0400\n"
 "Last-Translator: Raúl Gutiérrez Segalés <rgs@paraguayeduca.org>\n"
 "Language-Team: PyEduca <soporte@paraguayeduca.org>\n"
@@ -180,9 +180,6 @@ msgstr "Fecha de asignación"
 msgid "Assignment Nbr"
 msgstr "Número de asignación"
 
-msgid "Assignment Time"
-msgstr "Hora de asignación"
-
 msgid "Assignment details"
 msgstr "Detalles de asignación"
 
@@ -222,9 +219,6 @@ msgstr "Banco"
 msgid "Bar Code"
 msgstr "Código de barra"
 
-msgid "Battery"
-msgstr "Batería"
-
 msgid "Before"
 msgstr "Antes"
 
@@ -263,9 +257,6 @@ msgstr "Cambios guardados"
 
 msgid "Changes saved."
 msgstr "Cambios guardados"
-
-msgid "Charger"
-msgstr "Cargador"
 
 msgid "Code Bar Owner"
 msgstr "Código de barra del dueño"
@@ -314,9 +305,6 @@ msgstr "Creado por:"
 
 msgid "Creation Date"
 msgstr "Fecha de creación"
-
-msgid "Creation Time"
-msgstr "Hora de creación"
 
 msgid "Date"
 msgstr "Fecha"
@@ -395,9 +383,6 @@ msgstr "Descendiente"
 
 msgid "Description"
 msgstr "Descripción"
-
-msgid "Descritpion"
-msgstr "descripcion "
 
 msgid "Destination place"
 msgstr "Localidad destino"
@@ -885,9 +870,6 @@ msgstr "Fecha del movimiento"
 msgid "Mov. Nbr"
 msgstr "Numero de movimiento "
 
-msgid "Mov. Time"
-msgstr "Hora de movimiento"
-
 msgid "Move people"
 msgstr "Trasladar personas"
 
@@ -975,14 +957,14 @@ msgstr "Uptime de los nodos de red"
 msgid "Never"
 msgstr "Nunca"
 
-msgid "New State"
-msgstr "Estado nuevo"
-
 msgid "New assignment"
 msgstr "Nueva asignación"
 
 msgid "New movement"
 msgstr "Nuevo movimiento"
+
+msgid "New state"
+msgstr "Estado nuevo"
 
 msgid "New status added."
 msgstr "Nuevo estado agregó."
@@ -1406,9 +1388,6 @@ msgstr "Reportes"
 
 msgid "Required parts"
 msgstr "Piezas requeridas"
-
-msgid "Requires part"
-msgstr "Requiere parte"
 
 msgid "Responsible"
 msgstr "Responsable"

@@ -165,9 +165,6 @@ msgstr ""
 msgid "Assignment Nbr"
 msgstr ""
 
-msgid "Assignment Time"
-msgstr ""
-
 msgid "Assignment details"
 msgstr ""
 
@@ -207,9 +204,6 @@ msgstr ""
 msgid "Bar Code"
 msgstr ""
 
-msgid "Battery"
-msgstr ""
-
 msgid "Before"
 msgstr ""
 
@@ -247,9 +241,6 @@ msgid "Changes saved"
 msgstr ""
 
 msgid "Changes saved."
-msgstr ""
-
-msgid "Charger"
 msgstr ""
 
 msgid "Code Bar Owner"
@@ -298,9 +289,6 @@ msgid "Created by:"
 msgstr ""
 
 msgid "Creation Date"
-msgstr ""
-
-msgid "Creation Time"
 msgstr ""
 
 msgid "Date"
@@ -379,9 +367,6 @@ msgid "Descending"
 msgstr ""
 
 msgid "Description"
-msgstr ""
-
-msgid "Descritpion"
 msgstr ""
 
 msgid "Destination place"
@@ -870,9 +855,6 @@ msgstr ""
 msgid "Mov. Nbr"
 msgstr ""
 
-msgid "Mov. Time"
-msgstr ""
-
 msgid "Move people"
 msgstr ""
 
@@ -960,13 +942,13 @@ msgstr ""
 msgid "Never"
 msgstr ""
 
-msgid "New State"
-msgstr ""
-
 msgid "New assignment"
 msgstr ""
 
 msgid "New movement"
+msgstr ""
+
+msgid "New state"
 msgstr ""
 
 msgid "New status added."
@@ -1390,9 +1372,6 @@ msgid "Reports"
 msgstr ""
 
 msgid "Required parts"
-msgstr ""
-
-msgid "Requires part"
 msgstr ""
 
 msgid "Responsible"
