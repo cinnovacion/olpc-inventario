@@ -248,6 +248,7 @@ class SearchController < ApplicationController
   def send_column_info
     @output["columns"] = @clazz_ref::FIELDS.map { |col|
       tmp = col.slice(:name, :default_search, :visible, :width)
+      tmp[:name] = _(col[:name])
 
       db_column = get_db_column(col)
       tmp[:db_column] = db_column if db_column
