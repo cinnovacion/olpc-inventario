@@ -20,6 +20,17 @@ class AssignmentTest < ActiveSupport::TestCase
     assert_equal "activated", l.status.internal_tag
   end
 
+  test "laptops get deactivated upon desassignment" do
+    l = default_person.laptops.create!(serial_number: "SHC12345678")
+    Assignment.register(laptop_id: l.id, person_id: default_person.id)
+    l.reload
+    assert_equal "activated", l.status.internal_tag
+
+    Assignment.register(laptop_id: l.id)
+    l.reload
+    assert_equal "deactivated", l.status.internal_tag
+  end
+
   test "register" do
     laptop = Laptop.find_by_serial_number!("SHC00000000")
     assignment = Assignment.register(laptop_id: laptop.id,

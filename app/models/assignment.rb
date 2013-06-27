@@ -58,9 +58,16 @@ class Assignment < ActiveRecord::Base
 
       m.save!
 
-      # Move laptop out of "En desuso" for new assignments
       if m.destination_person_id and laptop.status.internal_tag == "deactivated"
+        # Move laptop out of "En desuso" for new assignments
         laptop.status = Status.activated
+      elsif !m.destination_person_id and laptop.status.internal_tag == "activated"
+        # Set "En desuso" if we are de-assigning the laptop
+        # This is useful for the following case:
+        # 1. Laptop is in warehouse, unassigned
+        # 2. Laptop gets assigned (now: activated), no movement made
+        # 3. Laptop gets desassigned (now we want: deactivated)
+        laptop.status = Status.deactivated
       end
 
       # Update laptop assignee
