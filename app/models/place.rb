@@ -36,7 +36,6 @@ class Place < ActiveRecord::Base
   has_many :problem_reports
   has_one :school_info
 
-  before_create :set_ancestors
   after_create :register_place_dependencies
   before_update :update_place_dependencies
   before_destroy :unregister_place_dependencies
@@ -93,34 +92,25 @@ class Place < ActiveRecord::Base
   def update_place_dependencies
     Place.send(:with_exclusive_scope) do
       father  = Place.find_by_id(self.place_id)    
-      if father && father.calcAncestorsIds.push(self.place_id).include?(self.id)
+      if father && father.getAncestorsIds.push(self.place_id).include?(self.id)
         raise _("A child may not be the father nor the father the son.")
       end
 
       old_me = Place.find_by_id(self.id)
       if self.place_id != old_me.place_id
-        self.update_family_tree_registry
         PlaceDependency.update_dependencies(self, father)
       end
     end
   end
 
-  def set_ancestors
-    Place.send(:with_exclusive_scope) do
-      self.setAncestorsIds
-    end
-  end
-
   def unregister_place_dependencies
     Place.send(:with_exclusive_scope) do
-      self.unregister_from_ancestors
       PlaceDependency.unregister_dependencies(self)
     end
   end
 
   def register_place_dependencies
     Place.send(:with_exclusive_scope) do 
-      self.register_on_ancestors
       PlaceDependency.register_dependencies(self)
     end
   end
@@ -179,127 +169,35 @@ class Place < ActiveRecord::Base
     Place.destroy(to_be_destroy_places)
   end
 
-  # Optimization functions for fast sub-trees recovery
-  def update_family_tree_registry
-    old_ancestors_places = self.getAncestorsPlaces
-    self.unregister_from_ancestors
-    
-    self.register_on_ancestors
-    new_ancestors_places = self.getAncestorsPlaces
-
-    ex_ancestors_places = old_ancestors_places - new_ancestors_places
-    newest_ancestors_places = new_ancestors_places - old_ancestors_places
-    my_descendants_places = self.getDescendantsPlaces
-
-    ex_ancestors_ids = ex_ancestors_places.map { |ex| ex.id }
-    newest_ancestors_ids = newest_ancestors_places.map { |newest| newest.id }
-    my_descendants_ids = self.getDescendantsIds
-
-    ex_ancestors_places.each { |ex_ancestor_place|
-      ex_ancestor_place.removeDescendantsIds(my_descendants_ids+[self.id])
-      ex_ancestor_place.save!
-    }
-
-    #raise ex_ancestors_ids.to_s + "::" + newest_ancestors_ids.to_s + "::" + my_descendants_ids.to_s
-    newest_ancestors_places.each { |newest_ancestor_place|
-      newest_ancestor_place.addDescendantsIds(my_descendants_ids)
-      newest_ancestor_place.save!
-    }
-
-    my_descendants_places.each { |my_descendant_place|
-      my_descendant_place.removeAncestorsIds(ex_ancestors_ids)
-      my_descendant_place.addAncestorsIds(newest_ancestors_ids)
-      my_descendant_place.save!
-    }
-
-    true
-  end
-
-  def register_on_ancestors
-    if !self.ancestors_ids
-      self.setAncestorsIds
-    end
-
-    self.getAncestorsPlaces.each { |ancestor_place|
-      ancestor_place.addDescendantsIds([self.id])
-      ancestor_place.save!
-    }
-
-    true
-  end
-
-  def unregister_from_ancestors
-    self.getAncestorsPlaces.each { |ancestor_place|
-      ancestor_place.removeDescendantsIds([self.id])
-      ancestor_place.save!
-    }
-
-    self.ancestors_ids = nil
-    true
-  end
-
-  def setAncestorsIds(ancestors_ids = nil)
-    if !ancestors_ids
-      ancestors_ids = self.calcAncestorsIds
-    end
-
-    self.ancestors_ids = ancestors_ids.to_json
-    true
-  end
-
   def getAncestorsIds
-    self.ancestors_ids ? JSON.parse(self.ancestors_ids) : []
+    parents_ids = []
+    place = self
+    while (place.place_id != nil)
+      parents_ids.push(place.place_id)
+      place = place.place
+    end
+    parents_ids
   end
 
   def getAncestorsPlaces
-    Place.where(:id => self.getAncestorsIds)
-  end
-
-  def addAncestorsIds(new_ancestors_ids)
-    old_ancestors_ids = self.getAncestorsIds
-    newest_ancestors_ids = old_ancestors_ids + new_ancestors_ids
-    self.setAncestorsIds(newest_ancestors_ids)
-    true
-  end
-
-  def removeAncestorsIds(ex_ancestors_ids)
-    old_ancestors_ids = self.getAncestorsIds
-    new_ancestors_ids = old_ancestors_ids - ex_ancestors_ids
-    self.setAncestorsIds(new_ancestors_ids)
-  end
-
-  def setDescendantsIds(descendants_ids = nil)
-    if !descendants_ids
-      descendants_ids = self.calcDescendantsIds 
-    end
-
-    self.descendants_ids = descendants_ids.to_json
-    true
+    Place.where(id: self.getAncestorsIds)
   end
 
   def getDescendantsIds
-    self.descendants_ids ? JSON.parse(self.descendants_ids) : []
+    list = []
+    stack = []
+    stack += self.places
+    while(stack != [])
+      father = stack.pop
+      list.push(father.id)
+      stack += father.places
+    end
+    list
   end
 
   def getDescendantsPlaces
-    Place.where("id in (?)", self.getDescendantsIds)
+    Place.where(id: self.getDescendantsIds)
   end
-
-  def addDescendantsIds(new_descendants_ids)
-    old_descendants_ids = self.getDescendantsIds
-    newest_descendants_ids = old_descendants_ids + new_descendants_ids
-    self.setDescendantsIds(newest_descendants_ids)
-    true
-  end
-
-  def removeDescendantsIds(ex_descendants_ids)
-    old_descendants_ids = self.getDescendantsIds
-    new_descendants_ids = old_descendants_ids - ex_descendants_ids
-    self.setDescendantsIds(new_descendants_ids)
-    true
-  end
-  # End of Optimizations
-  ###
 
   def getPartDistribution()
     ret = Hash.new
@@ -352,29 +250,6 @@ class Place < ActiveRecord::Base
   end
 
   alias_method :to_s, :getName
-
-  def calcDescendantsIds
-    list = []
-    stack = []
-    stack += self.places
-    while(stack != [])
-      father = stack.pop
-      list.push(father.id)
-      stack += father.places
-    end
-    list
-  end
-
-  # Get place parents ids.
-  def calcAncestorsIds
-    parents_ids = []
-    place = self
-    while (place.place_id != nil)
-      parents_ids.push(place.place_id)
-      place = place.place
-    end
-    parents_ids
-  end
 
   # Generates recursive hash-based representation
   # for the places in the systems for diferents
@@ -577,7 +452,12 @@ class Place < ActiveRecord::Base
 
   #  A place owns another when its parent
   def owns(place)
-    return true if self.getDescendantsIds.push(self.id).include?(place.id)
+    return true if place == self
+    while (place.place_id != nil)
+      return true if place.place_id == self.id
+      place = place.place
+    end
+    false
   end
 
   def performing_people

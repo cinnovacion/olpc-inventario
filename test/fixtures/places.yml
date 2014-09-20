@@ -2,5 +2,3 @@ root:
     name: Rootland
     description: Root system place
     place_type: country
-    ancestors_ids: "[]"
-    descendants_ids: "[]"

@@ -12,7 +12,7 @@ class PlaceDependency < ActiveRecord::Base
     descendant_id = descendant_place.id
 
     # Every place has a dependency with its own
-    ancestors_ids = descendant_place.calcAncestorsIds.push(descendant_id)
+    ancestors_ids = descendant_place.getAncestorsIds.push(descendant_id)
     ancestors_ids.each { |ancestor_id|
       
       PlaceDependency.create({ :descendant_id => descendant_id, :ancestor_id => ancestor_id })
@@ -90,8 +90,8 @@ class PlaceDependency < ActiveRecord::Base
 
       Place.all.each { |place|
 
-        calculated_ancestors_ids = place.calcAncestorsIds
-        calculated_descendants_ids = place.calcDescendantsIds
+        calculated_ancestors_ids = place.getAncestorsIds
+        calculated_descendants_ids = place.getDescendantsIds
 
         raise "1" if (calculated_ancestors_ids + [place.id]) - place.ancestors.collect(&:id) != []
         raise "2" if place.ancestors.collect(&:id) - (calculated_ancestors_ids + [place.id]) != []

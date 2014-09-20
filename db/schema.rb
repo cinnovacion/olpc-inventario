@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130307225154) do
+ActiveRecord::Schema.define(:version => 20140920180222) do
 
   create_table "assignments", :force => true do |t|
     t.integer  "source_person_id"
@@ -304,12 +304,10 @@ ActiveRecord::Schema.define(:version => 20130307225154) do
 
   create_table "places", :force => true do |t|
     t.date    "created_at"
-    t.string  "name",            :limit => 100
+    t.string  "name",          :limit => 100
     t.text    "description"
     t.integer "place_id"
     t.integer "place_type_id"
-    t.text    "ancestors_ids"
-    t.text    "descendants_ids"
   end
 
   add_index "places", ["place_id"], :name => "places_place_id_fk"
@@ -448,83 +446,83 @@ ActiveRecord::Schema.define(:version => 20130307225154) do
 
   add_index "users", ["person_id"], :name => "users_person_id_fk"
 
-  add_foreign_key "assignments", "laptops", :name => "assignments_laptop_id_fk"
-  add_foreign_key "assignments", "people", :name => "assignments_destination_person_id_fk", :column => "destination_person_id"
-  add_foreign_key "assignments", "people", :name => "assignments_source_person_id_fk", :column => "source_person_id"
+  add_foreign_key "assignments", "laptops", name: "assignments_laptop_id_fk"
+  add_foreign_key "assignments", "people", name: "assignments_destination_person_id_fk", column: "destination_person_id"
+  add_foreign_key "assignments", "people", name: "assignments_source_person_id_fk", column: "source_person_id"
 
-  add_foreign_key "bank_deposits", "problem_solutions", :name => "bank_deposits_problem_solution_id_fk"
+  add_foreign_key "bank_deposits", "problem_solutions", name: "bank_deposits_problem_solution_id_fk"
 
-  add_foreign_key "connection_events", "laptops", :name => "connection_events_laptop_id_fk"
+  add_foreign_key "connection_events", "laptops", name: "connection_events_laptop_id_fk"
 
-  add_foreign_key "events", "places", :name => "events_place_id_fk"
+  add_foreign_key "events", "places", name: "events_place_id_fk"
 
-  add_foreign_key "laptop_details", "laptops", :name => "laptop_details_laptop_id_fk"
-  add_foreign_key "laptop_details", "people", :name => "laptop_details_person_id_fk"
-  add_foreign_key "laptop_details", "section_details", :name => "laptop_details_section_detail_id_fk"
+  add_foreign_key "laptop_details", "laptops", name: "laptop_details_laptop_id_fk"
+  add_foreign_key "laptop_details", "people", name: "laptop_details_person_id_fk"
+  add_foreign_key "laptop_details", "section_details", name: "laptop_details_section_detail_id_fk"
 
-  add_foreign_key "laptops", "models", :name => "laptops_model_id_fk"
-  add_foreign_key "laptops", "people", :name => "laptops_owner_id_fk", :column => "owner_id"
-  add_foreign_key "laptops", "statuses", :name => "laptops_status_id_fk"
+  add_foreign_key "laptops", "models", name: "laptops_model_id_fk"
+  add_foreign_key "laptops", "people", name: "laptops_owner_id_fk", column: "owner_id"
+  add_foreign_key "laptops", "statuses", name: "laptops_status_id_fk"
 
-  add_foreign_key "lots", "people", :name => "lots_person_id_fk"
+  add_foreign_key "lots", "people", name: "lots_person_id_fk"
 
-  add_foreign_key "movements", "laptops", :name => "movements_laptop_id_fk"
-  add_foreign_key "movements", "movement_types", :name => "movements_movement_type_id_fk"
-  add_foreign_key "movements", "people", :name => "movements_destination_person_id_fk", :column => "destination_person_id"
-  add_foreign_key "movements", "people", :name => "movements_responsible_person_id_fk", :column => "responsible_person_id"
-  add_foreign_key "movements", "people", :name => "movements_source_person_id_fk", :column => "source_person_id"
+  add_foreign_key "movements", "laptops", name: "movements_laptop_id_fk"
+  add_foreign_key "movements", "movement_types", name: "movements_movement_type_id_fk"
+  add_foreign_key "movements", "people", name: "movements_destination_person_id_fk", column: "destination_person_id"
+  add_foreign_key "movements", "people", name: "movements_responsible_person_id_fk", column: "responsible_person_id"
+  add_foreign_key "movements", "people", name: "movements_source_person_id_fk", column: "source_person_id"
 
-  add_foreign_key "node_types", "images", :name => "node_types_image_id_fk"
+  add_foreign_key "node_types", "images", name: "node_types_image_id_fk"
 
-  add_foreign_key "nodes", "node_types", :name => "nodes_node_type_id_fk"
-  add_foreign_key "nodes", "places", :name => "nodes_place_id_fk"
+  add_foreign_key "nodes", "node_types", name: "nodes_node_type_id_fk"
+  add_foreign_key "nodes", "places", name: "nodes_place_id_fk"
 
-  add_foreign_key "notification_subscribers", "notifications", :name => "notification_subscribers_notification_id_fk"
-  add_foreign_key "notification_subscribers", "people", :name => "notification_subscribers_person_id_fk"
+  add_foreign_key "notification_subscribers", "notifications", name: "notification_subscribers_notification_id_fk"
+  add_foreign_key "notification_subscribers", "people", name: "notification_subscribers_person_id_fk"
 
-  add_foreign_key "notifications_pools", "notifications", :name => "notifications_pools_notification_id_fk"
-  add_foreign_key "notifications_pools", "places", :name => "notifications_pools_place_id_fk"
+  add_foreign_key "notifications_pools", "notifications", name: "notifications_pools_notification_id_fk"
+  add_foreign_key "notifications_pools", "places", name: "notifications_pools_place_id_fk"
 
-  add_foreign_key "part_movements", "part_movement_types", :name => "part_movements_part_movement_type_id_fk"
-  add_foreign_key "part_movements", "part_types", :name => "part_movements_part_type_id_fk"
-  add_foreign_key "part_movements", "people", :name => "part_movements_person_id_fk"
-  add_foreign_key "part_movements", "places", :name => "part_movements_place_id_fk"
+  add_foreign_key "part_movements", "part_movement_types", name: "part_movements_part_movement_type_id_fk"
+  add_foreign_key "part_movements", "part_types", name: "part_movements_part_type_id_fk"
+  add_foreign_key "part_movements", "people", name: "part_movements_person_id_fk"
+  add_foreign_key "part_movements", "places", name: "part_movements_place_id_fk"
 
-  add_foreign_key "people", "images", :name => "people_image_id_fk"
+  add_foreign_key "people", "images", name: "people_image_id_fk"
 
-  add_foreign_key "performs", "people", :name => "performs_person_id_fk"
-  add_foreign_key "performs", "places", :name => "performs_place_id_fk"
-  add_foreign_key "performs", "profiles", :name => "performs_profile_id_fk"
+  add_foreign_key "performs", "people", name: "performs_person_id_fk"
+  add_foreign_key "performs", "places", name: "performs_place_id_fk"
+  add_foreign_key "performs", "profiles", name: "performs_profile_id_fk"
 
-  add_foreign_key "permissions", "controllers", :name => "permissions_controller_id_fk"
+  add_foreign_key "permissions", "controllers", name: "permissions_controller_id_fk"
 
-  add_foreign_key "place_dependencies", "places", :name => "place_dependencies_ancestor_id_fk", :column => "ancestor_id"
-  add_foreign_key "place_dependencies", "places", :name => "place_dependencies_descendant_id_fk", :column => "descendant_id"
+  add_foreign_key "place_dependencies", "places", name: "place_dependencies_ancestor_id_fk", column: "ancestor_id"
+  add_foreign_key "place_dependencies", "places", name: "place_dependencies_descendant_id_fk", column: "descendant_id"
 
-  add_foreign_key "places", "place_types", :name => "places_place_type_id_fk"
-  add_foreign_key "places", "places", :name => "places_place_id_fk"
+  add_foreign_key "places", "place_types", name: "places_place_type_id_fk"
+  add_foreign_key "places", "places", name: "places_place_id_fk"
 
-  add_foreign_key "problem_reports", "people", :name => "problem_reports_owner_id_fk", :column => "owner_id"
-  add_foreign_key "problem_reports", "places", :name => "problem_reports_place_id_fk"
+  add_foreign_key "problem_reports", "people", name: "problem_reports_owner_id_fk", column: "owner_id"
+  add_foreign_key "problem_reports", "places", name: "problem_reports_place_id_fk"
 
-  add_foreign_key "problem_solutions", "people", :name => "problem_solutions_solved_by_person_id_fk", :column => "solved_by_person_id"
-  add_foreign_key "problem_solutions", "problem_reports", :name => "problem_solutions_problem_report_id_fk"
-  add_foreign_key "problem_solutions", "solution_types", :name => "problem_solutions_solution_type_id_fk"
+  add_foreign_key "problem_solutions", "people", name: "problem_solutions_solved_by_person_id_fk", column: "solved_by_person_id"
+  add_foreign_key "problem_solutions", "problem_reports", name: "problem_solutions_problem_report_id_fk"
+  add_foreign_key "problem_solutions", "solution_types", name: "problem_solutions_solution_type_id_fk"
 
-  add_foreign_key "school_infos", "places", :name => "school_infos_place_id_fk"
+  add_foreign_key "school_infos", "places", name: "school_infos_place_id_fk"
 
-  add_foreign_key "section_details", "lots", :name => "section_details_lot_id_fk"
-  add_foreign_key "section_details", "places", :name => "section_details_place_id_fk"
+  add_foreign_key "section_details", "lots", name: "section_details_lot_id_fk"
+  add_foreign_key "section_details", "places", name: "section_details_place_id_fk"
 
-  add_foreign_key "software_versions", "models", :name => "software_versions_model_id_fk"
+  add_foreign_key "software_versions", "models", name: "software_versions_model_id_fk"
 
-  add_foreign_key "solution_type_part_types", "part_types", :name => "solution_type_part_types_part_type_id_fk"
-  add_foreign_key "solution_type_part_types", "solution_types", :name => "solution_type_part_types_solution_type_id_fk"
+  add_foreign_key "solution_type_part_types", "part_types", name: "solution_type_part_types_part_type_id_fk"
+  add_foreign_key "solution_type_part_types", "solution_types", name: "solution_type_part_types_solution_type_id_fk"
 
-  add_foreign_key "status_changes", "laptops", :name => "status_changes_laptop_id_fk"
-  add_foreign_key "status_changes", "statuses", :name => "status_changes_new_state_id_fk", :column => "new_state_id"
-  add_foreign_key "status_changes", "statuses", :name => "status_changes_previous_state_id_fk", :column => "previous_state_id"
+  add_foreign_key "status_changes", "laptops", name: "status_changes_laptop_id_fk"
+  add_foreign_key "status_changes", "statuses", name: "status_changes_new_state_id_fk", column: "new_state_id"
+  add_foreign_key "status_changes", "statuses", name: "status_changes_previous_state_id_fk", column: "previous_state_id"
 
-  add_foreign_key "users", "people", :name => "users_person_id_fk"
+  add_foreign_key "users", "people", name: "users_person_id_fk"
 
 end
