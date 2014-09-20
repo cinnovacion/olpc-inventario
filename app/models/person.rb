@@ -57,15 +57,6 @@ class Person < ActiveRecord::Base
     {name: _("Bar Code"), column: :barcode, width: 250, visible: false}
   ]
 
-  def self.genAsFromCondition(vista)
-    split = vista.split("_")
-    
-    profile = Profile.find_by_internal_tag(split[0])
-    profile_ids = profile ? [profile.id] : []
-    
-    [ "people.id in (?)",Perform.peopleFromAs(split[1].to_i, true, profile_ids) ]
-  end
-
   def self.getChooseButtonColumns(vista = "")
     ret = Hash.new
 

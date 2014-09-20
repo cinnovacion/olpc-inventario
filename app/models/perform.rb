@@ -40,23 +40,6 @@ class Perform < ActiveRecord::Base
     {name: _("Profile"), association: :profile, column: :description, width: 250}
   ]
 
-  ###
-  # Finds all the people that performs these (profiles_ids) at (place_id, and/or subplaces) 
-  #
-  def self.peopleFromAs(place_id, subplaces = false, profiles_ids = [])
-
-    places_ids = subplaces ? Place.find_by_id(place_id).getDescendantsIds().push(place_id) : place_id
-    cond_v = ["place_id in (?)", places_ids]
-
-    if !profiles_ids.empty?
-      cond_v[0] += " and profile_id in (?)"
-      cond_v.push(profiles_ids)
-    end
-
-    people_ids = Perform.find(:all, :conditions => cond_v).map { |p| p.person_id }
-
-  end
-
   def self.move_people(people_ids, src_place, dst_place, moved_by, add_comment)
     Perform.transaction do
       people_ids.each { |person_id|

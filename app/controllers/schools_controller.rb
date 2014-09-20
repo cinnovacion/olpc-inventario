@@ -24,49 +24,6 @@
 class SchoolsController < ApplicationController
   around_filter :rpc_block
 
-  def general_info
-    school_id = params[:id]
-
-    info = Array.new
-
-    school = Place.find_by_id(school_id)
-
-    info.push({ :label => _("General info of the school"), :data => "" })
-    info.push({:label => _("Number"), :data => school.name })
-    info.push({ :label => _("Name"), :data => school.description })
-
-    student_profile_id = Profile.find_by_internal_tag("student").id
-    teacher_profile_id = Profile.find_by_internal_tag("teacher").id
-    director_profile_id = Profile.find_by_internal_tag("director").id
-
-    length = Perform.peopleFromAs(school_id, true, [student_profile_id]).length
-    info.push({ :label => _("Number of students"), :data => length })
-
-    length = Perform.peopleFromAs(school_id, true, [teacher_profile_id]).length
-    info.push({ :label => _("Number of teachers"), :data => length })
-
-    info.push({ :label => _("Principals"), :data => "" })
-
-    performs = Perform.includes(:person, :profile)
-    performs = performs.where(:place_id => school_id)
-    performs = performs.where("profiles.id = ?", director_profile_id)
-    performs.each { |member|
-      info.push({ :label => member.person.getFullName, :data => member.person.getPhone })
-    }
-
-    #
-    # FIXME: please write a comment about the following block of code or otherwise remove it. 
-    #
-
-    #info.push({ :label => "Servidores de la Escuela", :data => "" })
-    #cond = ["school_infos.place_id = ?", school_id]
-    #SchoolInfo.find(:all, :conditions => cond).each { |server|
-    #info.push({ :label => "", :data => server.getHostname })
-    #}
-
-    @output[:info] = info
-  end
-
   def createPlace
     parent_place_id = params[:parent_place_id]
     place_type_tag = params[:place_type]
