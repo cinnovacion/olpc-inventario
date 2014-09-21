@@ -110,4 +110,32 @@ class PlaceTest < ActiveSupport::TestCase
     # all entries have uuid
     assert_nil ret.detect {|l| l[:uuid].blank? }
   end
+
+  def test_tree
+    place = create_place
+    child = create_place(name: "subplace", place_id: place.id)
+    grandchild = create_place(name: "grandchild", place_id: child.id)
+    place.reload
+    child.reload
+
+    assert place.getDescendantsIds.include?(child.id)
+    assert place.getDescendantsIds.include?(grandchild.id)
+    assert child.getDescendantsIds.include?(grandchild.id)
+    assert !child.getDescendantsIds.include?(place.id)
+    assert_equal [], grandchild.getDescendantsIds
+
+    assert grandchild.getAncestorsIds.include?(child.id)
+    assert grandchild.getAncestorsIds.include?(place.id)
+    assert child.getAncestorsIds.include?(place.id)
+    assert !child.getAncestorsIds.include?(grandchild.id)
+    assert !place.getAncestorsIds.include?(child.id)
+    assert !place.getAncestorsIds.include?(grandchild.id)
+
+    assert place.owns(child)
+    assert place.owns(grandchild)
+    assert child.owns(grandchild)
+    assert place.owns(place)
+    assert !grandchild.owns(place)
+    assert !grandchild.owns(child)
+  end
 end
